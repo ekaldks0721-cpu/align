@@ -487,6 +487,13 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
   .dayhead .date{font-size:1.4rem}
 }
 
+/* 뽀모도로 시간 고르기 (타이머 카드 안) */
+.pcfg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;margin:-.3rem 0 1rem}
+.pcfg label{display:flex;flex-direction:column;align-items:stretch;gap:.2rem;font-size:.76rem;color:rgba(255,255,255,.85);min-width:0}
+.pcfg select{width:100%;min-width:0;padding-left:.5em;padding-right:.3em}
+.pcfg .sum{grid-column:1/-1;font-size:.84rem;color:rgba(255,255,255,.85)}
+@media (max-width:420px){.pcfg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 /* 아이폰 앱(홈 화면에 추가)용 */
 html{overscroll-behavior-y:none}
 button,.tabs,.chip,.tag{-webkit-touch-callout:none}
@@ -549,6 +556,7 @@ dialog{max-height:calc(100dvh - 2rem - env(safe-area-inset-top,0px) - env(safe-a
           <label>항목 <select id="t-sub"></select></label>
           <label title="고른 항목의 할 일만 보여요">할 일 <select id="t-task"></select></label>
         </div>
+        <div class="pcfg" id="t-cfg"></div>
         <div class="btns">
           <button class="primary" id="t-main">시작</button>
           <button id="t-end">끝내고 기록</button>
@@ -1064,6 +1072,17 @@ function paintTimer(){
   $('#t-main').textContent=T.running?'일시정지':started?'계속':(isFocus()?'시작':'휴식 시작');
   const end=$('#t-end'); end.textContent=isFocus()?'끝내고 기록':'휴식 건너뛰기'; end.hidden=isFocus()?!started:false;
   $('#t-cancel').hidden=!(isFocus()&&started);
+  paintPomoCfg();
+}
+const PCFG=[['focus','집중',[5,10,15,20,25,30,35,40,45,50,55,60,75,90,120],'분'],['short','짧은 휴식',[1,2,3,4,5,7,10,15,20],'분'],
+  ['long','긴 휴식',[5,10,15,20,25,30,40,45,60],'분'],['every','긴 휴식까지',[1,2,3,4,5,6,7,8],'회']];
+function paintPomoCfg(){ // 집중·휴식 시간과 집중 횟수를 타이머 화면에서 바로 고름. 도는 동안에는 요약만 보여 줌
+  const box=$('#t-cfg'); if(!box) return;
+  const sig=T.mode+'|'+(T.running?1:0)+'|'+PCFG.map(c=>cfg(c[0])).join(',');
+  if(box.dataset.sig===sig) return; box.dataset.sig=sig; box.hidden=T.mode!=='pomo'; if(box.hidden) return;
+  if(T.running){box.replaceChildren(h('span',{class:'sum'},'집중 '+cfg('focus')+'분 · 짧은 휴식 '+cfg('short')+'분 · 긴 휴식 '+cfg('long')+'분 · '+cfg('every')+'회마다 긴 휴식')); return}
+  box.replaceChildren(...PCFG.map(([k,label,opts,unit])=>{const v=cfg(k), list=opts.indexOf(v)<0?opts.concat(v).sort((a,b)=>a-b):opts;
+    return h('label',null,label,h('select',{'aria-label':label,onchange:e=>setCfg(k,+e.target.value)},list.map(n=>h('option',{value:n,selected:n===v},n+unit))))}));
 }
 function fillTimer(){
   const ss=activeSubs(); if((!sub(T.sub).id||(hiddenSub(sub(T.sub))&&!T.running&&!T.elapsed))&&ss[0]) T.sub=ss[0].id;
