@@ -1,9 +1,9 @@
 // Align 오프라인 지원: 앱 파일은 미리 저장해 두고, 인터넷이 되면 새 버전을 받아 옴
-const CACHE = 'align-v2';
+const CACHE = 'align-v3';
 const APP = ['./', './index.html', './manifest.webmanifest', './firebase-config.js', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon.svg'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(APP.map(u => new Request(u, { cache: 'no-cache' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
@@ -21,7 +21,8 @@ self.addEventListener('fetch', e => {
   const isCfg = url.origin === location.origin && url.pathname.endsWith('/firebase-config.js');
   if (req.mode === 'navigate' || isCfg) {
     const key = isCfg ? './firebase-config.js' : './index.html';
-    e.respondWith(fetch(req)
+    // cache:'no-cache' → 브라우저가 잠깐 들고 있는 옛 파일 말고 늘 서버에 새 버전이 있는지 확인
+    e.respondWith(fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' })
       .then(r => { if (r.ok) { const cp = r.clone(); caches.open(CACHE).then(c => c.put(key, cp)); } return r; })
       .catch(() => caches.match(key)));
     return;
