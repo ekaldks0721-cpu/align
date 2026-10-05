@@ -832,7 +832,8 @@ const FB_ERR={'auth/invalid-credential':'이메일이나 비밀번호가 맞지 
   'auth/invalid-login-credentials':'이메일이나 비밀번호가 맞지 않아요','auth/email-already-in-use':'이미 만든 계정이에요. "로그인"을 눌러 주세요','auth/weak-password':'비밀번호는 6자 이상으로 해 주세요',
   'auth/invalid-email':'이메일 주소를 다시 확인해 주세요','auth/missing-password':'비밀번호를 입력해 주세요','auth/network-request-failed':'인터넷 연결을 확인해 주세요',
   'auth/too-many-requests':'시도가 너무 많아요. 잠시 뒤에 다시 해 주세요','auth/operation-not-allowed':'Firebase에서 이메일/비밀번호 로그인이 아직 켜져 있지 않아요',
-  'auth/configuration-not-found':'Firebase에서 로그인 기능(Authentication)이 아직 켜져 있지 않아요','permission-denied':'Firestore 보안 규칙을 확인해 주세요'};
+  'auth/configuration-not-found':'Firebase에서 로그인 기능(Authentication)이 아직 켜져 있지 않아요','permission-denied':'Firestore 보안 규칙을 확인해 주세요',
+  'auth/admin-restricted-operation':'새 계정 만들기가 막혀 있어요. 기존 계정으로 로그인해 주세요'};
 const fbErr=e=>FB_ERR[e&&e.code]||'잘 안 됐어요. 잠시 뒤 다시 해 보세요'+(e&&e.code?' ('+e.code+')':'');
 function syncBox(){ // 설정 → 저장 카드의 '기기 간 동기화'
   if(!fbCfg) return null;
