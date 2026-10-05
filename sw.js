@@ -1,5 +1,5 @@
 // Align 오프라인 지원: 앱 파일은 미리 저장해 두고, 인터넷이 되면 새 버전을 받아 옴
-const CACHE = 'align-v3';
+const CACHE = 'align-v4';
 const APP = ['./', './index.html', './manifest.webmanifest', './firebase-config.js', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon.svg'];
 
 self.addEventListener('install', e => {
@@ -36,4 +36,13 @@ self.addEventListener('fetch', e => {
       return hit || net;
     })));
   }
+});
+
+// 알림을 누르면 열려 있는 Align 창으로 가고, 없으면 새로 엶
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(ws => {
+    const w = ws.find(c => c.url.startsWith(self.registration.scope));
+    return w ? w.focus() : self.clients.openWindow('./');
+  }));
 });

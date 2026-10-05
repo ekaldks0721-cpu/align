@@ -657,7 +657,7 @@ let toastT; function toast(msg){const t=$('#toast'); t.textContent=msg; t.hidden
 
 /* ---------- 상태·로컬 저장 ---------- */
 const LS='studylog.v1', LST='studylog.timer';
-const DEF={focus:25,short:5,long:15,every:4,autoBreak:true,autoFocus:false,sound:true,dayStart:5,dailyGoal:240,weeklyGoal:1500,goalCat:'c-study',theme:'auto',accent:'blue',font:'plex',wake:true};
+const DEF={focus:25,short:5,long:15,every:4,autoBreak:true,autoFocus:false,sound:true,dayStart:5,dailyGoal:240,weeklyGoal:1500,goalCat:'c-study',theme:'auto',accent:'blue',font:'plex',wake:true,nPomo:true,nDue:30,nEv:10};
 let S={settings:{m:0,v:{}},docs:{},dirty:{}};
 let memOnly=false;
 let dir=null, pendingDir=null, dirName='', fState='off', fSavedAt=0, fT=null, fBusy=false, fAgain=false; // 데이터 폴더: off | need | on
@@ -1034,7 +1034,9 @@ let lastMin=-1;
 function tick(){
   if(T.running&&T.mode==='pomo'&&phaseMs()-elapsedMs()<=0){
     const endTs=T.segStart+(phaseMs()-T.elapsed);
-    if(T.phase==='focus'){beep('focus'); finishFocus(endTs)} else {beep('break'); finishBreak(endTs,true)}
+    const fresh=Date.now()-endTs<60e3; // 앱이 멈춰 있다 한참 뒤에 열린 거면 지난 알림은 띄우지 않음
+    if(T.phase==='focus'){beep('focus'); if(fresh&&cfg('nPomo')) notify('집중 시간이 끝났어요',(T.count+1)%Math.max(1,cfg('every'))===0?'긴 휴식을 할 차례예요':'잠깐 쉬어 가요','pomo'); finishFocus(endTs)}
+    else {beep('break'); if(fresh&&cfg('nPomo')) notify('휴식이 끝났어요','다시 집중할 시간이에요','pomo'); finishBreak(endTs,true)}
   }
   paintTimer();
   if(view==='today'&&T.task&&T.running&&isFocus()) document.querySelectorAll('.tcmp').forEach(paintCmp);
@@ -1841,6 +1843,7 @@ function renderSet(){
       h('section',{class:'card'},h('h2',{style:'margin-bottom:.8rem'},'타이머'),h('div',{class:'form'},
         h('label',null,'집중 (분)',num('focus',1,180)),h('label',null,'짧은 휴식 (분)',num('short',1,60)),h('label',null,'긴 휴식 (분)',num('long',1,120)),
         h('label',null,'긴 휴식까지 집중 횟수',num('every',1,12)),h('label',null,'집중이 끝나면 휴식 자동 시작',chk('autoBreak')),h('label',null,'휴식이 끝나면 집중 자동 시작',chk('autoFocus')),h('label',null,'끝날 때 알림음',chk('sound')),h('label',null,'타이머가 도는 동안 화면 켜 두기',chk('wake')))),
+      notifyCard(),
       h('section',{class:'card'},h('h2',{style:'margin-bottom:.8rem'},'목표와 하루 기준'),h('div',{class:'form'},
         h('table',{class:'tbl gtbl'},h('thead',null,h('tr',null,h('th',null,'목표'),h('th',null,'하루 (시간)'),h('th',null,'주간 (시간)'))),
           h('tbody',null,[''].concat(cats().filter(c=>!c.arch).map(c=>c.id)).map(c=>{const g=goals()[c]||{d:0,w:0}, nm=c?catName(c):'전체';
@@ -2360,6 +2363,58 @@ setCloud('local'); render(); decorate(); enter('today'); setInterval(tick,250); 
 initFolder().then(()=>{ // 기록이 하나도 없는 첫 실행에만 시작 안내를 띄움
   let seen=true; try{seen=!!localStorage.getItem(OB)}catch(e){}
   if(!seen&&!allOf('log-').length&&!allOf('tasks-').length&&!dlg.open) onboard(0)});
+/* ---------- 알림 (앱이 열려 있는 동안) ---------- */
+const NK='align.notify', NF='align.notified';
+const canNotify=()=>'Notification' in window;
+function nEnabled(){let on=false; try{on=localStorage.getItem(NK)==='1'}catch(e){} return on&&canNotify()&&Notification.permission==='granted'}
+async function notify(title,body,tag){
+  if(!nEnabled()) return false; const opt={body,tag,icon:'icons/icon-192.png',badge:'icons/icon-192.png'};
+  try{const r=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration(); if(r){await r.showNotification(title,opt); return true}}catch(e){} // 아이폰은 이 방법만 됨
+  try{new Notification(title,opt); return true}catch(e){} return false;
+}
+function checkReminders(){ // 마감·일정 알림: 20초마다 확인해서 때가 된 것만 한 번씩
+  if(!nEnabled()) return; const now=Date.now(), k=keyOf(new Date(now)); let fired={};
+  try{fired=JSON.parse(localStorage.getItem(NF)||'{}')||{}}catch(e){}
+  for(const x in fired) if(now-fired[x]>3*864e5) delete fired[x];
+  const at=(dk,min)=>{const [y,m,d]=parts(dk); return new Date(y,m-1,d,0,min).getTime()};
+  const fire=(key,title,body,from,until)=>{if(fired[key]||now<from||now>=until) return; fired[key]=now; notify(title,body,key); toast(title+' · '+body)};
+  const ev=cfg('nEv'), nd=cfg('nDue');
+  if(ev>0) [k,keyOf(new Date(now+864e5))].forEach(dk=>dayAgenda(dk,false).forEach(a=>{
+    if((a.kind!=='cal'&&a.kind!=='fix')||a.s==null||a.skipped) return; const st=at(dk,a.s);
+    fire('ev|'+dk+'|'+((a.ref&&a.ref.id)||a.title)+'|'+a.s,a.title,fmtDur((st-now)/1e3)+' 뒤 시작해요 ('+hm(a.s)+')',st-ev*60e3,st)}));
+  if(nd>0) allOf('tasks-').forEach(t=>{if(t.done||!t.due) return;
+    if(t.dueT!=null){const du=at(t.due,t.dueT); fire('due|'+t.id+'|'+t.due+'|'+t.dueT,'마감 '+fmtDur((du-now)/1e3)+' 전이에요',t.title+' ('+hm(t.dueT)+'까지)',du-nd*60e3,du)}
+    else fire('dueday|'+t.id+'|'+t.due,'오늘 마감이에요',t.title,at(t.due,540),at(t.due,1440))});
+  try{localStorage.setItem(NF,JSON.stringify(fired))}catch(e){}
+}
+setInterval(checkReminders,20000); document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible') checkReminders()});
+async function nToggle(){
+  if(nEnabled()){try{localStorage.removeItem(NK)}catch(e){} render(); toast('이 기기에서 알림을 껐어요'); return}
+  if(!canNotify()){toast(isIOS?'아이폰은 홈 화면에 추가한 Align 앱에서만 알림을 켤 수 있어요':'이 브라우저는 알림을 지원하지 않아요'); return}
+  let pm=Notification.permission; if(pm==='default'){try{pm=await Notification.requestPermission()}catch(e){}}
+  if(pm!=='granted'){render(); toast('알림이 허용되지 않았어요. 아래 안내대로 허용해 주세요'); return}
+  try{localStorage.setItem(NK,'1')}catch(e){} render(); notify('알림이 켜졌어요','이제 이 기기로 Align 알림이 와요','hello'); checkReminders();
+}
+function nStatus(){
+  if(!canNotify()) return isIOS?'아이폰에서는 홈 화면에 추가한 Align 앱에서만 알림을 받을 수 있어요. Safari 주소로 연 화면에서는 켤 수 없어요.':'이 브라우저는 알림을 지원하지 않아요.';
+  if(nEnabled()) return '이 기기에서 알림을 받고 있어요. '+(isIOS?'아이폰은 Align이 화면에 떠 있을 때만 알림이 와요.':'Align이 열려 있으면 창을 내려 두거나 다른 창을 써도 알림이 와요.');
+  if(Notification.permission==='denied') return '알림이 막혀 있어요. '+(isIOS?'아이폰 설정 → 알림 → Align에서 허용해 주세요.':'맥의 시스템 설정 → 알림에서 Align(또는 쓰는 브라우저)을 허용하고, 크롬이라면 주소창 왼쪽 아이콘 → 알림도 허용해 주세요.')+' 그다음 아래 버튼을 다시 누르세요.';
+  return '켜면 뽀모도로가 끝날 때, 할 일 마감 전, 일정 시작 전에 알림이 와요. 알림 허용은 기기마다 따로 해야 해요.';
+}
+function notifyCard(){
+  const on=nEnabled();
+  return h('section',{class:'card'},h('h2',{style:'margin-bottom:.8rem'},'알림'),h('div',{class:'form'},
+    h('p',{class:'small muted',style:'margin:0'},nStatus()),
+    h('div',{class:'row'},h('button',{class:on?null:'primary',onclick:nToggle},on?'이 기기에서 알림 끄기':'이 기기에서 알림 켜기'),
+      on?h('button',{class:'quiet',onclick:()=>notify('알림 시험','이렇게 알림이 와요','test')},'시험 알림 보내기'):null),
+    h('label',null,'뽀모도로가 끝날 때',chkCfg('nPomo')),
+    h('label',null,'할 일 마감 몇 분 전 (0이면 끔)',numCfg('nDue',0,1440)),
+    h('label',null,'일정 시작 몇 분 전 (0이면 끔)',numCfg('nEv',0,1440)),
+    h('p',{class:'small muted',style:'margin:0'},'시각 없이 날짜만 정한 마감은 그날 아침 9시에 알려 줘요. 알림 시간 설정은 모든 기기에 똑같이 적용돼요.')));
+}
+const chkCfg=k=>h('input',{type:'checkbox',checked:!!cfg(k),onchange:e=>setCfg(k,e.target.checked)});
+const numCfg=(k,mn,mx)=>h('input',{type:'number',min:mn,max:mx,value:cfg(k),onchange:e=>{let v=parseInt(e.target.value); v=isNaN(v)?mn:Math.min(mx,Math.max(mn,v)); setCfg(k,v)}});
+
 /* ---------- 아이폰 앱(홈 화면에 추가) ---------- */
 function saveFile(filename,data,type,done){ // 아이폰에서는 공유 시트로 열어 '파일에 저장'·AirDrop 등을 고를 수 있게 함
   let file=null; try{file=new File([data],filename,{type})}catch(e){}
