@@ -11,9 +11,8 @@
 
 ## 배포 (처음 한 번)
 
-1. 이 브랜치를 `main`에 합치세요.
-2. GitHub 저장소 **Settings → Pages → Build and deployment → Source**를 **GitHub Actions**로 바꾸세요.
-3. `main`에 올릴 때마다 `.github/workflows/pages.yml`이 자동으로 배포해요. 앱은 다음에 열 때 새 버전을 받아요.
+GitHub 저장소 **Settings → Pages**에서 **Source**를 **Deploy from a branch**로, **Branch**를 **main** / **(root)**로 두고 **Save**를 누르세요.
+그 뒤로는 `main`에 올릴 때마다 자동으로 반영되고, 앱은 다음에 열 때 새 버전을 받아요.
 
 ## 기록 옮기기와 백업
 
