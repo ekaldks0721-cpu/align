@@ -611,6 +611,7 @@ dialog{max-height:calc(100dvh - 2rem - env(safe-area-inset-top,0px) - env(safe-a
 <dialog id="dlg"></dialog>
 <div id="toast" hidden role="status"></div>
 
+<script src="firebase-config.js"></script>
 <script>
 (function(){
 'use strict';
@@ -801,6 +802,53 @@ async function initCloud(){
     col=db.collection('data/users/'+id);
     col.onSnapshot(onSnap,()=>{setCloud('error')});
   }catch(e){setCloud('local')}
+}
+
+/* ---------- 계정 동기화 (Firebase: 홈 화면 앱·PC 브라우저 사이) ---------- */
+const FB_V='10.14.1', fbCfg=!window.claude&&window.ALIGN_FIREBASE&&window.ALIGN_FIREBASE.apiKey?window.ALIGN_FIREBASE:null;
+let fbAuth=null, fbUser=null, fbUnsub=null, fbP=null, fbRetry=null;
+const loadScript=src=>new Promise((res,rej)=>{const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.append(s)});
+function fbLoad(){return fbP||(fbP=(async()=>{
+  if(!window.firebase||!firebase.firestore) for(const m of ['app','auth','firestore']) await loadScript('https://www.gstatic.com/firebasejs/'+FB_V+'/firebase-'+m+'-compat.js');
+  if(!firebase.apps.length) firebase.initializeApp(fbCfg); fbAuth=firebase.auth(); return firebase})().catch(e=>{fbP=null; throw e}))}
+function fbCol(uid){ // Firestore를 위의 col과 같은 모양으로 감쌈. Firestore는 배열 속 배열을 못 담아서 문서를 JSON 글자로 저장
+  const c=firebase.firestore().collection('users').doc(uid).collection('docs');
+  const wrap=ds=>({id:ds.id,exists:ds.exists,data:()=>{const v=ds.data(); try{return v&&typeof v.j==='string'?JSON.parse(v.j):null}catch(e){return null}}});
+  return {doc:id=>{const r=c.doc(id); return {get:()=>r.get().then(wrap),set:o=>r.set({j:JSON.stringify(o),t:Date.now()})}},
+    onSnapshot:(ok,bad)=>c.onSnapshot(sn=>ok({docs:sn.docs.map(wrap)}),bad)};
+}
+function fbListen(){
+  clearTimeout(fbRetry); if(fbUnsub){fbUnsub(); fbUnsub=null} if(!fbUser){col=null; return}
+  setCloud('connecting'); col=fbCol(fbUser.uid);
+  fbUnsub=col.onSnapshot(onSnap,()=>{setCloud('error'); fbRetry=setTimeout(fbListen,30000)}); // 끊기면 30초 뒤 다시 연결
+}
+async function initFirebase(){
+  if(!fbCfg||fbAuth) return; setCloud('connecting');
+  try{await fbLoad()}catch(e){setCloud('local'); return} // 인터넷이 없으면 나중에(online) 다시 시도
+  fbAuth.onAuthStateChanged(u=>{fbUser=u; if(u) fbListen(); else{fbListen(); setCloud('local')} if(view==='set') render()});
+}
+window.addEventListener('online',()=>{if(fbCfg&&!fbAuth) initFirebase(); else if(fbUser&&cloud==='error') fbListen()});
+const FB_ERR={'auth/invalid-credential':'이메일이나 비밀번호가 맞지 않아요','auth/wrong-password':'이메일이나 비밀번호가 맞지 않아요','auth/user-not-found':'이메일이나 비밀번호가 맞지 않아요',
+  'auth/invalid-login-credentials':'이메일이나 비밀번호가 맞지 않아요','auth/email-already-in-use':'이미 만든 계정이에요. "로그인"을 눌러 주세요','auth/weak-password':'비밀번호는 6자 이상으로 해 주세요',
+  'auth/invalid-email':'이메일 주소를 다시 확인해 주세요','auth/missing-password':'비밀번호를 입력해 주세요','auth/network-request-failed':'인터넷 연결을 확인해 주세요',
+  'auth/too-many-requests':'시도가 너무 많아요. 잠시 뒤에 다시 해 주세요','auth/operation-not-allowed':'Firebase에서 이메일/비밀번호 로그인이 아직 켜져 있지 않아요'};
+const fbErr=e=>FB_ERR[e&&e.code]||'잘 안 됐어요. 잠시 뒤 다시 해 보세요'+(e&&e.code?' ('+e.code+')':'');
+function syncBox(){ // 설정 → 저장 카드의 '기기 간 동기화'
+  if(!fbCfg) return null;
+  const head=h('h3',{style:'margin-top:.9rem'},'기기 간 동기화');
+  if(!fbAuth) return [head,h('p',{class:'small muted',style:'margin:.3rem 0 1rem'},'동기화 서버에 연결하는 중이에요. 인터넷이 연결되면 로그인할 수 있어요.')];
+  if(fbUser) return [head,h('p',{class:'small muted',style:'margin:.3rem 0 .6rem'},h('b',{style:'color:var(--ink)'},fbUser.email),' 계정으로 동기화하고 있어요. 다른 기기에서도 같은 계정으로 로그인하면 기록이 똑같이 보여요. 일기 사진과 진행 중인 타이머는 기기마다 따로예요.'),
+    h('div',{class:'row',style:'margin-bottom:1rem'},h('button',{onclick:()=>{Object.keys(S.docs).forEach(d=>S.dirty[d]=1); S.dirty.settings=1; schedulePush(1); toast('맞추는 중이에요')}},'지금 맞추기'),
+      h('button',{class:'quiet',onclick:async()=>{if(await ask('로그아웃할까요?','이 기기의 기록은 그대로 남아요. 다시 로그인하면 이어서 동기화돼요.','로그아웃')){await fbAuth.signOut(); toast('로그아웃했어요')}}},'로그아웃'))];
+  const fE=h('input',{type:'email',placeholder:'이메일',autocomplete:'username',autocapitalize:'off',style:'flex:1;min-width:12rem'}), fP=h('input',{type:'password',placeholder:'비밀번호 (6자 이상)',autocomplete:'current-password',style:'flex:1;min-width:12rem'});
+  const go=async(kind,btn)=>{const em=fE.value.trim(), pw=fP.value; if(!em){toast('이메일을 입력해 주세요'); return}
+    btn.disabled=true;
+    try{if(kind==='new') await fbAuth.createUserWithEmailAndPassword(em,pw); else await fbAuth.signInWithEmailAndPassword(em,pw); toast(kind==='new'?'계정을 만들고 동기화를 시작했어요':'로그인했어요. 기록을 맞추는 중이에요')}
+    catch(e){toast(fbErr(e))} btn.disabled=false};
+  const bIn=h('button',{class:'primary',onclick:()=>go('in',bIn)},'로그인'), bNew=h('button',{onclick:()=>go('new',bNew)},'새 계정 만들기');
+  return [head,h('p',{class:'small muted',style:'margin:.3rem 0 .6rem'},'아이폰과 컴퓨터에서 같은 계정으로 로그인하면 기록이 자동으로 맞춰져요. 처음이면 "새 계정 만들기"를, 다른 기기에서 이미 만들었으면 "로그인"을 누르세요. 지금 이 기기에 있는 기록도 계정으로 합쳐져요.'),
+    h('div',{class:'row'},fE,fP),h('div',{class:'row',style:'margin:.5rem 0 1rem'},bIn,bNew,
+      h('button',{class:'quiet',onclick:async()=>{const em=fE.value.trim(); if(!em){toast('위에 이메일을 먼저 입력해 주세요'); return} try{await fbAuth.sendPasswordResetEmail(em); toast('비밀번호를 바꾸는 메일을 보냈어요')}catch(e){toast(fbErr(e))}}},'비밀번호를 잊었어요'))];
 }
 
 /* ---------- 데이터 폴더 (PC의 Chrome·Edge에서 파일로 저장) ---------- */
@@ -1820,7 +1868,7 @@ function renderSet(){
           h('ul',{class:'list'},ac.map(c=>h('li',null,h('span',{style:'flex:1'},h('b',null,c.name),' 카테고리 (항목 '+subs().filter(x=>catOf(x.id)===c.id).length+'개)'),h('button',{onclick:()=>{const it=clone(c); delete it.arch; put('cats',it); render()}},'되살리기'))),
             as.map(x=>h('li',null,h('i',{class:'dot',style:'background:'+x.color}),h('span',{style:'flex:1'},x.name,h('span',{class:'small muted'},' '+catName(catOf(x.id)))),h('button',{onclick:()=>{const it=clone(x); delete it.arch; put('subjects',it); render()}},'되살리기'),
               h('button',{class:'quiet',onclick:async()=>{if(await ask('"'+x.name+'" 항목을 지울까요?','이 항목으로 남긴 기록은 지워지지 않고 미분류로 보여요.','항목 지우기')){del('subjects',x.id); render()}}},'지우기')))))})()),
-    h('section',{class:'card'},h('h2',null,'저장'),
+    h('section',{class:'card'},h('h2',null,'저장'),syncBox(),
       isIOS&&!fsOK()?[h('h3',{style:'margin-top:.9rem'},'아이폰에 저장'),h('p',{class:'small muted',style:'margin:.3rem 0 1rem'},'아이폰에서는 기록이 이 앱 안에 저장돼요. 설정의 "JSON 백업"을 누르고 "파일에 저장"을 고르면 iCloud Drive 등에 백업할 수 있어요. 가끔 백업해 두세요.')]:[
       h('h3',{style:'margin-top:.9rem'},'데이터 폴더'),
       h('p',{class:'small muted',style:'margin:.3rem 0 .6rem'},fState==='on'?'"'+dirName+'" 폴더의 '+DATA_FILE+' 파일에 기록을 저장하고 있어요. 일기 사진은 그 안의 '+PHOTO_DIR+' 폴더에 들어가요.'+(fSavedAt?' 마지막 저장 '+new Date(fSavedAt).toLocaleTimeString('ko-KR'):''):
@@ -1830,7 +1878,7 @@ function renderSet(){
         fState==='need'?[h('button',{class:'primary',onclick:reconnectFolder},'데이터 폴더 다시 연결'),h('button',{class:'quiet',onclick:disconnectFolder},'연결 끊기')]:
         h('button',{class:'primary',disabled:!fsOK(),onclick:connectFolder},'데이터 폴더 연결'))],
       h('h3',null,'브라우저와 클라우드'),
-      h('p',{style:'margin:.5rem 0'},cloud==='local'?(memOnly?'이 화면에서는 브라우저 저장소를 쓸 수 없어서, 창을 닫으면 기록이 사라져요.':'기록이 이 기기의 브라우저에만 저장되고 있어요. 클라우드 저장은 Claude에 로그인한 상태로 열었을 때 켜져요.'):'기록이 이 기기와 클라우드 양쪽에 저장돼요. 다른 기기에서 같은 계정으로 열면 이어서 볼 수 있어요. 진행 중인 타이머는 기기마다 따로예요. 일기 사진은 클라우드에 연결됐을 때 올리면 클라우드에, 아니면 이 기기에만 저장돼요.'),
+      h('p',{style:'margin:.5rem 0'},cloud==='local'?(memOnly?'이 화면에서는 브라우저 저장소를 쓸 수 없어서, 창을 닫으면 기록이 사라져요.':(fbCfg?'기록이 이 기기에만 저장되고 있어요. 위에서 로그인하면 다른 기기와 동기화돼요.':'기록이 이 기기의 브라우저에만 저장되고 있어요. 클라우드 저장은 Claude에 로그인한 상태로 열었을 때 켜져요.')):'기록이 이 기기와 클라우드 양쪽에 저장돼요. 다른 기기에서 같은 계정으로 열면 이어서 볼 수 있어요. 진행 중인 타이머는 기기마다 따로예요. '+(fbUser?'일기 사진은 이 기기에만 저장돼요.':'일기 사진은 클라우드에 연결됐을 때 올리면 클라우드에, 아니면 이 기기에만 저장돼요.')),
       h('div',{class:'row'},h('button',{onclick:()=>aiExportDlg()},'AI 분석용으로 내보내기'),h('button',{hidden:!downloads&&!!window.claude,onclick:()=>exportData('csv')},'CSV로 내보내기'),h('button',{hidden:!downloads&&!!window.claude,onclick:()=>exportData('json')},'JSON 백업'),h('button',{onclick:()=>fFile.click()},'JSON 백업 가져오기'),fFile,
         h('button',{class:'danger sp',onclick:async()=>{if(await ask('모든 기록을 지울까요?','공부 기록, 할 일, 시간표, 캘린더 일정, D-day, 일기와 사진이 이 기기와 클라우드에서 모두 지워져요. 되돌릴 수 없어요.','모두 지우기')){
           const ph=[]; for(const d in S.docs) if(d.indexOf('diary-')===0) items(d).forEach(it=>ph.push(...(it.photos||[]))); ph.forEach(dropPhoto);
@@ -2305,8 +2353,8 @@ document.querySelector('.tabs').addEventListener('click',e=>{
   const v=b&&b.dataset.v; if(!v) return; jFlush(); rvFlush(); memoFlush(); if(editing){editing=false; applyLayout(true); paintEdit()} view=v;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.v===v)));
   ['today','dash','stats','plan','cal','diary','set'].forEach(n=>$('#v-'+n).hidden=n!==v); if(v==='today') viewDate=today(); if(v==='diary') renderDiary(true); else render(); enter(v); window.scrollTo(0,0)});
-$('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?'기록이 "'+dirName+'" 폴더의 '+DATA_FILE+'에 저장되고 있어요':cloud==='synced'?'모든 기록이 클라우드에 저장돼 있어요':cloud==='error'?'클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.':cloud==='local'?'기록이 이 기기에만 저장되고 있어요':'클라우드와 맞추는 중이에요');
-setCloud('local'); render(); decorate(); enter('today'); setInterval(tick,250); initCloud();
+$('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?'기록이 "'+dirName+'" 폴더의 '+DATA_FILE+'에 저장되고 있어요':cloud==='synced'?'모든 기록이 클라우드에 저장돼 있어요':cloud==='error'?'클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.':cloud==='local'?(fbCfg&&!fbUser?'기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요':'기록이 이 기기에만 저장되고 있어요'):'클라우드와 맞추는 중이에요');
+setCloud('local'); render(); decorate(); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
 initFolder().then(()=>{ // 기록이 하나도 없는 첫 실행에만 시작 안내를 띄움
   let seen=true; try{seen=!!localStorage.getItem(OB)}catch(e){}
   if(!seen&&!allOf('log-').length&&!allOf('tasks-').length&&!dlg.open) onboard(0)});

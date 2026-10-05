@@ -14,6 +14,25 @@
 GitHub 저장소 **Settings → Pages**에서 **Source**를 **Deploy from a branch**로, **Branch**를 **main** / **(root)**로 두고 **Save**를 누르세요.
 그 뒤로는 `main`에 올릴 때마다 자동으로 반영되고, 앱은 다음에 열 때 새 버전을 받아요.
 
+## 기기 간 동기화 (아이폰 ↔ 컴퓨터)
+
+`firebase-config.js`에 Firebase 웹 앱 설정을 넣으면 **설정 → 저장 → 기기 간 동기화**에 로그인 칸이 생겨요.
+아이폰 앱과 컴퓨터 브라우저(`https://ekaldks0721-cpu.github.io/align/`)에서 같은 이메일 계정으로 로그인하면 기록이 자동으로 맞춰져요.
+일기 사진과 진행 중인 타이머는 기기마다 따로예요.
+
+Firebase 쪽 준비: Authentication에서 **이메일/비밀번호** 로그인 사용, Firestore Database 만들기, 그리고 아래 보안 규칙 게시.
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}
+```
+
 ## 기록 옮기기와 백업
 
 - 홈 화면 앱은 Safari나 다른 기기와 저장 공간이 따로예요. 예전 기록이 있으면 원래 쓰던 곳에서 **설정 → JSON 백업**으로 파일을 만든 다음, 아이폰 앱의 **설정 → JSON 백업 가져오기**로 불러오세요.
@@ -32,4 +51,5 @@ GitHub 저장소 **Settings → Pages**에서 **Source**를 **Deploy from a bran
 | `index.html` | 앱 전체 (화면·스타일·코드) |
 | `manifest.webmanifest` | 홈 화면 앱 이름·아이콘·표시 방식 |
 | `sw.js` | 오프라인 지원 (서비스 워커) |
+| `firebase-config.js` | 기기 간 동기화용 Firebase 설정 |
 | `icons/` | 앱 아이콘 |
