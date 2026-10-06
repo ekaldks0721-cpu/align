@@ -2699,7 +2699,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   pelican:{n:TR('펠리컨'),pal:['#3A4050','#F8F8F4','#FFFFFF','#F8A030','#F8B8B8'],ear:'tuft',mark:'pouch feet'},
   rock:{n:TR('돌멩이'),pal:['#383C44','#9EA4AE','#B8BEC6','#7A8088','#E8A0A8'],mark:'speckle moss'},
   chul:{n:TR('철컹이'),pal:['#2A2028','#F4D0B0','#F8F8FF','#1E1A22','#F4A0A0'],mark:'stetho',acts:['cram','game','ramen','walk','sleep'],lines:'CHUL'},
-  yongbok:{n:TR('용복이'),pal:['#2A2030','#F6D8BE','#E8DCA8','#3A8CE0','#F4A8A8'],mark:'yongbok',acts:['dance','dance','bake','critter','walk'],lines:'YONG'},
+  yongbok:{n:TR('용복이'),pal:['#2A2030','#F6D8BE','#E8DCA8','#3A8CE0','#F4A8A8'],mark:'yongbok',idol:1,acts:['dance','dance','bake','critter','walk'],lines:'YONG'},
   homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
   prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
   ghost:{n:TR('유령'),pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
@@ -2755,10 +2755,10 @@ const HOMER={ // Homer K: 어깨까지 오는 까만 머리, 처진 눈썹, 보�
   2:{g:['','','.....oooooo.....','....oaaaaaao....','..oaabbbbbbaao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oaabbmmbbaao..','.oaaaobbbboaaao.','.oaallllllllaao.','.ollllllllllllo.','..oooooooooooo..'],top:2,ey:7,my:11,ny:12,R:14},
   3:{g:['','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaabbbbbbaao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oaabbmmbbaao..','.oaaaobbbboaaao.','.oaallllllllaao.','.ollllllllllllo.','..oooooooooooo..'],top:1,ey:7,my:11,ny:12,R:14}};
 SP.homer.tpl=HOMER;
-const YONGBOK={ // 용복이: 귀가 드러나는 짧은 파란 머리(가운데 가르마), 주근깨, 분홍 볼, 저지 조끼
-  1:{g:['','','','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaaabbaaaao..','..oaabbbbbbaao..','..oabebbbbebao..','.ocbbebbbbebbco.','.ocbcbbbbbbcbco.','..obbbbmmbbbbo..','...obbbbbbbbo...','....ollllllo....','.....oooooo.....'],top:4,ey:9,my:12,ny:14,R:12,small:1},
-  2:{g:['','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaaabbaaaao..','..oaabbbbbbaao..','..oabebbbbebao..','.ocbbebbbbebbco.','.ocbcbbbbbbcbco.','..obbbbmmbbbbo..','...obbbbbbbbo...','....oobbbboo....','..ollllllllllo..','.obllllllllllbo.','..oooooooooooo..'],top:2,ey:7,my:10,ny:12,R:14},
-  3:{g:['','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaaabbaaaao..','..oaabbbbbbaao..','..oabebbbbebao..','.ocbbebbbbebbco.','.ocbcbbbbbbcbco.','..obbbbmmbbbbo..','...obbbbbbbbo...','....oobbbboo....','..ollllllllllo..','.ollllllllllllo.','.obllllllllllbo.','..oooooooooooo..'],top:1,ey:6,my:9,ny:11,R:14}};
+const YONGBOK={ // 용복이: 위로 풍성한 파란 머리(가운데 가르마, 하늘색 결), 반짝이는 아몬드 눈, 주근깨, 분홍 볼, 갸름한 턱
+  1:{g:['','','.....oo..oo.....','...ooaaooaaoo...','..oaaaaaaaaaao..','.oaaaaaaaaaaaao.','.oaaaaaaaaaaaao.','.oaaaaabbaaaaao.','oaaaabbbbbbaaaao','oaaabebbbbebaaao','.oobbebbbbebboo.','..obcbbbbbbcbo..','...obbbmmbbbo...','....obbbbbbo....','....ollllllo....','.....oooooo.....'],top:3,ey:9,my:12,ny:14,R:12,small:1},
+  2:{g:['','.....oo..oo.....','...ooaaooaaoo...','..oaaaaaaaaaao..','.oaaaaaaaaaaaao.','.oaaaaaaaaaaaao.','.oaaaaabbaaaaao.','oaaaabbbbbbaaaao','oaaabebbbbebaaao','.oobbebbbbebboo.','..obcbbbbbbcbo..','...obbbmmbbbo...','....obbbbbbo....','.....oobboo.....','..ollllllllllo..','..oooooooooooo..'],top:2,ey:8,my:11,ny:13,R:14},
+  3:{g:['.....oo..oo.....','...ooaaooaaoo...','..oaaaaaaaaaao..','.oaaaaaaaaaaaao.','.oaaaaaaaaaaaao.','.oaaaaabbaaaaao.','oaaaabbbbbbaaaao','oaaabebbbbebaaao','.oobbebbbbebboo.','..obcbbbbbbcbo..','...obbbmmbbbo...','....obbbbbbo....','.....oobboo.....','..ollllllllllo..','.ollllllllllllo.','..oooooooooooo..'],top:1,ey:7,my:10,ny:12,R:14}};
 SP.yongbok.tpl=YONGBOK;
 const POODLE={ // 보르미: 동그랗고 복슬복슬한 푸들 머리
   1:{g:['','','','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','....obbllbbo....','.....oooooo.....'],top:5,ey:10,my:12,ny:13,R:12,small:1},
@@ -2851,8 +2851,8 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('moss')>=0){const g='#6CB04C'; [[6,t],[7,t],[8,t],[9,t],[5,t+1],[7,t+1]].forEach(([x,y])=>{if(gget(G,x,y)!=='.') gset(G,x,y,g)})}
   if(mk.indexOf('wavy')>=0){const y1=s?14:14; for(let x=0;x<16;x++){G[15][x]='.'; if(G[y1][x]!=='.') G[y1][x]=x%3===0?'o':'b'} for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===1) G[15][x]='o'; for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===2) G[15][x]='o'}
   if(mk.indexOf('stetho')>=0&&!s){const g='#6A7080', y=A.ny+1; [[5,y],[4,y+1],[4,y+2],[10,y],[11,y+1],[11,y+2]].forEach(([x,yy])=>gset(G,x,yy,g)); gset(G,11,y+3,'#A8B0C0')} // 청진기
-  if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my, f='#C88A68', w='#F8F8F8', k='#202030'; [[6,e+2],[9,e+2],[5,e+3],[10,e+3]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,f)}); 
-    if(!s){for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4'); gset(G,7,A.ny+2,w); gset(G,8,A.ny+2,w); gset(G,1,A.ny+2,w); gset(G,14,A.ny+2,w); gset(G,1,A.ny+3,w); gset(G,14,A.ny+3,w); gset(G,6,A.ny+4,k); gset(G,9,A.ny+4,k)}} // 주근깨 · 체인 목걸이 · 저지 조끼
+  if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my; [[5,t],[10,t],[6,t+1],[9,t+1],[4,t+2],[11,t+2]].forEach(([x,y])=>{if(gget(G,x,y)==='a') gset(G,x,y,'#7EC4F8')}); [[6,e+2],[9,e+2]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,'#C88A68')});
+    gset(G,7,m,'#B85860'); gset(G,8,m,'#B85860'); if(!s) for(let x=6;x<=9;x++) if(gget(G,x,A.ny+1)==='l') gset(G,x,A.ny+1,'#C8C8D4')} // 머리 결 · 주근깨 · 장밋빛 입 · 체인 목걸이
   if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'o'); gset(G,9,m-1,'o'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080');
     if(!s){const c='#3050B0'; for(let x=5;x<=10;x++) if(x!==7) gset(G,x,A.ny+1,c); gset(G,7,A.ny+2,c); gset(G,8,A.ny+2,c)}} // 처진 눈썹 · 보조개 · 티셔츠 글씨
   if(mk.indexOf('profglasses')>=0){const g='#C89838'; [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x,A.ey-1],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey+2]].forEach(([a,b])=>gset(G,a,b,g))); gset(G,7,A.ey,g); gset(G,8,A.ey,g)}
@@ -2975,6 +2975,8 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='cram'){propG(G,st,'book',f); propG(G,st,'sweat',0); eyesG(G,st,'down')}
   if(base==='coffee'){propG(G,st,'mug',f); if(f) eyesG(G,st,'blink')}
   if(base==='cheer') propG(G,st,'arms',f);
+  if(sp.idol){const y=tplA(st).ey, W='#FFFFFF'; if(G[y][5]==='e'&&G[y+1][5]==='e'&&G[y][10]==='e'&&G[y+1][10]==='e') // 눈을 뜨고 있으면 반짝이는 아몬드 눈으로
+    [[4,y,'e'],[5,y,W],[6,y,'e'],[4,y+1,W],[5,y+1,'e'],[6,y+1,'e'],[11,y,'e'],[10,y,'e'],[9,y,W],[11,y+1,W],[10,y+1,'e'],[9,y+1,'e']].forEach(([x,yy,c])=>gset(G,x,yy,c))}
   if(base==='squash'||base==='sleep'&&!f||base==='sad'&&f||base==='wag'&&f&&!sp.tail) G=squashG(G);
   if(base==='cheer'&&f) G=shiftG(G,0,-2);
   if(base==='dance') G=shiftG(G,f?1:-1,f?0:-1);
