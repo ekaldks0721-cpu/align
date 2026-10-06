@@ -1535,7 +1535,7 @@ window.I18N_EN={
 "고른 동물이 모든 화면 아래쪽을 돌아다녀요. 누르면 쓰다듬기, 가끔 말풍선으로 말을 걸어요. [[앱 곳곳을 함께 돌아다니기]]와 [[말풍선으로 말 걸기]]로 끌 수 있어요.": "Your chosen pet roams the bottom of every screen. Tap it for a pat; it sometimes talks in speech bubbles. Turn these off with [[Walk around the app with me]] and [[Talk in speech bubbles]].",
 "도감과 업적": "Pet book & achievements",
 "도감": "Pet book",
-"모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 정사월과 미카엘은 처음부터 무료예요.": "Every pet is listed here. Locked ones show as silhouettes; once unlocked by level or achievement, adopt them with coins. Sawol and Mikael are free from the start.",
+"모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 우리 집 친구인 정사월, 미카엘, 유니는 처음부터 무료예요.": "Every pet is listed here. Locked ones show as silhouettes; once unlocked by level or achievement, adopt them with coins. Family pals Sawol, Mikael and Yuni are free from the start.",
 "집중 시간, 할 일, 연속 기록, 뽀모도로 횟수, 일기 등 여러 업적이 있어요. 달성하면 코인을 받고, 진행 막대로 얼마나 남았는지 보여요.": "Achievements cover focus time, tasks, streaks, pomodoros, diary and more. Each gives coins, and progress bars show how far you have to go.",
 "상점과 코인": "Shop & coins",
 "[[보상]] 칸에 \"유튜브 30분\"처럼 받고 싶은 보상과 가격을 직접 정해 두고, 코인이 모이면 사서 즐겨요.": "In [[Rewards]], set rewards you want, like \"30 min of YouTube\", with your own prices, then buy them when you have the coins.",
@@ -1585,5 +1585,6 @@ window.I18N_EN={
 "Safari로 Align 주소를 열고, 아래쪽 공유 버튼 → [[홈 화면에 추가]]를 눌러요.": "Open Align in Safari, then tap the Share button at the bottom → [[Add to Home Screen]].",
 "3. 첫 기록 남기기": "3. Your first record",
 "오늘 탭에서 할 일을 적고 [[▶]]를 눌러 타이머를 시작해요. 끝나면 코인과 함께 동물 친구가 자라요.": "Write a task on the Today tab and tap [[▶]] to start the timer. When it ends, you get coins and your pet pal grows.",
-"PC에서 폴더에도 저장하기 (선택)": "Save to a folder on a PC (optional)"
+"PC에서 폴더에도 저장하기 (선택)": "Save to a folder on a PC (optional)",
+"유니": "Yuni"
 };

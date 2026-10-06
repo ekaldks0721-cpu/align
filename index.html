@@ -2451,7 +2451,7 @@ function onboard(i){
     const p=activePet();
     body=[h('p',{style:'margin:0'},TR('집중하고 할 일을 끝내면 코인을 받고, 동물 친구가 함께 자라요. 동물은 화면 아래를 돌아다니며 같이 공부해요.')),
       p?h('p',{style:'margin:0'},TR('함께하는 친구: '),h('b',null,p.name),TR('. 동물 탭에서 더 많은 친구를 만날 수 있어요.')):
-        h('div',{class:'petgrid pxui'},['cat','dog','bunny','sawol','mikael'].map(k=>h('button',{class:'petpick',onclick:()=>{adoptPet(k,true); celebQ.length=0; onboard(3)}},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n)))),
+        h('div',{class:'petgrid pxui'},['cat','dog','bunny','sawol','mikael','yuni'].map(k=>h('button',{class:'petpick',onclick:()=>{adoptPet(k,true); celebQ.length=0; onboard(3)}},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n)))),
       h('p',{class:'small muted',style:'margin:0'},TR('동물은 알에서 시작해서 30분 집중하면 태어나요. 동물 탭에서 밥과 물을 주고, 옷을 사 입히고, 업적을 모아 새 친구를 열어요.'))];
   } else {title=TR('첫 기록을 남겨요');
     body=[h('ol',{class:'steps'},h('li',null,TR('오늘 탭의 "할 일"에 할 일을 적고 예상 시간을 정해 추가해요.')),h('li',null,TR('할 일 옆의 ▶를 누르고 타이머의 "시작"을 눌러요. 시작이 어려우면 "5분만"을 눌러 보세요.')),
@@ -2567,7 +2567,7 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
       [TR('하는 일'),TR('집중하면 책상에서 책을 읽거나 필기하고, 쉬는 시간과 밤에는 자요. 다른 친구들은 꼬리를 흔들며 응원해요.')],
       [TR('함께 다니기'),TR('고른 동물이 모든 화면 아래쪽을 돌아다녀요. 누르면 쓰다듬기, 가끔 말풍선으로 말을 걸어요. [[앱 곳곳을 함께 돌아다니기]]와 [[말풍선으로 말 걸기]]로 끌 수 있어요.')]]],
     [TR('도감과 업적'),[
-      [TR('도감'),TR('모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 정사월과 미카엘은 처음부터 무료예요.')],
+      [TR('도감'),TR('모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 우리 집 친구인 정사월, 미카엘, 유니는 처음부터 무료예요.')],
       [TR('업적'),TR('집중 시간, 할 일, 연속 기록, 뽀모도로 횟수, 일기 등 여러 업적이 있어요. 달성하면 코인을 받고, 진행 막대로 얼마나 남았는지 보여요.')]]],
     [TR('상점과 코인'),[
       [TR('보상'),TR('[[보상]] 칸에 "유튜브 30분"처럼 받고 싶은 보상과 가격을 직접 정해 두고, 코인이 모이면 사서 즐겨요.')],
@@ -2674,6 +2674,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   axolotl:{n:TR('우파루파'),pal:['#702848','#F8B8D0','#FFE8F0','#E85890','#F87898'],ear:'gills',mark:'wide'},
   unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
   sawol:{n:TR('정사월'),special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
+  yuni:{n:TR('유니'),special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
   mikael:{n:TR('미카엘'),special:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
 const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면 레벨이나 업적으로 열려요
   flower:{n:TR('꽃핀'),slot:'head',price:150},sprout:{n:TR('새싹'),slot:'head',price:150},starpin:{n:TR('별 핀'),slot:'head',price:200},ribbon:{n:TR('리본'),slot:'head',price:200},
@@ -2717,7 +2718,7 @@ function bodyG(spk,st,tailF){
   if(sp.ear==='bumps'){both(G,4,t-1,'b'); both(G,5,t-1,'b'); both(G,6,t-1,'b'); both(G,5,t-2,'b'); both(G,5,t,'b')}
   // 꼬리 (뒤쪽: 빈칸에만)
   const R=A.R, Y=A.ny+1, tf=tailF?1:0;
-  if(!s&&sp.tail==='thin') ink(G,tf?[[R,Y+1],[R+1,Y+1],[R+2,Y],[R+2,Y-1]]:[[R,Y+1],[R+1,Y],[R+1,Y-1],[R+1,Y-2]],'b',1);
+  if(!s&&sp.tail==='thin') ink(G,tf?[[R,Y+1],[R+1,Y+1],[R+2,Y],[R+2,Y-1]]:[[R,Y+1],[R+1,Y],[R+1,Y-1],[R+1,Y-2]],sp.tailC||'b',1);
   if(!s&&sp.tail==='stub') ink(G,tf?[[R,Y],[R+1,Y-1]]:[[R,Y],[R+1,Y]],'b',1);
   if(!s&&sp.tail==='bushy'){ink(G,tf?[[R,Y],[R,Y+1],[R+1,Y-1],[R+1,Y],[R+1,Y+1],[R+2,Y-2],[R+2,Y-1]]:[[R,Y],[R,Y+1],[R+1,Y],[R+1,Y+1],[R+1,Y-1],[R+1,Y-2],[R+2,Y-1]],'b',1); gset(G,R+2,tf?Y-2:Y-1,'l'); if(!tf) gset(G,R+1,Y-2,'l')}
   if(sp.tail==='puff') ink(G,[[R,Y+1]],'l',1);
@@ -2737,6 +2738,8 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('wide')>=0){gset(G,6,m,'m'); gset(G,9,m,'m')}
   if(mk.indexOf('pinknose')>=0){gset(G,7,m,'#A86870'); gset(G,8,m,'#A86870')}
   if(mk.indexOf('dogmouth')>=0){gset(G,6,m+1,'o'); gset(G,9,m+1,'o')}
+  if(mk.indexOf('pinkearsc')>=0){if(s) both(G,5,t-1,'c'); else{both(G,4,t-1,'c'); both(G,5,t-1,'c'); both(G,5,t,'c')}}
+  if(mk.indexOf('orangecap')>=0){const paint=(x,y)=>{if(G[y]&&G[y][x]==='b') G[y][x]='a'}; [4,5,6,9,10,11].forEach(x=>{paint(x,t); paint(x,t+1)}); if(!s) [3,12].forEach(x=>paint(x,t+1))}
   if(mk.indexOf('pinkears')>=0&&!s){both(G,5,t-1,'a'); both(G,5,t,'a')}
   if(mk.indexOf('shine')>=0){gset(G,5,A.ey,'w'); gset(G,10,A.ey,'w')}
   if(mk.indexOf('slim')>=0&&!s) for(let y=A.ny+1;y<=A.ny+3;y++) for(let x=5;x<=10;x++) if(G[y][x]==='l') G[y][x]=x>5&&x<10?'l':'b';
@@ -3316,7 +3319,7 @@ function renderPet(){
       h('div',{class:'pxrow wrap'},chk('buddy',TR('앱 곳곳을 함께 돌아다니기')),chk('buddyTalk',TR('말풍선으로 말 걸기'))),
       h('p',{class:'small',style:'margin:.3rem 0 0'},TR('고른 동물이 화면 아래쪽을 돌아다니며 함께 공부해요. 집중할 땐 조용히 책을 읽고, 쉬는 시간엔 자요. 눌러서 쓰다듬어 보세요.')));
     if(!p) body=[h('section',{class:'card pxcard'},jar,h('h2',null,TR('첫 동물 친구를 골라요')),h('p',{class:'small'},TR('처음 한 마리는 무료예요. 알에서 시작해서, 집중한 시간만큼 자라요.')),
-      h('div',{class:'petgrid'},['cat','dog','bunny','sawol','mikael'].map(k=>h('button',{class:'petpick',onclick:()=>adoptPet(k,true)},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n),h('span',{class:'small'},TR('무료'))))),opts)];
+      h('div',{class:'petgrid'},['cat','dog','bunny','sawol','mikael','yuni'].map(k=>h('button',{class:'petpick',onclick:()=>adoptPet(k,true)},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n),h('span',{class:'small'},TR('무료'))))),opts)];
     else{
       const xp=petXP(p), sg=stageOf(xp), nx=STAGES[sg+1], mood=petMood(p), f=fullOf(p.fed,36), w=fullOf(p.water,24), li=lvInfo(xp);
       const meter=(icon,lab,v,cls)=>h('div',{class:'meter'},pxi(icon),h('span',null,lab),pxBar(v,10,cls),h('span',{class:'num small'},Math.round(v*100)+'%'));
