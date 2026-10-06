@@ -2685,7 +2685,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   dragon:{n:TR('아기 용'),price:600,pal:['#302070','#8878F8','#E8E0FF','#F8C838','#F8A0C8'],ear:'horn',tail:'thin',mark:'wings belly'},
   pig:{n:TR('아기 돼지'),pal:['#6A2838','#F8B0C0','#FFE0E8','#D85878','#F87890'],ear:'tri',tail:'curl',mark:'snout'},
   sheep:{n:TR('양'),pal:['#4A4048','#F8F8F0','#FFFFFF','#584850','#F8A0B0'],ear:'flop',mark:'wool'},
-  raccoon:{n:TR('너구리'),pal:['#181820','#A0A0B0','#F0F0F0','#585868','#F8A0A0'],ear:'round',tail:'ringed',mark:'bandit'},
+  raccoon:{n:TR('너구리'),pal:['#2A1C14','#A87C58','#E8D4B8','#3A2A20','#F0A090'],ear:'round',tail:'bushy',mark:'bandit'},
   panda:{n:TR('판다'),pal:['#181820','#FFFFFF','#FFFFFF','#282830','#F8A0B0'],ear:'round',earC:'a',mark:'patches arms'},
   koala:{n:TR('코알라'),pal:['#383840','#A8A8B8','#E8E8F0','#F0F0F8','#F8A0B0'],ear:'big',mark:'bignose'},
   squirrel:{n:TR('다람쥐'),pal:['#4A2410','#C87838','#FFF0D8','#8A4818','#F89090'],ear:'tri',tail:'bushy',mark:'stripes'},
@@ -2694,6 +2694,13 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   owl:{n:TR('부엉이'),pal:['#3A2414','#A87048','#F0D8B0','#F8C838','#F8A090'],ear:'horn',mark:'owleyes beak'},
   tiger:{n:TR('호랑이'),pal:['#281810','#F89020','#FFF8F0','#281810','#F89090'],ear:'round',tail:'ringed',mark:'tigerstripes'},
   axolotl:{n:TR('우파루파'),pal:['#702848','#F8B8D0','#FFE8F0','#E85890','#F87898'],ear:'gills',mark:'wide'},
+  capybara:{n:TR('카피바라'),pal:['#3E2614','#B07C4A','#D8AC78','#7A4E2C','#E89880'],ear:'round',mark:'muzzle yuzu'},
+  pelican:{n:TR('펠리컨'),pal:['#3A4050','#F8F8F4','#FFFFFF','#F8A030','#F8B8B8'],ear:'tuft',mark:'pouch feet'},
+  rock:{n:TR('돌멩이'),pal:['#383C44','#9EA4AE','#B8BEC6','#7A8088','#E8A0A8'],mark:'speckle moss'},
+  ghost:{n:TR('유령'),pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
+  dino:{n:TR('공룡'),pal:['#1E4A28','#68C058','#D8F0A8','#F8B830','#F89898'],tail:'thin',mark:'dinoback belly'},
+  rakun:{n:TR('라쿤'),pal:['#181820','#9CA0AC','#F0F0F4','#282830','#F8A0A0'],ear:'round',tail:'ringed',mark:'bigmask'},
+  seal:{n:TR('물개'),pal:['#2A2A34','#8C8CA0','#C8C8D8','#5C5C70','#F0A0B0'],mark:'whiskers flippers'},
   unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
   sawol:{n:TR('정사월'),special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
   yuni:{n:TR('유니'),special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
@@ -2774,6 +2781,12 @@ function bodyG(spk,st,tailF){
     [[3,m],[12,m],[4,m+1],[5,m+1],[6,m+1],[7,m+1],[8,m+1],[9,m+1],[10,m+1],[11,m+1]].forEach(([x,y])=>gset(G,x,y,'m'));
     gset(G,2,m,'c'); gset(G,13,m,'c')}
   if(mk.indexOf('geckoeyes')>=0&&!s) [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1]].forEach(([a,b])=>{if(G[b][a]==='b') G[b][a]='#F2E4BC'}));
+  if(mk.indexOf('pouch')>=0){[[6,m],[7,m],[8,m],[9,m],[5,m+1],[6,m+1],[7,m+1],[8,m+1],[9,m+1],[10,m+1],[6,m+2],[7,m+2],[8,m+2],[9,m+2]].forEach(([x,y])=>{if(gget(G,x,y)!=='.'&&gget(G,x,y)!=='o') gset(G,x,y,'a')}); gset(G,6,m,'o'); gset(G,9,m,'o')}
+  if(mk.indexOf('speckle')>=0) [[4,t+2],[9,t+1],[11,A.ey+2],[3,A.ny],[7,A.ny+1],[10,A.ny+2],[5,A.ny+3]].forEach(([x,y])=>{if(gget(G,x,y)==='b'||gget(G,x,y)==='l') gset(G,x,y,'a')});
+  if(mk.indexOf('bigmask')>=0) for(let y=A.ey;y<=A.ey+1;y++) for(let x=3;x<=12;x++) if(G[y][x]==='b') G[y][x]='a';
+  if(mk.indexOf('whiskers')>=0){both(G,3,m,'o'); both(G,4,m+1,'o'); gset(G,7,m-1,'o'); gset(G,8,m-1,'o')}
+  if(mk.indexOf('flippers')>=0&&!s){for(let y=A.ny;y<=A.ny+2;y++){if(gget(G,2,y)==='.') gset(G,2,y,'a'); if(gget(G,13,y)==='.') gset(G,13,y,'a')}}
+  if(mk.indexOf('dinoback')>=0){[6,9].forEach(x=>{gset(G,x,t-1,'a'); gset(G,x+1,t-1,'a'); gset(G,x,t-2,'a')}); if(!s) gset(G,4,t,'a')}
   if(mk.indexOf('pinkearsc')>=0){if(s) both(G,5,t-1,'c'); else{both(G,4,t-1,'c'); both(G,5,t-1,'c'); both(G,5,t,'c')}}
   if(mk.indexOf('orangecap')>=0){const paint=(x,y)=>{if(G[y]&&G[y][x]==='b') G[y][x]='a'}; [4,5,6,9,10,11].forEach(x=>{paint(x,t); paint(x,t+1)}); if(!s) [3,12].forEach(x=>paint(x,t+1))}
   if(mk.indexOf('pinkears')>=0&&!s){both(G,5,t-1,'a'); both(G,5,t,'a')}
@@ -2793,6 +2806,9 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('belly')>=0&&!s) for(let y=A.ny+1;y<A.ny+4;y+=2) for(let x=6;x<=9;x++) if(G[y][x]==='l') G[y][x]='a';
   if(mk.indexOf('feet')>=0&&st>1){const fy=14; for(let x=0;x<16;x++) if(G[fy][x]==='b') G[fy][x]='a'}
   outlineG(G);
+  if(mk.indexOf('yuzu')>=0){const o='#F89820', d='#C86810', g='#58A040'; [[7,t-2],[8,t-2],[6,t-1],[7,t-1],[8,t-1],[9,t-1]].forEach(([x,y])=>gset(G,x,y,o)); gset(G,9,t-2,d); gset(G,8,t-3,g)} // 머리 위 유자
+  if(mk.indexOf('moss')>=0){const g='#6CB04C'; [[6,t],[7,t],[8,t],[9,t],[5,t+1],[7,t+1]].forEach(([x,y])=>{if(gget(G,x,y)!=='.') gset(G,x,y,g)})}
+  if(mk.indexOf('wavy')>=0){const y1=s?14:14; for(let x=0;x<16;x++){G[15][x]='.'; if(G[y1][x]!=='.') G[y1][x]=x%3===0?'o':'b'} for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===1) G[15][x]='o'; for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===2) G[15][x]='o'}
   if(mk.indexOf('lashes')>=0){const c='#A87838'; if(s){both(G,5,t-1,c)} else{both(G,4,t-1,c); both(G,6,t-1,c); both(G,3,t,c); both(G,5,t-2,c)}} // 게코의 속눈썹 돌기: 테두리 없이 가는 가시
   return G;
 }
@@ -3298,7 +3314,8 @@ const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 �
   chick:{lv:2,price:500},hamster:{lv:3,price:700},pig:{lv:4,price:800},frog:{lv:5,price:1000},duck:{lv:6,price:1000},penguin:{lv:7,price:1300},
   fox:{lv:8,price:1600},bear:{lv:10,price:2000},panda:{lv:12,price:2800},tiger:{lv:15,price:3500},dragon:{lv:20,price:8000},
   sheep:{ach:'t50',price:1000},squirrel:{ach:'early10',price:1500},raccoon:{ach:'night10',price:1500},koala:{ach:'s30',price:2200},
-  hedgehog:{ach:'deep120',price:1800},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
+  hedgehog:{ach:'deep120',price:1800},
+  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
 const achById=id=>ACH.find(a=>a[0]===id);
 const hasAch=id=>!!items('achv').find(x=>x.id===id);
 function achStats(){

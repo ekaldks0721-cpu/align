@@ -1257,7 +1257,7 @@ window.I18N_EN={
 "낮과 밤은 지금 시각을 따라가요. 날씨를 자동으로 두면 날마다 바뀌어요.": "Day and night follow the real time. On Auto, the weather changes every day.",
 "아기 돼지": "Piglet",
 "양": "Sheep",
-"너구리": "Raccoon",
+"너구리": "Raccoon dog",
 "판다": "Panda",
 "코알라": "Koala",
 "다람쥐": "Squirrel",
@@ -1617,5 +1617,12 @@ window.I18N_EN={
 "윈도우": "Windows",
 "갤럭시·윈도우": "Galaxy & Windows",
 "Chrome, 삼성 인터넷, Edge에서 바로 켤 수 있어요. Align이 열려 있으면 다른 앱이나 창을 쓰는 중에도 알림이 와요. 앱을 완전히 닫으면 알림도 멈춰요.": "You can turn them on right in Chrome, Samsung Internet or Edge. While Align is open, alerts arrive even when you're using other apps or windows. Fully closing the app stops them.",
-"(아이폰·맥 전용) App Store에서 [[Scriptable]]을 설치하고, [[위젯 코드 복사]]를 눌러 Scriptable에 붙여넣은 뒤 한 번 실행해 로그인해요.": "(iPhone & Mac only) Install [[Scriptable]] from the App Store, tap [[Copy widget code]], paste it into Scriptable and run it once to sign in."
+"(아이폰·맥 전용) App Store에서 [[Scriptable]]을 설치하고, [[위젯 코드 복사]]를 눌러 Scriptable에 붙여넣은 뒤 한 번 실행해 로그인해요.": "(iPhone & Mac only) Install [[Scriptable]] from the App Store, tap [[Copy widget code]], paste it into Scriptable and run it once to sign in.",
+"카피바라": "Capybara",
+"펠리컨": "Pelican",
+"돌멩이": "Pet rock",
+"유령": "Ghost",
+"공룡": "Dino",
+"라쿤": "Raccoon",
+"물개": "Seal"
 };
