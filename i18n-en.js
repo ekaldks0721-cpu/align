@@ -1373,5 +1373,8 @@ window.I18N_EN={
 "오늘 ": "You focused ",
 " 집중했어! 대단해": " today! Amazing",
 "동물 친구 쓰다듬기": "Pat your pet",
-"동물": "Pets"
+"동물": "Pets",
+"정사월": "Sawol",
+"미카엘": "Mikael",
+"우리 집 친구": "Our family pal"
 };

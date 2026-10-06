@@ -2595,7 +2595,9 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   owl:{n:TR('부엉이'),pal:['#3A2414','#A87048','#F0D8B0','#F8C838','#F8A090'],ear:'horn',mark:'owleyes beak'},
   tiger:{n:TR('호랑이'),pal:['#281810','#F89020','#FFF8F0','#281810','#F89090'],ear:'round',tail:'ringed',mark:'tigerstripes'},
   axolotl:{n:TR('우파루파'),pal:['#702848','#F8B8D0','#FFE8F0','#E85890','#F87898'],ear:'gills',mark:'wide'},
-  unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'}};
+  unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
+  sawol:{n:TR('정사월'),special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
+  mikael:{n:TR('미카엘'),special:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
 const OUT={ // 옷: 머리·얼굴·목 칸에 하나씩
   flower:{n:TR('꽃핀'),slot:'head',price:30},ribbon:{n:TR('리본'),slot:'head',price:40},cap:{n:TR('야구 모자'),slot:'head',price:60},
   beanie:{n:TR('털모자'),slot:'head',price:80},wizard:{n:TR('마법사 모자'),slot:'head',price:150},crown:{n:TR('왕관'),slot:'head',price:200},
@@ -2627,6 +2629,7 @@ function bodyG(spk,st,tailF){
   if(sp.ear==='tri') s?(both(G,5,t-1,'b'),both(G,5,t,'b')):(both(G,4,t-2,'b'),both(G,4,t-1,'a'),both(G,5,t-1,'b'),both(G,4,t,'b'),both(G,5,t,'b'),both(G,6,t,'b'));
   if(sp.ear==='round') s?(both(G,5,t,ec),both(G,5,t-1,ec)):(both(G,4,t-1,ec),both(G,5,t-1,ec),both(G,4,t,ec),both(G,5,t,'a'));
   if(sp.ear==='big'){if(s){both(G,4,t,'b'); both(G,4,t-1,'b'); both(G,3,t,'b')} else{[[2,t-1],[3,t-1],[4,t-1],[1,t],[2,t],[3,t],[4,t],[2,t+1],[3,t+1]].forEach(([x,y])=>both(G,x,y,'b')); both(G,3,t,'a'); both(G,2,t,'a')}}
+  if(sp.ear==='rose'){if(s){both(G,4,t,'b'); both(G,3,t,'a')} else{both(G,4,t,'b'); both(G,3,t,'b'); both(G,2,t,'b'); both(G,1,t+1,'b'); both(G,1,t+2,'b'); both(G,2,t+1,'a')}}
   if(sp.ear==='gills'){[[2,t+1],[1,t],[1,t+2],[2,t+3],[0,t+3]].forEach(([x,y])=>both(G,x,y,'a'))}
   if(sp.ear==='long'){const n=s?3:5; for(let i=0;i<n;i++){both(G,5,t-i,'b'); both(G,6,t-i,i&&i<n-1?'a':'b')}}
   if(sp.ear==='flop'){if(s){both(G,3,t+1,'a'); both(G,2,t+2,'a'); both(G,2,t+3,'a')} else{both(G,3,t+1,'a'); both(G,2,t+2,'a'); both(G,3,t+2,'a'); both(G,1,t+3,'a'); both(G,2,t+3,'a'); both(G,1,t+4,'a'); both(G,2,t+4,'a')}}
@@ -2639,6 +2642,8 @@ function bodyG(spk,st,tailF){
   if(!s&&sp.tail==='stub') ink(G,tf?[[R,Y],[R+1,Y-1]]:[[R,Y],[R+1,Y]],'b',1);
   if(!s&&sp.tail==='bushy'){ink(G,tf?[[R,Y],[R,Y+1],[R+1,Y-1],[R+1,Y],[R+1,Y+1],[R+2,Y-2],[R+2,Y-1]]:[[R,Y],[R,Y+1],[R+1,Y],[R+1,Y+1],[R+1,Y-1],[R+1,Y-2],[R+2,Y-1]],'b',1); gset(G,R+2,tf?Y-2:Y-1,'l'); if(!tf) gset(G,R+1,Y-2,'l')}
   if(sp.tail==='puff') ink(G,[[R,Y+1]],'l',1);
+  if(!s&&sp.tail==='plume'){ink(G,tf?[[R,Y],[R+1,Y-1],[R+1,Y-2],[R,Y-2],[R+2,Y-1],[R+2,Y-2],[R+1,Y-3]]:[[R,Y],[R,Y-1],[R+1,Y-1],[R+1,Y-2],[R+1,Y-3],[R,Y-3],[R,Y-4],[R+1,Y-4],[R+2,Y-2],[R+2,Y-3]],'b',1)}
+  if(!s&&sp.tail==='whip') ink(G,tf?[[R,Y+2],[R+1,Y+2],[R+2,Y+1]]:[[R,Y+2],[R+1,Y+3],[R+2,Y+3]],'b',1);
   if(!s&&sp.tail==='curl') ink(G,tf?[[R,Y],[R+1,Y-1],[R+1,Y]]:[[R,Y],[R+1,Y],[R+1,Y+1]],'a',1);
   if(!s&&sp.tail==='ringed') ink(G,(tf?[[R,Y+1],[R+1,Y+1],[R+2,Y],[R+2,Y-1]]:[[R,Y+1],[R+1,Y],[R+1,Y-1],[R+1,Y-2]]).map((q,i)=>q),'b',1),(tf?[[R+1,Y+1],[R+2,Y-1]]:[[R+1,Y],[R+1,Y-2]]).forEach(([x,y])=>gset(G,x,y,'a'));
   if(!s&&mk.indexOf('wings')>=0){const L=15-R; ink(G,tf?[[L,A.ny-1],[L-1,A.ny-2],[L,A.ny-2]]:[[L,A.ny-1],[L-1,A.ny-1],[L,A.ny]],'a',1); ink(G,tf?[[R,A.ny-1],[R+1,A.ny-2],[R,A.ny-2]]:[[R,A.ny-1],[R+1,A.ny-1],[R,A.ny]],'a',1)}
@@ -2651,6 +2656,11 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('foxface')>=0) for(let y=m;y<=m+1;y++) for(let x=4;x<=11;x++) if(G[y][x]==='b') G[y][x]='l';
   if(mk.indexOf('cheeks')>=0){both(G,4,m,'c'); both(G,4,m+1,'c'); if(!s) both(G,3,m,'c')}
   if(mk.indexOf('wide')>=0){gset(G,6,m,'m'); gset(G,9,m,'m')}
+  if(mk.indexOf('pinknose')>=0){gset(G,7,m,'#A86870'); gset(G,8,m,'#A86870')}
+  if(mk.indexOf('dogmouth')>=0){gset(G,6,m+1,'o'); gset(G,9,m+1,'o')}
+  if(mk.indexOf('pinkears')>=0&&!s){both(G,5,t-1,'a'); both(G,5,t,'a')}
+  if(mk.indexOf('shine')>=0){gset(G,5,A.ey,'w'); gset(G,10,A.ey,'w')}
+  if(mk.indexOf('slim')>=0&&!s) for(let y=A.ny+1;y<=A.ny+3;y++) for(let x=5;x<=10;x++) if(G[y][x]==='l') G[y][x]=x>5&&x<10?'l':'b';
   if(mk.indexOf('snout')>=0){for(let x=6;x<=9;x++) gset(G,x,m,'a'); gset(G,7,m,'m'); gset(G,8,m,'m'); if(!s) for(let x=6;x<=9;x++) gset(G,x,m+1,'a')}
   if(mk.indexOf('wool')>=0){[4,6,8,10].forEach(x=>{if(gget(G,x,t-1)==='.') gset(G,x,t-1,'b')}); both(G,2,A.ny,'b'); for(let y=A.ey-1;y<=m;y++) for(let x=5;x<=10;x++) if(G[y][x]==='b') G[y][x]='l'}
   if(mk.indexOf('bandit')>=0) [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey-1]].forEach(([a,b])=>{if(G[b][a]==='b') G[b][a]='a'}));
@@ -3029,7 +3039,7 @@ function setActivePet(id){S.settings.v.activePet=id; S.settings.m=Date.now(); S.
 function checkGrowth(){const p=activePet(); if(!p) return; const st=stageOf(petXP(p)); if(st>(p.stage||0)){put('pets',Object.assign(clone(p),{stage:st}));
   celebrate(st===1?TR('🐣 태어났어요!'):st===2?TR('🌱 쑥쑥 자랐어요!'):TR('⭐ 어른이 됐어요!'),p.name+' · '+STAGES[st][1],true)}}
 function adoptPet(spk,free){
-  const sp=SP[spk]; if(!free&&(!spOpen(spk)||!spend(spPrice(spk),TR('입양')+' · '+sp.n,'pet'))) return;
+  const sp=SP[spk]; if(sp.special) free=true; if(!free&&(!spOpen(spk)||!spend(spPrice(spk),TR('입양')+' · '+sp.n,'pet'))) return;
   const now=Date.now(), id=uid(); put('pets',{id,sp:spk,name:sp.n,born:now,fed:now,water:now,o:now,wear:{},stage:0});
   S.settings.v.activePet=id; S.settings.m=now; S.dirty.settings=1; saveLocal(); schedulePush();
   celebrate('🥚 '+sp.n,TR('알을 품기 시작했어요. 30분 집중하면 태어나요'),true); petTab='home'; checkProgress(); render();
@@ -3122,8 +3132,8 @@ function achStats(){
   return {logs:logs.length,hours:Math.floor(sec/3600),tasks:allOf('tasks-').filter(t=>t.done).length,goals:ltAll().filter(g=>g.status==='done').length,streak:softStreak().n,early,night,deep,
     pets:ps.length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins()};
 }
-const spPrice=k=>UNLOCK[k]?UNLOCK[k].price:(SP[k].price||100);
-function spOpen(k,lv){const u=UNLOCK[k]; if(!u) return true; return u.lv?(lv==null?myLv():lv)>=u.lv:hasAch(u.ach)}
+const spPrice=k=>SP[k].special?0:UNLOCK[k]?UNLOCK[k].price:(SP[k].price||100);
+function spOpen(k,lv){const u=UNLOCK[k]; if(!u||(!u.lv&&!u.ach)) return true; return u.lv?(lv==null?myLv():lv)>=u.lv:hasAch(u.ach)}
 function lockText(k){const u=UNLOCK[k]; if(!u) return ''; if(u.lv) return 'Lv '+u.lv+TR(' 되면 열려요'); const a=achById(u.ach); return TR('업적 「')+a[1]+TR('」 달성하면 열려요')}
 let progBusy=false;
 function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해요. 처음 한 번은 지난 기록으로 조용히 채워요
@@ -3163,7 +3173,7 @@ function renderPet(){
       h('div',{class:'pxrow wrap'},chk('buddy',TR('앱 곳곳을 함께 돌아다니기')),chk('buddyTalk',TR('말풍선으로 말 걸기'))),
       h('p',{class:'small',style:'margin:.3rem 0 0'},TR('고른 동물이 화면 아래쪽을 돌아다니며 함께 공부해요. 집중할 땐 조용히 책을 읽고, 쉬는 시간엔 자요. 눌러서 쓰다듬어 보세요.')));
     if(!p) body=[h('section',{class:'card pxcard'},jar,h('h2',null,TR('첫 동물 친구를 골라요')),h('p',{class:'small'},TR('처음 한 마리는 무료예요. 알에서 시작해서, 집중한 시간만큼 자라요.')),
-      h('div',{class:'petgrid'},['cat','dog','bunny'].map(k=>h('button',{class:'petpick',onclick:()=>adoptPet(k,true)},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n),h('span',{class:'small'},TR('무료'))))),opts)];
+      h('div',{class:'petgrid'},['cat','dog','bunny','sawol','mikael'].map(k=>h('button',{class:'petpick',onclick:()=>adoptPet(k,true)},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n),h('span',{class:'small'},TR('무료'))))),opts)];
     else{
       const xp=petXP(p), sg=stageOf(xp), nx=STAGES[sg+1], mood=petMood(p), f=fullOf(p.fed,36), w=fullOf(p.water,24), li=lvInfo(xp);
       const meter=(icon,lab,v,cls)=>h('div',{class:'meter'},pxi(icon),h('span',null,lab),pxBar(v,10,cls),h('span',{class:'num small'},Math.round(v*100)+'%'));
@@ -3188,8 +3198,8 @@ function renderPet(){
         if(has) return h('div',{class:'shopit on'},petSVG(k,mine?Math.max(1,stageOf(petXP(mine))):3,mine?mine.wear:{},'happy',64),h('b',null,sp.n),h('span',{class:'price'},TR('함께 있어요')+(mine?' · Lv '+petLv(petXP(mine)):'')),
           mine&&mine.id!==p.id?h('button',{onclick:()=>{setActivePet(mine.id); petTab='home'; renderPet()}},TR('함께 다니기')):h('span',{class:'small'},TR('지금 친구')));
         if(!open) return h('div',{class:'shopit lock'},h('span',{class:'pix sil'},petSVG(k,3,{},'stand',64).firstChild),h('b',null,'???'),h('span',{class:'small'},...pxText('🔒 '+lockText(k))));
-        return h('div',{class:'shopit'},petSVG(k,3,{},'happy',64),h('b',null,sp.n),h('span',{class:'num price'},pxi('coin'),String(pr)),
-          (fr=>h('button',{class:fr||bal>=pr?'primary':'',disabled:!fr&&bal<pr,onclick:()=>adoptPet(k,fr)},fr?TR('무료로 데려오기'):TR('입양')))(!ps.length&&['cat','dog','bunny'].indexOf(k)>=0))}))) ];
+        return h('div',{class:'shopit'},petSVG(k,3,{},'happy',64),h('b',null,sp.n),sp.special?h('span',{class:'small'},...pxText('❤ '+TR('우리 집 친구'))):h('span',{class:'num price'},pxi('coin'),String(pr)),
+          (fr=>h('button',{class:fr||bal>=pr?'primary':'',disabled:!fr&&bal<pr,onclick:()=>adoptPet(k,fr)},fr?TR('무료로 데려오기'):TR('입양')))(!pr||!ps.length&&['cat','dog','bunny'].indexOf(k)>=0))}))) ];
   }
   else if(petTab==='ach'){
     const S2=achStats();
