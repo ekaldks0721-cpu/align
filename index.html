@@ -2699,6 +2699,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   pelican:{n:TR('펠리컨'),pal:['#3A4050','#F8F8F4','#FFFFFF','#F8A030','#F8B8B8'],ear:'tuft',mark:'pouch feet'},
   rock:{n:TR('돌멩이'),pal:['#383C44','#9EA4AE','#B8BEC6','#7A8088','#E8A0A8'],mark:'speckle moss'},
   chul:{n:TR('철컹이'),pal:['#2A2028','#F4D0B0','#F8F8FF','#1E1A22','#F4A0A0'],mark:'stetho',acts:['cram','game','ramen','walk','sleep'],lines:'CHUL'},
+  yongbok:{n:TR('용복이'),pal:['#2A2030','#F6D8BE','#E8DCA8','#3A8CE0','#F4A8A8'],mark:'yongbok',acts:['dance','dance','bake','critter','walk'],lines:'YONG'},
   homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
   prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
   ghost:{n:TR('유령'),pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
@@ -2754,6 +2755,11 @@ const HOMER={ // Homer K: 어깨까지 오는 까만 머리, 처진 눈썹, 보�
   2:{g:['','','.....oooooo.....','....oaaaaaao....','..oaabbbbbbaao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oaabbmmbbaao..','.oaaaobbbboaaao.','.oaallllllllaao.','.ollllllllllllo.','..oooooooooooo..'],top:2,ey:7,my:11,ny:12,R:14},
   3:{g:['','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaabbbbbbaao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oaabbmmbbaao..','.oaaaobbbboaaao.','.oaallllllllaao.','.ollllllllllllo.','..oooooooooooo..'],top:1,ey:7,my:11,ny:12,R:14}};
 SP.homer.tpl=HOMER;
+const YONGBOK={ // 용복이: 파란 머리(뒷머리가 긴 멀릿), 별 헤어밴드, 주근깨, 저지 조끼
+  1:{g:['','','','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaabbbbaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbmmbbbao..','..oaabbbbbbaao..','....ollllllo....','.....oooooo.....'],top:4,ey:9,my:12,ny:14,R:12,small:1},
+  2:{g:['','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaabbbbaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbmmbbbao..','..oaabbbbbbaao..','..oaaobbbboaao..','.oaallllllllaao.','.obllllllllllbo.','..oooooooooooo..'],top:2,ey:7,my:10,ny:12,R:14},
+  3:{g:['','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaabbbbaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbmmbbbao..','..oaabbbbbbaao..','..oaaobbbboaao..','.oaallllllllaao.','.ollllllllllllo.','.obllllllllllbo.','..oooooooooooo..'],top:1,ey:6,my:9,ny:11,R:14}};
+SP.yongbok.tpl=YONGBOK;
 const POODLE={ // 보르미: 동그랗고 복슬복슬한 푸들 머리
   1:{g:['','','','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','....obbllbbo....','.....oooooo.....'],top:5,ey:10,my:12,ny:13,R:12,small:1},
   2:{g:['','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','...obllllllbo...','...obllllllbo...','...obboooobbo...','...oooo..oooo...'],top:2,ey:7,my:9,ny:11,R:13},
@@ -2845,6 +2851,9 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('moss')>=0){const g='#6CB04C'; [[6,t],[7,t],[8,t],[9,t],[5,t+1],[7,t+1]].forEach(([x,y])=>{if(gget(G,x,y)!=='.') gset(G,x,y,g)})}
   if(mk.indexOf('wavy')>=0){const y1=s?14:14; for(let x=0;x<16;x++){G[15][x]='.'; if(G[y1][x]!=='.') G[y1][x]=x%3===0?'o':'b'} for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===1) G[15][x]='o'; for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===2) G[15][x]='o'}
   if(mk.indexOf('stetho')>=0&&!s){const g='#6A7080', y=A.ny+1; [[5,y],[4,y+1],[4,y+2],[10,y],[11,y+1],[11,y+2]].forEach(([x,yy])=>gset(G,x,yy,g)); gset(G,11,y+3,'#A8B0C0')} // 청진기
+  if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my, f='#C88A68', w='#F8F8F8', k='#202030'; const hb=A.top+2; for(let x=3;x<=12;x++) if(gget(G,x,hb)==='a') gset(G,x,hb,w); gset(G,7,hb,k); gset(G,8,hb,k);
+    [[6,e+2],[9,e+2],[5,e+3],[10,e+3]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,f)}); gset(G,7,m,'#C84850'); gset(G,8,m,'#C84850');
+    if(!s){for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4'); gset(G,7,A.ny+2,w); gset(G,8,A.ny+2,w); gset(G,1,A.ny+2,w); gset(G,14,A.ny+2,w); gset(G,1,A.ny+3,w); gset(G,14,A.ny+3,w); gset(G,6,A.ny+4,k); gset(G,9,A.ny+4,k)}} // 별 헤어밴드 · 주근깨 · 붉은 입술 · 체인 목걸이 · 저지 조끼
   if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'o'); gset(G,9,m-1,'o'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080');
     if(!s){const c='#3050B0'; for(let x=5;x<=10;x++) if(x!==7) gset(G,x,A.ny+1,c); gset(G,7,A.ny+2,c); gset(G,8,A.ny+2,c)}} // 처진 눈썹 · 보조개 · 티셔츠 글씨
   if(mk.indexOf('profglasses')>=0){const g='#C89838'; [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x,A.ey-1],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey+2]].forEach(([a,b])=>gset(G,a,b,g))); gset(G,7,A.ey,g); gset(G,8,A.ey,g)}
@@ -2932,6 +2941,9 @@ function propG(G,st,kind,f){
   if(kind==='wheel'){const y=A.ny+1, k='#303040', g='#9098A8'; const top=f?[7,8,9,10]:[6,7,8,9], bot=f?[5,6,7,8]:[6,7,8,9]; top.forEach(x=>gset(G,x,y,k)); bot.forEach(x=>gset(G,x,y+2,k)); gset(G,5,y+1,k); gset(G,10,y+1,k); gset(G,7,y+1,g); gset(G,8,y+1,g); gset(G,4,y+1,'b'); gset(G,11,y+1,'b')} // 운전대
   if(kind==='plush'){const y=A.ny+(f?0:1), w='#FFFFFF', g='#B8B0B8', e='#202020', p='#F8A0B0'; gset(G,6,y-1,w); gset(G,9,y-1,w); for(let x=5;x<=10;x++){gset(G,x,y,w); gset(G,x,y+1,w)} for(let x=6;x<=9;x++) gset(G,x,y+2,w); gset(G,6,y,e); gset(G,9,y,e); gset(G,5,y+1,p); gset(G,10,y+1,p); gset(G,4,y,g); gset(G,11,y,g); gset(G,4,y+1,'b'); gset(G,11,y+1,'b')} // 치이카와 인형
   if(kind==='facepalm'){const y=A.ey-2; [[11,y],[12,y],[11,y+1],[12,y+1],[13,y+1]].forEach(([x,yy])=>gset(G,x,yy,'b')); gset(G,13,y,'o'); gset(G,14,y+1,'o'); gset(G,13,y+2,'b'); gset(G,13,y+3,'b')} // 이마를 탁 (또우!)
+  if(kind==='brownie'){const y=A.ny+1, t='#A8B0B8', b='#5A3020', c='#7A4830'; for(let x=4;x<=11;x++) gset(G,x,y+1,t); [[5,y],[6,y],[9,y],[10,y]].forEach(([x,yy])=>gset(G,x,yy,b)); gset(G,5,y,c); gset(G,9,y,c); gset(G,3,y+1,'b'); gset(G,12,y+1,'b'); if(f){gset(G,6,y-2,'#D8E0E8'); gset(G,10,y-3,'#D8E0E8')}} // 갓 구운 브라우니
+  if(kind==='critter'){const y=A.ny+1, o='#F0B060', w='#FFF8F0', e='#202020'; gset(G,6,y-1,o); gset(G,9,y-1,o); for(let x=6;x<=9;x++){gset(G,x,y,o); gset(G,x,y+1,w)} gset(G,6,y,e); gset(G,9,y,e); gset(G,7,y+1,'#F890A0'); gset(G,5,y+1,'b'); gset(G,10,y+1,'b')} // 작은 햄스터
+  if(kind==='heart'){const p='#F05878', t=tplA(st).top; [[12,t-1],[14,t-1],[12,t],[13,t],[14,t],[13,t+1]].forEach(([x,y])=>gset(G,x,y,p))}
   if(kind==='sweat') gset(G,12,tplA(st).top+1,PROPC.d);
 }
 
@@ -2952,6 +2964,9 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='lecture') propG(G,st,'pointer',f);
   if(base==='game'){propG(G,st,'console',f); eyesG(G,st,'down')}
   if(base==='ramen'){propG(G,st,'ramen',f); if(f){mouthG(G,st,'open'); propG(G,st,'sweat',0)}}
+  if(base==='dance'){eyesG(G,st,'happy'); propG(G,st,'arms',f)}
+  if(base==='bake'){propG(G,st,'brownie',f); eyesG(G,st,'happy')}
+  if(base==='critter'){propG(G,st,'critter',f); eyesG(G,st,'happy'); if(f) propG(G,st,'heart',0)}
   if(base==='meat'){propG(G,st,'meat',f); eyesG(G,st,'happy'); if(f) mouthG(G,st,'open')}
   if(base==='lego'){propG(G,st,'lego',f); eyesG(G,st,'down')}
   if(base==='bed'){eyesG(G,st,'blink'); propG(G,st,'blanket',f); if(f) propG(G,st,'z',0)}
@@ -2963,6 +2978,7 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='cheer') propG(G,st,'arms',f);
   if(base==='squash'||base==='sleep'&&!f||base==='sad'&&f||base==='wag'&&f&&!sp.tail) G=squashG(G);
   if(base==='cheer'&&f) G=shiftG(G,0,-2);
+  if(base==='dance') G=shiftG(G,f?1:-1,f?0:-1);
   if(base==='sleep') propG(G,st,'z',f);
   return {G,pal:sp.pal};
 }
@@ -3105,7 +3121,7 @@ function setTerra(k,v){S.settings.v.terra=Object.assign(terraCfg(),{[k]:v}); S.s
 const ACTORS=[], PST={}, FX={}; let actTimer=null, actN=0;
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SEQ={stand:['stand','stand','stand','stand','squash','squash'],walk:['stand','squash'],read:['read0','read0','read0','read1'],write:['write0','write1'],sleep:['sleep0','sleep0','sleep0','sleep1','sleep1','sleep1'],
-  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
+  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
 function petReact(kind,ms){FX.kind=kind; FX.until=Date.now()+(ms||3000)}
 function focusState(){return {run:!!T.running, focus:T.running&&isFocus(), rest:T.running&&!isFocus()}}
 function actorPose(a){ // 지금 상황에 맞는 행동 고르기
@@ -3300,7 +3316,7 @@ function shopDlg(it){
 function buyReward(it){if(!spend(it.cost,TR('보상')+' · '+it.name,'reward')) return; setTimeout(checkProgress,50); celebrate((it.emoji||'🎁')+' '+it.name,TR('마음껏 즐기세요! 열심히 번 거예요'),true); render()}
 
 /* 화면: 오늘 탭 동물 카드 (작은 유리병) */
-const POSE_TXT={meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
+const POSE_TXT={dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
 function pxBar(v,n,cls){n=n||10; const on=Math.round(Math.max(0,Math.min(1,v))*n); return h('span',{class:'pxbar'+(cls?' '+cls:''),role:'img','aria-label':Math.round(v*100)+'%'},Array.from({length:n},(_,i)=>h('i',{class:i<on?'on':''})))}
 function lvInfo(xp){const L=petLv(xp), a=lvXP(L), b=lvXP(L+1); return {L,v:(xp-a)/(b-a),left:b-xp}}
 function pxHud(p,st){
@@ -3390,6 +3406,7 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['cram1',TR('벼락치기의 신'),TR('마감 당일에 할 일 하나 끝내기'),1,'cram',30],
   ['cram10',TR('벼락치기 달인'),TR('마감 당일에 할 일 10개 끝내기'),10,'cram',100],
   ['ontime10',TR('약속 지키기'),TR('마감 전에 할 일 10개 끝내기'),10,'ontime',60],
+  ['ybfan',TR('철컹이의 최애'),TR('철컹이와 함께하기'),1,'chulPet',20],
   ['doh1',TR('또우!'),TR('끝낸 할 일의 체크를 다시 풀기 (실수해도 괜찮아요)'),1,'dohs',20],
   ['ontime50',TR('마감 지킴이'),TR('마감 전에 할 일 50개 끝내기'),50,'ontime',250],
   ['diary7',TR('일주일의 일기'),TR('일기 7일 쓰기'),7,'diary',50],
@@ -3413,7 +3430,7 @@ const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 �
   fox:{lv:8,price:1600},bear:{lv:10,price:2000},panda:{lv:12,price:2800},tiger:{lv:15,price:3500},dragon:{lv:20,price:8000},
   sheep:{ach:'t50',price:1000},squirrel:{ach:'early10',price:1500},raccoon:{ach:'night10',price:1500},koala:{ach:'s30',price:2200},
   hedgehog:{ach:'deep120',price:1800},
-  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
+  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},yongbok:{ach:'ybfan',price:800},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
 const achById=id=>ACH.find(a=>a[0]===id);
 /* 오늘의 미션 · 이번 주 미션: 해내면 저절로 코인을 받아요 (지난 날짜는 다시 셈하지 않아요) */
 const doneOn=k=>allOf('tasks-').filter(t=>t.done&&t.doneAt&&dayKey(t.doneAt)===k).length;
@@ -3453,7 +3470,7 @@ function achStats(){
     early:Object.keys(ed).length,night:Object.keys(nd).length,deep120,deep90,deep60,
     questDays:coins.filter(c=>String(c.id).indexOf('qa:')===0).length,questWeeks:coins.filter(c=>String(c.id).indexOf('qw:')===0).length,
     pomos:logs.filter(s=>s.kind==='pomo').length,quicks:logs.filter(s=>s.quick).length,fullWeeks,weekends,goalDays:Object.keys(day).filter(k=>day[k]>=gsec).length,
-    dohs:items('dohs').length,
+    dohs:items('dohs').length,chulPet:ps.some(p=>p.sp==='chul')?1:0,
     cram:allOf('tasks-').filter(t=>t.done&&t.due&&t.doneAt&&dayKey(t.doneAt)===t.due).length,
     ontime:coins.filter(c=>String(c.id).indexOf('td:')===0).length,lucky:coins.filter(c=>String(c.id).indexOf('l:')===0).length,care:coins.filter(c=>c.kind==='care').length,
     spent:coins.reduce((a,c)=>a+(c.amt<0?-c.amt:0),0),petLv:Math.max(0,...ps.map(p=>petLv(petXP(p)))),subjWeek:Math.max(0,...Object.values(sw).map(x=>x.size)),
@@ -3626,7 +3643,18 @@ const HOMER_LINES={ // Homer K: 호머 심슨 흉내
   day:[TR('고기 먹고 싶다'),TR('레고 조립하고 싶다'),TR('치이카와 보고 올게'),TR('심슨 한 편만 볼까?'),TR('드라이브 가고 싶다')],
   evening:[TR('저녁은 고기지!'),TR('오늘 게임 한 판?'),TR('이제 누울 시간이야')],
   night:[TR('심슨 정주행 각'),TR('침대 최고…'),TR('Why you little… 졸음아!')]};
-const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&sp.lines==='PROF'?PROF_LINES:sp&&sp.lines==='CHUL'?CHUL_LINES:sp&&sp.lines==='HOMER'?HOMER_LINES:null; return (L&&L[k])||LINES[k]};
+const YONG_LINES={ // 용복이: 짧은 영어 추임새와 다정한 말
+  tap:[TR('Yo!'),TR('Look!'),TR('Yeah~'),TR("G'day mate!"),TR('No worries!'),TR('Stay~'),TR('My Stay~'),TR('행복하자!'),TR('건강해야 돼'),TR('맛있게 먹어!')],
+  focus:[TR('Yo, 집중 가자!'),TR('Look, 넌 할 수 있어!'),TR('No worries! 천천히 해도 돼')],
+  rest:[TR('브라우니 구웠어, 맛있게 먹어!'),TR('물 마셔! 건강해야 돼'),TR('잠깐 쉬자, No worries~')],
+  done:[TR('Yeah!! 최고야!'),TR('Look at you!'),TR("G'day mate! 오늘도 해냈네"),TR('행복하자!')],
+  morning:[TR("G'day mate!"),TR('좋은 아침, Stay~'),TR('아침 먹었어? 맛있게 먹어!')],
+  day:[TR('건강해야 돼'),TR('행복하자'),TR('Yo, 물 마셨어?'),TR('작은 동물 보고 싶다…'),TR('같이 춤출래? Yeah!')],
+  evening:[TR('오늘도 고생했어, My Stay~'),TR('브라우니 구울까?'),TR('맛있게 먹어!')],
+  night:[TR('잘 자, Stay~'),TR('No worries, 내일 또 하자'),TR('건강해야 돼, 얼른 자!')]};
+const CHUL_YB={tap:[TR('용복이 최고…'),TR('용복아 사랑해!'),TR('용복이 무대 봤어?')],day:[TR('용복이 브라우니 먹고 싶다'),TR('용복이 보러 가고 싶어…')],done:[TR('용복이도 칭찬해 줄 거야!')]}; // 철컹이는 용복이를 좋아해요
+const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&sp.lines==='PROF'?PROF_LINES:sp&&sp.lines==='CHUL'?CHUL_LINES:sp&&sp.lines==='HOMER'?HOMER_LINES:sp&&sp.lines==='YONG'?YONG_LINES:null;
+  const base=(L&&L[k])||LINES[k]; return sp&&sp.lines==='CHUL'&&CHUL_YB[k]&&pets().some(q=>q.sp==='yongbok')?base.concat(CHUL_YB[k]):base};
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 function buddySay(text,ms){
   if(!buddyEl||buddyEl.hidden||!talkOn()||!text) return; const b=buddyEl.querySelector('.bbub');
