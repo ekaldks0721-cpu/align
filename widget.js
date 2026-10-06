@@ -102,88 +102,112 @@ function summarize(D, now) {
 }
 
 /* ---------- 그리기 ---------- */
-const C = { ink: Color.dynamic(new Color('#0F1E3D'), new Color('#E8EEFB')), ink2: Color.dynamic(new Color('#5B6C8F'), new Color('#93A4C6')),
-  bg: Color.dynamic(new Color('#F3F6FC'), new Color('#0F1830')), accent: Color.dynamic(new Color('#2B5BE0'), new Color('#7CA4FF')),
-  soft: Color.dynamic(new Color('#DCE5F8'), new Color('#22304F')), warn: Color.dynamic(new Color('#D2453A'), new Color('#FF8A7A')) };
+// 읽기 쉽게: 가장 작은 글자 12pt, 진한 회색, 위젯마다 꼭 필요한 것만
+const C = { ink: Color.dynamic(new Color('#0F1E3D'), new Color('#F2F5FC')), ink2: Color.dynamic(new Color('#46557A'), new Color('#B4C1DC')),
+  bg: Color.dynamic(new Color('#FFFFFF'), new Color('#121A2E')), accent: Color.dynamic(new Color('#2457DB'), new Color('#86ABFF')),
+  soft: Color.dynamic(new Color('#E3EAF8'), new Color('#2A3756')), warn: Color.dynamic(new Color('#C73A2F'), new Color('#FF9585')),
+  line: Color.dynamic(new Color('#E6ECF6'), new Color('#24304B')) };
 function bar(width, height, ratio, fill, track) {
   const c = new DrawContext(); c.size = new Size(width, height); c.opaque = false; c.respectScreenScale = true;
   const p = new Path(); p.addRoundedRect(new Rect(0, 0, width, height), height / 2, height / 2); c.addPath(p); c.setFillColor(track); c.fillPath();
   if (ratio > 0) { const q = new Path(); q.addRoundedRect(new Rect(0, 0, Math.max(height, width * Math.min(1, ratio)), height), height / 2, height / 2); c.addPath(q); c.setFillColor(fill); c.fillPath(); }
   return c.getImage();
 }
-function text(stack, s, size, color, weight, lines) {
-  const t = stack.addText(s); t.font = weight === 'bold' ? Font.boldSystemFont(size) : weight === 'semi' ? Font.semiboldSystemFont(size) : weight === 'med' ? Font.mediumSystemFont(size) : Font.systemFont(size);
-  t.textColor = color; t.lineLimit = lines || 1; t.minimumScaleFactor = .75; return t;
+function text(stack, s, size, color, weight, lines, scale) {
+  const t = stack.addText(s); t.font = weight === 'bold' ? Font.boldSystemFont(size) : weight === 'heavy' ? Font.heavySystemFont(size) : weight === 'semi' ? Font.semiboldSystemFont(size) : weight === 'med' ? Font.mediumSystemFont(size) : Font.systemFont(size);
+  t.textColor = color; t.lineLimit = lines || 1; t.minimumScaleFactor = scale || .8; return t;
 }
-function dateLabel(k) { const [, m, d] = parts(k); return m + '월 ' + d + '일 ' + WD[wdOf(k)]; }
-function header(w, S, fam) {
-  const h = w.addStack(); h.centerAlignContent();
-  text(h, 'Align', fam === 'small' ? 12 : 13, C.accent, 'bold'); h.addSpacer();
-  text(h, dateLabel(S.k), fam === 'small' ? 11 : 12, C.ink2, 'med');
+const shortDur = sec => { const m = Math.round(sec / 60), h = Math.floor(m / 60), mm = m % 60; return h ? h + '시간' + (mm ? ' ' + mm + '분' : '') : mm + '분'; };
+function dateLabel(k) { const [, m, d] = parts(k); return m + '월 ' + d + '일 ' + WD[wdOf(k)] + '요일'; }
+function pctOf(S) { return S.goal ? Math.round(S.goal.sec / 60 / S.goal.min * 100) : null; }
+function bigDur(st, sec, size) { // 숫자는 크게, '시간·분'은 작게 (좁은 위젯에서도 잘리지 않게)
+  const m = Math.round(sec / 60), h = Math.floor(m / 60), mm = m % 60, row = st.addStack(); row.bottomAlignContent(); row.spacing = 1;
+  const num = n => text(row, String(n), size, C.ink, 'heavy', 1, .6), unit = u => { const t = text(row, u, Math.round(size * .5), C.ink, 'bold'); return t; };
+  if (h) { num(h); unit('시간'); if (mm) { row.addSpacer(Math.round(size * .2)); num(mm); unit('분'); } } else { num(mm); unit('분'); }
 }
-function focusBlock(st, S, width, big) {
-  text(st, S.goal && S.goal.name ? S.goal.name + ' 집중' : '오늘 집중', 11, C.ink2, 'med');
-  st.addSpacer(1);
-  text(st, S.goal ? fmtDur(S.goal.sec) : fmtDur(S.total), big ? 26 : 22, C.ink, 'bold');
-  if (S.goal) { st.addSpacer(5); const im = st.addImage(bar(width, 7, S.goal.sec / 60 / S.goal.min, C.accent, C.soft)); im.imageSize = new Size(width, 7);
-    st.addSpacer(3); const pct = Math.round(S.goal.sec / 60 / S.goal.min * 100);
-    text(st, '목표 ' + fmtDur(S.goal.min * 60) + ' · ' + pct + '%', 10, pct >= 100 ? C.accent : C.ink2, 'med'); }
+function focusBlock(st, S, width, size) { // 라벨 + 큰 시간 + 막대 + 목표
+  const top = st.addStack(); top.centerAlignContent();
+  text(top, S.goal && S.goal.name ? S.goal.name + ' 집중' : '오늘 집중', 13, C.ink2, 'semi'); top.addSpacer();
+  const pct = pctOf(S); if (pct != null) text(top, pct + '%', 13, pct >= 100 ? C.accent : C.ink, 'bold');
+  st.addSpacer(2);
+  bigDur(st, S.goal ? S.goal.sec : S.total, size);
+  if (S.goal) { st.addSpacer(6); const im = st.addImage(bar(width, 8, S.goal.sec / 60 / S.goal.min, C.accent, C.soft)); im.imageSize = new Size(width, 8);
+    st.addSpacer(4); text(st, '목표 ' + shortDur(S.goal.min * 60), 12, C.ink2, 'med'); }
 }
-function taskLines(st, S, max, withCats) {
-  const open = S.tasks.filter(t => !t.done), done = S.tasks.length - open.length;
-  if (!S.tasks.length) { text(st, '오늘 할 일이 없어요', 12, C.ink2); return; }
-  if (!open.length) { text(st, '오늘 할 일을 다 했어요 🎉', 12, C.accent, 'semi'); return; }
-  let lastCat = null, n = 0;
-  for (const t of open) { if (n >= max) break;
-    if (withCats && t.cat !== lastCat) { if (lastCat !== null) st.addSpacer(2); text(st, t.cat, 10, C.ink2, 'semi'); lastCat = t.cat; }
-    const row = st.addStack(); row.centerAlignContent(); row.spacing = 5;
-    const dot = row.addText('●'); dot.font = Font.systemFont(7); dot.textColor = new Color(t.color);
-    text(row, t.title, 12, C.ink, 'med'); if (t.dueT != null) { row.addSpacer(); text(row, hm(t.dueT) + '까지', 10, C.warn, 'med'); }
-    n++; st.addSpacer(2); }
-  const rest = open.length - n; if (rest > 0 || done) text(st, (rest > 0 ? '외 ' + rest + '개 · ' : '') + '완료 ' + done + ' / ' + S.tasks.length, 10, C.ink2);
+function eventRow(st, e, size) {
+  const row = st.addStack(); row.centerAlignContent(); row.spacing = 8;
+  const tm = text(row, e.now ? '지금' : e.when, size, e.now ? C.accent : C.ink, 'bold'); 
+  text(row, e.title, size, C.ink, 'med');
+  return row;
 }
-function eventLines(st, S, max) {
-  S.events.slice(0, max).forEach(e => { const row = st.addStack(); row.centerAlignContent(); row.spacing = 6;
-    text(row, e.now ? '지금' : e.when, 11, e.now ? C.accent : C.ink2, 'semi'); text(row, e.title, 12, C.ink, 'med'); st.addSpacer(2); });
+function taskRow(st, t, size) {
+  const row = st.addStack(); row.centerAlignContent(); row.spacing = 6;
+  const o = row.addText('○'); o.font = Font.boldSystemFont(size - 1); o.textColor = new Color(t.color);
+  text(row, t.title, size, C.ink, 'med');
+  if (t.dueT != null) { row.addSpacer(); text(row, hm(t.dueT), size - 2, C.warn, 'bold'); }
+  return row;
+}
+function sectionTitle(st, s, right) {
+  const r = st.addStack(); r.centerAlignContent(); text(r, s, 13, C.accent, 'bold');
+  if (right) { r.addSpacer(); text(r, right, 12, C.ink2, 'semi'); }
+}
+function emptyTasks(st, S, size) {
+  if (!S.tasks.length) text(st, '오늘 할 일이 없어요', size, C.ink2, 'med');
+  else text(st, '오늘 할 일을 다 했어요 🎉', size, C.accent, 'bold');
 }
 function build(S, fam, note) {
   const w = new ListWidget(); w.url = APP_URL; w.refreshAfterDate = new Date(Date.now() + 15 * 60e3);
   // 잠금 화면: 다음 일정을 맨 앞에 (지금 하고 있는 일정이면 '지금')
   const nx = S.events[0], nxLabel = nx ? (nx.now ? '지금 ' : nx.s == null ? '오늘 ' : hm(nx.s) + ' ') + nx.title : '';
-  const focus = fmtDur(S.goal ? S.goal.sec : S.total), open = S.tasks.filter(t => !t.done);
+  const focus = shortDur(S.goal ? S.goal.sec : S.total), open = S.tasks.filter(t => !t.done), done = S.tasks.length - open.length;
   if (fam === 'accessoryInline') { w.addText(nx ? nxLabel + ' · ' + focus : focus + ' · 할 일 ' + open.length + '개'); return w; }
   if (fam === 'accessoryCircular') {
-    const top = w.addText(nx ? (nx.now ? '지금' : '다음') : '집중'); top.font = Font.mediumSystemFont(10); top.centerAlignText();
-    const t = w.addText(nx ? (nx.now ? nx.title : nx.s == null ? '종일' : hm(nx.s)) : focus.replace('시간 ', 'h').replace('시간', 'h').replace('분', 'm'));
-    t.font = Font.boldSystemFont(13); t.minimumScaleFactor = .5; t.lineLimit = 1; t.centerAlignText(); return w; }
+    const top = w.addText(nx ? (nx.now ? '지금' : '다음') : '집중'); top.font = Font.semiboldSystemFont(11); top.centerAlignText();
+    const t = w.addText(nx ? (nx.now ? nx.title : nx.s == null ? '종일' : hm(nx.s)) : focus.replace('시간 ', ':').replace('시간', ':00').replace('분', ''));
+    t.font = Font.heavySystemFont(16); t.minimumScaleFactor = .5; t.lineLimit = 1; t.centerAlignText(); return w; }
   if (fam === 'accessoryRectangular') {
-    if (nx) text(w, nxLabel, 13, Color.white(), 'bold');
-    text(w, '집중 ' + focus + (S.goal ? ' / ' + fmtDur(S.goal.min * 60) : ''), nx ? 12 : 13, Color.white(), nx ? 'med' : 'semi');
-    open.slice(0, nx ? 1 : 2).forEach(t => text(w, '· ' + t.title, 12, Color.white()));
+    if (nx) text(w, nxLabel, 15, Color.white(), 'heavy', 1, .7);
+    text(w, '집중 ' + focus + (S.goal ? ' · ' + pctOf(S) + '%' : ''), 13, Color.white(), 'semi');
+    if (open[0]) text(w, '○ ' + open[0].title + (!nx && open[1] ? ' 외 ' + (open.length - 1) : ''), 13, Color.white(), 'med');
     return w; }
-  w.backgroundColor = C.bg; const P = fam === 'small' ? 13 : 15; w.setPadding(P, P, P, P);
-  header(w, S, fam); w.addSpacer(fam === 'small' ? 8 : 10);
+
+  w.backgroundColor = C.bg;
   if (fam === 'small') {
-    focusBlock(w, S, 128, true); w.addSpacer();
-    const open = S.tasks.filter(t => !t.done); text(w, S.tasks.length ? '할 일 ' + (S.tasks.length - open.length) + ' / ' + S.tasks.length : '할 일 없음', 11, C.ink2, 'med');
-    if (open[0]) text(w, open[0].title, 12, C.ink, 'semi');
+    w.setPadding(14, 15, 14, 15);
+    focusBlock(w, S, 128, 30); w.addSpacer();
+    if (nx) { text(w, nx.now ? '지금' : nx.s == null ? '오늘' : hm(nx.s), 12, nx.now ? C.accent : C.ink2, 'bold'); text(w, nx.title, 14, C.ink, 'semi'); }
+    else if (open[0]) { text(w, '할 일 ' + open.length + '개 남음', 12, C.ink2, 'bold'); text(w, open[0].title, 14, C.ink, 'semi'); }
+    else emptyTasks(w, S, 13);
   } else if (fam === 'medium') {
+    w.setPadding(14, 16, 14, 16);
     const row = w.addStack(); row.topAlignContent();
-    const left = row.addStack(); left.layoutVertically(); left.size = new Size(118, 0); focusBlock(left, S, 112, false);
-    if (S.events[0]) { left.addSpacer(); const e = S.events[0]; text(left, (e.now ? '지금 ' : e.when + ' ') + e.title, 10, e.now ? C.accent : C.ink2, 'semi', 2); }
-    row.addSpacer(12); const right = row.addStack(); right.layoutVertically(); taskLines(right, S, 4, false);
+    const left = row.addStack(); left.layoutVertically(); left.size = new Size(124, 130);
+    focusBlock(left, S, 124, 30); left.addSpacer();
+    if (nx) { text(left, nx.now ? '지금' : nx.s == null ? '오늘' : hm(nx.s), 12, nx.now ? C.accent : C.ink2, 'bold'); text(left, nx.title, 13, C.ink, 'semi'); }
+    row.addSpacer(18);
+    const right = row.addStack(); right.layoutVertically(); right.spacing = 7;
+    sectionTitle(right, '할 일', S.tasks.length ? done + ' / ' + S.tasks.length : '');
+    if (!open.length) emptyTasks(right, S, 14);
+    open.slice(0, 4).forEach(t => taskRow(right, t, 14));
+    if (open.length > 4) text(right, '외 ' + (open.length - 4) + '개', 12, C.ink2, 'semi');
   } else {
-    focusBlock(w, S, 300, true); w.addSpacer(12);
-    if (S.events.length) { text(w, '다가오는 일정', 11, C.accent, 'bold'); w.addSpacer(3); eventLines(w, S, 3); w.addSpacer(8); }
-    text(w, '할 일', 11, C.accent, 'bold'); w.addSpacer(3); taskLines(w, S, S.events.length ? 6 : 9, true);
+    w.setPadding(16, 18, 16, 18);
+    text(w, dateLabel(S.k), 15, C.ink, 'bold'); w.addSpacer(10);
+    focusBlock(w, S, 302, 34); w.addSpacer(14);
+    if (S.events.length) { sectionTitle(w, '다가오는 일정'); w.addSpacer(6); S.events.slice(0, 2).forEach(e => { eventRow(w, e, 15); w.addSpacer(5); }); w.addSpacer(10); }
+    sectionTitle(w, '할 일', S.tasks.length ? done + ' / ' + S.tasks.length + ' 완료' : ''); w.addSpacer(6);
+    if (!open.length) emptyTasks(w, S, 15);
+    const max = S.events.length ? 5 : 7; open.slice(0, max).forEach(t => { taskRow(w, t, 15); w.addSpacer(6); });
+    if (open.length > max) text(w, '외 ' + (open.length - max) + '개', 12, C.ink2, 'semi');
   }
-  if (note) { w.addSpacer(); text(w, note, 9, C.ink2); } else w.addSpacer();
+  w.addSpacer();
+  if (note) text(w, note, 12, C.warn, 'semi');
   return w;
 }
 function message(msg, fam) {
   const w = new ListWidget(); w.url = APP_URL; w.backgroundColor = C.bg; w.setPadding(14, 14, 14, 14);
-  if (!/^accessory/.test(fam || '')) { text(w, 'Align', 13, C.accent, 'bold'); w.addSpacer(6); }
-  text(w, msg, 12, C.ink, 'med', 4); return w;
+  if (!/^accessory/.test(fam || '')) { text(w, 'Align', 15, C.accent, 'heavy'); w.addSpacer(6); }
+  text(w, msg, 14, C.ink, 'semi', 5); return w;
 }
 
 /* ---------- 실행 ---------- */
