@@ -148,11 +148,18 @@ function eventLines(st, S, max) {
 }
 function build(S, fam, note) {
   const w = new ListWidget(); w.url = APP_URL; w.refreshAfterDate = new Date(Date.now() + 15 * 60e3);
-  if (fam === 'accessoryInline') { w.addText((S.goal ? fmtDur(S.goal.sec) : fmtDur(S.total)) + ' · 할 일 ' + S.tasks.filter(t => !t.done).length + '개'); return w; }
-  if (fam === 'accessoryCircular') { const t = w.addText(fmtDur(S.total).replace('시간 ', 'h').replace('시간', 'h').replace('분', 'm')); t.font = Font.boldSystemFont(13); t.minimumScaleFactor = .5; t.centerAlignText(); return w; }
+  // 잠금 화면: 다음 일정을 맨 앞에 (지금 하고 있는 일정이면 '지금')
+  const nx = S.events[0], nxLabel = nx ? (nx.now ? '지금 ' : nx.s == null ? '오늘 ' : hm(nx.s) + ' ') + nx.title : '';
+  const focus = fmtDur(S.goal ? S.goal.sec : S.total), open = S.tasks.filter(t => !t.done);
+  if (fam === 'accessoryInline') { w.addText(nx ? nxLabel + ' · ' + focus : focus + ' · 할 일 ' + open.length + '개'); return w; }
+  if (fam === 'accessoryCircular') {
+    const top = w.addText(nx ? (nx.now ? '지금' : '다음') : '집중'); top.font = Font.mediumSystemFont(10); top.centerAlignText();
+    const t = w.addText(nx ? (nx.now ? nx.title : nx.s == null ? '종일' : hm(nx.s)) : focus.replace('시간 ', 'h').replace('시간', 'h').replace('분', 'm'));
+    t.font = Font.boldSystemFont(13); t.minimumScaleFactor = .5; t.lineLimit = 1; t.centerAlignText(); return w; }
   if (fam === 'accessoryRectangular') {
-    text(w, '집중 ' + fmtDur(S.goal ? S.goal.sec : S.total) + (S.goal ? ' / ' + fmtDur(S.goal.min * 60) : ''), 13, Color.white(), 'semi');
-    S.tasks.filter(t => !t.done).slice(0, 2).forEach(t => text(w, '· ' + t.title, 12, Color.white()));
+    if (nx) text(w, nxLabel, 13, Color.white(), 'bold');
+    text(w, '집중 ' + focus + (S.goal ? ' / ' + fmtDur(S.goal.min * 60) : ''), nx ? 12 : 13, Color.white(), nx ? 'med' : 'semi');
+    open.slice(0, nx ? 1 : 2).forEach(t => text(w, '· ' + t.title, 12, Color.white()));
     return w; }
   w.backgroundColor = C.bg; const P = fam === 'small' ? 13 : 15; w.setPadding(P, P, P, P);
   header(w, S, fam); w.addSpacer(fam === 'small' ? 8 : 10);
