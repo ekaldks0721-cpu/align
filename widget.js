@@ -157,7 +157,28 @@ function emptyTasks(st, S, size) {
   if (!S.tasks.length) text(st, '오늘 할 일이 없어요', size, C.ink2, 'med');
   else text(st, '오늘 할 일을 다 했어요 🎉', size, C.accent, 'bold');
 }
+function buildEvents(S, fam) { // 잠금 화면 '오늘 일정' 종류
+  const w = new ListWidget(); w.url = APP_URL; w.refreshAfterDate = new Date(Date.now() + 15 * 60e3);
+  const ev = S.events, when = e => e.now ? '지금' : e.s == null ? '종일' : hm(e.s), W = Color.white();
+  if (fam === 'accessoryInline') { w.addText(ev.length ? '일정 ' + ev.length + '개 · ' + when(ev[0]) + ' ' + ev[0].title : '오늘 남은 일정 없음'); return w; }
+  if (fam === 'accessoryCircular') {
+    const a = w.addText('일정'); a.font = Font.semiboldSystemFont(11); a.centerAlignText();
+    const b = w.addText(String(ev.length)); b.font = Font.heavySystemFont(22); b.centerAlignText(); return w; }
+  if (!/^accessory/.test(fam)) { // 홈 화면에 둔 경우: 일정 목록
+    w.backgroundColor = C.bg; w.setPadding(14, 16, 14, 16); sectionTitle(w, '오늘 일정', ev.length ? ev.length + '개 남음' : ''); w.addSpacer(8);
+    if (!ev.length) text(w, '오늘 남은 일정이 없어요', 14, C.ink2, 'med');
+    ev.slice(0, fam === 'large' ? 8 : fam === 'medium' ? 3 : 3).forEach(e => { if (fam === 'small') { text(w, when(e), 12, e.now ? C.accent : C.ink2, 'bold'); text(w, e.title, 13, C.ink, 'semi'); w.addSpacer(3); } else { eventRow(w, e, 15); w.addSpacer(6); } });
+    w.addSpacer(); return w; }
+  // 직사각형: 3줄. 일정이 적으면 장소도 함께
+  if (!ev.length) { text(w, '오늘 일정', 13, W, 'semi'); text(w, '남은 일정이 없어요', 15, W, 'heavy', 1, .7); return w; }
+  const lines = [];
+  ev.forEach(e => { lines.push([when(e) + ' ' + e.title, e === ev[0] ? 'heavy' : 'semi']); if (ev.length <= 2 && e.place) lines.push(['📍 ' + e.place, 'med']); });
+  const shown = ev.length > 3 ? lines.slice(0, 2).concat([['+ ' + (ev.length - 2) + '개 더', 'med']]) : lines.slice(0, 3);
+  shown.forEach(([t, wt], i) => text(w, t, i === 0 ? 15 : 13, W, wt, 1, .7));
+  return w;
+}
 function build(S, fam, note) {
+  if (MODE === 'events') return buildEvents(S, fam);
   const w = new ListWidget(); w.url = APP_URL; w.refreshAfterDate = new Date(Date.now() + 15 * 60e3);
   // 잠금 화면: 다음 일정을 맨 앞에 (지금 하고 있는 일정이면 '지금')
   const nx = S.events[0], nxLabel = nx ? (nx.now ? '지금 ' : nx.s == null ? '오늘 ' : hm(nx.s) + ' ') + nx.title : '';
@@ -234,6 +255,8 @@ async function loginFlow() {
 }
 
 const fam = config.widgetFamily || 'medium';
+// 위젯 편집 → Parameter에 '일정'이라고 적으면 오늘 일정만 보여 주는 종류가 됨
+const MODE = (() => { const p = String((typeof args !== 'undefined' && args && args.widgetParameter) || '').trim().toLowerCase(); return /일정|schedule|event/.test(p) ? 'events' : ''; })();
 const loggedIn = () => Keychain.contains(KC_TOKEN) && Keychain.contains(KC_UID);
 if (config.runsInWidget) {
   let w;
@@ -250,7 +273,7 @@ if (config.runsInWidget) {
   if (!loggedIn() && !(await loginFlow())) { Script.complete(); }
   else {
     const m = new Alert(); m.title = 'Align 위젯';
-    m.message = Keychain.get(KC_EMAIL) + ' 계정으로 연결돼 있어요. 홈 화면을 길게 눌러 Scriptable 위젯을 추가하고, 위젯을 길게 눌러 "위젯 편집" → Script를 이 스크립트로 고르세요.';
+    m.message = Keychain.get(KC_EMAIL) + ' 계정으로 연결돼 있어요. 홈 화면을 길게 눌러 Scriptable 위젯을 추가하고, 위젯을 길게 눌러 "위젯 편집" → Script를 이 스크립트로 고르세요. 오늘 일정만 보고 싶으면 Parameter에 "일정"이라고 적으세요.';
     ['작게 미리보기', '중간 미리보기', '크게 미리보기'].forEach(x => m.addAction(x)); m.addDestructiveAction('로그아웃'); m.addCancelAction('닫기');
     const i = await m.present();
     if (i === 3) { [KC_TOKEN, KC_UID].forEach(x => { if (Keychain.contains(x)) Keychain.remove(x); }); try { fm.remove(cacheP); } catch (e) {} }
