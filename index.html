@@ -714,10 +714,6 @@ body.kb #buddy{display:none!important}
       <div class="tt" id="tt"></div>
       <div class="legend" id="tt-legend"></div>
     </section>
-    <section class="card" data-card="pet">
-        <div class="row"><h2>동물 친구</h2></div>
-        <div id="pet-card"></div>
-      </section>
     <section class="card" data-card="memo">
       <div class="row"><h2>메모</h2><span class="small muted sp" id="m-state">쓰는 대로 저장돼요</span></div>
       <textarea id="m-text" class="memo" maxlength="5000" placeholder="이 날의 메모를 적어 두세요." aria-label="이 날의 메모"></textarea>
@@ -1146,7 +1142,7 @@ function sessionDlg(s,startTs,endTs){
 /* ---------- 타이머 ---------- */
 let T={mode:'pomo',phase:'focus',running:false,segStart:null,elapsed:0,segs:[],count:0,sub:'',task:''};
 try{const r=JSON.parse(localStorage.getItem(LST)||'null'); if(r&&r.mode) T=Object.assign(T,r)}catch(e){}
-const saveT=()=>{try{localStorage.setItem(LST,JSON.stringify(T))}catch(e){}};
+const saveT=()=>{try{localStorage.setItem(LST,JSON.stringify(T))}catch(e){} try{syncPetState()}catch(e){}};
 const isFocus=()=>T.mode==='sw'||T.phase==='focus';
 const phaseMs=()=>(T.quick&&T.phase==='focus'?5:Math.max(1,cfg(T.phase)))*60e3;
 const elapsedMs=()=>T.elapsed+(T.running?Date.now()-T.segStart:0);
@@ -1516,12 +1512,12 @@ function renderEvents(){ // 오늘 탭의 일정 카드: 캘린더 일정과 시
   const li=dayItems(viewDate,true); $('#e-list').replaceChildren(...(li.length?li:[h('li',{class:'empty'},TR('이 날에는 일정이 없어요. 캘린더 일정과 시간표의 고정 일정이 여기에 모여요.'))]));
 }
 /* 오늘 탭 배치: 카드의 순서, 왼쪽·오른쪽 줄, 숨김, 줄 너비를 사용자가 정함 */
-const CARDS={timer:TR('타이머'),events:TR('일정'),tasks:TR('할 일'),table:TR('타임테이블'),memo:TR('메모'),pet:TR('동물 친구')};
+const CARDS={timer:TR('타이머'),events:TR('일정'),tasks:TR('할 일'),table:TR('타임테이블'),memo:TR('메모')};
 const cardEl=id=>document.querySelector('#v-today [data-card="'+id+'"]');
 function getLayout(){ // 저장된 배치를 읽되 카드가 빠지거나 겹치지 않게 정리 (새 카드가 생기면 왼쪽 줄 끝에 붙임)
   const v=S.settings.v.todayLayout, seen=new Set(), pick=a=>(Array.isArray(a)?a:[]).filter(id=>CARDS[id]&&!seen.has(id)&&seen.add(id));
-  if(!v) return {l:['timer','events','tasks'],r:['pet','table','memo'],hide:[],w:'e'};
-  const L={l:pick(v.l),r:pick(v.r),hide:pick(v.hide),w:['l','e','r'].indexOf(v.w)>=0?v.w:'e'}; if(!seen.has('pet')){seen.add('pet'); L.r.unshift('pet')} Object.keys(CARDS).forEach(id=>{if(!seen.has(id)) L.l.push(id)}); return L;
+  if(!v) return {l:['timer','events','tasks'],r:['table','memo'],hide:[],w:'e'};
+  const L={l:pick(v.l),r:pick(v.r),hide:pick(v.hide),w:['l','e','r'].indexOf(v.w)>=0?v.w:'e'}; Object.keys(CARDS).forEach(id=>{if(!seen.has(id)) L.l.push(id)}); return L;
 }
 let editing=false, laySig='';
 function applyLayout(force){ // 배치가 바뀌었을 때만 카드를 옮김 (쓰고 있는 입력칸의 초점을 잃지 않게)
@@ -1561,7 +1557,7 @@ function paintEdit(){
 }
 function renderToday(){
   applyLayout(); if(editing) paintEdit();
-  ensureRepeats(today()); renderPetCard();
+  ensureRepeats(today());
   const [y,m,d]=parts(viewDate);
   $('#d-date').textContent=dayTitle(viewDate)+(y!==new Date().getFullYear()?' ('+y+')':'');
   $('#d-today').disabled=viewDate===today();
@@ -3384,6 +3380,32 @@ function stepBuddy(){
   buddyEl.style.bottom=bottom+'px'; buddyEl.style.transform='translateX('+b.x+'px)';
   if(b.sayT&&now>b.sayT){b.sayT=0; buddyEl.querySelector('.bbub').hidden=true} else placeBubble();
 }
+
+/* ---------- 위젯용 동물 그림: 유리병 배경(낮·저녁·밤)과 동작별 모습을 글자로 줄여 동기화해요 ---------- */
+const PX_ALPHA='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&*+-/:;<=>?@^_~';
+function gridColors(G,pal){return G.map(r=>r.map(ch=>ch==='.'?null:ch[0]==='#'?ch:ch==='w'?'#FFF8E0':pal[PALI[ch]]))}
+let snapSig='', snapT=null;
+function queuePetSnap(){clearTimeout(snapT); snapT=setTimeout(petSnap,1200)}
+function petSnap(){
+  const ap=activePet(); if(!ap) return;
+  const c=terraCfg(), wx=c.wx==='auto'?autoWeather():c.wx, ps=pets().slice(0,5);
+  const sig=JSON.stringify([LANG,c.theme,wx,ap.id,ap.fed,ap.water,ps.map(p=>[p.id,p.sp,p.name,p.wear,stageOf(petXP(p)),petLv(petXP(p))]),myLv()]);
+  if(sig===snapSig) return; snapSig=sig;
+  const pal=[], idx={}, enc=rows=>rows.map(r=>r.map(c2=>{if(!c2) return '.'; if(idx[c2]==null){idx[c2]=pal.length; pal.push(c2)} return PX_ALPHA[idx[c2]]||'.'}).join(''));
+  const bg={}; ['day','dusk','night'].forEach(t=>bg[t]=enc(terraBG(c.theme,t,wx,t==='night')));
+  const ME=['stand','blink','happy','wag0','read0','write0','sleep0','sad0','cheer0'], OTH=['stand','sleep0','wag0'];
+  const list=ps.map(p=>{const xp=petXP(p), st=stageOf(xp), fr={}; (st?(p.id===ap.id?ME:OTH):['egg']).forEach(k=>{const {G,pal:pp}=poseG(p.sp,st,p.wear,k,xp); fr[k]=enc(gridColors(G,pp))});
+    return {me:p.id===ap.id?1:0,name:p.name,sp:SP[p.sp]?SP[p.sp].n:'',st,stage:STAGES[st][1],lv:petLv(xp),frames:fr}});
+  const xp=petXP(ap), li=lvInfo(xp);
+  put('petview',{id:'snap',t:Date.now(),lang:LANG,theme:c.theme,wx,pal,bg,pets:list,fed:ap.fed,water:ap.water,exp:Math.round(li.v*100)/100,
+    labels:Object.assign({},POSE_TXT,{hungry:TR('배고파요'),thirsty:TR('목말라요'),full:TR('배부름'),water:TR('목마름')})});
+}
+let stSig='';
+function syncPetState(){ // 타이머 상태를 위젯이 알 수 있게 (집중 중엔 책 읽기, 휴식엔 잠)
+  if(!pets().length) return;
+  const run=!!T.running, end=run&&T.mode==='pomo'?T.segStart+(phaseMs()-T.elapsed):null, sig=[run,T.phase,T.mode,end].join('|');
+  if(sig===stSig) return; stSig=sig; put('petstate',{id:'s',run,focus:run&&isFocus(),end,t:Date.now()});
+}
 function showView(v){ // 탭이 없는 화면(코인·동물)도 같은 방식으로 열기
   jFlush(); rvFlush(); memoFlush(); if(editing){editing=false; applyLayout(true); paintEdit()} view=v;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.v===v)));
@@ -3394,14 +3416,14 @@ function showView(v){ // 탭이 없는 화면(코인·동물)도 같은 방식�
 let view='today', enterT=null;
 function enter(v){const sec=$('#v-'+v); sec.classList.remove('enter'); void sec.offsetWidth; sec.classList.add('enter'); clearTimeout(enterT); enterT=setTimeout(()=>sec.classList.remove('enter'),900)}
 const R={today:renderToday,dash:renderDash,stats:renderStats,plan:renderPlan,cal:renderCal,diary:renderDiary,set:renderSet,pet:renderPet}, VIEWS=Object.keys(R);
-function render(){applyLook(); R[view](); paintCoin(); paintBuddy()}
+function render(){applyLook(); R[view](); paintCoin(); paintBuddy(); queuePetSnap()}
 document.querySelector('.tabs').addEventListener('click',e=>{
   let b=e.target.closest('button[data-v]'); // 아이콘이나 글자를 눌러도 그 버튼으로 처리
   if(!b&&e.clientX){let best=1e9; document.querySelectorAll('.tabs button').forEach(x=>{const r=x.getBoundingClientRect(), dd=Math.abs(e.clientX-(r.left+r.width/2)); if(dd<best){best=dd; b=x}})} // 탭 사이 틈을 누르면 가장 가까운 탭으로
   const v=b&&b.dataset.v; if(!v) return; showView(v)});
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
-setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
+setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
 initFolder().then(()=>{ // 기록이 하나도 없는 첫 실행에만 시작 안내를 띄움
   let seen=true; try{seen=!!localStorage.getItem(OB)}catch(e){}
   if(!seen&&!allOf('log-').length&&!allOf('tasks-').length&&!dlg.open) onboard(0)});
@@ -3460,7 +3482,8 @@ function widgetCard(){
       st(TR('Scriptable을 열고 오른쪽 위 '),h('b',null,'+'),TR('를 눌러 빈 화면에 붙여넣은 뒤, 맨 위 제목을 '),h('b',null,'Align'),TR('으로 바꾸고 '),h('b',null,TR('완료')),TR('를 누르세요.')),
       st(TR('목록의 '),h('b',null,'Align'),TR('을 한 번 눌러 실행하고, 동기화에 쓰는 이메일·비밀번호로 로그인하세요.')),
       st(TR('홈 화면 빈 곳을 길게 눌러 '),h('b',null,TR('편집 → 위젯 추가 → Scriptable')),TR('에서 크기를 골라 추가하고, 그 위젯을 길게 눌러 '),h('b',null,TR('위젯 편집 → Script → Align')),TR('을 고르세요.')),
-      st(TR('오늘 일정만 보는 위젯을 따로 두려면 같은 방법으로 하나 더 추가하고, '),h('b',null,TR('위젯 편집 → Parameter')),TR('에 '),h('b',null,TR('일정')),TR('이라고 적으세요. 잠금 화면 위젯에도 똑같이 쓸 수 있어요.'))),
+      st(TR('오늘 일정만 보는 위젯을 따로 두려면 같은 방법으로 하나 더 추가하고, '),h('b',null,TR('위젯 편집 → Parameter')),TR('에 '),h('b',null,TR('일정')),TR('이라고 적으세요. 잠금 화면 위젯에도 똑같이 쓸 수 있어요.')),
+      st(TR('동물을 지켜보는 위젯은 '),h('b',null,TR('위젯 편집 → Parameter')),TR('에 '),h('b',null,TR('동물')),TR('이라고 적으세요. 앱의 유리병 속 동물이 시간과 타이머에 따라 책을 읽거나 자는 모습으로 보여요. 잠금 화면에서도 돼요.'))),
     h('label',null,TR('위젯의 집중 시간 기준'),(()=>{const v=S.settings.v.widgetCat!=null?S.settings.v.widgetCat:gc(); // 위젯에 보이는 집중 시간·목표 %를 이 카테고리로만 계산
       return h('select',{onchange:e=>{setCfg('widgetCat',e.target.value); toast(TR('위젯이 다음에 새로 고쳐질 때 바뀌어요'))}},h('option',{value:'',selected:!v},TR('전체')),cats().filter(c=>!c.arch||c.id===v).map(c=>h('option',{value:c.id,selected:c.id===v},c.name)))})()),
     h('div',{class:'row'},h('button',{class:'primary',onclick:async()=>toast(await copyText(WIDGET_LOADER)?TR('복사했어요. Scriptable에 붙여넣으세요.'):TR('복사하지 못했어요. 다시 해 보세요.'))},TR('위젯 코드 복사'))),

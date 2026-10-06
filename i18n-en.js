@@ -1471,5 +1471,7 @@ window.I18N_EN={
 "최강 짝꿍": "Best buddies",
 "동물 한 마리를 Lv 20까지 키우기": "Raise a pet to Lv 20",
 "다재다능": "All-rounder",
-"한 주에 항목 5개 넘게 집중": "Focus on 5+ items in one week"
+"한 주에 항목 5개 넘게 집중": "Focus on 5+ items in one week",
+"동물을 지켜보는 위젯은 ": "For a widget that lets you watch your pet, type ",
+"이라고 적으세요. 앱의 유리병 속 동물이 시간과 타이머에 따라 책을 읽거나 자는 모습으로 보여요. 잠금 화면에서도 돼요.": " in the same place. Your pet appears in its jar, reading or napping depending on the time and your timer. It works on the Lock Screen too."
 };

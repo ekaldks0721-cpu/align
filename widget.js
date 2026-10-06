@@ -9,7 +9,7 @@ const KC_TOKEN = 'align.widget.refresh', KC_UID = 'align.widget.uid', KC_EMAIL =
 const WD = ['월', '화', '수', '목', '금', '토', '일'], WDE = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], MONE = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 // 언어: 앱 설정(설정 → 화면 → 언어)을 따르고, 아직 기록을 못 읽었으면 아이폰 언어를 따름
 let WEN = false; try { WEN = !/^ko/i.test(Device.language()); } catch (e) {}
-const WDICT = {" · 할 일 ": " · tasks: ", " 완료": " done", " 외 ": " +", " 집중": " focus", "Align 로그인": "Align login", "Align 앱 설정 → 기기 간 동기화에서 쓰는 이메일과 비밀번호를 입력하세요. 비밀번호는 저장하지 않아요.": "Enter the email and password you use under Settings → Sync across devices in Align. Your password isn't stored.", "Align 위젯": "Align widget", "Scriptable 앱에서 이 스크립트를 실행해 다시 로그인해 주세요.": "Run this script in the Scriptable app and log in again.", "Scriptable 앱에서 이 스크립트를 한 번 실행해 로그인해 주세요.": "Run this script once in the Scriptable app to log in.", "개 · ": " · ", "개 남음": " left", "개 더": " more", "개": "", "기록을 불러오지 못했어요. 인터넷 연결을 확인해 주세요.": "Couldn't load your records. Check your internet connection.", "기록을 읽지 못했어요": "Couldn't read your records", "남은 일정이 없어요": "No more events", "다가오는 일정": "Upcoming", "다시 로그인이 필요해요": "Please log in again", "다시 로그인해 주세요": "Please log in again", "다음": "Next", "닫기": "Close", "로그아웃": "Log out", "로그인": "Log in", "로그인하지 못했어요 (": "Couldn't log in (", "로그인하지 못했어요": "Couldn't log in", "목표 ": "Goal ", "비밀번호": "Password", "시도가 너무 많아요. 잠시 뒤에 다시 해 주세요": "Too many attempts. Please try again later", "오늘 ": "Today ", "오늘 남은 일정 없음": "No more events today", "오늘 남은 일정이 없어요": "No more events today", "오늘 일정": "Today's events", "오늘 집중": "Focus today", "오늘 할 일을 다 했어요 🎉": "All tasks done today 🎉", "오늘 할 일이 없어요": "No tasks today", "오늘": "Today", "외 ": "+", "이메일": "Email", "이메일이나 비밀번호가 맞지 않아요": "Email or password is incorrect", "인터넷에 연결되면 새로 고쳐요": "Will refresh when you're online", "일정 ": "Events: ", "일정": "Events", "작게 미리보기": "Preview small", "종일": "All day", "중간 미리보기": "Preview medium", "지금 ": "Now ", "지금": "Now", "집중 ": "Focus ", "집중": "Focus", "취소": "Cancel", "크게 미리보기": "Preview large", "할 일 ": "Tasks: ", "할 일": "Tasks", "항목 없음": "No item", "확인": "OK", " 계정으로 연결돼 있어요. 홈 화면을 길게 눌러 Scriptable 위젯을 추가하고, 위젯을 길게 눌러 \"위젯 편집\" → Script를 이 스크립트로 고르세요. 오늘 일정만 보고 싶으면 Parameter에 \"일정\"이라고 적으세요.": " is connected. Long-press the Home Screen to add a Scriptable widget, then long-press the widget, choose \"Edit Widget\" → Script and pick this script. For today's events only, type \"Events\" in Parameter."};
+const WDICT = {" · 할 일 ": " · tasks: ", " 완료": " done", " 외 ": " +", " 집중": " focus", "Align 로그인": "Align login", "Align 앱 설정 → 기기 간 동기화에서 쓰는 이메일과 비밀번호를 입력하세요. 비밀번호는 저장하지 않아요.": "Enter the email and password you use under Settings → Sync across devices in Align. Your password isn't stored.", "Align 위젯": "Align widget", "Scriptable 앱에서 이 스크립트를 실행해 다시 로그인해 주세요.": "Run this script in the Scriptable app and log in again.", "Scriptable 앱에서 이 스크립트를 한 번 실행해 로그인해 주세요.": "Run this script once in the Scriptable app to log in.", "개 · ": " · ", "개 남음": " left", "개 더": " more", "개": "", "기록을 불러오지 못했어요. 인터넷 연결을 확인해 주세요.": "Couldn't load your records. Check your internet connection.", "기록을 읽지 못했어요": "Couldn't read your records", "남은 일정이 없어요": "No more events", "다가오는 일정": "Upcoming", "다시 로그인이 필요해요": "Please log in again", "다시 로그인해 주세요": "Please log in again", "다음": "Next", "닫기": "Close", "로그아웃": "Log out", "로그인": "Log in", "로그인하지 못했어요 (": "Couldn't log in (", "로그인하지 못했어요": "Couldn't log in", "목표 ": "Goal ", "비밀번호": "Password", "시도가 너무 많아요. 잠시 뒤에 다시 해 주세요": "Too many attempts. Please try again later", "오늘 ": "Today ", "오늘 남은 일정 없음": "No more events today", "오늘 남은 일정이 없어요": "No more events today", "오늘 일정": "Today's events", "오늘 집중": "Focus today", "오늘 할 일을 다 했어요 🎉": "All tasks done today 🎉", "오늘 할 일이 없어요": "No tasks today", "오늘": "Today", "외 ": "+", "이메일": "Email", "이메일이나 비밀번호가 맞지 않아요": "Email or password is incorrect", "인터넷에 연결되면 새로 고쳐요": "Will refresh when you're online", "일정 ": "Events: ", "일정": "Events", "작게 미리보기": "Preview small", "종일": "All day", "중간 미리보기": "Preview medium", "지금 ": "Now ", "지금": "Now", "집중 ": "Focus ", "집중": "Focus", "취소": "Cancel", "크게 미리보기": "Preview large", "할 일 ": "Tasks: ", "할 일": "Tasks", "항목 없음": "No item", "확인": "OK", " 계정으로 연결돼 있어요. 홈 화면을 길게 눌러 Scriptable 위젯을 추가하고, 위젯을 길게 눌러 \"위젯 편집\" → Script를 이 스크립트로 고르세요. 오늘 일정만 보고 싶으면 Parameter에 \"일정\", 동물을 보고 싶으면 \"동물\"이라고 적으세요.": " is connected. Long-press the Home Screen to add a Scriptable widget, then long-press it → \"Edit Widget\" → pick this script as Script. To see only today's events, type \"schedule\" in Parameter; to watch your pet, type \"pet\".", "Align 앱의 동물 탭에서 동물 친구를 데려오면 여기에 보여요.": "Adopt a pet in the Align Pets tab and it will show up here.", "동물 미리보기": "Pet preview"};
 const WT = s => WEN && WDICT[s] != null ? WDICT[s] : s;
 const PALETTE = ['#F2CB3D', '#F08FB0', '#6FCFAB', '#6FB6EE', '#AE98EC', '#F39B52', '#A9D34E', '#9AA7BA'];
 
@@ -187,6 +187,7 @@ function buildEvents(S, fam) { // 잠금 화면 '오늘 일정' 종류
   return w;
 }
 function build(S, fam, note) {
+  if (MODE === 'pet') return buildPet(S, fam, note);
   if (MODE === 'events') return buildEvents(S, fam);
   const w = new ListWidget(); w.url = APP_URL; w.refreshAfterDate = new Date(Date.now() + 15 * 60e3);
   // 잠금 화면: 다음 일정을 맨 앞에 (지금 하고 있는 일정이면 '지금')
@@ -242,9 +243,94 @@ function message(msg, fam) {
   text(w, msg, 14, C.ink, 'semi', 5); return w;
 }
 
+/* ---------- 동물 위젯: 앱이 동기화해 둔 유리병 그림을 픽셀 그대로 그려요 ---------- */
+const PX_ALPHA = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&*+-/:;<=>?@^_~';
+function petSummary(D, now) {
+  const first = id => ((D[id] && D[id].items) || []).filter(i => !i.x)[0] || null;
+  const v = (D.settings && D.settings.v) || {}; WEN = v.lang === 'en';
+  const P = first('petview'); if (!P) return null;
+  const st = first('petstate'), d = new Date(now), hr = d.getHours() + d.getMinutes() / 60;
+  const tod = hr >= 6.5 && hr < 17.5 ? 'day' : (hr >= 17.5 && hr < 19.5) || (hr >= 5 && hr < 6.5) ? 'dusk' : 'night';
+  const full = (ts, h) => Math.max(0, Math.min(1, 1 - (now - (ts || 0)) / (h * 36e5)));
+  const fed = full(P.fed, 36), water = full(P.water, 24);
+  const run = st && st.run && (st.end == null || now < st.end), focus = run && st.focus, rest = run && !st.focus;
+  const sleepy = hr >= 23.5 || hr < 6, slot = Math.floor(now / 9e5); // 15분마다 다른 행동
+  const poses = P.pets.map((p, i) => {
+    if (!p.st) return 'egg';
+    if (p.me) {
+      if (focus) return slot % 3 === 2 ? 'write0' : 'read0';
+      if (rest || sleepy) return 'sleep0';
+      if (fed < .15 || water < .15) return 'sad0';
+      return ['stand', 'happy', 'wag0', 'read0', 'stand', 'cheer0', 'blink'][(slot + i) % 7];
+    }
+    if (focus) return 'wag0';
+    if (rest || sleepy) return 'sleep0';
+    return ['stand', 'wag0', 'stand', 'sleep0'][(slot + i * 3) % 4];
+  });
+  const me = P.pets.find(p => p.me) || P.pets[0], mi = P.pets.indexOf(me), mp = poses[mi];
+  const L = P.labels || {}, base = mp === 'egg' ? 'egg' : mp.replace(/[01]$/, '').replace('blink', 'stand').replace('happy', 'stand');
+  const status = mp === 'sad0' ? (fed < .15 ? L.hungry : L.thirsty) : (L[base] || '');
+  return { P, tod, poses, me, mp, status, fed, water, slot, focus };
+}
+function drawGrid(ctx, rows, pal, ox, oy, sc, flip) {
+  rows.forEach((r, y) => { let x = 0; while (x < r.length) { const ch = r[flip ? r.length - 1 - x : x]; if (ch === '.') { x++; continue; }
+    let n = 1; while (x + n < r.length && r[flip ? r.length - 1 - x - n : x + n] === ch) n++;
+    ctx.setFillColor(new Color(pal[PX_ALPHA.indexOf(ch)] || '#000000')); ctx.fillRect(new Rect((ox + x) * sc, (oy + y) * sc, n * sc, sc)); x += n; } });
+}
+function inJar(x, y) { if (y < 10 || y > 67 || x < 4 || x > 91) return false; const cut = [5, 3, 2, 1, 1], dy = y < 15 ? y - 10 : y > 62 ? 67 - y : 9; const c = dy < 5 ? cut[dy] : 0; return x >= 4 + c && x <= 91 - c; }
+function sceneImage(S, sc) {
+  const P = S.P, ctx = new DrawContext(); ctx.size = new Size(96 * sc, 72 * sc); ctx.opaque = false; ctx.respectScreenScale = false;
+  drawGrid(ctx, P.bg[S.tod] || P.bg.day, P.pal, 0, 0, sc);
+  if (P.wx === 'rain' || P.wx === 'snow') { // 비·눈 한 장면
+    const area = P.theme === 'room' ? [12, 18, 22, 18] : [4, 10, 88, 58]; let seed = S.slot * 7 + 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    ctx.setFillColor(new Color(P.wx === 'snow' ? '#FFFFFF' : S.tod === 'night' ? '#6070A0' : '#D8F0FF'));
+    for (let i = 0; i < (P.theme === 'room' ? 10 : 34); i++) { const x = area[0] + Math.floor(rnd() * area[2]), y = area[1] + Math.floor(rnd() * area[3]); if (P.theme !== 'room' && !inJar(x, y)) continue; ctx.fillRect(new Rect(x * sc, y * sc, sc, (P.wx === 'snow' ? 1 : 2) * sc)); }
+  }
+  let egg = 0, k = 0; const order = P.pets.map((p, i) => i).sort((a, b) => P.pets[a].me - P.pets[b].me);
+  order.forEach((i, j) => { const p = P.pets[i], pose = S.poses[i], f = p.frames[pose] || p.frames.stand || p.frames.egg; if (!f) return;
+    let x, y = p.me ? 44 : 43 - (j % 2);
+    if (!p.st) { x = 12 + egg++ * 16; ctx.setFillColor(new Color('#C8A060')); ctx.fillRect(new Rect((x + 2) * sc, 58 * sc, 12 * sc, 2 * sc)); }
+    else if (p.me && S.focus) x = 60; else { x = 28 + k * 15 + (S.slot % 3) * 2; if (S.focus && x > 44) x -= 30; k++; }
+    drawGrid(ctx, f, P.pal, x, y, sc, p.st && !p.me && (S.slot + j) % 2 === 1);
+  });
+  return ctx.getImage();
+}
+function spriteImage(S, sc) {
+  const ctx = new DrawContext(); ctx.size = new Size(16 * sc, 16 * sc); ctx.opaque = false; ctx.respectScreenScale = false;
+  const f = S.me.frames[S.mp] || S.me.frames.stand || S.me.frames.egg; drawGrid(ctx, f, S.P.pal, 0, 0, sc); return ctx.getImage();
+}
+function petBar(st, icon, label, v, color, width) {
+  const r = st.addStack(); r.centerAlignContent(); text(r, icon + ' ' + label, 11, C.ink2, 'semi'); r.addSpacer(6);
+  const im = r.addImage(bar(width, 7, v, new Color(color), C.soft)); im.imageSize = new Size(width, 7); r.addSpacer(4); text(r, Math.round(v * 100) + '%', 10, C.ink2, 'med');
+}
+function buildPet(S, fam, note) {
+  const w = new ListWidget(); w.url = APP_URL + '#pet'; w.backgroundColor = C.bg;
+  if (!S) { return message(WT('Align 앱의 동물 탭에서 동물 친구를 데려오면 여기에 보여요.'), fam); }
+  const me = S.me, name = me.name, head = 'Lv ' + me.lv + ' ' + name;
+  w.refreshAfterDate = new Date(Date.now() + 15 * 6e4);
+  if (fam === 'accessoryInline') { text(w, '🐾 ' + name + ' · ' + S.status, 12, C.ink, 'semi'); return w; }
+  if (fam === 'accessoryCircular') { const im = w.addImage(spriteImage(S, 6)); im.imageSize = new Size(52, 52); im.centerAlignImage(); return w; }
+  if (fam === 'accessoryRectangular') { const r = w.addStack(); r.centerAlignContent(); const im = r.addImage(spriteImage(S, 6)); im.imageSize = new Size(44, 44); r.addSpacer(6);
+    const c = r.addStack(); c.layoutVertically(); text(c, head, 13, C.ink, 'heavy'); text(c, S.status, 12, C.ink, 'semi'); text(c, me.stage, 11, C.ink2, 'med'); return w; }
+  if (fam === 'small') { w.setPadding(8, 8, 8, 8); const im = w.addImage(sceneImage(S, 5)); im.imageSize = new Size(140, 105); im.centerAlignImage(); w.addSpacer(4);
+    text(w, head, 13, C.ink, 'heavy'); text(w, S.status, 11, C.ink2, 'semi'); if (note) text(w, note, 10, C.warn, 'semi'); return w; }
+  if (fam === 'medium') { w.setPadding(10, 10, 10, 12); const r = w.addStack(); r.centerAlignContent();
+    const im = r.addImage(sceneImage(S, 6)); im.imageSize = new Size(180, 135); r.addSpacer(10);
+    const c = r.addStack(); c.layoutVertically(); text(c, head, 16, C.ink, 'heavy'); text(c, (me.sp && me.sp !== name ? me.sp + ' · ' : '') + me.stage, 12, C.ink2, 'semi'); c.addSpacer(4);
+    text(c, S.status, 14, C.accent, 'bold'); c.addSpacer(8);
+    if (me.st) { petBar(c, '🍚', '', S.fed, '#F09838', 70); c.addSpacer(3); petBar(c, '💧', '', S.water, '#58A8F0', 70); }
+    if (note) { c.addSpacer(4); text(c, note, 10, C.warn, 'semi'); } return w; }
+  w.setPadding(14, 14, 14, 14); text(w, head, 18, C.ink, 'heavy'); text(w, (me.sp && me.sp !== name ? me.sp + ' · ' : '') + me.stage + ' · ' + S.status, 13, C.ink2, 'semi'); w.addSpacer(8);
+  const im = w.addImage(sceneImage(S, 7)); im.imageSize = new Size(300, 225); im.centerAlignImage(); w.addSpacer(8);
+  if (me.st) { petBar(w, '🍚', S.P.labels.full || '', S.fed, '#F09838', 150); w.addSpacer(4); petBar(w, '💧', S.P.labels.water || '', S.water, '#58A8F0', 150); }
+  if (S.P.pets.length > 1) { w.addSpacer(6); text(w, S.P.pets.filter(p => !p.me).map(p => p.name).join(' · '), 12, C.ink2, 'med'); }
+  if (note) text(w, note, 11, C.warn, 'semi'); return w;
+}
+
 /* ---------- 실행 ---------- */
-const fm = FileManager.local(), cacheP = fm.joinPath(fm.documentsDirectory(), 'align-widget-cache.json');
+const fm = FileManager.local(), cacheP = fm.joinPath(fm.documentsDirectory(), 'align-widget-cache.json'), cacheP2 = fm.joinPath(fm.documentsDirectory(), 'align-widget-pet.json');
 async function fetchSummary() {
+  if (MODE === 'pet') { const D = await loadDocs(['settings', 'petview', 'petstate']); try { fm.writeString(cacheP2, JSON.stringify(D)); } catch (e) {} return petSummary(D, Date.now()); }
   const now = Date.now(), d0 = new Date(now), months = new Set();
   [-1, 0, 1].forEach(o => months.add(keyOf(new Date(now + o * 864e5)).slice(0, 7))); // 하루 시작 시각 때문에 걸치는 달까지
   const ids = ['settings', 'subjects', 'cats', 'repeats', 'schedule', 'schedx', 'schedbrk'];
@@ -265,7 +351,7 @@ async function loginFlow() {
 
 const fam = config.widgetFamily || 'medium';
 // 위젯 편집 → Parameter에 '일정'이라고 적으면 오늘 일정만 보여 주는 종류가 됨
-const MODE = (() => { const p = String((typeof args !== 'undefined' && args && args.widgetParameter) || '').trim().toLowerCase(); return /일정|schedule|event/.test(p) ? 'events' : ''; })();
+const MODE = (() => { const p = String((typeof args !== 'undefined' && args && args.widgetParameter) || '').trim().toLowerCase(); return /일정|schedule|event/.test(p) ? 'events' : /동물|pet|펫/.test(p) ? 'pet' : ''; })();
 const loggedIn = () => Keychain.contains(KC_TOKEN) && Keychain.contains(KC_UID);
 if (config.runsInWidget) {
   let w;
@@ -273,7 +359,7 @@ if (config.runsInWidget) {
   else {
     try { w = build(await fetchSummary(), fam); }
     catch (e) {
-      let S = null; try { if (fm.fileExists(cacheP)) S = summarize(JSON.parse(fm.readString(cacheP)), Date.now()); } catch (_) {}
+      let S = null; try { if (MODE === 'pet') { if (fm.fileExists(cacheP2)) S = petSummary(JSON.parse(fm.readString(cacheP2)), Date.now()); } else if (fm.fileExists(cacheP)) S = summarize(JSON.parse(fm.readString(cacheP)), Date.now()); } catch (_) {}
       w = S ? build(S, fam, e.relogin ? WT('다시 로그인이 필요해요') : WT('인터넷에 연결되면 새로 고쳐요')) : message(e.relogin ? WT('Scriptable 앱에서 이 스크립트를 실행해 다시 로그인해 주세요.') : WT('기록을 불러오지 못했어요. 인터넷 연결을 확인해 주세요.'), fam);
     }
   }
@@ -282,10 +368,11 @@ if (config.runsInWidget) {
   if (!loggedIn() && !(await loginFlow())) { Script.complete(); }
   else {
     const m = new Alert(); m.title = WT('Align 위젯');
-    m.message = Keychain.get(KC_EMAIL) + WT(' 계정으로 연결돼 있어요. 홈 화면을 길게 눌러 Scriptable 위젯을 추가하고, 위젯을 길게 눌러 "위젯 편집" → Script를 이 스크립트로 고르세요. 오늘 일정만 보고 싶으면 Parameter에 "일정"이라고 적으세요.');
-    [WT('작게 미리보기'), WT('중간 미리보기'), WT('크게 미리보기')].forEach(x => m.addAction(x)); m.addDestructiveAction(WT('로그아웃')); m.addCancelAction(WT('닫기'));
+    m.message = Keychain.get(KC_EMAIL) + WT(' 계정으로 연결돼 있어요. 홈 화면을 길게 눌러 Scriptable 위젯을 추가하고, 위젯을 길게 눌러 "위젯 편집" → Script를 이 스크립트로 고르세요. 오늘 일정만 보고 싶으면 Parameter에 "일정", 동물을 보고 싶으면 "동물"이라고 적으세요.');
+    [WT('작게 미리보기'), WT('중간 미리보기'), WT('크게 미리보기'), WT('동물 미리보기')].forEach(x => m.addAction(x)); m.addDestructiveAction(WT('로그아웃')); m.addCancelAction(WT('닫기'));
     const i = await m.present();
-    if (i === 3) { [KC_TOKEN, KC_UID].forEach(x => { if (Keychain.contains(x)) Keychain.remove(x); }); try { fm.remove(cacheP); } catch (e) {} }
+    if (i === 3) { let w; try { const D = await loadDocs(['settings', 'petview', 'petstate']); w = buildPet(petSummary(D, Date.now()), 'medium'); } catch (e) { w = message(e.message, 'medium'); } await w.presentMedium(); }
+    else if (i === 4) { [KC_TOKEN, KC_UID].forEach(x => { if (Keychain.contains(x)) Keychain.remove(x); }); try { fm.remove(cacheP); } catch (e) {} }
     else if (i >= 0 && i <= 2) {
       let w; try { const S = await fetchSummary(); w = build(S, ['small', 'medium', 'large'][i]); } catch (e) { w = message(e.message, 'medium'); }
       await [() => w.presentSmall(), () => w.presentMedium(), () => w.presentLarge()][i]();
