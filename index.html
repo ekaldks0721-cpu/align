@@ -2755,10 +2755,10 @@ const HOMER={ // Homer K: 어깨까지 오는 까만 머리, 처진 눈썹, 보�
   2:{g:['','','.....oooooo.....','....oaaaaaao....','..oaabbbbbbaao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oaabbmmbbaao..','.oaaaobbbboaaao.','.oaallllllllaao.','.ollllllllllllo.','..oooooooooooo..'],top:2,ey:7,my:11,ny:12,R:14},
   3:{g:['','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaabbbbbbaao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbbbbbbao..','..oabbbbbbbbao..','..oaabbmmbbaao..','.oaaaobbbboaaao.','.oaallllllllaao.','.ollllllllllllo.','..oooooooooooo..'],top:1,ey:7,my:11,ny:12,R:14}};
 SP.homer.tpl=HOMER;
-const YONGBOK={ // 용복이: 파란 머리(뒷머리가 긴 멀릿), 별 헤어밴드, 주근깨, 저지 조끼
-  1:{g:['','','','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaabbbbaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbmmbbbao..','..oaabbbbbbaao..','....ollllllo....','.....oooooo.....'],top:4,ey:9,my:12,ny:14,R:12,small:1},
-  2:{g:['','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaabbbbaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbmmbbbao..','..oaabbbbbbaao..','..oaaobbbboaao..','.oaallllllllaao.','.obllllllllllbo.','..oooooooooooo..'],top:2,ey:7,my:10,ny:12,R:14},
-  3:{g:['','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaabbbbaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oacbbbbbbcao..','..oabbbmmbbbao..','..oaabbbbbbaao..','..oaaobbbboaao..','.oaallllllllaao.','.ollllllllllllo.','.obllllllllllbo.','..oooooooooooo..'],top:1,ey:6,my:9,ny:11,R:14}};
+const YONGBOK={ // 용복이: 턱선까지 오는 짧은 파란 머리(가운데 가르마), 주근깨, 저지 조끼
+  1:{g:['','','','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaaabbaaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oabbbbbbbbao..','..oabbbmmbbbao..','...obbbbbbbbo...','....ollllllo....','.....oooooo.....'],top:4,ey:9,my:12,ny:14,R:12,small:1},
+  2:{g:['','','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaaabbaaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oabbbbbbbbao..','..oabbbmmbbbao..','...obbbbbbbbo...','....oobbbboo....','..ollllllllllo..','.obllllllllllbo.','..oooooooooooo..'],top:2,ey:7,my:10,ny:12,R:14},
+  3:{g:['','.....oooooo.....','....oaaaaaao....','...oaaaaaaaao...','..oaaaabbaaaao..','..oaabbbbbbaao..','..oabebbbbebao..','..oabebbbbebao..','..oabbbbbbbbao..','..oabbbmmbbbao..','...obbbbbbbbo...','....oobbbboo....','..ollllllllllo..','.ollllllllllllo.','.obllllllllllbo.','..oooooooooooo..'],top:1,ey:6,my:9,ny:11,R:14}};
 SP.yongbok.tpl=YONGBOK;
 const POODLE={ // 보르미: 동그랗고 복슬복슬한 푸들 머리
   1:{g:['','','','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','....obbllbbo....','.....oooooo.....'],top:5,ey:10,my:12,ny:13,R:12,small:1},
@@ -2851,9 +2851,8 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('moss')>=0){const g='#6CB04C'; [[6,t],[7,t],[8,t],[9,t],[5,t+1],[7,t+1]].forEach(([x,y])=>{if(gget(G,x,y)!=='.') gset(G,x,y,g)})}
   if(mk.indexOf('wavy')>=0){const y1=s?14:14; for(let x=0;x<16;x++){G[15][x]='.'; if(G[y1][x]!=='.') G[y1][x]=x%3===0?'o':'b'} for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===1) G[15][x]='o'; for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===2) G[15][x]='o'}
   if(mk.indexOf('stetho')>=0&&!s){const g='#6A7080', y=A.ny+1; [[5,y],[4,y+1],[4,y+2],[10,y],[11,y+1],[11,y+2]].forEach(([x,yy])=>gset(G,x,yy,g)); gset(G,11,y+3,'#A8B0C0')} // 청진기
-  if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my, f='#C88A68', w='#F8F8F8', k='#202030'; const hb=A.top+2; for(let x=3;x<=12;x++) if(gget(G,x,hb)==='a') gset(G,x,hb,w); gset(G,7,hb,k); gset(G,8,hb,k);
-    [[6,e+2],[9,e+2],[5,e+3],[10,e+3]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,f)}); gset(G,7,m,'#C84850'); gset(G,8,m,'#C84850');
-    if(!s){for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4'); gset(G,7,A.ny+2,w); gset(G,8,A.ny+2,w); gset(G,1,A.ny+2,w); gset(G,14,A.ny+2,w); gset(G,1,A.ny+3,w); gset(G,14,A.ny+3,w); gset(G,6,A.ny+4,k); gset(G,9,A.ny+4,k)}} // 별 헤어밴드 · 주근깨 · 붉은 입술 · 체인 목걸이 · 저지 조끼
+  if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my, f='#C88A68', w='#F8F8F8', k='#202030'; [[6,e+2],[9,e+2],[5,e+3],[10,e+3]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,f)}); 
+    if(!s){for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4'); gset(G,7,A.ny+2,w); gset(G,8,A.ny+2,w); gset(G,1,A.ny+2,w); gset(G,14,A.ny+2,w); gset(G,1,A.ny+3,w); gset(G,14,A.ny+3,w); gset(G,6,A.ny+4,k); gset(G,9,A.ny+4,k)}} // 주근깨 · 체인 목걸이 · 저지 조끼
   if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'o'); gset(G,9,m-1,'o'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080');
     if(!s){const c='#3050B0'; for(let x=5;x<=10;x++) if(x!==7) gset(G,x,A.ny+1,c); gset(G,7,A.ny+2,c); gset(G,8,A.ny+2,c)}} // 처진 눈썹 · 보조개 · 티셔츠 글씨
   if(mk.indexOf('profglasses')>=0){const g='#C89838'; [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x,A.ey-1],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey+2]].forEach(([a,b])=>gset(G,a,b,g))); gset(G,7,A.ey,g); gset(G,8,A.ey,g)}
