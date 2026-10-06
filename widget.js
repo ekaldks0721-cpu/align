@@ -94,7 +94,10 @@ function summarize(D, now) {
 
   // 일정: 캘린더 + 시간표 고정 일정(그날 쉬기·시간 바꾸기·기간 쉬기 반영)
   const nowMin = Math.floor((now - new Date(y, mo - 1, d).getTime()) / 6e4), evs = [];
-  items('cal-' + k.slice(0, 7)).filter(e => e.date === k).forEach(e => evs.push({ title: e.title, place: e.place || '', s: e.s, e: e.e, color: e.color || PALETTE[3] }));
+  Object.keys(D).filter(id => id.indexOf('cal-') === 0).forEach(id => items(id).forEach(e => { // 여러 날 일정(to)은 첫날·가운데·마지막 날에 맞춰 시간을 나눠요
+    const span = e.to && e.to > e.date; if (span ? (e.date > k || e.to < k) : e.date !== k) return;
+    let s = e.s, en = e.e; if (span && e.s != null) { s = k === e.date ? e.s : k === e.to ? 0 : null; en = k === e.date ? 1440 : k === e.to ? e.e : null; } else if (span) { s = en = null; }
+    evs.push({ title: e.title, place: e.place || '', s, e: en, color: e.color || PALETTE[3] }); }));
   const w = wdOf(k), xs = {}; items('schedx').filter(x => x.date === k).forEach(x => xs[x.ev] = x);
   const brks = items('schedbrk').filter(b => b.from <= k && k <= b.to);
   items('schedule').filter(e => (!e.from || e.from <= k) && (!e.to || e.to >= k) && e.day === w).forEach(e => {
@@ -335,6 +338,7 @@ async function fetchSummary() {
   [-1, 0, 1].forEach(o => months.add(keyOf(new Date(now + o * 864e5)).slice(0, 7))); // 하루 시작 시각 때문에 걸치는 달까지
   const ids = ['settings', 'subjects', 'cats', 'repeats', 'schedule', 'schedx', 'schedbrk'];
   months.forEach(m => ids.push('tasks-' + m, 'log-' + m, 'cal-' + m));
+  [1, 2].forEach(o => { const d = new Date(d0.getFullYear(), d0.getMonth() - o, 1), m = keyOf(d).slice(0, 7); if (!months.has(m)) ids.push('cal-' + m); }); // 지난달에 시작한 여러 날 일정
   const D = await loadDocs(ids), S = summarize(D, now);
   try { fm.writeString(cacheP, JSON.stringify(D)); } catch (e) {}
   return S;

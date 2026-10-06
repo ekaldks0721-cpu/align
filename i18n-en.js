@@ -1598,5 +1598,13 @@ window.I18N_EN={
 "꺼내기": "Bring back",
 "보관함에서 꺼내기": "Bring back from storage",
 "보관 중": "Put away",
-"쉬게 하고 싶은 동물은 이름 옆의 [[보관]]을 눌러요. 유리병, 화면 아래, 위젯에서 빠지고 자란 정도와 옷은 그대로 남아요. 아래 [[보관함]]에서 [[꺼내기]]로 언제든 돌아와요. 유리병에는 다섯 마리까지 나와요.": "To rest a pet, tap [[Put away]] next to its name. It leaves the jar, the bottom of the screen and the widget, but keeps its growth and outfits. Bring it back anytime with [[Bring back]] in [[Storage]] below. Up to five pets appear in the jar."
+"쉬게 하고 싶은 동물은 이름 옆의 [[보관]]을 눌러요. 유리병, 화면 아래, 위젯에서 빠지고 자란 정도와 옷은 그대로 남아요. 아래 [[보관함]]에서 [[꺼내기]]로 언제든 돌아와요. 유리병에는 다섯 마리까지 나와요.": "To rest a pet, tap [[Put away]] next to its name. It leaves the jar, the bottom of the screen and the widget, but keeps its growth and outfits. Bring it back anytime with [[Bring back]] in [[Storage]] below. Up to five pets appear in the jar.",
+"끝나는 날": "End date",
+"시작하는 날": "Start date",
+"시작 시각": "Start time",
+"끝 시각": "End time",
+"여러 날 일정: 시작 시각은 첫날, 끝 시각은 마지막 날 기준이에요. 가운데 날은 하루 종일로 보여요.": "Multi-day event: the start time is for the first day and the end time for the last day. Days in between show as all-day.",
+"끝나는 날이 시작하는 날보다 빨라요": "The end date is before the start date",
+"여러 날 일정": "Multi-day events",
+"[[끝나는 날]]을 시작하는 날보다 뒤로 정하면 여행이나 시험 기간처럼 여러 날에 걸친 일정이 돼요. 첫날은 시작 시각부터, 마지막 날은 끝 시각까지, 가운데 날은 하루 종일로 보여요. 이어지는 날에는 이름 앞에 [[⋯]]이 붙어요.": "Set the [[End date]] after the start date for an event spanning several days, like a trip or exam week. The first day shows from the start time, the last day until the end time, and days in between as all-day. Continuing days get [[⋯]] before the name."
 };

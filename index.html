@@ -849,7 +849,7 @@ function setCfg(k,v){S.settings.v[k]=v; S.settings.m=Date.now(); S.dirty.setting
 const items=d=>Object.values(S.docs[d]||{}).filter(i=>!i.x);
 function put(d,it){it.m=Date.now(); (S.docs[d]||(S.docs[d]={}))[it.id]=it; touch(d)}
 function del(d,id){if(!S.docs[d]) return; S.docs[d][id]={id,m:Date.now(),x:1}; touch(d)}
-function touch(d){S.dirty[d]=1; agg=null; saveLocal(); schedulePush()}
+function touch(d){S.dirty[d]=1; agg=null; spanC=null; saveLocal(); schedulePush()}
 const subs=()=>items('subjects').sort((a,b)=>(a.o||0)-(b.o||0));
 const sub=id=>(S.docs.subjects||{})[id]&&!S.docs.subjects[id].x?S.docs.subjects[id]:{id:'',name:TR('미분류'),color:PALETTE[7]};
 const cats=()=>items('cats').sort((a,b)=>(a.o||0)-(b.o||0));
@@ -879,7 +879,7 @@ const today=()=>dayKey(Date.now());
 const sessDur=s=>s.segs.reduce((a,g)=>a+(g[1]-g[0]),0);
 
 /* 날짜별 집계 (하루 시작 시각 기준으로 나눔) */
-let agg=null;
+let agg=null, spanC=null;
 function getAgg(){
   if(agg) return agg; const days={};
   allOf('log-').forEach(s=>s.segs.forEach(g=>{
@@ -916,7 +916,7 @@ function onSnap(snap){
     const r=mergeDoc(ds.id,data); if(r[0]) changed=true; if(r[1]) S.dirty[ds.id]=1;});
   for(const d in S.docs) if(!seen[d]&&Object.keys(S.docs[d]).length) S.dirty[d]=1;
   if(!seen.settings&&S.settings.m) S.dirty.settings=1;
-  saveLocal(); if(changed){agg=null; render()}
+  saveLocal(); if(changed){agg=null; spanC=null; render()}
   const dirty=Object.keys(S.dirty).length>0; setCloud(dirty?'syncing':'synced'); if(dirty) schedulePush();
 }
 function schedulePush(ms){if(!col) return; clearTimeout(pushT); pushT=setTimeout(push,ms||1200)}
@@ -930,7 +930,7 @@ async function push(){
       if(r[1]) await ref.set(d==='settings'?{m:S.settings.m,v:S.settings.v}:{items:Object.values(S.docs[d]||{})});
       cur=null;
     }
-    saveLocal(); if(changed){agg=null; render()}
+    saveLocal(); if(changed){agg=null; spanC=null; render()}
     if(Object.keys(S.dirty).length){setCloud('syncing'); schedulePush()} else setCloud('synced');
   }catch(e){
     if(cur) S.dirty[cur]=1; saveLocal();
@@ -1012,7 +1012,7 @@ function mergeBackup(p){ // 파일 내용 → 지금 기록에 합치기 (항목
   for(const d in p.docs){if(!/^[\w.\-]+$/.test(d)) continue; const loc=S.docs[d]||(S.docs[d]={});
     for(const k in p.docs[d]){const it=p.docs[d][k]; if(it&&it.id&&(!loc[it.id]||loc[it.id].m<it.m)){loc[it.id]=it; n++}} S.dirty[d]=1}
   if(p.settings&&(p.settings.m||0)>S.settings.m){S.settings={m:p.settings.m,v:p.settings.v||{}}; S.dirty.settings=1; n++}
-  if(n) agg=null; return n;
+  if(n){agg=null; spanC=null} return n;
 }
 function scheduleFolder(){if(fState!=='on') return; clearTimeout(fT); fT=setTimeout(folderWrite,700)}
 async function writeFile(parent,name,data){const fh=await parent.getFileHandle(name,{create:true}), w=await fh.createWritable(); await w.write(data); await w.close()}
@@ -1791,10 +1791,19 @@ function renderPlan(){
 }
 
 /* ---------- 캘린더 ---------- */
-const calOf=k=>items('cal-'+k.slice(0,7)).filter(e=>e.date===k).sort((a,b)=>(a.s==null?-1:a.s)-(b.s==null?-1:b.s));
+const isSpan=e=>!!(e.to&&e.to>e.date);
+const spanEvs=()=>spanC||(spanC=allOf('cal-').filter(isSpan)); // 여러 날에 걸친 일정 (시작한 달에 저장돼 있어요)
+const spanDays=e=>Math.round((new Date(...parts(e.to).map((v,i)=>i===1?v-1:v))-new Date(...parts(e.date).map((v,i)=>i===1?v-1:v)))/864e5)+1;
+function calOf(k){ // 그 날의 캘린더 일정. 여러 날 일정은 첫날은 시작 시각부터, 마지막 날은 끝 시각까지, 가운데 날은 하루 종일로 보여요
+  const out=items('cal-'+k.slice(0,7)).filter(e=>e.date===k&&!isSpan(e));
+  spanEvs().forEach(e=>{if(e.date>k||e.to<k) return; const first=k===e.date, last=k===e.to, timed=e.s!=null;
+    out.push(Object.assign({},e,{src:e,day:k,cont:!first,s:timed?(first?e.s:last?0:null):null,e:timed?(first?1440:last?e.e:null):null}))});
+  return out.sort((a,b)=>(a.s==null?-1:a.s)-(b.s==null?-1:b.s));
+}
 const plIn=v=>h('input',{type:'text',value:v||'',maxlength:60,placeholder:TR('예: 공학관 302호, 강남역 2번 출구'),autocomplete:'off',style:'flex:1;min-width:10rem'}); // 일정 장소 입력칸
 const plOf=v=>(v||'').trim();
-const calWhen=e=>e.s==null?TR('하루 종일'):hm(e.s)+'–'+(e.e>=1440?'24:00':hm(e.e));
+const calWhen=e=>{const o=e.src||e; if(e.src){const i=spanDays({date:o.date,to:e.day}), n=spanDays(o), t=e.day===o.date?(o.s!=null?hm(o.s)+'~':TR('하루 종일')):e.day===o.to?(o.e!=null?'~'+hm(o.e):TR('하루 종일')):TR('하루 종일'); return t+' · '+i+'/'+n+TR('일')}
+  if(isSpan(o)) return mdOf(o.date)+(o.s!=null?' '+hm(o.s):'')+' – '+mdOf(o.to)+(o.e!=null?' '+hm(o.e):'')+' ('+spanDays(o)+TR('일')+')'; return e.s==null?TR('하루 종일'):hm(e.s)+'–'+(e.e>=1440?'24:00':hm(e.e))};
 function calFor(k){ // 시간이 있는 일정을 하루 시작 기준 분으로 (타임테이블용)
   const ds=cfg('dayStart')*60, out=[];
   calOf(k).forEach(e=>{if(e.s!=null&&e.e>ds) out.push({a:Math.max(e.s,ds)-ds,b:e.e-ds,e})});
@@ -1824,29 +1833,33 @@ let cMonth=keyOf(new Date()).slice(0,7), cSel=keyOf(new Date()), cView='month', 
 const taskColor=t=>t.sub&&sub(t.sub).id?sub(t.sub).color:'var(--accent)';
 function toggleTask(t,done){const it=clone(t); it.done=done; it.doneAt=done?Date.now():null; put('tasks-'+t.date.slice(0,7),it); rewardTask(it,done); render()}
 function calDlg(ev,date){
+  if(ev&&ev.src) ev=ev.src; // 여러 날 일정의 하루를 눌러도 원래 일정을 고쳐요
   const isNew=!ev; let color=ev?ev.color:PALETTE[3];
   const fT=h('input',{type:'text',value:ev?ev.title:'',maxlength:60,placeholder:TR('예: 스터디 모임'),style:'flex:1;min-width:10rem'}), fD=h('input',{type:'date',value:ev?ev.date:date});
-  const fPl=plIn(ev&&ev.place);
+  const fPl=plIn(ev&&ev.place), fTo=h('input',{type:'date',value:ev&&ev.to?ev.to:ev?ev.date:date,'aria-label':TR('끝나는 날')});
+  fD.addEventListener('change',()=>{if(!fTo.value||fTo.value<fD.value) fTo.value=fD.value});
   const fAll=h('input',{type:'checkbox',checked:ev?ev.s==null:true}), fS=h('input',{type:'time',value:ev&&ev.s!=null?hm(ev.s):'09:00'}), fE=h('input',{type:'time',value:ev&&ev.s!=null?(ev.e<1440?hm(ev.e):'23:59'):'10:00'});
-  const lS=h('label',null,TR('시작'),fS), lE=h('label',null,TR('끝'),fE), sync=()=>{lS.hidden=lE.hidden=fAll.checked}; fAll.addEventListener('change',sync); sync();
-  const fRep=h('select',null,h('option',{value:''},TR('반복 안 함')),h('option',{value:'w'},TR('매주 이 요일 (시간표에 넣기)')));
+  const lS=h('label',null,TR('시작 시각'),fS), lE=h('label',null,TR('끝 시각'),fE), hint=h('p',{class:'small muted',style:'margin:0'}), sync=()=>{lS.hidden=lE.hidden=fAll.checked; const multi=fTo.value&&fTo.value>fD.value; fRep.disabled=!!multi; if(multi) fRep.value=''; hint.textContent=multi?TR('여러 날 일정: 시작 시각은 첫날, 끝 시각은 마지막 날 기준이에요. 가운데 날은 하루 종일로 보여요.'):''};
+  fAll.addEventListener('change',sync); fTo.addEventListener('change',sync); fD.addEventListener('change',sync);
+  const fRep=h('select',null,h('option',{value:''},TR('반복 안 함')),h('option',{value:'w'},TR('매주 이 요일 (시간표에 넣기)'))); sync();
   const sw=h('span',{class:'sw'}); const paint=()=>sw.replaceChildren(...PALETTE.map(c=>h('button',{style:'--c:'+c,'aria-pressed':String(c===color),'aria-label':TR('색'),onclick:e=>{e.preventDefault(); color=c; paint()}}))); paint();
   const save=()=>{const title=fT.value.trim(), all=fAll.checked, a=toMin(fS.value||'0:0'), b=toMin(fE.value||'0:0');
-    if(!title){toast(TR('일정 이름을 입력하세요')); return} if(!fD.value){toast(TR('날짜를 고르세요')); return} if(!all&&b<=a){toast(TR('끝나는 시간이 시작보다 늦어야 해요')); return}
+    const to=fTo.value&&fTo.value>fD.value?fTo.value:null;
+    if(!title){toast(TR('일정 이름을 입력하세요')); return} if(!fD.value){toast(TR('날짜를 고르세요')); return} if(fTo.value&&fTo.value<fD.value){toast(TR('끝나는 날이 시작하는 날보다 빨라요')); return} if(!all&&!to&&b<=a){toast(TR('끝나는 시간이 시작보다 늦어야 해요')); return}
     if(fRep.value==='w'){ // 매주 반복이면 캘린더가 아니라 시간표의 고정 일정으로 넣음
       if(all){toast(TR('매주 반복은 시간을 정해야 해요. "하루 종일"을 꺼 주세요.')); return}
       put('schedule',{id:uid(),title,day:wdOf(fD.value),s:a,e:b,color,place:plOf(fPl.value),from:fD.value}); if(!isNew) del('cal-'+ev.date.slice(0,7),ev.id);
       cSel=fD.value; cMonth=fD.value.slice(0,7); closeDlg(); render(); toast(TR('매주 ')+WD[wdOf(fD.value)]+TR('요일 일정으로 시간표에 넣었어요')); return}
-    const it=Object.assign(isNew?{}:clone(ev),{id:isNew?uid():ev.id,title,date:fD.value,s:all?null:a,e:all?null:b,color,place:plOf(fPl.value)});
+    const it=Object.assign(isNew?{}:clone(ev),{id:isNew?uid():ev.id,title,date:fD.value,to:to||undefined,s:all?null:a,e:all?null:b,color,place:plOf(fPl.value)}); if(!to) delete it.to;
     if(!isNew&&ev.date.slice(0,7)!==it.date.slice(0,7)) del('cal-'+ev.date.slice(0,7),ev.id);
     put('cal-'+it.date.slice(0,7),it); cSel=it.date; cMonth=it.date.slice(0,7); closeDlg(); render()};
-  openDlg(isNew?TR('일정 추가'):TR('일정 고치기'),[h('label',null,TR('이름'),fT),h('label',null,TR('장소'),fPl),h('label',null,TR('날짜'),fD),h('label',null,TR('반복'),fRep),h('label',null,TR('하루 종일'),fAll),lS,lE,h('label',null,TR('색'),sw)],
+  openDlg(isNew?TR('일정 추가'):TR('일정 고치기'),[h('label',null,TR('이름'),fT),h('label',null,TR('장소'),fPl),h('label',null,TR('시작하는 날'),fD),h('label',null,TR('끝나는 날'),fTo),h('label',null,TR('반복'),fRep),h('label',null,TR('하루 종일'),fAll),lS,lE,hint,h('label',null,TR('색'),sw)],
     [!isNew?h('button',{class:'danger',style:'margin-right:auto',onclick:()=>{del('cal-'+ev.date.slice(0,7),ev.id); closeDlg(); render()}},TR('지우기')):null,h('button',{onclick:closeDlg},TR('닫기')),h('button',{class:'primary',onclick:save},isNew?TR('일정 추가'):TR('고친 내용 저장'))]);
 }
 function dayAgenda(k,withDue){ // 그 날의 일정을 시간순으로: D-day, 캘린더 일정, 시간표의 고정 일정(쉬는 것은 맨 아래), 다른 날 계획한 할 일의 마감
   const out=[];
   items('ddays').filter(x=>x.date===k).forEach(x=>out.push({kind:'dd',t:-2,title:x.title,color:'var(--warn)',when:'D-day'}));
-  calOf(k).forEach(e=>out.push({kind:'cal',t:e.s==null?-1:e.s,s:e.s,e:e.e,title:e.title,place:e.place,color:e.color,when:calWhen(e),ref:e}));
+  calOf(k).forEach(e=>out.push({kind:'cal',t:e.s==null?-1:e.s,s:e.s,e:e.e,title:e.title,place:e.place,color:e.color,when:calWhen(e),ref:e,cont:!!e.cont}));
   schedDay(k,true).forEach(e=>out.push({kind:'fix',t:e.skipped?5000+e.s:e.s,s:e.s,e:e.e,title:e.title,place:e.place,color:e.color,when:hm(e.s)+'–'+(e.e>=1440?'24:00':hm(e.e)),ref:e,skipped:!!e.skipped,changed:!!e.changed}));
   if(withDue) allOf('tasks-').filter(t=>t.due===k&&t.date!==k).forEach(t=>out.push({kind:'due',t:t.dueT!=null?t.dueT:4000,title:t.title,color:'var(--warn)',when:TR('마감')+(t.dueT!=null?' '+hm(t.dueT):''),ref:t}));
   ltAll().filter(g=>g.status!=='done'&&g.due===k).forEach(g=>out.push({kind:'lt',t:4500,title:g.title,color:'var(--warn)',when:TR('마감'),ref:g}));
@@ -1875,7 +1888,7 @@ function renderCalMonth(){
   ensureRepeats(cSel);
   const dd={}, tk={}, dueBy={}; items('ddays').forEach(x=>(dd[x.date]||(dd[x.date]=[])).push({title:x.title,color:'var(--warn)'}));
   allOf('tasks-').forEach(t=>{(tk[t.date]||(tk[t.date]=[])).push(t); if(t.due&&t.due!==t.date) (dueBy[t.due]||(dueBy[t.due]=[])).push(t)});
-  const reg=new Map(), ents=k=>{const out=(dd[k]||[]).slice(); calOf(k).forEach(e=>{reg.set('ev:'+e.id,e); out.push({title:e.title,color:e.color,key:'ev:'+e.id})}); (tk[k]||[]).forEach(t=>{reg.set('tk:'+t.id,t); out.push({title:t.title,color:taskColor(t),task:1,done:t.done,key:'tk:'+t.id})}); (dueBy[k]||[]).forEach(t=>{reg.set('du:'+t.id,t); out.push({title:'⏰ '+t.title,color:'var(--warn)',task:1,due:1,done:t.done,key:'du:'+t.id})}); ltAll().filter(g=>g.status!=='done'&&g.due===k).forEach(g=>out.push({title:'⏰ '+g.title,color:'var(--warn)',task:1,due:1})); return out};
+  const reg=new Map(), ents=k=>{const out=(dd[k]||[]).slice(); calOf(k).forEach(e=>{if(!e.src) reg.set('ev:'+e.id,e); out.push({title:(e.cont?'⋯ ':'')+e.title,color:e.color,key:e.src?null:'ev:'+e.id})}); (tk[k]||[]).forEach(t=>{reg.set('tk:'+t.id,t); out.push({title:t.title,color:taskColor(t),task:1,done:t.done,key:'tk:'+t.id})}); (dueBy[k]||[]).forEach(t=>{reg.set('du:'+t.id,t); out.push({title:'⏰ '+t.title,color:'var(--warn)',task:1,due:1,done:t.done,key:'du:'+t.id})}); ltAll().filter(g=>g.status!=='done'&&g.due===k).forEach(g=>out.push({title:'⏰ '+g.title,color:'var(--warn)',task:1,due:1})); return out};
   const go=d=>{cMonth=keyOf(new Date(y,m-1+d,1)).slice(0,7); renderCal()};
   const cells=[]; for(let i=0;i<n;i++){const k=addDays(start,i), list=ents(k), max=3;
     cells.push(h('button',{class:'cc'+(k.slice(0,7)!==cMonth?' out':'')+(k===t0?' tdy':'')+(k===cSel?' sel':''),'data-date':k,'aria-label':mdLong(k)+TR(', 일정과 할 일 ')+list.length+TR('개'),onclick:()=>{cSel=k; cMonth=k.slice(0,7); renderCal()}},
@@ -1935,7 +1948,7 @@ function renderCalWeek(){
   const grid=h('div',{class:'week wk2'},h('div'),cols.map(c=>h('button',{class:'dh dhb'+(c.k===t0?' on':''),title:TR('월간 보기에서 이 날 열기'),onclick:()=>{cSel=c.k; cMonth=c.k.slice(0,7); cView='month'; renderCal()}},WD[c.i]+' '+parts(c.k)[2])),
     h('div'),cols.map(c=>h('div',{class:'ad'},strip(c))),
     h('div',{class:'hrs'},Array.from({length:nh},(_,i)=>h('div',null,(lo/60+i)%24))),body);
-  const reg=new Map(); cols.forEach(c=>{c.timed.forEach(e=>reg.set('ev:'+e.id,e)); c.planned.forEach(t=>reg.set('pl:'+t.id,t)); c.dueT.forEach(t=>reg.set('dm:'+t.id,t))});
+  const reg=new Map(); cols.forEach(c=>{c.timed.forEach(e=>{if(!e.src) reg.set('ev:'+e.id,e)}); c.planned.forEach(t=>reg.set('pl:'+t.id,t)); c.dueT.forEach(t=>reg.set('dm:'+t.id,t))});
   function weekDrag(e,el,kind,rec,resize){
     const colEls=[...grid.querySelectorAll('.col')], rect=i=>colEls[i].getBoundingClientRect(), grab=e.clientY-el.getBoundingClientRect().top;
     const date0=kind==='dm'?rec.due:rec.date, day0=days.indexOf(date0), s0=kind==='ev'?rec.s:kind==='pl'?rec.planS:rec.dueT, e0=kind==='ev'?rec.e:kind==='pl'?rec.planE:s0+20, dur=e0-s0, lock=!!rec.rep; // 반복 할 일은 요일을 바꾸지 않고 시간만 바꿈
@@ -2538,6 +2551,7 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
   [TR('캘린더'),'cal',TR('날짜가 정해진 일정을 넣고, 할 일과 마감을 달력으로 봐요.'),[
     [TR('월간'),[
       [TR('일정 넣기'),TR('날짜를 누르고 [[일정 추가]]를 눌러요. 시간과 함께 강의실, 약속 장소 같은 [[장소]]도 적을 수 있어요. 반복 칸에서 [[매주 이 요일]]을 고르면 시간표로 들어가요.')],
+      [TR('여러 날 일정'),TR('[[끝나는 날]]을 시작하는 날보다 뒤로 정하면 여행이나 시험 기간처럼 여러 날에 걸친 일정이 돼요. 첫날은 시작 시각부터, 마지막 날은 끝 시각까지, 가운데 날은 하루 종일로 보여요. 이어지는 날에는 이름 앞에 [[⋯]]이 붙어요.')],
       [TR('그날 보기'),TR('날짜를 누르면 오른쪽에 그날의 일정, 할 일, 마감이 모여요. 할 일을 체크하거나 바로 추가할 수 있어요.')],
       [TR('읽는 법'),{leg:[['ev',TR('캘린더 일정')],['task',TR('그날 계획한 할 일')],['due',TR('⏰ 마감')]]}],
       [TR('날짜 옮기기'),TR('할 일, 일정, 마감을 다른 날짜 칸으로 끌어다 놓아요.')]]],
@@ -3540,7 +3554,7 @@ function checkReminders(){ // 마감·일정 알림: 20초마다 확인해서 �
   const fire=(key,title,body,from,until)=>{if(fired[key]||now<from||now>=until) return; fired[key]=now; notify(title,body,key); if(cfg('nSound')) playTone(cfg('tone'),'remind'); toast(title+' · '+body)};
   const ev=cfg('nEv'), nd=cfg('nDue');
   if(ev>0) [k,keyOf(new Date(now+864e5))].forEach(dk=>dayAgenda(dk,false).forEach(a=>{
-    if((a.kind!=='cal'&&a.kind!=='fix')||a.s==null||a.skipped) return; const st=at(dk,a.s);
+    if((a.kind!=='cal'&&a.kind!=='fix')||a.s==null||a.skipped||a.cont) return; const st=at(dk,a.s);
     fire('ev|'+dk+'|'+((a.ref&&a.ref.id)||a.title)+'|'+a.s,a.title,fmtDur((st-now)/1e3)+TR(' 뒤 시작해요 (')+hm(a.s)+(a.place?' · '+a.place:'')+')',st-ev*60e3,st)}));
   if(nd>0) allOf('tasks-').forEach(t=>{if(t.done||!t.due) return;
     if(t.dueT!=null){const du=at(t.due,t.dueT); fire('due|'+t.id+'|'+t.due+'|'+t.dueT,TR('마감 ')+fmtDur((du-now)/1e3)+TR(' 전이에요'),t.title+' ('+hm(t.dueT)+TR('까지)'),du-nd*60e3,du)}
