@@ -512,6 +512,21 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
 
 .evpl{display:block;margin-top:.1rem;font-size:.8rem;color:var(--ink2);word-break:keep-all;overflow-wrap:anywhere}
 
+/* 시간표·주간 보기 일정 칸: 단어 중간에서 끊지 않고, 시간·장소는 한 줄로 */
+.ev{word-break:keep-all;overflow-wrap:anywhere}
+.ev .muted.num,.ev .evp{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev .evp{font-size:.92em;font-weight:600;color:var(--ink2)} .ev .evp::before{content:"@ ";opacity:.6}
+.ev br{display:none}
+@media (max-width:520px){
+  .ev{font-size:.7rem;line-height:1.22;padding:3px 4px}
+  /* 할 일: 제목 자리를 넓게. 옮기기·지우기는 제목을 눌러 여는 창에 있음 */
+  .tasks li .kmv,.tasks li .kdel{display:none}
+  .tasks li{gap:.35rem}
+  .tasks .t{font-size:1rem}
+  .tcmp,.tdue,.tplan{font-size:.8rem}
+  .kgrip,.kgrip:hover{width:24px;min-width:24px}
+}
+
 /* 아이폰 앱(홈 화면에 추가)용 */
 html{overscroll-behavior-y:none}
 button,.tabs,.chip,.tag{-webkit-touch-callout:none}
@@ -1147,10 +1162,10 @@ const dueLabel=t=>mdOf(t.due)+' ('+WD[wdOf(t.due)]+')'+(t.dueT!=null?' '+hm(t.du
 function fmtLeft(ms){ms=Math.max(0,ms); const d=Math.floor(ms/864e5), h2=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
   return d?d+'일'+(h2?' '+h2+'시간':''):h2?h2+'시간'+(m?' '+m+'분':''):ms<6e4?'1분 미만':m+'분'}
 function dueInfo(t,now){ // 마감 줄에 보여줄 글과 색
-  const ts=dueTs(t), lab='마감 '+dueLabel(t);
+  const ts=dueTs(t), rel=dayDiff(today(),t.due), lab=(rel===0?'오늘':rel===1?'내일':rel===-1?'어제':dueLabel(t).replace(/ \d\d:\d\d$/,''))+(t.dueT!=null?' '+hm(t.dueT):'')+' 마감';
   if(t.done) return {text:lab+(t.doneAt?(t.doneAt<=ts?' · 마감 전 완료':' · 마감 후 완료'):''),cls:t.doneAt&&t.doneAt<=ts?'ok':''};
   const diff=ts-now, dd=Math.round((new Date(parts(t.due)[0],parts(t.due)[1]-1,parts(t.due)[2])-new Date(parts(today())[0],parts(today())[1]-1,parts(today())[2]))/864e5);
-  if(t.dueT==null) return diff<0?{text:lab+' · D+'+(-dd)+' 지남',cls:'late'}:dd===0?{text:lab+' · 오늘 마감, '+fmtLeft(diff)+' 남음',cls:diff<36e5*3?'urgent':'soon'}:{text:lab+' · D-'+dd,cls:dd===1?'soon':''};
+  if(t.dueT==null) return diff<0?{text:lab+' · D+'+(-dd)+' 지남',cls:'late'}:dd===0?{text:lab+' · '+fmtLeft(diff)+' 남음',cls:diff<36e5*3?'urgent':'soon'}:{text:lab+' · D-'+dd,cls:dd===1?'soon':''};
   return diff<0?{text:lab+' · '+fmtLeft(-diff)+' 지남',cls:'late'}:{text:lab+' · '+fmtLeft(diff)+' 남음',cls:diff<36e5*3?'urgent':diff<864e5?'soon':''};
 }
 function paintDue(el){const i=dueInfo(el._t,Date.now()); el.textContent='⏰ '+i.text; el.className='tdue num '+i.cls}
@@ -1160,9 +1175,10 @@ const taskLive=id=>T.task===id&&isFocus()&&(T.running||T.elapsed>0)?elapsedMs()/
 function paintCmp(el){
   const est=+el.dataset.est, act=+el.dataset.base+taskLive(el.dataset.id);
   if(!est&&!act){el.hidden=true; return} el.hidden=false;
-  const key=Math.floor(act)+'/'+est; if(el.dataset.k===key) return; el.dataset.k=key; const over=est&&act>est;
-  el.replaceChildren(...[h('span',null,'실제 '+fmtHMS(act)+(est?' / 예상 '+fmtHMS(est):''))].concat(est?[ // 예상 시간이 없으면 실제 시간만 보여 줌
-    h('span',{class:over?'over':'left'},over?'예상 초과 +'+fmtHMS(act-est):'예상 남음 '+fmtHMS(est-act)),
+  const key=Math.floor(act/60)+'/'+est; if(el.dataset.k===key) return; el.dataset.k=key; const over=est&&act>est;
+  const mn=x=>fmtDur(Math.floor(x/60)*60); // 짧게: 분 단위
+  el.replaceChildren(...[h('span',null,est?(act>=60?mn(act)+' / ':'예상 ')+mn(est):'한 시간 '+mn(act))].concat(est?[ // 예상 시간이 없으면 한 시간만 보여 줌
+    h('span',{class:over?'over':'left'},over?mn(act-est)+' 넘음':mn(Math.max(60,est-act))+' 남음'),
     h('span',{class:'tbar'+(over?' over':'')},h('i',{style:'width:'+Math.min(100,act/est*100)+'%'}))]:[]));
 }
 const kEst=hmsInput(cfg('focus')*60); $('#k-est-box').replaceWith(kEst);
@@ -1208,8 +1224,8 @@ function renderTasks(){
       t.lt&&ltOf(t.lt)?h('button',{class:'tgoal',title:'대시보드의 장기 할 일 열기',onclick:()=>ltDlg(ltOf(t.lt))},'↗ '+ltOf(t.lt).title):null,
       (()=>{const el=h('span',{class:'tcmp num','data-id':t.id,'data-base':actOf[t.id]||0,'data-est':estOf(t)}); paintCmp(el); return el})()),
       viewDate===today()&&!t.done?h('button',{class:'quiet',title:'이 할 일로 타이머 맞추기',onclick:()=>{T.task=t.id; if(t.sub) T.sub=t.sub; saveT(); fillTimer(); toast('타이머를 "'+t.title+'"에 맞췄어요'); $('#timer').scrollIntoView({block:'nearest'})}},'▶'):null,
-      !t.done&&!t.rep?h('button',{class:'quiet','aria-label':'다른 날로 옮기기',title:'다른 날로 옮기기',onclick:()=>moveDlg(t)},ic('cal')):null,
-      h('button',{class:'quiet','aria-label':'지우기',onclick:()=>{del('tasks-'+t.date.slice(0,7),t.id); render()}},'×'));
+      !t.done&&!t.rep?h('button',{class:'quiet kmv','aria-label':'다른 날로 옮기기',title:'다른 날로 옮기기',onclick:()=>moveDlg(t)},ic('cal')):null,
+      h('button',{class:'quiet kdel','aria-label':'지우기',onclick:()=>{del('tasks-'+t.date.slice(0,7),t.id); render()}},'×'));
   };
   list.replaceChildren(...(ts.length?kGroups(ts).map(g=>h('li',{class:'kcat','data-cid':g.id},
       h('div',{class:'kch'},g.id?h('button',{class:'kgrip','aria-label':'"'+g.name+'" 카테고리를 끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)',title:'끌어서 카테고리 순서 바꾸기',onpointerdown:e=>kDrag(e,kSaveCatOrder),onkeydown:e=>kKey(e,kSaveCatOrder)},'⋮⋮'):null,g.name,h('span',{class:'n num'},g.done+' / '+g.n)),
@@ -1302,7 +1318,8 @@ function taskDlg(t){
   const chk=()=>{const a=fPS.value?toMin(fPS.value):null, b=fPE.value?toMin(fPE.value):null, c=(a!=null&&b!=null&&b>a)?conflictsFor(t.rep?t.date:(fD.value||t.date),a,b,t.id):[]; wn.textContent=c.length?'겹치는 시간이 있어요: '+c.join(', '):''; wn.hidden=!c.length};
   const clr=h('button',{type:'button',class:'quiet',hidden:!hasPlan(t),style:'justify-self:end',onclick:()=>{fPS.value=''; fPE.value=''; chk(); clr.hidden=true}},'배정 지우기');
   [fPS,fPE,fD].forEach(x=>x.addEventListener('input',()=>{chk(); clr.hidden=!(fPS.value||fPE.value)})); chk();
-  openDlg('할 일 고치기',[h('label',null,'내용',fT),t.rep?null:h('label',null,'계획한 날',fD),t.rep?null:h('label',null,'마감 날짜',fDue),h('label',null,'마감 시각 (선택)',fDueT),h('label',null,'시간 배정 시작 (선택)',fPS),h('label',null,'시간 배정 끝',fPE),clr,wn,h('label',null,'대시보드의 장기 할 일',fLt),h('label',null,'항목',fS),h('label',null,'예상 시간',fE)],[h('button',{onclick:closeDlg},'닫기'),
+  openDlg('할 일 고치기',[h('label',null,'내용',fT),t.rep?null:h('label',null,'계획한 날',fD),t.rep?null:h('label',null,'마감 날짜',fDue),h('label',null,'마감 시각 (선택)',fDueT),h('label',null,'시간 배정 시작 (선택)',fPS),h('label',null,'시간 배정 끝',fPE),clr,wn,h('label',null,'대시보드의 장기 할 일',fLt),h('label',null,'항목',fS),h('label',null,'예상 시간',fE)],[h('button',{class:'danger',style:'margin-right:auto',onclick:()=>{del('tasks-'+t.date.slice(0,7),t.id); closeDlg(); render(); toast('할 일을 지웠어요')}},'지우기'),
+    !t.done&&!t.rep?h('button',{onclick:()=>{closeDlg(); moveDlg(t)}},'다른 날로'):null,h('button',{onclick:closeDlg},'닫기'),
     h('button',{class:'primary',onclick:()=>{const v=fT.value.trim(); if(!v){toast('내용을 입력하세요'); return} const dT=fDueT.value?toMin(fDueT.value):null, dD=t.rep?(dT!=null?t.date:''):(fDue.value||(dT!=null?(t.due||t.date):'')); const pS=fPS.value?toMin(fPS.value):null, pE=fPE.value?toMin(fPE.value):null; if((pS==null)!==(pE==null)){toast('배정 시작과 끝을 모두 넣거나 모두 비워 주세요'); return} if(pS!=null&&pE<=pS){toast('배정 끝이 시작보다 늦어야 해요'); return} retask(t,{title:v,sub:fS.value,estSec:fE.get(),date:(t.rep||!fD.value)?t.date:fD.value,due:dD,dueT:dD?dT:null,planS:pS,planE:pE,lt:fLt.value||''}); closeDlg(); render()}},'고친 내용 저장')]);
 }
 $('#k-duebtn').onclick=()=>{const box=$('#k-due-box'), open=box.hidden; box.hidden=!open; $('#k-duebtn').setAttribute('aria-expanded',String(open)); $('#k-duebtn').textContent=open?'마감 닫기':'마감 설정'; if(open&&!$('#k-due').value) $('#k-due').value=viewDate};
@@ -1631,8 +1648,8 @@ function renderPlan(){
     h('div',{class:'hrs'},Array.from({length:n},(_,i)=>h('div',null,(lo/60+i)%24))),
     cell.map((c,i)=>h('div',{class:'col'+(planWk&&i===tw?' tdy2':''),style:'height:'+n*H+'px'},
       c.day.map(x=>{const f=x.f, sk=!!(f&&f.skipped); return h('button',{class:'ev'+(sk?' wkskip':''),style:'--c:'+x.e.color+';top:'+top(x.s)+'px;height:'+hh(x.s,x.en)+'px',title:sk?x.e.title+' · 이번 주는 쉬어요':x.e.title,onclick:()=>f?schedOccDlg(f,dts[i]):eventDlg(x.e)},
-        x.e.title+(f&&f.changed?' ✎':''),h('br'),h('span',{class:'muted num'},sk?'이번 주 쉼':hm(x.s)+(f&&f.changed?' (이번 주만)':'')),x.e.place?[h('br'),h('span',{class:'muted'},'📍 '+x.e.place)]:null)}),
-      c.timed.map(x=>h('button',{class:'ev cw2',style:'--c:'+x.color+';top:'+top(x.s)+'px;height:'+hh(x.s,x.e)+'px',title:x.title+' '+calWhen(x)+(x.place?' · '+x.place:''),onclick:()=>calDlg(x)},x.title,h('br'),h('span',{class:'muted num'},hm(x.s)),x.place?[h('br'),h('span',{class:'muted'},'📍 '+x.place)]:null)))));
+        x.e.title+(f&&f.changed?' ✎':''),h('br'),h('span',{class:'muted num'},sk?'이번 주 쉼':hm(x.s)+(f&&f.changed?' (이번 주만)':'')),x.e.place?h('span',{class:'evp'},x.e.place):null)}),
+      c.timed.map(x=>h('button',{class:'ev cw2',style:'--c:'+x.color+';top:'+top(x.s)+'px;height:'+hh(x.s,x.e)+'px',title:x.title+' '+calWhen(x)+(x.place?' · '+x.place:''),onclick:()=>calDlg(x)},x.title,h('br'),h('span',{class:'muted num'},hm(x.s)),x.place?h('span',{class:'evp'},x.place):null)))));
   const t0=today(), ddAll=items('ddays').sort((a,b)=>a.date<b.date?-1:1), dd=ddAll.filter(x=>!x.arch), ddOld=ddAll.filter(x=>x.arch);
   const fT=h('input',{type:'text',placeholder:'예: 기말고사',maxlength:40,style:'flex:1;min-width:8rem'}), fD=h('input',{type:'date'});
   const addD=()=>{if(!fT.value.trim()||!fD.value){toast('이름과 날짜를 입력하세요'); return} put('ddays',{id:uid(),title:fT.value.trim(),date:fD.value}); render()};
@@ -1798,8 +1815,8 @@ function renderCalWeek(){
   const strip=c=>{const ch=[]; c.dd.forEach(x=>ch.push(chip('⚑ '+x.title,'var(--warn)'))); c.allDay.forEach(e=>ch.push(chip(e.title,e.color,()=>calDlg(e)))); c.dueD.forEach(t=>ch.push(chip('⏰ '+t.title,'var(--warn)',()=>taskDlg(t)))); c.loose.forEach(t=>ch.push(chip((t.done?'✓ ':'☐ ')+t.title,taskColor(t),()=>taskDlg(t)))); ltAll().filter(g=>g.status!=='done'&&g.due===c.k).forEach(g=>ch.push(chip('⏰ '+g.title,'var(--warn)',()=>ltDlg(g))));
     const max=4; return ch.slice(0,max).concat(ch.length>max?[chip('+'+(ch.length-max),'var(--ink2)',()=>{cSel=c.k; cMonth=c.k.slice(0,7); cView='month'; renderCal()})]:[])};
   const body=cols.map(c=>h('div',{class:'col'+(c.k===t0?' tdy2':''),style:'height:'+nh*H+'px'},
-    c.fixed.map(e=>h('button',{class:'ev fxw',style:'--c:'+e.color+';top:'+top(e.s)+'px;height:'+hh(e.s,e.e)+'px',title:'매주 '+e.title+(e.place?' · '+e.place:'')+' · 눌러서 이 날만 바꾸기',onclick:()=>schedOccDlg(e,c.k)},e.title+(e.changed?' ✎':''),e.place?[h('br'),h('span',{class:'muted'},'📍 '+e.place)]:null)),
-    c.timed.map(e=>h('button',{class:'ev cw','data-k':'ev:'+e.id,style:'--c:'+e.color+';top:'+top(e.s)+'px;height:'+hh(e.s,e.e)+'px',title:e.title+' '+calWhen(e)+(e.place?' · '+e.place:''),onclick:()=>calDlg(e)},e.title,h('br'),h('span',{class:'muted num'},hm(e.s)),e.place?[h('br'),h('span',{class:'muted'},'📍 '+e.place)]:null,h('i',{class:'rsz'}))),
+    c.fixed.map(e=>h('button',{class:'ev fxw',style:'--c:'+e.color+';top:'+top(e.s)+'px;height:'+hh(e.s,e.e)+'px',title:'매주 '+e.title+(e.place?' · '+e.place:'')+' · 눌러서 이 날만 바꾸기',onclick:()=>schedOccDlg(e,c.k)},e.title+(e.changed?' ✎':''),e.place?h('span',{class:'evp'},e.place):null)),
+    c.timed.map(e=>h('button',{class:'ev cw','data-k':'ev:'+e.id,style:'--c:'+e.color+';top:'+top(e.s)+'px;height:'+hh(e.s,e.e)+'px',title:e.title+' '+calWhen(e)+(e.place?' · '+e.place:''),onclick:()=>calDlg(e)},e.title,h('br'),h('span',{class:'muted num'},hm(e.s)),e.place?h('span',{class:'evp'},e.place):null,h('i',{class:'rsz'}))),
     c.planned.map(t=>h('button',{class:'ev pl'+(t.done?' dn':''),'data-k':'pl:'+t.id,style:'--c:'+taskColor(t)+';top:'+top(t.planS)+'px;height:'+hh(t.planS,t.planE)+'px',title:t.title+' · 배정 '+planLabel(t),onclick:()=>taskDlg(t)},(t.done?'✓ ':'')+t.title,h('br'),h('span',{class:'muted num'},planLabel(t)),h('i',{class:'rsz'}))),
     c.dueT.map(t=>h('button',{class:'ev dm','data-k':'dm:'+t.id,style:'top:'+top(t.dueT)+'px',title:t.title+' 마감 '+hm(t.dueT),onclick:()=>taskDlg(t)},'⏰ '+t.title)),
     c.k===t0&&nowM>=lo&&nowM<=hi?h('div',{class:'nowh',style:'top:'+top(nowM)+'px'}):null));
