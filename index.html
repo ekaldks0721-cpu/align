@@ -604,7 +604,7 @@ section[data-card=pet] h2,.pxui h2{font-family:inherit;font-weight:700;font-size
 .pxui .pxtabs button{flex:1 1 auto;min-height:38px;padding:.2em .6em;font-size:14px}
 .pxui .pxtabs button[aria-selected=true]{background:var(--px-ink);color:var(--px-bg);font-weight:700;transform:translate(2px,2px);box-shadow:none}
 .pxchk{display:inline-flex;align-items:center;gap:.4rem;font-size:14px;margin-right:1rem} .pxchk input{accent-color:#283048}
-.shopit.lock{background:var(--px-soft);border-style:dashed} .sil svg rect{fill:var(--px-ink)!important;opacity:.28}
+.shopit.lock{background:var(--px-soft);border-style:dashed} .dimx svg{filter:grayscale(1);opacity:.4} .sil svg rect{fill:var(--px-ink)!important;opacity:.28}
 .achlist{list-style:none;margin:.6rem 0 0;padding:0;display:flex;flex-direction:column;gap:.45rem}
 .achlist li{display:flex;align-items:center;gap:.7rem;padding:.55rem .7rem;border:2px solid var(--px-line);background:var(--px-bg)}
 .achlist li:not(.done){background:var(--px-soft)} .achlist li:not(.done) .achic{opacity:.45}
@@ -1179,7 +1179,7 @@ function finishFocus(endTs){
   if(T.running) T.segs.push([Math.round(T.segStart/1e3),Math.round(endTs/1e3)]);
   const segs=T.segs.filter(g=>g[1]>g[0]), total=segs.reduce((a,g)=>a+g[1]-g[0],0), quick=!!T.quick; T.quick=false;
   T.running=false; T.elapsed=0; T.segs=[]; T.segStart=null;
-  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick);
+  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick);
     if(T.mode==='pomo'&&!quick){T.count++; T.phase=T.count%Math.max(1,cfg('every'))===0?'long':'short';
       if(cfg('autoBreak')&&Date.now()-endTs<60e3){T.running=true; T.segStart=Date.now()}}
   } else toast(TR('1분이 안 되는 시간은 기록하지 않았어요'));
@@ -2598,11 +2598,13 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
   sawol:{n:TR('정사월'),special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
   mikael:{n:TR('미카엘'),special:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
-const OUT={ // 옷: 머리·얼굴·목 칸에 하나씩
-  flower:{n:TR('꽃핀'),slot:'head',price:30},ribbon:{n:TR('리본'),slot:'head',price:40},cap:{n:TR('야구 모자'),slot:'head',price:60},
-  beanie:{n:TR('털모자'),slot:'head',price:80},wizard:{n:TR('마법사 모자'),slot:'head',price:150},crown:{n:TR('왕관'),slot:'head',price:200},
-  glasses:{n:TR('동그란 안경'),slot:'face',price:50},shades:{n:TR('선글라스'),slot:'face',price:90},
-  bowtie:{n:TR('나비넥타이'),slot:'neck',price:50},bell:{n:TR('방울 목걸이'),slot:'neck',price:60},scarf:{n:TR('목도리'),slot:'neck',price:70}};
+const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면 레벨이나 업적으로 열려요
+  flower:{n:TR('꽃핀'),slot:'head',price:150},sprout:{n:TR('새싹'),slot:'head',price:150},starpin:{n:TR('별 핀'),slot:'head',price:200},ribbon:{n:TR('리본'),slot:'head',price:200},
+  cap:{n:TR('야구 모자'),slot:'head',price:300},beanie:{n:TR('털모자'),slot:'head',price:350},straw:{n:TR('밀짚모자'),slot:'head',price:400},santa:{n:TR('산타 모자'),slot:'head',price:500},
+  headphones:{n:TR('헤드폰'),slot:'head',price:600},wizard:{n:TR('마법사 모자'),slot:'head',price:800,need:{lv:6}},gradcap:{n:TR('학사모'),slot:'head',price:1200,need:{lv:10}},crown:{n:TR('왕관'),slot:'head',price:1500,need:{ach:'s30'}},
+  glasses:{n:TR('동그란 안경'),slot:'face',price:250},mustache:{n:TR('콧수염'),slot:'face',price:300},shades:{n:TR('선글라스'),slot:'face',price:400},heartglass:{n:TR('하트 안경'),slot:'face',price:450},monocle:{n:TR('외눈 안경'),slot:'face',price:500,need:{lv:8}},
+  bowtie:{n:TR('나비넥타이'),slot:'neck',price:250},bell:{n:TR('방울 목걸이'),slot:'neck',price:300},bandana:{n:TR('손수건'),slot:'neck',price:300},scarf:{n:TR('목도리'),slot:'neck',price:350},tie:{n:TR('넥타이'),slot:'neck',price:350},medal:{n:TR('금메달'),slot:'neck',price:2000,need:{ach:'h100'}},
+  backpack:{n:TR('책가방'),slot:'back',price:700},cape:{n:TR('망토'),slot:'back',price:1000,need:{lv:12}},wings:{n:TR('천사 날개'),slot:'back',price:2500,need:{ach:'s100'}}};
 const STAGES=[[0,TR('알')],[30,TR('아기')],[300,TR('어린이')],[1200,TR('어른')]]; // 자라는 데 필요한 집중 시간(분)
 const stageOf=xp=>xp>=1200?3:xp>=300?2:xp>=30?1:0;
 const petLv=xp=>Math.floor(Math.sqrt(Math.max(0,xp)/8))+1, lvXP=n=>8*(n-1)*(n-1); // 레벨 n이 되는 데 필요한 분
@@ -2700,7 +2702,12 @@ const WEAR={
   wizard:{c:{k:'#7048C8',K:'#5030A0',y:'#F8D838'},r:['.....o....','....oko...','....okko..','...okykko.','...okkkko.','..okkkkkko','oooooooooooo','oKKKKKKKKKKo'],dx:0},
   crown:{c:{k:'#F8C838',K:'#C89010',p:'#E83838'},r:['o..oo..o','ko.ok.ok','kkkkkkkk','kpkkkkpk','KKKKKKKK'],box:1},
   flower:{c:{p:'#F870A0',y:'#F8E048'},r:['.p.','pyp','.p.'],side:-1},
-  ribbon:{c:{k:'#F84878',K:'#C02050'},r:['oo.oo','okokko','okKko'.slice(0,5),'oo.oo'],side:1}};
+  ribbon:{c:{k:'#F84878',K:'#C02050'},r:['oo.oo','okokko','okKko'.slice(0,5),'oo.oo'],side:1},
+  sprout:{c:{g:'#58C058',G:'#3E8E40'},r:['gg.gg','.gGg.','..G..','..G..']},
+  starpin:{c:{y:'#F8D838',Y:'#C89818'},r:['.y.','yYy','.y.'],side:1},
+  straw:{c:{y:'#F0D070',Y:'#C8A040',r:'#E84848'},r:['...oooooo...','..oyyyyyyo..','..orrrrrro..','oyyyyyyyyyyo','.oYYYYYYYYo.']},
+  santa:{c:{r:'#E83838',w:'#FFFFFF'},r:['.........ww','.....oooorw','....orrrro.','...orrrrro.','..orrrrrrro','.owwwwwwwwo.'.slice(0,11)]},
+  gradcap:{c:{k:'#303848',K:'#485068',y:'#F8C838'},r:['...oooooo...','.ookkkkkkoo.','okkkkkkkkkko','.ookkkkkkooy','...oKKKKo..y','...oKKKKo..y']}};
 const WEARC={G:'#384068',S:'#202028',W:'#F8F8F8',R:'#E83838',D:'#901818',Y:'#F8D030'};
 function wearG(G,st,wear){
   const A=TPL[st], t=A.top, P=[];
@@ -2713,7 +2720,19 @@ function wearG(G,st,wear){
   const ey=A.ey;
   if(w.face==='glasses'){[5,10].forEach(x=>{[[x,ey-1],[x-1,ey],[x+1,ey],[x-1,ey+1],[x+1,ey+1]].concat(A.small?[]:[[x,ey+2]]).forEach(([a,b])=>gset(G,a,b,WEARC.G))}); for(let x=7;x<=8;x++) gset(G,x,ey,WEARC.G)}
   if(w.face==='shades'){for(let x=3;x<=12;x++){gset(G,x,ey,WEARC.S); gset(G,x,ey+1,(x>=4&&x<=6)||(x>=9&&x<=11)?WEARC.S:gget(G,x,ey+1))} gset(G,4,ey,WEARC.W); gset(G,9,ey,WEARC.W); P.push({S:'#202028',W:'#A8D8F8'})}
+  if(w.head==='headphones'){const d='#383848', r='#E84848'; for(let x=4;x<=11;x++) gset(G,x,t-1,d); for(let y=t;y<ey-1;y++){gset(G,3,y,d); gset(G,12,y,d)} for(let y=ey-1;y<=ey+1;y++){gset(G,2,y,r); gset(G,3,y,r); gset(G,12,y,r); gset(G,13,y,r)} gset(G,1,ey,d); gset(G,14,ey,d)}
+  if(w.face==='heartglass'){[5,10].forEach(x=>{[[x-1,ey-1],[x+1,ey-1],[x-1,ey],[x,ey],[x+1,ey],[x,ey+1]].forEach(([a,b])=>gset(G,a,b,'#F04870'))}); for(let x=7;x<=8;x++) gset(G,x,ey,'#F04870'); gset(G,4,ey-1,'#FFB0C8')}
+  if(w.face==='monocle'){[[10,ey-1],[9,ey],[11,ey],[9,ey+1],[11,ey+1],[10,ey+2]].forEach(([a,b])=>gset(G,a,b,'#B07810')); gset(G,10,ey+1,'#C8E8F8'); gset(G,12,ey+2,'#B07810'); gset(G,12,ey+3,'#B07810')}
+  if(w.face==='mustache'){const m=A.my; [[5,m],[6,m],[9,m],[10,m],[4,m-1],[11,m-1]].forEach(([a,b])=>gset(G,a,b,'#4A2C18'))}
   const ny=A.ny;
+  if(w.neck==='tie'){gset(G,7,ny,'#203890'); gset(G,8,ny,'#203890'); for(let y=ny+1;y<=ny+3;y++){gset(G,7,y,'#3858C8'); gset(G,8,y,'#3858C8')} gset(G,7,ny+4,'#203890'); gset(G,8,ny+4,'#203890')}
+  if(w.neck==='medal'){[[5,ny-1],[6,ny],[10,ny-1],[9,ny]].forEach(([a,b])=>gset(G,a,b,'#3868D8')); gset(G,7,ny+1,'#3868D8'); gset(G,8,ny+1,'#E84848'); [[7,ny+2],[8,ny+2],[7,ny+3],[8,ny+3]].forEach(([a,b])=>gset(G,a,b,'#F8C838')); gset(G,6,ny+2,'#B07810'); gset(G,9,ny+2,'#B07810'); gset(G,6,ny+3,'#B07810'); gset(G,9,ny+3,'#B07810'); gset(G,7,ny+4,'#B07810'); gset(G,8,ny+4,'#B07810'); gset(G,7,ny+2,'#FFF0A0')}
+  if(w.neck==='bandana'){for(let x=3;x<=12;x++) if(gget(G,x,ny)!=='.') gset(G,x,ny,'#E84848'); for(let x=5;x<=10;x++) gset(G,x,ny+1,'#E84848'); for(let x=6;x<=9;x++) gset(G,x,ny+2,'#E84848'); gset(G,7,ny+3,'#E84848'); gset(G,8,ny+3,'#E84848'); gset(G,6,ny+1,'#FFFFFF'); gset(G,9,ny+1,'#FFFFFF'); gset(G,8,ny+2,'#FFFFFF')}
+  if(w.back){const em=(x,y,c)=>{if(gget(G,x,y)==='.') gset(G,x,y,c)};
+    if(w.back==='wings'){const rows=['oo..','owwo','owww','owww','.oww'], cols={o:'#8890B8',w:'#FFFFFF'}; rows.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!=='.'){const f=i<3?(x,y,c)=>gset(G,x,y,c):em; f(i,ny-4+j,cols[ch]); f(15-i,ny-4+j,cols[ch])}}))}
+    if(w.back==='cape') for(let y=ny-1;y<=15;y++){let l=-1,r=-1; for(let x=0;x<16;x++) if(G[y][x]!=='.'){if(l<0) l=x; r=x} if(l<0) continue; const c=y===15?'#901828':'#D83040'; em(l-1,y,c); em(r+1,y,c); if(y>ny+1){em(l-2,y,'#901828'); em(r+2,y,'#901828')}}
+    if(w.back==='backpack'){for(let y=ny+1;y<=ny+3;y++){em(2,y,'#E8A040'); em(1,y,'#8A5020'); em(13,y,'#E8A040'); em(14,y,'#8A5020')} em(2,ny,'#8A5020'); em(13,ny,'#8A5020'); for(let y=ny;y<=ny+3;y++){gset(G,4,y,'#A06030'); gset(G,11,y,'#A06030')}}
+  }
   if(w.neck==='bowtie'){[[5,ny-1],[5,ny],[5,ny+1],[6,ny],[9,ny],[10,ny-1],[10,ny],[10,ny+1]].forEach(([a,b])=>gset(G,a,b,WEARC.R)); gset(G,6,ny-1,WEARC.R); gset(G,6,ny+1,WEARC.R); gset(G,9,ny-1,WEARC.R); gset(G,9,ny+1,WEARC.R); gset(G,7,ny,WEARC.D); gset(G,8,ny,WEARC.D)}
   if(w.neck==='bell'){for(let x=4;x<=11;x++) if('bloac'.indexOf(gget(G,x,ny))>=0||gget(G,x,ny)==='o') gset(G,x,ny,WEARC.R); gset(G,7,ny+1,WEARC.Y); gset(G,8,ny+1,WEARC.Y); gset(G,7,ny+2,WEARC.D); gset(G,8,ny+2,WEARC.Y)}
   if(w.neck==='scarf'){for(let x=3;x<=12;x++){if(gget(G,x,ny)!=='.') gset(G,x,ny,x%3?WEARC.R:WEARC.W)} for(let y=ny+1;y<=ny+3;y++){gset(G,10,y,y%2?WEARC.R:WEARC.W); gset(G,11,y,WEARC.R)}}
@@ -3053,7 +3072,7 @@ function adoptPet(spk,free){
 function careFor(p,kind){
   const k=kind==='food', cost=k?5:2, key=k?'fed':'water', f=fullOf(p[key],k?36:24);
   if(f>.9){toast(k?TR('지금은 배불러요'):TR('지금은 목마르지 않아요')); return}
-  if(!spend(cost,(k?TR('밥 주기'):TR('물 주기'))+' · '+p.name)) return;
+  if(!spend(cost,(k?TR('밥 주기'):TR('물 주기'))+' · '+p.name,'care')) return; setTimeout(checkProgress,50);
   put('pets',Object.assign(clone(p),{[key]:Date.now()})); petReact('eat',2500); render();
   toast(k?TR('냠냠! 맛있게 먹었어요'):TR('꿀꺽! 시원해요'));
 }
@@ -3128,14 +3147,31 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['pets5b',TR('작은 동물원'),TR('동물 5마리와 함께하기'),5,'pets',60],
   ['pets10',TR('동물 친구 부자'),TR('동물 10마리와 함께하기'),10,'pets',200],
   ['grown3',TR('다 키웠어요'),TR('동물 3마리를 어른까지 키우기'),3,'grown',300],
-  ['wearAll',TR('패션왕'),TR('옷 11벌 모두 모으기'),11,'wear',150],
+  ['wear10',TR('옷장 채우기'),TR('옷 10벌 모으기'),10,'wear',150],
+  ['wearAll2',TR('패션왕'),TR('옷을 모두 모으기'),Object.keys(OUT).length,'wear',800],
   ['treat10',TR('나를 위한 선물'),TR('상점에서 보상 10번 사기'),10,'treats',50],
-  ['rich10k',TR('티끌 모아 태산'),TR('코인 10,000개 벌기 (누적)'),10000,'earned',300]];
+  ['rich10k',TR('티끌 모아 태산'),TR('코인 10,000개 벌기 (누적)'),10000,'earned',300],
+  ['rich50k',TR('코인 부자'),TR('코인 50,000개 벌기 (누적)'),50000,'earned',1500],
+  ['spend5k',TR('큰손'),TR('코인 5,000개 쓰기'),5000,'spent',200],
+  ['pomo100',TR('토마토 농부'),TR('뽀모도로 100번 끝내기'),100,'pomos',150],
+  ['pomo500',TR('토마토 농장주'),TR('뽀모도로 500번 끝내기'),500,'pomos',600],
+  ['quick20',TR('시작이 반'),TR('"5분만"으로 시작한 집중 20번'),20,'quicks',100],
+  ['fullweek3',TR('빈틈없는 한 주'),TR('7일 내내 1시간 넘게 집중한 주 3번'),3,'fullWeeks',400],
+  ['weekend10',TR('주말 전사'),TR('토·일 모두 1시간 넘게 집중한 주말 10번'),10,'weekends',300],
+  ['goal30',TR('목표 달성가'),TR('하루 목표를 채운 날 30일'),30,'goalDays',250],
+  ['goal100',TR('목표의 신'),TR('하루 목표를 채운 날 100일'),100,'goalDays',800],
+  ['ontime50',TR('마감 지킴이'),TR('마감 전에 할 일 50개 끝내기'),50,'ontime',250],
+  ['diary30',TR('기록하는 사람'),TR('일기 30일 쓰기'),30,'diary',200],
+  ['review10',TR('돌아보는 힘'),TR('주간 회고 10번 쓰기'),10,'reviews',200],
+  ['lucky10',TR('행운아'),TR('행운 보너스 10번 받기'),10,'lucky',150],
+  ['care100',TR('다정한 집사'),TR('밥이나 물 100번 주기'),100,'care',200],
+  ['petlv20',TR('최강 짝꿍'),TR('동물 한 마리를 Lv 20까지 키우기'),20,'petLv',500],
+  ['allday',TR('다재다능'),TR('한 주에 항목 5개 넘게 집중'),5,'subjWeek',120]];
 const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 데려오는 값
-  chick:{lv:2,price:150},hamster:{lv:3,price:200},pig:{lv:4,price:250},frog:{lv:5,price:300},duck:{lv:6,price:300},penguin:{lv:7,price:400},
-  fox:{lv:8,price:500},bear:{lv:10,price:600},panda:{lv:12,price:800},tiger:{lv:15,price:1000},dragon:{lv:20,price:2000},
-  sheep:{ach:'t50',price:300},squirrel:{ach:'early10',price:400},raccoon:{ach:'night10',price:400},koala:{ach:'s30',price:600},
-  hedgehog:{ach:'deep120',price:500},owl:{ach:'h100',price:700},axolotl:{ach:'pets5b',price:800},unicorn:{ach:'s100',price:2000}};
+  chick:{lv:2,price:500},hamster:{lv:3,price:700},pig:{lv:4,price:800},frog:{lv:5,price:1000},duck:{lv:6,price:1000},penguin:{lv:7,price:1300},
+  fox:{lv:8,price:1600},bear:{lv:10,price:2000},panda:{lv:12,price:2800},tiger:{lv:15,price:3500},dragon:{lv:20,price:8000},
+  sheep:{ach:'t50',price:1000},squirrel:{ach:'early10',price:1500},raccoon:{ach:'night10',price:1500},koala:{ach:'s30',price:2200},
+  hedgehog:{ach:'deep120',price:1800},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
 const achById=id=>ACH.find(a=>a[0]===id);
 const hasAch=id=>!!items('achv').find(x=>x.id===id);
 function achStats(){
@@ -3144,12 +3180,22 @@ function achStats(){
     day[k]=(day[k]||0)+d; const w=addDays(k,-wdOf(k)); wk[w]=(wk[w]||0)+d;
     if(d>=1800&&hr>=4&&hr<7) ed[k]=1; if(d>=1800&&(hr>=23||hr<3)) nd[k]=1;
     if(s.kind!=='manual'&&d>=7200) deep120=1; if(s.kind!=='manual'&&d>=5400) deep90++});
-  const mx=o=>Math.floor(Math.max(0,...Object.values(o))/3600), ps=pets();
+  const mx=o=>Math.floor(Math.max(0,...Object.values(o))/3600), ps=pets(), coins=allOf('coins-');
+  const dk={}; Object.keys(day).forEach(k=>{if(day[k]>=3600) dk[k]=1}); let fullWeeks=0, weekends=0; const sw={};
+  Object.keys(wk).forEach(w=>{let n=0; for(let i=0;i<7;i++) if(dk[addDays(w,i)]) n++; if(n===7) fullWeeks++; if(dk[addDays(w,5)]&&dk[addDays(w,6)]) weekends++});
+  logs.forEach(s=>{if(!s.segs||!s.segs.length) return; const k=dayKey(s.segs[0][0]*1e3), w=addDays(k,-wdOf(k)); (sw[w]=sw[w]||new Set()).add(s.sub||'-')});
+  const g=goalOf(gc()), gsec=((g&&g.d)||240)*60;
   return {logs:logs.length,hours:Math.floor(sec/3600),bestDay:mx(day),bestWeek:mx(wk),tasks:allOf('tasks-').filter(t=>t.done).length,goals:ltAll().filter(g=>g.status==='done').length,streak:softStreak().n,
-    early:Object.keys(ed).length,night:Object.keys(nd).length,deep120,deep90,pets:ps.length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins()};
+    early:Object.keys(ed).length,night:Object.keys(nd).length,deep120,deep90,
+    pomos:logs.filter(s=>s.kind==='pomo').length,quicks:logs.filter(s=>s.quick).length,fullWeeks,weekends,goalDays:Object.keys(day).filter(k=>day[k]>=gsec).length,
+    ontime:coins.filter(c=>String(c.id).indexOf('td:')===0).length,lucky:coins.filter(c=>String(c.id).indexOf('l:')===0).length,care:coins.filter(c=>c.kind==='care').length,
+    spent:coins.reduce((a,c)=>a+(c.amt<0?-c.amt:0),0),petLv:Math.max(0,...ps.map(p=>petLv(petXP(p)))),subjWeek:Math.max(0,...Object.values(sw).map(x=>x.size)),
+    diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins()};
 }
-const spPrice=k=>SP[k].special?0:UNLOCK[k]?UNLOCK[k].price:(SP[k].price||100);
+const spPrice=k=>SP[k].special?0:UNLOCK[k]?UNLOCK[k].price:400; // 처음 세 친구도 두 번째부터는 400
 function spOpen(k,lv){const u=UNLOCK[k]; if(!u||(!u.lv&&!u.ach)) return true; return u.lv?(lv==null?myLv():lv)>=u.lv:hasAch(u.ach)}
+const needOpen=u=>!u||(u.lv?myLv()>=u.lv:hasAch(u.ach));
+const needText=u=>u.lv?'Lv '+u.lv+TR(' 되면 열려요'):TR('업적 「')+achById(u.ach)[1]+TR('」 달성하면 열려요');
 function lockText(k){const u=UNLOCK[k]; if(!u) return ''; if(u.lv) return 'Lv '+u.lv+TR(' 되면 열려요'); const a=achById(u.ach); return TR('업적 「')+a[1]+TR('」 달성하면 열려요')}
 let progBusy=false;
 function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해요. 처음 한 번은 지난 기록으로 조용히 채워요
@@ -3240,6 +3286,7 @@ function renderPet(){
         h('button',{style:'margin-top:.8rem',onclick:()=>shopDlg(null)},TR('＋ 보상 추가'))]}
     else{const own=new Set(items('wardrobe').map(x=>x.id)), pw=p?p.wear||{}:{};
       inner=[h('p',{class:'small'},p?TR('산 옷은 모든 동물이 같이 입을 수 있어요. 누르면 입히거나 벗겨요.'):TR('먼저 동물 친구를 데려오세요.')),h('div',{class:'shopgrid'},Object.keys(OUT).map(k=>{const o=OUT[k], has=own.has(k), on=pw[o.slot]===k;
+        if(!has&&!needOpen(o.need)) return h('div',{class:'shopit lock'},p?h('span',{class:'pix dimx'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'stand',64).firstChild):null,h('b',null,o.n),h('span',{class:'small'},...pxText('🔒 '+needText(o.need))));
         return h('div',{class:'shopit'+(on?' on':'')},p?petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'happy',64):null,h('b',null,o.n),has?h('span',{class:'price'},on?TR('입는 중'):TR('가지고 있어요')):price(o.price),
           !p?null:has?h('button',{onclick:()=>{const wear=Object.assign({},pw); if(on) delete wear[o.slot]; else wear[o.slot]=k; put('pets',Object.assign(clone(p),{wear})); render()}},on?TR('벗기기'):TR('입히기')):
             h('button',{class:bal>=o.price?'primary':'',disabled:bal<o.price,onclick:()=>{if(!spend(o.price,TR('옷')+' · '+o.n,'wear')) return; put('wardrobe',{id:k}); const wear=Object.assign({},pw,{[o.slot]:k}); put('pets',Object.assign(clone(p),{wear})); celebrate('👒 '+o.n,p.name+TR('에게 입혔어요'),false); checkProgress(); render()}},TR('사기')))}))]}
