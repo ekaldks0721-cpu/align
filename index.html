@@ -2698,10 +2698,10 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   capybara:{n:TR('카피바라'),pal:['#3E2614','#B07C4A','#D8AC78','#4A2A18','#E89880'],mark:'yuzu'},
   pelican:{n:TR('펠리컨'),pal:['#3A4050','#F8F8F4','#FFFFFF','#F8A030','#F8B8B8'],ear:'tuft',mark:'pouch feet'},
   rock:{n:TR('돌멩이'),pal:['#383C44','#9EA4AE','#B8BEC6','#7A8088','#E8A0A8'],mark:'speckle moss'},
-  chul:{n:TR('철컹이'),pal:['#2A2028','#F4D0B0','#F8F8FF','#1E1A22','#F4A0A0'],mark:'stetho',acts:['cram','game','ramen','walk','sleep'],lines:'CHUL'},
-  yongbok:{n:TR('용복이'),pal:['#2A2030','#F6D8BE','#E8DCA8','#3A8CE0','#F4A8A8'],mark:'yongbok',idol:1,acts:['dance','dance','bake','critter','walk'],lines:'YONG'},
-  homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
-  prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
+  chul:{n:TR('철컹이'),pal:['#2A2028','#F4D0B0','#F8F8FF','#1E1A22','#F4A0A0'],body:{shirt:'l',sleeve:'l',pants:'#3A4A6A',shoes:'#F0F0F4'},mark:'stetho',acts:['cram','game','ramen','walk','sleep'],lines:'CHUL'},
+  yongbok:{n:TR('용복이'),pal:['#2A2030','#F6D8BE','#E8DCA8','#3A8CE0','#F4A8A8'],body:{shirt:'l',sleeve:'#FFFFFF',short:1,pants:'#24242C',shoes:'#F0F0F4',deco:[[6,1,'#2A2030'],[9,1,'#2A2030'],[6,2,'#2A2030'],[9,2,'#2A2030']]},mark:'yongbok',idol:1,acts:['dance','dance','bake','critter','walk'],lines:'YONG'},
+  homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],body:{shirt:'l',sleeve:'l',short:1,pants:'#4A5A80',shoes:'#383848',hair:1},mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
+  prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],body:{shirt:'a',sleeve:'a',pants:'#2E3550',shoes:'#2A1A12',deco:[[6,0,'l'],[9,0,'l'],[6,1,'l'],[9,1,'l']]},mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
   ghost:{n:TR('유령'),pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
   dino:{n:TR('공룡'),pal:['#1E4A28','#68C058','#D8F0A8','#F8B830','#F89898'],tail:'thin',mark:'dinoback belly'},
   rakun:{n:TR('라쿤'),pal:['#181820','#9CA0AC','#F0F0F4','#282830','#F8A0A0'],ear:'round',tail:'ringed',mark:'bigmask'},
@@ -2778,6 +2778,7 @@ function outlineG(G){ // 몸 색 칸 옆의 빈칸에 테두리를 둘러요
 }
 function bodyG(spk,st,tailF){
   const sp=SP[spk]||SP.cat, A=tplA(st), G=fromRows(A.g), t=A.top, s=A.small, mk=sp.mark||'', ec=sp.earC||'b';
+  if(sp.body){const c=humanCut(A); for(let y=c+1;y<16;y++) G[y].fill('.')} // 사람은 머리만 쓰고 몸은 따로 그려요
   // 귀
   if(sp.ear==='tri') s?(both(G,5,t-1,'b'),both(G,5,t,'b')):(both(G,4,t-2,'b'),both(G,4,t-1,'a'),both(G,5,t-1,'b'),both(G,4,t,'b'),both(G,5,t,'b'),both(G,6,t,'b'));
   if(sp.ear==='round') s?(both(G,5,t,ec),both(G,5,t-1,ec)):(both(G,4,t-1,ec),both(G,5,t-1,ec),both(G,4,t,ec),both(G,5,t,'a'));
@@ -2852,7 +2853,7 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('wavy')>=0){const y1=s?14:14; for(let x=0;x<16;x++){G[15][x]='.'; if(G[y1][x]!=='.') G[y1][x]=x%3===0?'o':'b'} for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===1) G[15][x]='o'; for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===2) G[15][x]='o'}
   if(mk.indexOf('stetho')>=0&&!s){const g='#6A7080', y=A.ny+1; [[5,y],[4,y+1],[4,y+2],[10,y],[11,y+1],[11,y+2]].forEach(([x,yy])=>gset(G,x,yy,g)); gset(G,11,y+3,'#A8B0C0')} // 청진기
   if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my; [[5,t],[10,t],[6,t+1],[9,t+1],[4,t+2],[11,t+2]].forEach(([x,y])=>{if(gget(G,x,y)==='a') gset(G,x,y,'#7EC4F8')}); [[6,e+2],[9,e+2]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,'#C88A68')});
-    gset(G,7,m,'#B85860'); gset(G,8,m,'#B85860'); if(!s) for(let x=6;x<=9;x++) if(gget(G,x,A.ny+1)==='l') gset(G,x,A.ny+1,'#C8C8D4')} // 머리 결 · 주근깨 · 장밋빛 입 · 체인 목걸이
+    gset(G,7,m,'#B85860'); gset(G,8,m,'#B85860'); if(!s) for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4')} // 머리 결 · 주근깨 · 장밋빛 입 · 체인 목걸이
   if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'o'); gset(G,9,m-1,'o'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080');
     if(!s){const c='#3050B0'; for(let x=5;x<=10;x++) if(x!==7) gset(G,x,A.ny+1,c); gset(G,7,A.ny+2,c); gset(G,8,A.ny+2,c)}} // 처진 눈썹 · 보조개 · 티셔츠 글씨
   if(mk.indexOf('profglasses')>=0){const g='#C89838'; [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x,A.ey-1],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey+2]].forEach(([a,b])=>gset(G,a,b,g))); gset(G,7,A.ey,g); gset(G,8,A.ey,g)}
@@ -2977,16 +2978,72 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='cheer') propG(G,st,'arms',f);
   if(sp.idol){const y=tplA(st).ey, W='#FFFFFF'; if(G[y][5]==='e'&&G[y+1][5]==='e'&&G[y][10]==='e'&&G[y+1][10]==='e') // 눈을 뜨고 있으면 반짝이는 아몬드 눈으로
     [[4,y,'e'],[5,y,W],[6,y,'e'],[4,y+1,W],[5,y+1,'e'],[6,y+1,'e'],[11,y,'e'],[10,y,'e'],[9,y,W],[11,y+1,W],[10,y+1,'e'],[9,y+1,'e']].forEach(([x,yy,c])=>gset(G,x,yy,c))}
+  if(sp.body) return {G:humanG(spk,st,base,f,G),pal:sp.pal};
   if(base==='squash'||base==='sleep'&&!f||base==='sad'&&f||base==='wag'&&f&&!sp.tail) G=squashG(G);
   if(base==='cheer'&&f) G=shiftG(G,0,-2);
   if(base==='dance') G=shiftG(G,f?1:-1,f?0:-1);
   if(base==='sleep') propG(G,st,'z',f);
   return {G,pal:sp.pal};
 }
+/* ---------- 사람 몸: 머리(16×16 틀의 목까지) 아래에 몸통·팔·다리를 그려 16×24 한 장으로 ---------- */
+const HUMAN_H=24, HSIT=['read','write','game','cram','sleep','lego','drive','ramen','bed','plush'], HHOLD=['read','write','game','cram','ramen','lego','drive','plush','bake','critter','meat','eat','coffee'];
+const spriteH=(spk,st)=>st&&SP[spk]&&SP[spk].body?HUMAN_H:16;
+const humanCut=A=>{for(let y=A.my+1;y<16;y++){const n=((A.g[y]||'').match(/b/g)||[]).length; if(n<=4) return n?y:y-1} return 15}; // 목이 끝나는 줄
+const HB={3:{th:6,lh:3,x0:5,x1:10},2:{th:5,lh:2,x0:5,x1:10},1:{th:3,lh:1,x0:6,x1:9}};
+function humanG(spk,st,base,f,G0){
+  const sp=SP[spk], B=sp.body, A=tplA(st), P=HB[st]||HB[3], cut=humanCut(A), N=22-(P.th+P.lh+1), t0=N+1, t1=N+P.th, x0=P.x0, x1=P.x1;
+  const H=Array.from({length:HUMAN_H},()=>Array(16).fill('.')), set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) H[y][x]=c};
+  const sit=HSIT.indexOf(base)>=0, skin='b', sl=B.sleeve||B.shirt, nSl=B.short?1:P.th-2;
+  // 팔 모양: 왼팔 L, 오른팔 R
+  let L='down', R='down', legs=sit?'sit':'stand';
+  if(HHOLD.indexOf(base)>=0) L=R='hold';
+  if(base==='cheer') L=R='up';
+  if(base==='dance'){L=f?'down':'up'; R=f?'up':'down'; legs=f?'kickR':'kickL'}
+  if(base==='wag') R=f?'wave1':'wave0';
+  if(base==='walk'){L=f?'fwd':'down'; R=f?'down':'fwd'; legs=f?'stepR':'stepL'}
+  if(base==='lecture') R='point';
+  if(base==='doh'&&!f) R='face';
+  if(base==='sad') L=R='down';
+  // 몸통
+  for(let y=t0;y<=t1;y++){const w=y===t0?0:1; for(let x=x0-w;x<=x1+w;x++) set(x,y,y>t1-(st===1?1:2)?B.pants:B.shirt)}
+  for(let x=x0;x<=x1;x++) set(x,t0,B.shirt);
+  if(B.hair) for(let y=t0;y<=t0+1;y++){set(x0-1,y,'a'); set(x0,y,'a'); set(x1,y,'a'); set(x1+1,y,'a')}
+  (B.deco||[]).forEach(([x,dy,c])=>{if(st>1&&x>=x0&&x<=x1) set(x,t0+dy,c)});
+  // 다리
+  const lx=[x0,x0+1], rx=[x1-1,x1], ground=t1+P.lh+1;
+  if(legs==='sit'){for(let x=x0-2;x<=x1+2;x++) set(x,t1+1,B.pants); set(x0-3,t1+1,B.shoes); set(x1+3,t1+1,B.shoes)}
+  else{
+    const leg=(xs,lift,dx)=>{for(let y=t1+1;y<=ground-1-lift;y++) xs.forEach(x=>set(x+dx,y,B.pants)); [xs[0]-1,xs[0],xs[1]].forEach(x=>set(x+dx+(xs[0]>7?1:0),ground-lift,B.shoes))};
+    leg(lx,legs==='stepL'?1:0,legs==='kickL'?-1:0); leg(rx,legs==='stepR'?1:0,legs==='kickR'?1:0);
+  }
+  // 팔 (아래쪽에 있는 팔은 머리보다 먼저)
+  const arm=(side,kind)=>{const ax=side<0?x0-2:x1+2, inn=side<0?x0-1:x1+1, out=side<0?ax-1:ax+1, len=P.th-1;
+    if(kind==='down'||kind==='fwd'){const n=kind==='fwd'?len-1:len; for(let i=0;i<n;i++) set(ax,t0+1+i,i<Math.min(nSl,n-1)?sl:skin)}
+    if(kind==='hold'){set(ax,t0+1,sl); if(len>2) set(ax,t0+2,nSl>1?sl:skin); set(inn,t0+(len>2?3:2),skin)}};
+  arm(-1,L); arm(1,R);
+  // 머리 붙이기 (목이 N줄에 오게). 앉으면 몸 전체가 내려가요
+  const bob=base==='squash'||base==='sad'&&f||base==='sleep'&&!f?1:0, off=N-cut+bob;
+  for(let y=0;y<16;y++) for(let x=0;x<16;x++){const c=G0[y][x]; if(c==='.') continue; if(y>cut&&c==='o') continue; if(y>cut&&base==='bed') continue; set(x,y+off,c)}
+  // 위로 드는 팔은 머리 위에
+  const upArm=(side,kind)=>{const ax=side<0?x0-2:x1+2, o=side<0?-1:1;
+    if(kind==='up'){set(ax,t0,sl); set(ax+o,t0-1,sl); set(ax+2*o,t0-2,skin); set(ax+2*o,t0-3,skin)}
+    if(kind==='wave0'||kind==='wave1'){set(ax,t0,sl); set(ax+o,t0-1,skin); set(ax+o*(kind==='wave1'?2:1),t0-2,skin)}
+    if(kind==='point'){set(ax,t0,sl)}
+    if(kind==='face'){set(ax,t0,sl); for(let y=t0-1;y>=A.ey+off+1;y--) set(ax+o,y,skin)}};
+  upArm(-1,L); upArm(1,R);
+  if(base==='bed'){for(let y=N;y<HUMAN_H;y++) for(let x=0;x<16;x++) if(H[y][x]!=='.'&&!(y===N&&H[y][x]!=='o')) H[y][x]=(x+y)%4===0?'#A8C0F0':'#6A8CD8'; for(let x=x0-3;x<=x1+3;x++){set(x,N,'#A8C0F0')}}
+  // 테두리
+  const add=[]; for(let y=0;y<HUMAN_H;y++)for(let x=0;x<16;x++) if(H[y][x]==='.'&&[[1,0],[-1,0],[0,1],[0,-1]].some(([a,b])=>{const yy=y+b, xx=x+a; if(xx<0||yy<0||xx>15||yy>=HUMAN_H) return false; const v=H[yy][xx]; return v!=='.'&&v!=='o'&&v!=='e'&&v!=='m'})) add.push([x,y]);
+  add.forEach(([x,y])=>H[y][x]='o');
+  // 앉으면 엉덩이가 바닥에, 만세 점프, 춤은 좌우로
+  let dy=sit?ground-(t1+1):0, dx=0; if(base==='cheer'&&f) dy=-2; if(base==='dance') dx=f?1:-1;
+  if(dx||dy){const M=Array.from({length:HUMAN_H},()=>Array(16).fill('.')); for(let y=0;y<HUMAN_H;y++)for(let x=0;x<16;x++){const sy=y-dy, sx=x-dx; if(sy>=0&&sy<HUMAN_H&&sx>=0&&sx<16) M[y][x]=H[sy][sx]} return M}
+  return H;
+}
 const PALI={o:0,e:0,m:0,b:1,l:2,a:3,c:4};
 function gridRects(G,pal,ox,oy,flip){ // 같은 색이 이어지는 칸은 가로 막대 하나로 묶어요
   let out=''; const col=ch=>ch[0]==='#'?ch:ch==='w'?'#FFF8E0':pal[PALI[ch]];
-  for(let y=0;y<16;y++){let x=0; while(x<16){const ch=G[y][flip?15-x:x]; if(ch==='.'){x++; continue} let n=1; while(x+n<16&&G[y][flip?15-x-n:x+n]===ch) n++;
+  for(let y=0;y<G.length;y++){let x=0; while(x<16){const ch=G[y][flip?15-x:x]; if(ch==='.'){x++; continue} let n=1; while(x+n<16&&G[y][flip?15-x-n:x+n]===ch) n++;
     const c=col(ch);
     out+='<rect x="'+(ox+x)+'" y="'+(oy+y)+'" width="'+n+'" height="1" fill="'+c+'"/>'; x+=n}}
   return out;
@@ -2997,7 +3054,7 @@ function spriteSVG(spk,st,wear,pose,xp,flip){const k=[spk,st,JSON.stringify(wear
 const svgEl=(w,h,inner,cls)=>{const s=document.createElementNS('http://www.w3.org/2000/svg','svg'); s.setAttribute('viewBox','0 0 '+w+' '+h); s.setAttribute('shape-rendering','crispEdges'); if(cls) s.setAttribute('class',cls); s.innerHTML=inner; return s};
 function petSVG(spk,stage,wear,mood,px,xp){ // 멈춘 그림 하나 (상점·목록용)
   const sc=Math.max(1,Math.floor((px||64)/16)), pose=stage===0?'egg':mood==='happy'?'happy':mood==='sad'?'sad':'stand';
-  const s=svgEl(16,16,spriteSVG(spk,stage,stage?wear:{},pose,xp||0)); s.setAttribute('width',16*sc); s.setAttribute('height',16*sc);
+  const hh=spriteH(spk,stage), s=svgEl(16,16,spriteSVG(spk,stage,stage?wear:{},pose,xp||0)); if(hh>16) s.setAttribute('viewBox','-4 0 24 24'); s.setAttribute('width',16*sc); s.setAttribute('height',16*sc);
   return h('span',{class:'pix'},s);
 }
 
@@ -3149,7 +3206,7 @@ function stepActor(a){
     if(a.idle&&--a.idleT<=0) a.idle='';
     PST[a.pet.id]={x:a.x,dir:a.dir};
   }
-  const seq=SEQ[pose==='walk'?'walk':pose]||SEQ.stand; a.fi=(a.fi+1)%seq.length; let fr=seq[a.fi%seq.length];
+  const seq=(pose==='walk'&&!a.sad&&SP[a.pet.sp].body&&a.st?['walk0','walk1']:SEQ[pose==='walk'?'walk':pose])||SEQ.stand; a.fi=(a.fi+1)%seq.length; let fr=seq[a.fi%seq.length];
   if(fr==='stand'&&Math.random()<.04) fr='blink';
   if(pose==='walk'&&a.sad) fr=a.fi%2?'sad1':'sad0';
   showFrame(a,fr);
@@ -3158,7 +3215,7 @@ function stepActor(a){
 function showFrame(a,fr){
   const flip=a.dir<0&&fr.indexOf('read')<0&&fr.indexOf('write')<0, key=fr+(flip?'f':'');
   if(a.cur!==key){a.cur=key; a.g.innerHTML=spriteSVG(a.pet.sp,a.st,a.pet.wear,fr,a.xp,flip)}
-  a.g.setAttribute('transform','translate('+a.x+','+a.y+')');
+  a.g.setAttribute('transform','translate('+a.x+','+(a.y-(a.noLift?0:spriteH(a.pet.sp,a.st)-16))+')');
 }
 function engine(){
   actN++; for(let i=ACTORS.length-1;i>=0;i--){const a=ACTORS[i]; if(!a.svg.isConnected){ACTORS.splice(i,1); continue} if(document.visibilityState==='visible'&&a.svg.getBoundingClientRect().width) stepActor(a)}
@@ -3186,8 +3243,8 @@ function mountTerra(maxScale){ // 유리병 하나 만들기. 들어가는 상�
   startEngine(); return wrap;
 }
 function cheerSprite(p,scale){ // 축하 창 속 만세하는 동물
-  const svg=svgEl(16,16,''), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g); svg.setAttribute('width',16*scale); svg.setAttribute('height',16*scale);
-  const xp=petXP(p), st=stageOf(xp), a={pet:p,st,xp,svg,g,x:0,y:0,dir:1,fi:0,walk:0,fixed:st?'cheer':'egg',active:true,cur:''};
+  const xp=petXP(p), st=stageOf(xp), hh=spriteH(p.sp,st), svg=svgEl(16,hh,''), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g); svg.setAttribute('width',16*scale); svg.setAttribute('height',hh*scale);
+  const a={pet:p,st,xp,svg,g,x:0,y:0,noLift:1,dir:1,fi:0,walk:0,fixed:st?'cheer':'egg',active:true,cur:''};
   ACTORS.push(a); showFrame(a,st?'cheer0':'egg'); startEngine(); return h('span',{class:'pix'},svg);
 }
 
@@ -3718,10 +3775,10 @@ function stepBuddy(){
   }
   if(move){b.x+=b.dir*Math.round(move); if(b.x<8){b.x=8; b.dir=1} if(b.x>W-w-8){b.x=W-w-8; b.dir=-1}}
   b.x=Math.min(Math.max(8,b.x),Math.max(8,W-w-8));
-  const seq=SEQ[pose]||[pose]; b.fi=(b.fi+1)%24; let fr=seq[b.fi%seq.length]; if(fr==='stand'&&Math.random()<.05) fr='blink';
+  const hum=st&&SP[p.sp].body, seq=(hum&&pose==='walk'?['walk0','walk1']:SEQ[pose])||[pose]; b.fi=(b.fi+1)%24; let fr=seq[b.fi%seq.length]; if(fr==='stand'&&Math.random()<.05) fr='blink';
   const flip=b.dir<0&&!/read|write/.test(fr), key=p.id+fr+(flip?'f':'')+JSON.stringify(p.wear||{})+st;
   if(b.cur!==key){b.cur=key; b.svg.innerHTML=spriteSVG(p.sp,st,p.wear,fr,xp,flip)}
-  b.svg.setAttribute('width',w); b.svg.setAttribute('height',w);
+  const hh=spriteH(p.sp,st); b.svg.setAttribute('viewBox','0 0 16 '+hh); b.svg.setAttribute('width',w); b.svg.setAttribute('height',hh*sc);
   buddyEl.style.bottom=bottom+'px'; buddyEl.style.transform='translateX('+b.x+'px)';
   if(b.sayT&&now>b.sayT){b.sayT=0; buddyEl.querySelector('.bbub').hidden=true} else placeBubble();
 }

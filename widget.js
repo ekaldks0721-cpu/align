@@ -294,13 +294,14 @@ function sceneImage(S, sc) {
     let x, y = p.me ? 44 : 43 - (j % 2);
     if (!p.st) { x = 12 + egg++ * 16; ctx.setFillColor(new Color('#C8A060')); ctx.fillRect(new Rect((x + 2) * sc, 58 * sc, 12 * sc, 2 * sc)); }
     else if (p.me && S.focus) x = 60; else { x = 28 + k * 15 + (S.slot % 3) * 2; if (S.focus && x > 44) x -= 30; k++; }
-    drawGrid(ctx, f, P.pal, x, y, sc, p.st && !p.me && (S.slot + j) % 2 === 1);
+    drawGrid(ctx, f, P.pal, x, y + 16 - f.length, sc, p.st && !p.me && (S.slot + j) % 2 === 1); // 사람은 16×24라서 발이 바닥에 닿게 올려요
   });
   return ctx.getImage();
 }
 function spriteImage(S, sc) {
-  const ctx = new DrawContext(); ctx.size = new Size(16 * sc, 16 * sc); ctx.opaque = false; ctx.respectScreenScale = false;
-  const f = S.me.frames[S.mp] || S.me.frames.stand || S.me.frames.egg; drawGrid(ctx, f, S.P.pal, 0, 0, sc); return ctx.getImage();
+  const f = S.me.frames[S.mp] || S.me.frames.stand || S.me.frames.egg;
+  const ctx = new DrawContext(); ctx.size = new Size(16 * sc, f.length * sc); ctx.opaque = false; ctx.respectScreenScale = false;
+  drawGrid(ctx, f, S.P.pal, 0, 0, sc); return ctx.getImage();
 }
 function petBar(st, icon, label, v, color, width) {
   const r = st.addStack(); r.centerAlignContent(); text(r, icon + ' ' + label, 11, C.ink2, 'semi'); r.addSpacer(6);
@@ -312,8 +313,8 @@ function buildPet(S, fam, note) {
   const me = S.me, name = me.name, head = 'Lv ' + me.lv + ' ' + name;
   w.refreshAfterDate = new Date(Date.now() + 15 * 6e4);
   if (fam === 'accessoryInline') { text(w, '🐾 ' + name + ' · ' + S.status, 12, C.ink, 'semi'); return w; }
-  if (fam === 'accessoryCircular') { const im = w.addImage(spriteImage(S, 6)); im.imageSize = new Size(52, 52); im.centerAlignImage(); return w; }
-  if (fam === 'accessoryRectangular') { const r = w.addStack(); r.centerAlignContent(); const im = r.addImage(spriteImage(S, 6)); im.imageSize = new Size(44, 44); r.addSpacer(6);
+  if (fam === 'accessoryCircular') { const sp = spriteImage(S, 6), im = w.addImage(sp); im.imageSize = new Size(52 * sp.size.width / sp.size.height, 52); im.centerAlignImage(); return w; }
+  if (fam === 'accessoryRectangular') { const r = w.addStack(); r.centerAlignContent(); const sp = spriteImage(S, 6), im = r.addImage(sp); im.imageSize = new Size(44 * sp.size.width / sp.size.height, 44); r.addSpacer(6);
     const c = r.addStack(); c.layoutVertically(); text(c, head, 13, C.ink, 'heavy'); text(c, S.status, 12, C.ink, 'semi'); text(c, me.stage, 11, C.ink2, 'med'); return w; }
   if (fam === 'small') { w.setPadding(8, 8, 8, 8); const im = w.addImage(sceneImage(S, 5)); im.imageSize = new Size(140, 105); im.centerAlignImage(); w.addSpacer(4);
     text(w, head, 13, C.ink, 'heavy'); text(w, S.status, 11, C.ink2, 'semi'); if (note) text(w, note, 10, C.warn, 'semi'); return w; }
