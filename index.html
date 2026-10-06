@@ -2691,7 +2691,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
   sawol:{n:TR('정사월'),special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
   yuni:{n:TR('유니'),special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
-  ttukbul:{n:TR('이뚝불'),special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'thin',mark:'lashes geckoeyes wide smile'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
+  ttukbul:{n:TR('이뚝불'),special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'gecko',mark:'lashes geckoeyes'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
   mikael:{n:TR('미카엘'),special:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
 const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면 레벨이나 업적으로 열려요
   flower:{n:TR('꽃핀'),slot:'head',price:150},sprout:{n:TR('새싹'),slot:'head',price:150},starpin:{n:TR('별 핀'),slot:'head',price:200},ribbon:{n:TR('리본'),slot:'head',price:200},
@@ -2709,6 +2709,12 @@ const TPL={
   1:{g:['','','','','','','','......oooo......','....oobbbboo....','...obbbbbbbbo...','...obebbbbebo...','...obebbbbebo...','...ocbbmmbbco...','...obbbbbbbbo...','....obbllbbo....','.....oooooo.....'],top:7,ey:10,my:12,ny:13,R:12,small:1},
   2:{g:['','','','','','.....oooooo.....','....obbbbbbo....','...obbbbbbbbo...','...obebbbbebo...','...obebbbbebo...','...ocbbmmbbco...','...obbbbbbbbo...','....obllllbo....','....obllllbo....','....obbbbbbo....','....ooo..ooo....'],top:5,ey:8,my:10,ny:11,R:12},
   3:{g:['','','','','.....oooooo.....','...oobbbbbboo...','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obllllllbo...','...obllllllbo...','...obbllllbbo...','...obboooobbo...','...oooo..oooo...'],top:4,ey:7,my:9,ny:10,R:13}};
+let CTPL=null; const tplA=st=>CTPL&&CTPL[st]||TPL[st]; // 동물마다 따로 그린 몸 틀이 있으면 그걸 써요
+const GECKO={ // 크레스티드 게코: 몸보다 넓은 납작한 머리, 위로 튀어나온 큰 눈, 얼굴을 가로지르는 입, 옆으로 벌린 짧은 다리
+  1:{g:['','','','','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obmmmmmmmmmmbo.','..obbbbbbbbbbo..','...obllllllbo...','..oobbbbbbbboo..','...oo......oo...'],top:7,ey:9,my:11,ny:13,R:12,small:1,lash:[[3,6],[5,6]]},
+  2:{g:['','','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obbbbbbbbbbbbo.','.obmmmmmmmmmmbo.','..obbbbbbbbbbo..','...obllllllbo...','..obobllllbobo..','.oooobbbbbboooo.','.....oooooo.....'],top:5,ey:7,my:10,ny:12,R:13,lash:[[3,4],[5,4],[4,3]]},
+  3:{g:['','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obbbbbbbbbbbbo.','.obmmmmmmmmmmbo.','..obbbbbbbbbbo..','...oobllllboo...','..obobllllbobo..','.obbobllllbobbo.','.oooobbbbbboooo.','.....oooooo.....'],top:4,ey:6,my:9,ny:11,R:13,lash:[[3,3],[5,3],[6,3],[4,2]]}};
+SP.ttukbul.tpl=GECKO;
 const EGG=['','','','','......oooo......','.....owwwwo.....','....owwwwwwo....','....owbbwwwo....','...owwbbwwwwo...','...owwwwwbbwo...','...owwwwwbbwo...','...owbwwwwwwo...','...owwwwwwwwo...','....owwwbwwo....','....owwwwwwo....','.....oooooo.....'];
 const newG=()=>Array.from({length:16},()=>Array(16).fill('.'));
 const fromRows=rows=>{const G=newG(); rows.forEach((r,y)=>[...r].forEach((c,x)=>{G[y][x]=c})); return G};
@@ -2721,7 +2727,7 @@ function outlineG(G){ // 몸 색 칸 옆의 빈칸에 테두리를 둘러요
   add.forEach(([x,y])=>G[y][x]='o');
 }
 function bodyG(spk,st,tailF){
-  const sp=SP[spk]||SP.cat, A=TPL[st], G=fromRows(A.g), t=A.top, s=A.small, mk=sp.mark||'', ec=sp.earC||'b';
+  const sp=SP[spk]||SP.cat, A=tplA(st), G=fromRows(A.g), t=A.top, s=A.small, mk=sp.mark||'', ec=sp.earC||'b';
   // 귀
   if(sp.ear==='tri') s?(both(G,5,t-1,'b'),both(G,5,t,'b')):(both(G,4,t-2,'b'),both(G,4,t-1,'a'),both(G,5,t-1,'b'),both(G,4,t,'b'),both(G,5,t,'b'),both(G,6,t,'b'));
   if(sp.ear==='round') s?(both(G,5,t,ec),both(G,5,t-1,ec)):(both(G,4,t-1,ec),both(G,5,t-1,ec),both(G,4,t,ec),both(G,5,t,'a'));
@@ -2739,6 +2745,7 @@ function bodyG(spk,st,tailF){
   if(!s&&sp.tail==='stub') ink(G,tf?[[R,Y],[R+1,Y-1]]:[[R,Y],[R+1,Y]],'b',1);
   if(!s&&sp.tail==='bushy'){ink(G,tf?[[R,Y],[R,Y+1],[R+1,Y-1],[R+1,Y],[R+1,Y+1],[R+2,Y-2],[R+2,Y-1]]:[[R,Y],[R,Y+1],[R+1,Y],[R+1,Y+1],[R+1,Y-1],[R+1,Y-2],[R+2,Y-1]],'b',1); gset(G,R+2,tf?Y-2:Y-1,'l'); if(!tf) gset(G,R+1,Y-2,'l')}
   if(sp.tail==='puff') ink(G,[[R,Y+1]],'l',1);
+  if(!s&&sp.tail==='gecko') ink(G,tf?[[R+1,Y+2],[R+2,Y+1],[R+2,Y]]:[[R+1,Y+2],[R+2,Y+2],[R+2,Y+1]],'b',1);
   if(!s&&sp.tail==='plume'){ink(G,tf?[[R,Y],[R+1,Y-1],[R+1,Y-2],[R,Y-2],[R+2,Y-1],[R+2,Y-2],[R+1,Y-3]]:[[R,Y],[R,Y-1],[R+1,Y-1],[R+1,Y-2],[R+1,Y-3],[R,Y-3],[R,Y-4],[R+1,Y-4],[R+2,Y-2],[R+2,Y-3]],'b',1)}
   if(!s&&sp.tail==='whip') ink(G,tf?[[R,Y+2],[R+1,Y+2],[R+2,Y+1]]:[[R,Y+2],[R+1,Y+3],[R+2,Y+3]],'b',1);
   if(!s&&sp.tail==='curl') ink(G,tf?[[R,Y],[R+1,Y-1],[R+1,Y]]:[[R,Y],[R+1,Y],[R+1,Y+1]],'a',1);
@@ -2756,7 +2763,8 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('pinknose')>=0){gset(G,7,m,'#A86870'); gset(G,8,m,'#A86870')}
   if(mk.indexOf('dogmouth')>=0){gset(G,6,m+1,'o'); gset(G,9,m+1,'o')}
   if(mk.indexOf('smile')>=0){gset(G,5,m-1,'m'); gset(G,10,m-1,'m')}
-  if(mk.indexOf('geckoeyes')>=0&&!s) [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1]].forEach(([a,b])=>{if(G[b][a]==='b') G[b][a]='#F2E4BC'}));
+  if(mk.indexOf('nostrils')>=0){gset(G,6,m-1,'o'); gset(G,9,m-1,'o')}
+  if(mk.indexOf('geckoeyes')>=0) [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1]].forEach(([a,b])=>{if(G[b][a]==='b') G[b][a]='#F2E4BC'}));
   if(mk.indexOf('pinkearsc')>=0){if(s) both(G,5,t-1,'c'); else{both(G,4,t-1,'c'); both(G,5,t-1,'c'); both(G,5,t,'c')}}
   if(mk.indexOf('orangecap')>=0){const paint=(x,y)=>{if(G[y]&&G[y][x]==='b') G[y][x]='a'}; [4,5,6,9,10,11].forEach(x=>{paint(x,t); paint(x,t+1)}); if(!s) [3,12].forEach(x=>paint(x,t+1))}
   if(mk.indexOf('pinkears')>=0&&!s){both(G,5,t-1,'a'); both(G,5,t,'a')}
@@ -2776,12 +2784,12 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('belly')>=0&&!s) for(let y=A.ny+1;y<A.ny+4;y+=2) for(let x=6;x<=9;x++) if(G[y][x]==='l') G[y][x]='a';
   if(mk.indexOf('feet')>=0&&st>1){const fy=14; for(let x=0;x<16;x++) if(G[fy][x]==='b') G[fy][x]='a'}
   outlineG(G);
-  if(mk.indexOf('lashes')>=0){const c='#A87838'; if(s){both(G,5,t-1,c)} else{both(G,4,t-1,c); both(G,6,t-1,c); both(G,3,t,c); both(G,5,t-2,c)}} // 게코의 속눈썹 돌기: 테두리 없이 가는 가시
+  if(mk.indexOf('lashes')>=0){const c='#A87838'; (A.lash||[[4,t-1],[6,t-1]]).forEach(([x,y])=>both(G,x,y,c))} // 게코의 속눈썹 돌기: 테두리 없이 가는 가시
   return G;
 }
 // 얼굴 바꾸기
 function eyesG(G,st,kind){
-  const A=TPL[st], y=A.ey, xs=[5,10];
+  const A=tplA(st), y=A.ey, xs=[5,10];
   xs.forEach(x=>{
     if(kind==='blink'||kind==='sleep'){gset(G,x,y,'b'); gset(G,x,y+1,'o'); gset(G,x+(x<8?-1:1),y+1,'o')}
     else if(kind==='happy'){gset(G,x,y,'o'); gset(G,x,y+1,'b'); gset(G,x-1,y+1,'o'); gset(G,x+1,y+1,'o')}
@@ -2789,7 +2797,7 @@ function eyesG(G,st,kind){
     else if(kind==='sad'){gset(G,x,y,'b'); gset(G,x,y+1,'o'); gset(G,x+(x<8?1:-1),y-1,'o')}
   });
 }
-function mouthG(G,st,kind){const m=TPL[st].my, beak=G[m][7]==='a'; if(beak) return;
+function mouthG(G,st,kind){const m=tplA(st).my, beak=G[m][7]==='a'; if(beak) return;
   if(kind==='open'){gset(G,7,m,'o'); gset(G,8,m,'o'); gset(G,7,m+1,'c'); gset(G,8,m+1,'c')}
   if(kind==='sad'){gset(G,7,m,'b'); gset(G,8,m,'b'); gset(G,7,m+1,'o'); gset(G,8,m+1,'o')}
 }
@@ -2811,7 +2819,7 @@ const WEAR={
   gradcap:{c:{k:'#303848',K:'#485068',y:'#F8C838'},r:['...oooooo...','.ookkkkkkoo.','okkkkkkkkkko','.ookkkkkkooy','...oKKKKo..y','...oKKKKo..y']}};
 const WEARC={G:'#384068',S:'#202028',W:'#F8F8F8',R:'#E83838',D:'#901818',Y:'#F8D030'};
 function wearG(G,st,wear){
-  const A=TPL[st], t=A.top, P=[];
+  const A=tplA(st), t=A.top, P=[];
   const put=(rows,cols,x0,y0)=>rows.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!=='.') {gset(G,x0+i,y0+j,ch==='o'?'o':cols[ch]||'#000') }}));
   const w=wear||{};
   if(w.head&&WEAR[w.head]){const d=WEAR[w.head], H=d.r.length, Wd=Math.max(...d.r.map(r=>r.length));
@@ -2842,18 +2850,19 @@ function wearG(G,st,wear){
 // 소품: 책·연필·Zz·땀
 const PROPC={p:'#FFFFFF',q:'#5868A0',k:'#E84040',y:'#F8C838',t:'#303030',z:'#5878D8',d:'#78C8F8'};
 function propG(G,st,kind,f){
-  const A=TPL[st], y0=A.ny+1;
+  const A=tplA(st), y0=A.ny+1;
   if(kind==='book'){const rows=f?['kkkkkk','kpqkqk','kqqkpk','kkkkkk']:['kkkkkk','kqqkqk','kpqkpk','kkkkkk'];
     rows.forEach((r,j)=>[...r].forEach((c,i)=>gset(G,5+i,y0+j,c==='o'?'o':PROPC[c]))); gset(G,4,y0+1,'b'); gset(G,11,y0+1,'b'); gset(G,4,y0+2,'o'); gset(G,11,y0+2,'o')}
   if(kind==='pencil'){const pts=f?[[11,y0+1,PROPC.t],[12,y0,PROPC.y],[13,y0-1,PROPC.y],[14,y0-2,PROPC.y],[15,y0-3,PROPC.p]]:[[11,y0+2,PROPC.t],[12,y0+1,PROPC.y],[13,y0,PROPC.y],[14,y0-1,PROPC.y],[15,y0-2,PROPC.p]];
     pts.forEach(([x,y,c])=>gset(G,x,y,c)); gset(G,10,y0+(f?1:2),'b')}
   if(kind==='z'){const z=[[0,0],[1,0],[2,0],[1,1],[0,2],[1,2],[2,2]], ox=f?12:11, oy=f?0:2; z.forEach(([a,b])=>gset(G,ox+a,oy+b,PROPC.z)); if(f) gset(G,10,3,PROPC.z)}
   if(kind==='arms'){const ay=A.ny-(f?3:1); [[2,ay],[2,ay+1],[13,ay],[13,ay+1]].forEach(([x,y])=>{if(gget(G,x,y)==='.') gset(G,x,y,'b')}); [[1,ay],[1,ay+1],[2,ay-1],[14,ay],[14,ay+1],[13,ay-1]].forEach(([x,y])=>{if(gget(G,x,y)==='.') gset(G,x,y,'o')})}
-  if(kind==='sweat') gset(G,12,TPL[st].top+1,PROPC.d);
+  if(kind==='sweat') gset(G,12,tplA(st).top+1,PROPC.d);
 }
 
 // 자세 하나 그리기 → 색 칸 배열
 function poseG(spk,st,wear,pose,xp){
+  CTPL=(SP[spk]||{}).tpl||null;
   const sp=SP[spk]||SP.cat;
   if(st===0){let G=fromRows(EGG); if(xp>=20) [[6,9],[7,10],[8,9],[9,10]].forEach(([x,y])=>gset(G,x,y,'o')); if(pose==='egg1') G=shiftG(G,-1,0); if(pose==='egg2') G=shiftG(G,1,0); return {G,pal:sp.pal}}
   const f=/1$/.test(pose)?1:0, base=pose.replace(/[01]$/,'');
