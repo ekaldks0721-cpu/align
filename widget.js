@@ -69,10 +69,11 @@ function summarize(D, now) {
   logs.forEach(s => (s.segs || []).forEach(g => { const a = Math.max(g[0] * 1e3, st), b = Math.min(g[1] * 1e3, en, now);
     if (b > a) { const len = (b - a) / 1e3; total += len; const c = catOf(s.sub); byCat[c] = (byCat[c] || 0) + len; } }));
 
-  // 하루 목표: 전체 목표가 있으면 그것, 없으면 목표를 둔 첫 카테고리
+  // 집중 시간: 앱 설정 → 위젯에서 고른 카테고리 기준 (안 골랐으면 앱의 목표 기준 카테고리, 기본은 '공부')
+  let wc = v.widgetCat != null ? v.widgetCat : (v.goalCat != null ? v.goalCat : 'c-study'); if (wc && !cat(wc)) wc = '';
   const goals = v.goals || { [v.goalCat || '']: { d: v.dailyGoal != null ? v.dailyGoal : 240 } };
-  const gk = [''].concat(cats.filter(c => !c.arch).map(c => c.id)).find(c => goals[c] && goals[c].d);
-  const goal = gk == null ? null : { min: goals[gk].d, name: gk ? (cat(gk) || {}).name : '', sec: gk ? byCat[gk] || 0 : total };
+  const fsec = wc ? byCat[wc] || 0 : total, fname = wc ? cat(wc).name : '';
+  const goal = goals[wc] && goals[wc].d ? { min: goals[wc].d, name: fname, sec: fsec } : null;
 
   // 할 일: 오늘 것 + 아직 앱에서 만들어지지 않은 오늘의 반복 할 일. 앱과 같은 순서(카테고리 → 항목 → 직접 정한 순서)
   const tdoc = 'tasks-' + k.slice(0, 7), tasks = items(tdoc).filter(t => t.date === k), had = new Set(raw(tdoc).map(t => t.id));
@@ -98,7 +99,7 @@ function summarize(D, now) {
   const upcoming = evs.filter(e => e.s == null || e.e > nowMin).sort((a, b) => (a.s == null ? -1 : a.s) - (b.s == null ? -1 : b.s))
     .map(e => Object.assign(e, { now: e.s != null && e.s <= nowMin, when: e.s == null ? '종일' : hm(e.s) }));
 
-  return { k, total, goal, tasks: taskOut, events: upcoming, at: now };
+  return { k, total: fsec, fname, goal, tasks: taskOut, events: upcoming, at: now };
 }
 
 /* ---------- 그리기 ---------- */
@@ -127,7 +128,7 @@ function bigDur(st, sec, size) { // 숫자는 크게, '시간·분'은 작게 (�
 }
 function focusBlock(st, S, width, size, goalLine) { // 라벨 + 큰 시간 + 막대 (+ 목표 줄은 큰 위젯만)
   const top = st.addStack(); top.centerAlignContent();
-  text(top, S.goal && S.goal.name ? S.goal.name + ' 집중' : '오늘 집중', 13, C.ink2, 'semi'); top.addSpacer();
+  text(top, S.fname ? S.fname + ' 집중' : '오늘 집중', 13, C.ink2, 'semi'); top.addSpacer();
   const pct = pctOf(S); if (pct != null) text(top, pct + '%', 13, pct >= 100 ? C.accent : C.ink, 'bold');
   st.addSpacer(2);
   bigDur(st, S.goal ? S.goal.sec : S.total, size);
@@ -167,14 +168,15 @@ function buildEvents(S, fam) { // 잠금 화면 '오늘 일정' 종류
   if (!/^accessory/.test(fam)) { // 홈 화면에 둔 경우: 일정 목록
     w.backgroundColor = C.bg; w.setPadding(14, 16, 14, 16); sectionTitle(w, '오늘 일정', ev.length ? ev.length + '개 남음' : ''); w.addSpacer(8);
     if (!ev.length) text(w, '오늘 남은 일정이 없어요', 14, C.ink2, 'med');
-    ev.slice(0, fam === 'large' ? 8 : fam === 'medium' ? 3 : 3).forEach(e => { if (fam === 'small') { text(w, when(e), 12, e.now ? C.accent : C.ink2, 'bold'); text(w, e.title, 13, C.ink, 'semi'); w.addSpacer(3); } else { eventRow(w, e, 15); w.addSpacer(6); } });
+    ev.slice(0, fam === 'large' ? 9 : fam === 'medium' ? 4 : 3).forEach(e => { if (fam === 'small') { text(w, when(e), 12, e.now ? C.accent : C.ink2, 'bold'); text(w, e.title, 13, C.ink, 'semi'); w.addSpacer(3); } else { eventRow(w, e, 15); w.addSpacer(6); } });
     w.addSpacer(); return w; }
-  // 직사각형: 3줄. 일정이 적으면 장소도 함께
+  // 직사각형: 장소 없이 '시간 일정'만, 4줄까지 (넘치면 마지막 줄에 남은 개수)
   if (!ev.length) { text(w, '오늘 일정', 13, W, 'semi'); text(w, '남은 일정이 없어요', 15, W, 'heavy', 1, .7); return w; }
-  const lines = [];
-  ev.forEach(e => { lines.push([when(e) + ' ' + e.title, e === ev[0] ? 'heavy' : 'semi']); if (ev.length <= 2 && e.place) lines.push(['📍 ' + e.place, 'med']); });
-  const shown = ev.length > 3 ? lines.slice(0, 2).concat([['+ ' + (ev.length - 2) + '개 더', 'med']]) : lines.slice(0, 3);
-  shown.forEach(([t, wt], i) => text(w, t, i === 0 ? 15 : 13, W, wt, 1, .7));
+  const MAX = 4, list = ev.length > MAX ? ev.slice(0, MAX - 1) : ev;
+  w.setPadding(0, 0, 0, 0); w.spacing = 0;
+  list.forEach((e, i) => { const r = w.addStack(); r.spacing = 4; r.centerAlignContent();
+    text(r, when(e), 12.5, W, 'heavy', 1, .8); text(r, e.title, 12.5, W, i === 0 ? 'bold' : 'semi', 1, .8); });
+  if (ev.length > MAX) text(w, '+ ' + (ev.length - list.length) + '개 더', 12, W, 'semi');
   return w;
 }
 function build(S, fam, note) {

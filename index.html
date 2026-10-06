@@ -2526,6 +2526,8 @@ function widgetCard(){
       st('목록의 ',h('b',null,'Align'),'을 한 번 눌러 실행하고, 동기화에 쓰는 이메일·비밀번호로 로그인하세요.'),
       st('홈 화면 빈 곳을 길게 눌러 ',h('b',null,'편집 → 위젯 추가 → Scriptable'),'에서 크기를 골라 추가하고, 그 위젯을 길게 눌러 ',h('b',null,'위젯 편집 → Script → Align'),'을 고르세요.'),
       st('오늘 일정만 보는 위젯을 따로 두려면 같은 방법으로 하나 더 추가하고, ',h('b',null,'위젯 편집 → Parameter'),'에 ',h('b',null,'일정'),'이라고 적으세요. 잠금 화면 위젯에도 똑같이 쓸 수 있어요.')),
+    h('label',null,'위젯의 집중 시간 기준',(()=>{const v=S.settings.v.widgetCat!=null?S.settings.v.widgetCat:gc(); // 위젯에 보이는 집중 시간·목표 %를 이 카테고리로만 계산
+      return h('select',{onchange:e=>{setCfg('widgetCat',e.target.value); toast('위젯이 다음에 새로 고쳐질 때 바뀌어요')}},h('option',{value:'',selected:!v},'전체'),cats().filter(c=>!c.arch||c.id===v).map(c=>h('option',{value:c.id,selected:c.id===v},c.name)))})()),
     h('div',{class:'row'},h('button',{class:'primary',onclick:async()=>toast(await copyText(WIDGET_LOADER)?'복사했어요. Scriptable에 붙여넣으세요.':'복사하지 못했어요. 다시 해 보세요.')},'위젯 코드 복사')),
     h('p',{class:'small muted',style:'margin:0'},'위젯은 아이폰이 정한 때(보통 15분~1시간마다) 새로 고쳐져요. 위젯을 누르면 Align이 열려요.')));
 }
