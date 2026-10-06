@@ -1607,5 +1607,15 @@ window.I18N_EN={
 "끝나는 날이 시작하는 날보다 빨라요": "The end date is before the start date",
 "여러 날 일정": "Multi-day events",
 "[[끝나는 날]]을 시작하는 날보다 뒤로 정하면 여행이나 시험 기간처럼 여러 날에 걸친 일정이 돼요. 첫날은 시작 시각부터, 마지막 날은 끝 시각까지, 가운데 날은 하루 종일로 보여요. 이어지는 날에는 이름 앞에 [[⋯]]이 붙어요.": "Set the [[End date]] after the start date for an event spanning several days, like a trip or exam week. The first day shows from the start time, the last day until the end time, and days in between as all-day. Continuing days get [[⋯]] before the name.",
-"이뚝불": "Ttukbul"
+"이뚝불": "Ttukbul",
+"갤럭시 설정 → 애플리케이션 → Align(또는 Chrome·삼성 인터넷) → 알림에서 허용하고, 브라우저 주소창 왼쪽 아이콘 → 권한 → 알림도 허용해 주세요.": "On your Galaxy, go to Settings → Apps → Align (or Chrome/Samsung Internet) → Notifications and allow them, and also allow notifications from the icon left of the browser's address bar → Permissions.",
+"윈도우 설정 → 시스템 → 알림에서 Align(또는 Chrome·Edge)을 켜고, 주소창 왼쪽 아이콘 → 알림도 허용해 주세요.": "In Windows Settings → System → Notifications, turn on Align (or Chrome/Edge), and also allow notifications from the icon left of the address bar.",
+"위젯은 아이폰(과 맥)에서만 쓸 수 있어요. 갤럭시나 윈도우에서는 대신 Align을 홈 화면·바탕화면에 앱으로 설치해 두면 한 번에 열 수 있어요.": "Widgets work only on iPhone (and Mac). On Galaxy or Windows, install Align as an app on your home screen or desktop to open it in one tap instead.",
+"Chrome에서는 오른쪽 위 [[⋮]] → [[홈 화면에 추가]] 또는 [[앱 설치]]를, 삼성 인터넷에서는 아래 [[≡]] → [[현재 페이지 추가]] → [[홈 화면]]을 눌러요. 알림은 브라우저에서 바로 켤 수 있어요.": "In Chrome, tap [[⋮]] at the top right → [[Add to Home screen]] or [[Install app]]. In Samsung Internet, tap [[≡]] at the bottom → [[Add page to]] → [[Home screen]]. Notifications can be turned on right in the browser.",
+"Chrome이나 Edge 주소창 오른쪽의 설치 아이콘(모니터 모양)을 누르거나, 메뉴 → [[앱]] → [[Align 설치]]를 눌러요. 시작 메뉴와 작업 표시줄에 고정할 수 있어요.": "Click the install icon (a monitor) at the right of the Chrome or Edge address bar, or Menu → [[Apps]] → [[Install Align]]. You can pin it to Start and the taskbar.",
+"갤럭시": "Galaxy",
+"윈도우": "Windows",
+"갤럭시·윈도우": "Galaxy & Windows",
+"Chrome, 삼성 인터넷, Edge에서 바로 켤 수 있어요. Align이 열려 있으면 다른 앱이나 창을 쓰는 중에도 알림이 와요. 앱을 완전히 닫으면 알림도 멈춰요.": "You can turn them on right in Chrome, Samsung Internet or Edge. While Align is open, alerts arrive even when you're using other apps or windows. Fully closing the app stops them.",
+"(아이폰·맥 전용) App Store에서 [[Scriptable]]을 설치하고, [[위젯 코드 복사]]를 눌러 Scriptable에 붙여넣은 뒤 한 번 실행해 로그인해요.": "(iPhone & Mac only) Install [[Scriptable]] from the App Store, tap [[Copy widget code]], paste it into Scriptable and run it once to sign in."
 };
