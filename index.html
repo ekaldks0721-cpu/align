@@ -728,8 +728,9 @@ const FONTS={plex:['기본','','"IBM Plex Sans KR",'+SYSF,'"Outfit","IBM Plex Sa
 function applyLook(){
   const r=document.documentElement, st=r.style, th=cfg('theme'); if(th==='light'||th==='dark') r.dataset.theme=th; else delete r.dataset.theme;
   const c=accNow(); st.setProperty('--acc-l',c[1]); st.setProperty('--acc-d',c[2]); [3,4,5].forEach((n,i)=>st.setProperty('--g'+(i+1),c[n]));
-  const hu=hueOf(c[4]), alt=hu>=150&&hu<=215?['#33408F','#5466C9','#8C9BEA']:null; // 집중 색이 청록·하늘 계열이면 휴식 색을 남보라로 바꿔 구분
-  [1,2,3].forEach(i=>alt?st.setProperty('--r'+i,alt[i-1]):st.removeProperty('--r'+i));
+  // 휴식 색도 테마 색에서 만듦: 같은 계열이되 집중보다 밝고 부드럽게 (그래서 테마를 바꾸면 휴식 화면도 같이 바뀜)
+  const rb=c[4], rest=[mixHex(rb,'#000000',.18),mixHex(rb,'#ffffff',.2),mixHex(rb,'#ffffff',.42)];
+  [1,2,3].forEach(i=>st.setProperty('--r'+i,rest[i-1]));
   const k=FONTS[cfg('font')]?cfg('font'):'plex', f=FONTS[k];
   if(f[1]&&!document.querySelector('link[data-f="'+k+'"]')){const l=document.createElement('link'); l.rel='stylesheet'; l.href='https://fonts.googleapis.com/css2?family='+f[1]+'&display=swap'; l.dataset.f=k; document.head.append(l)}
   st.setProperty('--sans',f[2]); st.setProperty('--serif',f[3]||f[2]);
