@@ -604,6 +604,7 @@ section[data-card=pet] h2,.pxui h2{font-family:inherit;font-weight:700;font-size
 .pxui .pxtabs button{flex:1 1 auto;min-height:38px;padding:.2em .6em;font-size:14px}
 .pxui .pxtabs button[aria-selected=true]{background:var(--px-ink);color:var(--px-bg);font-weight:700;transform:translate(2px,2px);box-shadow:none}
 .pxchk{display:inline-flex;align-items:center;gap:.4rem;font-size:14px;margin-right:1rem} .pxchk input{accent-color:#283048}
+.archbox{margin-top:.8rem;text-align:center} .archbox summary{cursor:pointer;font-weight:700} .archbox .petsm{display:inline-flex;align-items:center;border:2px dashed var(--px-line);opacity:.9}
 .shopit.lock{background:var(--px-soft);border-style:dashed} .dimx svg{filter:grayscale(1);opacity:.4} .sil svg rect{fill:var(--px-ink)!important;opacity:.28}
 .achlist{list-style:none;margin:.6rem 0 0;padding:0;display:flex;flex-direction:column;gap:.45rem}
 .achlist li{display:flex;align-items:center;gap:.7rem;padding:.55rem .7rem;border:2px solid var(--px-line);background:var(--px-bg)}
@@ -2565,6 +2566,7 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
       [TR('돌보기'),TR('[[밥 주기]](5코인)와 [[물 주기]](2코인)로 배부름과 목마름을 채워요. 못 줘도 아프거나 떠나지 않고 시무룩해질 뿐이에요.')],
       [TR('유리병'),TR('[[배경]]은 공부방, 숲, 정원 중에 고르고 [[날씨]]는 자동이나 맑음, 흐림, 비, 눈으로 정해요. 낮과 밤은 지금 시각을 따라가요.')],
       [TR('하는 일'),TR('집중하면 책상에서 책을 읽거나 필기하고, 쉬는 시간과 밤에는 자요. 다른 친구들은 꼬리를 흔들며 응원해요.')],
+      [TR('보관'),TR('쉬게 하고 싶은 동물은 이름 옆의 [[보관]]을 눌러요. 유리병, 화면 아래, 위젯에서 빠지고 자란 정도와 옷은 그대로 남아요. 아래 [[보관함]]에서 [[꺼내기]]로 언제든 돌아와요. 유리병에는 다섯 마리까지 나와요.')],
       [TR('함께 다니기'),TR('고른 동물이 모든 화면 아래쪽을 돌아다녀요. 누르면 쓰다듬기, 가끔 말풍선으로 말을 걸어요. [[앱 곳곳을 함께 돌아다니기]]와 [[말풍선으로 말 걸기]]로 끌 수 있어요.')]]],
     [TR('도감과 업적'),[
       [TR('도감'),TR('모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 우리 집 친구인 정사월, 미카엘, 유니는 처음부터 무료예요.')],
@@ -3039,7 +3041,7 @@ function mountTerra(maxScale){ // 유리병 하나 만들기. 들어가는 상�
   const c=terraCfg(), tod=timeOfDay(), wx=c.wx==='auto'?autoWeather():c.wx, F=focusState(), lamp=c.theme==='room'&&(F.focus||tod==='night');
   const svg=svgEl(TW,TH,bufRects(terraBG(c.theme,tod,wx,lamp)),'terra');
   const wrap=h('div',{class:'terrawrap'},svg);
-  const ps=pets().slice(0,5), ap=activePet()||{}; let eggN=0;
+  const ps=shownPets().slice(0,5), ap=activePet()||{}; let eggN=0;
   ps.sort((a,b)=>(a.id===ap.id)-(b.id===ap.id)).forEach((p,i)=>{
     const xp=petXP(p), st=stageOf(xp), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g);
     const prev=PST[p.id], egg=!st, base=egg?{x:12+eggN++*16,dir:1}:prev||{x:Math.min(70,30+(i-eggN)*13+Math.floor(Math.random()*4)),dir:Math.random()<.5?-1:1};
@@ -3136,7 +3138,15 @@ function checkStreak(){const s=softStreak(); if(MILES.indexOf(s.n)>=0&&s.start){
 
 /* 픽셀 동물 */
 const pets=()=>items('pets').sort((a,b)=>(a.o||0)-(b.o||0));
-const activePet=()=>{const ps=pets(), id=S.settings.v.activePet; return ps.find(p=>p.id===id)||ps[0]||null};
+const shownPets=()=>pets().filter(p=>!p.arch), archPets=()=>pets().filter(p=>p.arch); // 보관한 동물은 유리병·화면·위젯에서 빠져요
+const activePet=()=>{const ps=shownPets(), id=S.settings.v.activePet; return ps.find(p=>p.id===id)||ps[0]||null};
+async function archivePet(p,on){
+  if(on&&shownPets().length<=1){toast(TR('적어도 한 마리는 함께 있어야 해요')); return}
+  if(on&&!await ask(TR('이 동물을 보관할까요?'),p.name+TR('이(가) 유리병과 화면에서 잠시 빠져요. 자란 정도, 옷, 레벨은 그대로 남고, 보관함에서 언제든 다시 꺼낼 수 있어요.'),TR('보관'))) return;
+  put('pets',Object.assign(clone(p),{arch:on?true:undefined}));
+  if(on&&S.settings.v.activePet===p.id){const n=shownPets()[0]; if(n){S.settings.v.activePet=n.id; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush()}}
+  toast(on?p.name+TR('을(를) 보관했어요'):p.name+TR('이(가) 돌아왔어요')); render();
+}
 const petXP=p=>Math.round(allOf('log-').reduce((a,s)=>a+(s.pet===p.id&&countsLog(s)?sessDur(s):0),0)/60)+(p.bonus||0); // 함께 집중한 분
 const fullOf=(ts,hrs)=>Math.max(0,Math.min(1,1-(Date.now()-(ts||0))/(hrs*36e5)));
 function petMood(p){const st=stageOf(petXP(p)); if(!st) return 'egg'; const f=fullOf(p.fed,36), w=fullOf(p.water,24); return f<.15||w<.15?'sad':f>.5&&w>.5?'happy':'ok'}
@@ -3298,12 +3308,12 @@ function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해�
 /* 화면: 동물 탭 (내 동물 · 도감 · 업적 · 상점 · 코인) */
 let petTab='home', shopTab='reward';
 function renderPet(){
-  const sec=$('#v-pet'), ps=pets(), p=activePet(), st=softStreak(), bal=coinBal(), e=earnedCoins(), lv=myLv(e);
+  const sec=$('#v-pet'), allPs=pets(), ps=shownPets(), arch=archPets(), p=activePet(), st=softStreak(), bal=coinBal(), e=earnedCoins(), lv=myLv(e);
   const segOf=(opts,cur,fn,label)=>h('div',{class:'seg wrap',role:'group','aria-label':label},opts.map(o=>h('button',{'aria-pressed':String(cur===o[0]),onclick:()=>fn(o[0])},...pxText(o[1]))));
   const nOpen=Object.keys(SP).filter(k=>spOpen(k,lv)).length, nAch=ACH.filter(a=>hasAch(a[0])).length;
   const head=h('section',{class:'card pxcard'},h('div',{class:'pxhud'},h('span',{class:'lv'},TR('내 레벨')+' '+lv),pxBar((e-myLvCoins(lv))/(myLvCoins(lv+1)-myLvCoins(lv)),12),h('span',{class:'small hudi'},TR('다음 레벨까지 ')+(myLvCoins(lv+1)-e),pxi('coin')),
       h('span',{class:'sp'}),h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
-    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+ps.length+'/'+Object.keys(SP).length],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['coin',TR('🪙 코인')]]
+    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['coin',TR('🪙 코인')]]
       .map(o=>h('button',{role:'tab','aria-selected':String(petTab===o[0]),onclick:()=>{petTab=o[0]; renderPet(); window.scrollTo(0,0)}},...pxText(o[1])))));
   let body=[];
   if(petTab==='home'){
@@ -3324,7 +3334,7 @@ function renderPet(){
       const xp=petXP(p), sg=stageOf(xp), nx=STAGES[sg+1], mood=petMood(p), f=fullOf(p.fed,36), w=fullOf(p.water,24), li=lvInfo(xp);
       const meter=(icon,lab,v,cls)=>h('div',{class:'meter'},pxi(icon),h('span',null,lab),pxBar(v,10,cls),h('span',{class:'num small'},Math.round(v*100)+'%'));
       body=[h('section',{class:'card pxcard'},
-        h('div',{class:'pxhud'},h('span',{class:'lv'},'Lv '+li.L),h('b',{class:'pname'},p.name),h('button',{class:'quiet tiny',onclick:()=>renamePet(p),'aria-label':TR('이름 바꾸기')},'✎'),h('span',{class:'sp small'},moodText(p,mood))),
+        h('div',{class:'pxhud'},h('span',{class:'lv'},'Lv '+li.L),h('b',{class:'pname'},p.name),h('button',{class:'quiet tiny',onclick:()=>renamePet(p),'aria-label':TR('이름 바꾸기')},'✎'),h('span',{class:'sp small'},moodText(p,mood)),ps.length>1?h('button',{class:'tiny',onclick:()=>archivePet(p,true),title:TR('유리병과 화면에서 빼 두기')},TR('보관')):null),
         jar,
         h('div',{class:'pxrow'},h('span',null,SP[p.sp].n+' · '+STAGES[sg][1]+' · '),status),
         h('div',{class:'pxrow'},h('span',{class:'small'},'EXP'),pxBar(li.v,16),h('span',{class:'small'},'Lv '+(li.L+1)+TR('까지 ')+fmtDur(li.left*60))),
@@ -3333,19 +3343,21 @@ function renderPet(){
         sg?h('div',{class:'pxrow',style:'justify-content:center'},h('button',{onclick:()=>careFor(p,'food')},pxi('rice'),TR('밥 주기')+' · 5',pxi('coin')),h('button',{onclick:()=>careFor(p,'water')},pxi('drop'),TR('물 주기')+' · 2',pxi('coin'))):null,
         ps.length>1?h('div',{class:'petrow'},ps.map(q=>h('button',{class:'petsm','aria-pressed':String(q.id===p.id),onclick:()=>setActivePet(q.id),title:q.name},petSVG(q.sp,stageOf(petXP(q)),q.wear,petMood(q),48,petXP(q)),h('span',null,q.name),h('span',{class:'small'},'Lv '+petLv(petXP(q)))))):null,
         ps.length>1?h('p',{class:'small',style:'text-align:center;margin:.3rem 0 0'},TR('고른 동물이 지금 함께 집중하는 친구예요. 집중한 시간은 그 동물만 키워요.')):null,
+        ps.length>5?h('p',{class:'small',style:'text-align:center;margin:.2rem 0 0'},TR('유리병에는 다섯 마리까지 나와요. 쉬게 하고 싶은 친구는 보관해 두세요.')):null,
+        arch.length?h('details',{class:'archbox'},h('summary',null,TR('보관함')+' ('+arch.length+')'),h('div',{class:'petrow'},arch.map(q=>h('div',{class:'petsm'},petSVG(q.sp,stageOf(petXP(q)),q.wear,'stand',48,petXP(q)),h('span',null,q.name),h('span',{class:'small'},'Lv '+petLv(petXP(q))),h('button',{class:'tiny',onclick:()=>archivePet(q,false)},TR('꺼내기')))))):null,
         opts)];
     }
   }
   else if(petTab==='dex'){
-    const owned=new Set(ps.map(q=>q.sp)), nextLv=Object.keys(UNLOCK).filter(k=>UNLOCK[k].lv&&UNLOCK[k].lv>lv).sort((a,b)=>UNLOCK[a].lv-UNLOCK[b].lv)[0];
-    body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('동물 도감')),h('span',{class:'sp small'},TR('함께 ')+ps.length+' · '+TR('열림 ')+nOpen+' / '+Object.keys(SP).length)),
+    const owned=new Set(allPs.map(q=>q.sp)), nextLv=Object.keys(UNLOCK).filter(k=>UNLOCK[k].lv&&UNLOCK[k].lv>lv).sort((a,b)=>UNLOCK[a].lv-UNLOCK[b].lv)[0];
+    body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('동물 도감')),h('span',{class:'sp small'},TR('함께 ')+allPs.length+' · '+TR('열림 ')+nOpen+' / '+Object.keys(SP).length)),
       h('p',{class:'small'},TR('레벨이 오르거나 업적을 달성하면 새 친구가 열려요. 열린 친구는 코인으로 데려올 수 있어요.')+(nextLv?' '+TR('다음 레벨 해금: ')+SP[nextLv].n+' (Lv '+UNLOCK[nextLv].lv+')':'')),
-      h('div',{class:'shopgrid'},Object.keys(SP).map(k=>{const sp=SP[k], has=owned.has(k), open=spOpen(k,lv), pr=spPrice(k), mine=ps.find(q=>q.sp===k);
-        if(has) return h('div',{class:'shopit on'},petSVG(k,mine?Math.max(1,stageOf(petXP(mine))):3,mine?mine.wear:{},'happy',64),h('b',null,sp.n),h('span',{class:'price'},TR('함께 있어요')+(mine?' · Lv '+petLv(petXP(mine)):'')),
-          mine&&mine.id!==p.id?h('button',{onclick:()=>{setActivePet(mine.id); petTab='home'; renderPet()}},TR('함께 다니기')):h('span',{class:'small'},TR('지금 친구')));
+      h('div',{class:'shopgrid'},Object.keys(SP).map(k=>{const sp=SP[k], has=owned.has(k), open=spOpen(k,lv), pr=spPrice(k), mine=ps.find(q=>q.sp===k)||allPs.find(q=>q.sp===k);
+        if(has) return h('div',{class:'shopit on'},petSVG(k,mine?Math.max(1,stageOf(petXP(mine))):3,mine?mine.wear:{},'happy',64),h('b',null,sp.n),h('span',{class:'price'},(mine&&mine.arch?TR('보관 중'):TR('함께 있어요'))+(mine?' · Lv '+petLv(petXP(mine)):'')),
+          mine&&mine.arch?h('button',{onclick:()=>archivePet(mine,false)},TR('보관함에서 꺼내기')):mine&&p&&mine.id!==p.id?h('button',{onclick:()=>{setActivePet(mine.id); petTab='home'; renderPet()}},TR('함께 다니기')):h('span',{class:'small'},TR('지금 친구')));
         if(!open) return h('div',{class:'shopit lock'},h('span',{class:'pix sil'},petSVG(k,3,{},'stand',64).firstChild),h('b',null,'???'),h('span',{class:'small'},...pxText('🔒 '+lockText(k))));
         return h('div',{class:'shopit'},petSVG(k,3,{},'happy',64),h('b',null,sp.n),sp.special?h('span',{class:'small'},...pxText('❤ '+TR('우리 집 친구'))):h('span',{class:'num price'},pxi('coin'),String(pr)),
-          (fr=>h('button',{class:fr||bal>=pr?'primary':'',disabled:!fr&&bal<pr,onclick:()=>adoptPet(k,fr)},fr?TR('무료로 데려오기'):TR('입양')))(!pr||!ps.length&&['cat','dog','bunny'].indexOf(k)>=0))}))) ];
+          (fr=>h('button',{class:fr||bal>=pr?'primary':'',disabled:!fr&&bal<pr,onclick:()=>adoptPet(k,fr)},fr?TR('무료로 데려오기'):TR('입양')))(!pr||!allPs.length&&['cat','dog','bunny'].indexOf(k)>=0))}))) ];
   }
   else if(petTab==='ach'){
     const S2=achStats();
@@ -3472,7 +3484,7 @@ let snapSig='', snapT=null;
 function queuePetSnap(){clearTimeout(snapT); snapT=setTimeout(petSnap,1200)}
 function petSnap(){
   const ap=activePet(); if(!ap) return;
-  const c=terraCfg(), wx=c.wx==='auto'?autoWeather():c.wx, ps=pets().slice(0,5);
+  const c=terraCfg(), wx=c.wx==='auto'?autoWeather():c.wx, ps=shownPets().slice(0,5);
   const sig=JSON.stringify([LANG,c.theme,wx,ap.id,ap.fed,ap.water,ps.map(p=>[p.id,p.sp,p.name,p.wear,stageOf(petXP(p)),petLv(petXP(p))]),myLv()]);
   if(sig===snapSig) return; snapSig=sig;
   const pal=[], idx={}, enc=rows=>rows.map(r=>r.map(c2=>{if(!c2) return '.'; if(idx[c2]==null){idx[c2]=pal.length; pal.push(c2)} return PX_ALPHA[idx[c2]]||'.'}).join(''));

@@ -1586,5 +1586,17 @@ window.I18N_EN={
 "3. 첫 기록 남기기": "3. Your first record",
 "오늘 탭에서 할 일을 적고 [[▶]]를 눌러 타이머를 시작해요. 끝나면 코인과 함께 동물 친구가 자라요.": "Write a task on the Today tab and tap [[▶]] to start the timer. When it ends, you get coins and your pet pal grows.",
 "PC에서 폴더에도 저장하기 (선택)": "Save to a folder on a PC (optional)",
-"유니": "Yuni"
+"유니": "Yuni",
+"적어도 한 마리는 함께 있어야 해요": "At least one pet needs to stay with you",
+"이 동물을 보관할까요?": "Put this pet away?",
+"이(가) 유리병과 화면에서 잠시 빠져요. 자란 정도, 옷, 레벨은 그대로 남고, 보관함에서 언제든 다시 꺼낼 수 있어요.": " will leave the jar and screens for a while. Growth, outfits and level stay as they are, and you can bring it back from storage anytime.",
+"을(를) 보관했어요": " was put away",
+"이(가) 돌아왔어요": " is back",
+"유리병과 화면에서 빼 두기": "Remove from the jar and screens",
+"유리병에는 다섯 마리까지 나와요. 쉬게 하고 싶은 친구는 보관해 두세요.": "Up to five pets appear in the jar. Put away any pals you'd like to rest.",
+"보관함": "Storage",
+"꺼내기": "Bring back",
+"보관함에서 꺼내기": "Bring back from storage",
+"보관 중": "Put away",
+"쉬게 하고 싶은 동물은 이름 옆의 [[보관]]을 눌러요. 유리병, 화면 아래, 위젯에서 빠지고 자란 정도와 옷은 그대로 남아요. 아래 [[보관함]]에서 [[꺼내기]]로 언제든 돌아와요. 유리병에는 다섯 마리까지 나와요.": "To rest a pet, tap [[Put away]] next to its name. It leaves the jar, the bottom of the screen and the widget, but keeps its growth and outfits. Bring it back anytime with [[Bring back]] in [[Storage]] below. Up to five pets appear in the jar."
 };
