@@ -1928,7 +1928,7 @@ function renderSet(){
       h('section',{class:'card'},h('h2',{style:'margin-bottom:.8rem'},'타이머'),h('div',{class:'form'},
         h('label',null,'집중 (분)',num('focus',1,180)),h('label',null,'짧은 휴식 (분)',num('short',1,60)),h('label',null,'긴 휴식 (분)',num('long',1,120)),
         h('label',null,'긴 휴식까지 집중 횟수',num('every',1,12)),h('label',null,'집중이 끝나면 휴식 자동 시작',chk('autoBreak')),h('label',null,'휴식이 끝나면 집중 자동 시작',chk('autoFocus')),h('label',null,'끝날 때 알림음',chk('sound')),h('label',null,'타이머가 도는 동안 화면 켜 두기',chk('wake')))),
-      notifyCard(),
+      notifyCard(),widgetCard(),
       h('section',{class:'card'},h('h2',{style:'margin-bottom:.8rem'},'목표와 하루 기준'),h('div',{class:'form'},
         h('table',{class:'tbl gtbl'},h('thead',null,h('tr',null,h('th',null,'목표'),h('th',null,'하루 (시간)'),h('th',null,'주간 (시간)'))),
           h('tbody',null,[''].concat(cats().filter(c=>!c.arch).map(c=>c.id)).map(c=>{const g=goals()[c]||{d:0,w:0}, nm=c?catName(c):'전체';
@@ -2485,6 +2485,26 @@ function nStatus(){
   if(nEnabled()) return '이 기기에서 알림을 받고 있어요. '+(isIOS?'아이폰은 Align이 화면에 떠 있을 때만 알림이 와요.':'Align이 열려 있으면 창을 내려 두거나 다른 창을 써도 알림이 와요.');
   if(Notification.permission==='denied') return '알림이 막혀 있어요. '+(isIOS?'아이폰 설정 → 알림 → Align에서 허용해 주세요.':'맥의 시스템 설정 → 알림에서 Align(또는 쓰는 브라우저)을 허용하고, 크롬이라면 주소창 왼쪽 아이콘 → 알림도 허용해 주세요.')+' 그다음 아래 버튼을 다시 누르세요.';
   return '켜면 뽀모도로가 끝날 때, 할 일 마감 전, 일정 시작 전에 알림이 와요. 알림 허용은 기기마다 따로 해야 해요.';
+}
+const WIDGET_LOADER=[
+  '// Align 위젯: 이 몇 줄이 최신 위젯을 받아 와서 실행해요. 고칠 필요 없어요.',
+  "const U='"+new URL('widget.js',location.href).href+"', fm=FileManager.local(), p=fm.joinPath(fm.documentsDirectory(),'align-widget-code.js');",
+  "let code=null; try{code=await new Request(U+'?t='+Date.now()).loadString(); if(code.indexOf('ALIGN_WIDGET')<0) throw 0; fm.writeString(p,code)}catch(e){code=fm.fileExists(p)?fm.readString(p):null}",
+  "if(code) await new Function('return (async()=>{'+code+'\\n})()')();",
+  "else{const w=new ListWidget(); w.addText('Align 위젯을 받지 못했어요. 인터넷 연결을 확인해 주세요.'); Script.setWidget(w); Script.complete()}"].join('\n');
+function widgetCard(){
+  if(!fbCfg) return null;
+  const st=(...x)=>h('li',null,...x);
+  return h('section',{class:'card'},h('h2',{style:'margin-bottom:.8rem'},'위젯'),h('div',{class:'form'},
+    h('p',{class:'small muted',style:'margin:0'},'아이폰 홈 화면·잠금 화면 위젯으로 오늘 집중 시간, 할 일, 다가오는 일정을 볼 수 있어요. 무료 앱 Scriptable을 써요. 맥(macOS 14 이상)에서는 아이폰 위젯을 바탕화면에 올릴 수 있어요.'),
+    h('ol',{class:'steps small'},
+      st('App Store에서 ',h('b',null,'Scriptable'),'을 설치하세요.'),
+      st('아래 ',h('b',null,'"위젯 코드 복사"'),'를 누르세요.'),
+      st('Scriptable을 열고 오른쪽 위 ',h('b',null,'+'),'를 눌러 빈 화면에 붙여넣은 뒤, 맨 위 제목을 ',h('b',null,'Align'),'으로 바꾸고 ',h('b',null,'완료'),'를 누르세요.'),
+      st('목록의 ',h('b',null,'Align'),'을 한 번 눌러 실행하고, 동기화에 쓰는 이메일·비밀번호로 로그인하세요.'),
+      st('홈 화면 빈 곳을 길게 눌러 ',h('b',null,'편집 → 위젯 추가 → Scriptable'),'에서 크기를 골라 추가하고, 그 위젯을 길게 눌러 ',h('b',null,'위젯 편집 → Script → Align'),'을 고르세요.')),
+    h('div',{class:'row'},h('button',{class:'primary',onclick:async()=>toast(await copyText(WIDGET_LOADER)?'복사했어요. Scriptable에 붙여넣으세요.':'복사하지 못했어요. 다시 해 보세요.')},'위젯 코드 복사')),
+    h('p',{class:'small muted',style:'margin:0'},'위젯은 아이폰이 정한 때(보통 15분~1시간마다) 새로 고쳐져요. 위젯을 누르면 Align이 열려요.')));
 }
 function notifyCard(){
   const on=nEnabled();
