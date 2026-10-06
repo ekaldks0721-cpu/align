@@ -974,7 +974,7 @@ function fbListen(){
 async function initFirebase(){
   if(!fbCfg||fbAuth) return; setCloud('connecting');
   try{await fbLoad()}catch(e){setCloud('local'); return} // 인터넷이 없으면 나중에(online) 다시 시도
-  fbAuth.onAuthStateChanged(u=>{fbUser=u; if(u) fbListen(); else{fbListen(); setCloud('local')} if(view==='set') render()});
+  fbAuth.onAuthStateChanged(u=>{fbUser=u; if(u) fbListen(); else{fbListen(); setCloud('local')} if(view==='set') render(); if(obStep===0&&dlg.open&&!u) onboard(0)});
 }
 window.addEventListener('online',()=>{if(fbCfg&&!fbAuth) initFirebase(); else if(fbUser&&cloud==='error') fbListen()});
 const FB_ERR={'auth/invalid-credential':TR('이메일이나 비밀번호가 맞지 않아요'),'auth/wrong-password':TR('이메일이나 비밀번호가 맞지 않아요'),'auth/user-not-found':TR('이메일이나 비밀번호가 맞지 않아요'),
@@ -2400,11 +2400,40 @@ function folderSteps(after){ // 시작 안내와 도움말에서 같이 쓰는 �
       h('button',{class:'primary',onclick:async()=>{await connectFolder(); after()}},TR('데이터 폴더 연결')),
     on?null:h('p',{class:'small muted',style:'margin:0'},TR('연결하지 않으면 기록이 이 브라우저 안에만 저장돼요. 브라우저 데이터를 지우면 기록도 함께 사라질 수 있어요.'))];
 }
+let obStep=-1;
+function accountStep(next){ // 시작 안내 첫 화면: 바로 계정을 만들거나 로그인해요
+  if(!fbCfg) return null;
+  if(fbUser) return [h('p',{style:'margin:0'},h('b',null,fbUser.email),TR(' 계정으로 로그인돼 있어요. 기록이 이 계정에 저장되고, 다른 기기에서도 같은 계정으로 로그인하면 똑같이 보여요.')),
+    h('button',{class:'primary',onclick:next},TR('다음으로'))];
+  if(!fbAuth){setTimeout(()=>{if(obStep===0&&dlg.open) onboard(0)},800);
+    return [h('p',{class:'muted',style:'margin:0'},TR('계정 서버에 연결하는 중이에요… 인터넷이 연결돼 있는지 확인해 주세요.'))]}
+  let mode='new';
+  const fE=h('input',{type:'email',placeholder:TR('이메일'),autocomplete:'username',autocapitalize:'off','aria-label':TR('이메일')});
+  const fP=h('input',{type:'password',placeholder:TR('비밀번호 (6자 이상)'),autocomplete:'new-password','aria-label':TR('비밀번호')});
+  const fP2=h('input',{type:'password',placeholder:TR('비밀번호 한 번 더'),autocomplete:'new-password','aria-label':TR('비밀번호 확인')});
+  const btn=h('button',{class:'primary',style:'width:100%'}), sw=h('button',{class:'quiet',style:'width:100%'}), forgot=h('button',{class:'quiet',hidden:true},TR('비밀번호를 잊었어요'));
+  const paint=()=>{fP2.hidden=mode!=='new'; fP.autocomplete=mode==='new'?'new-password':'current-password'; btn.textContent=mode==='new'?TR('계정 만들고 시작하기'):TR('로그인하고 시작하기');
+    sw.textContent=mode==='new'?TR('이미 계정이 있어요 (로그인)'):TR('처음이에요 (새 계정 만들기)'); forgot.hidden=mode==='new'};
+  sw.onclick=()=>{mode=mode==='new'?'in':'new'; paint()};
+  btn.onclick=async()=>{const em=fE.value.trim(), pw=fP.value; if(!em){toast(TR('이메일을 입력해 주세요')); fE.focus(); return}
+    if(mode==='new'&&pw!==fP2.value){toast(TR('비밀번호가 서로 달라요. 다시 확인해 주세요')); fP2.focus(); return}
+    btn.disabled=true;
+    try{if(mode==='new') await fbAuth.createUserWithEmailAndPassword(em,pw); else await fbAuth.signInWithEmailAndPassword(em,pw);
+      toast(mode==='new'?TR('계정을 만들었어요! 이제 기록이 계정에 저장돼요'):TR('로그인했어요. 기록을 맞추는 중이에요')); next()}
+    catch(e){toast(fbErr(e))} btn.disabled=false};
+  forgot.onclick=async()=>{const em=fE.value.trim(); if(!em){toast(TR('위에 이메일을 먼저 입력해 주세요')); return} try{await fbAuth.sendPasswordResetEmail(em); toast(TR('비밀번호를 바꾸는 메일을 보냈어요'))}catch(e){toast(fbErr(e))}};
+  [fE,fP,fP2].forEach(f=>f.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing) btn.click()}));
+  paint(); setTimeout(()=>fE.focus(),80);
+  return [h('p',{style:'margin:0'},TR('계정을 만들면 아이폰과 컴퓨터의 기록이 자동으로 맞춰지고, 기기를 바꾸거나 잃어버려도 기록이 남아요. 이메일과 비밀번호만 있으면 돼요.')),
+    h('div',{style:'display:grid;gap:.5rem'},fE,fP,fP2,btn,sw,forgot),
+    h('p',{class:'small muted',style:'margin:0'},TR('지금 이 기기에 있는 기록도 계정으로 합쳐져요. 나중에 하려면 "건너뛰기"를 누르세요. 설정 → 저장에서 언제든 만들 수 있어요.'))];
+}
 function onboard(i){
-  i=i||0; const N=4, last=i===N-1; try{localStorage.setItem(OB,'1')}catch(e){}
+  i=i||0; const N=5, last=i===N-1; obStep=i; try{localStorage.setItem(OB,'1')}catch(e){}
   let title, body;
-  if(i===0){title=isIOS&&!fsOK()?TR('기록은 이 앱 안에 저장돼요'):TR('기록을 폴더에 저장해요');
-    body=folderSteps(()=>onboard(0));
+  if(i===0){const acc=accountStep(()=>onboard(1));
+    if(acc){title=fbUser?TR('계정이 연결돼 있어요'):TR('먼저 계정을 만들어요'); body=acc}
+    else{title=isIOS&&!fsOK()?TR('기록은 이 앱 안에 저장돼요'):TR('기록을 폴더에 저장해요'); body=folderSteps(()=>onboard(0))}
   } else if(i===1){title=TR('무엇을 기록할지 정해요');
     const fC=h('select',{'aria-label':TR('카테고리')},cats().filter(c=>!c.arch).map(c=>h('option',{value:c.id},c.name))), fN=h('input',{type:'text',placeholder:TR('예: 전공 수업 이름'),maxlength:24,style:'flex:1;min-width:8rem'});
     const add=()=>{const name=fN.value.trim(); if(!name){fN.focus(); return} put('subjects',{id:uid(),name,cat:fC.value,color:PALETTE[subs().length%PALETTE.length],o:Date.now()}); render(); onboard(1)};
@@ -2418,38 +2447,48 @@ function onboard(i){
     body=[h('p',{style:'margin:0'},TR('목표를 적어 두면 오늘 탭에 진행 막대가, 통계 탭에 달성률 그래프가 생겨요.')),
       h('label',null,catName('c-study')+TR(' 하루 목표 (시간)'),h('input',{type:'number',min:0,max:24,step:.5,value:g.d?g.d/60:'',placeholder:TR('없음'),onchange:e=>{let v=parseFloat(e.target.value); v=isNaN(v)?0:Math.min(24,Math.max(0,v)); setGoal('c-study','d',Math.round(v*60))}})),
       h('p',{class:'small muted',style:'margin:0'},TR('운동이나 독서처럼 다른 카테고리의 목표와 주간 목표는 설정 탭의 "목표와 하루 기준"에서 적을 수 있어요.'))];
+  } else if(i===3){title=TR('함께할 동물 친구를 골라요');
+    const p=activePet();
+    body=[h('p',{style:'margin:0'},TR('집중하고 할 일을 끝내면 코인을 받고, 동물 친구가 함께 자라요. 동물은 화면 아래를 돌아다니며 같이 공부해요.')),
+      p?h('p',{style:'margin:0'},TR('함께하는 친구: '),h('b',null,p.name),TR('. 동물 탭에서 더 많은 친구를 만날 수 있어요.')):
+        h('div',{class:'petgrid pxui'},['cat','dog','bunny','sawol','mikael'].map(k=>h('button',{class:'petpick',onclick:()=>{adoptPet(k,true); celebQ.length=0; onboard(3)}},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n)))),
+      h('p',{class:'small muted',style:'margin:0'},TR('동물은 알에서 시작해서 30분 집중하면 태어나요. 동물 탭에서 밥과 물을 주고, 옷을 사 입히고, 업적을 모아 새 친구를 열어요.'))];
   } else {title=TR('첫 기록을 남겨요');
-    body=[h('ol',{class:'steps'},h('li',null,TR('오늘 탭의 "할 일"에 할 일을 적고 예상 시간을 정해 추가해요.')),h('li',null,TR('할 일 옆의 ▶를 누르고 타이머의 "시작"을 눌러요.')),
-        h('li',null,TR('집중 시간이 끝나면 자동으로 기록되고, 타임테이블에 색 띠로 칠해져요.')),h('li',null,TR('타이머 없이 한 일은 타임테이블의 빈 칸을 눌러 직접 넣을 수 있어요.'))),
-      !window.claude&&fsOK()&&fState!=='on'?h('div',{class:'card',style:'padding:.8rem'},h('p',{style:'margin:0 0 .5rem'},h('b',null,TR('아직 데이터 폴더를 연결하지 않았어요.')),TR(' 연결하면 기록이 폴더 파일로 저장돼요.')),h('button',{class:'primary',onclick:async()=>{await (fState==='need'?reconnectFolder():connectFolder()); onboard(3)}},TR('데이터 폴더 연결'))):null,
+    body=[h('ol',{class:'steps'},h('li',null,TR('오늘 탭의 "할 일"에 할 일을 적고 예상 시간을 정해 추가해요.')),h('li',null,TR('할 일 옆의 ▶를 누르고 타이머의 "시작"을 눌러요. 시작이 어려우면 "5분만"을 눌러 보세요.')),
+        h('li',null,TR('집중 시간이 끝나면 자동으로 기록되고, 코인과 함께 축하가 떠요.')),h('li',null,TR('타이머 없이 한 일은 타임테이블의 빈 칸을 눌러 직접 넣을 수 있어요.'))),
+      !window.claude&&!isIOS&&fsOK()&&fState!=='on'&&!fbUser?h('div',{class:'card',style:'padding:.8rem'},h('p',{style:'margin:0 0 .5rem'},h('b',null,TR('PC에서는 기록을 폴더에도 저장할 수 있어요.')),TR(' 연결하면 기록이 폴더 파일로도 남아요.')),h('button',{onclick:async()=>{await (fState==='need'?reconnectFolder():connectFolder()); onboard(4)}},TR('데이터 폴더 연결'))):null,
       h('p',{class:'small muted',style:'margin:0'},TR('사용법이 궁금할 때는 화면 위의 ? 버튼을 누르세요.'))];
   }
   openDlg(title,[h('p',{class:'small muted num',style:'margin:0'},TR('시작 안내 ')+(i+1)+' / '+N)].concat(body),
-    [h('button',{class:'quiet',style:'margin-right:auto',onclick:closeDlg},TR('건너뛰기')),i?h('button',{onclick:()=>onboard(i-1)},TR('이전')):null,
-     h('button',{class:'primary',onclick:()=>{if(!last){onboard(i+1); return} closeDlg(); goTo('today',today()); $('#k-title').focus()}},last?TR('시작하기'):TR('다음'))]);
+    [h('button',{class:'quiet',style:'margin-right:auto',onclick:()=>{obStep=-1; closeDlg()}},TR('건너뛰기')),i?h('button',{onclick:()=>onboard(i-1)},TR('이전')):null,
+     h('button',{class:i===0&&!fbUser&&fbCfg?'':'primary',onclick:()=>{if(!last){onboard(i+1); return} obStep=-1; closeDlg(); goTo('today',today()); $('#k-title').focus()}},last?TR('시작하기'):i===0&&!fbUser&&fbCfg?TR('나중에 할게요'):TR('다음'))]);
 }
 function rich(t){return String(t).split(/(\[\[.+?\]\])/).filter(Boolean).map(p=>p.slice(0,2)==='[['?h('span',{class:'kbd'},p.slice(2,-2)):p)} // [[버튼 이름]]을 버튼 모양으로
 const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이름, [[제목, 설명]…]]…], 팁]
   [TR('오늘'),'sun',TR('하루를 계획하고, 시간을 재고, 기록하는 화면이에요.'),[
     [TR('타이머'),[
       [TR('시작하기'),TR('[[뽀모도로]]나 [[스톱워치]]를 고르고, 항목과 할 일을 정한 뒤 [[시작]]을 눌러요.')],
-      [TR('끝내기'),TR('시간이 다 되면 자동으로 기록돼요. 도중에 끝내려면 [[끝내고 기록]]을 눌러요.')],
+      [TR('5분만'),TR('시작이 어려울 때 [[5분만]]을 누르면 딱 5분짜리 집중이 시작돼요. 끝나면 칭찬과 코인을 받아요.')],
+      [TR('시간 정하기'),TR('뽀모도로 아래 칸에서 집중, 짧은 휴식, 긴 휴식 시간과 긴 휴식까지의 횟수를 바로 골라요. 도는 동안에는 요약만 보여요.')],
+      [TR('끝내기'),TR('시간이 다 되면 자동으로 기록되고 축하가 떠요. 도중에 끝내려면 [[끝내고 기록]]을, 버리려면 [[취소]]를 눌러요.')],
       [TR('항목과 할 일'),TR('항목을 고르면 그 항목의 할 일만 목록에 나와요.')]]],
     [TR('할 일'),[
-      [TR('추가'),TR('내용과 예상 시간을 적고 [[추가]]를 눌러요. 이름표를 누르면 고칠 수 있어요.')],
+      [TR('추가'),TR('내용과 예상 시간을 적고 [[추가]]를 눌러요. 제목을 누르면 고칠 수 있어요.')],
+      [TR('묶어 보기'),TR('할 일은 카테고리와 항목별로 묶여서 보여요.')],
+      [TR('순서 바꾸기'),TR('할 일 왼쪽의 [[⋮⋮]]를 끌어서 순서를 바꿔요. 카테고리 이름 줄을 끌면 카테고리끼리 순서가 바뀌어요. 키보드의 위·아래 화살표로도 옮길 수 있어요.')],
+      [TR('끝내기'),TR('체크하면 축하와 함께 코인 10개를 받아요. 마감 전에 끝내면 10개를 더 받아요.')],
       [TR('타이머에 연결'),TR('할 일 옆의 [[▶]]를 누르면 타이머가 그 할 일에 맞춰져요.')],
       [TR('예상과 실제'),TR('예상 시간과 실제로 잰 시간이 나란히 보여요. 예상을 넘기면 빨간색이 돼요.')],
       [TR('마감'),TR('[[마감 설정]]으로 날짜와 시각을 정하면 남은 시간이 나와요. 마감이 가까운 일이 위로 올라와요.')],
       [TR('반복'),TR('추가할 때 [[반복 안 함]] 칸에서 매일, 평일, 주말을 고르면 그 요일마다 자동으로 생겨요.')],
-      [TR('미루기'),TR('못 끝낸 일은 [[지난 미완료]]에서 오늘로 옮기거나 내일로 미뤄요. 할 일 옆의 달력 버튼으로 하나씩 옮길 수도 있어요.')],
+      [TR('미루기'),TR('못 끝낸 일은 [[지난 미완료]]에서 오늘로 옮기거나 내일로 미뤄요.')],
       [TR('장기 할 일 꺼내기'),TR('[[대시보드에서 가져오기]]로 대시보드의 일을 오늘 할 일로 꺼내요.')]]],
     [TR('타임테이블'),[
       [TR('넣기'),TR('한 칸이 10분이에요. 빈 칸을 누르거나 끌어서 [[기록]], [[할 일 배정]], [[일정]] 중에 골라 넣어요.')],
       [TR('읽는 법'),{leg:[['bar',TR('실제로 한 기록')],['plan',TR('시간을 배정한 할 일')],['fix',TR('시간표의 고정 일정')],['cal',TR('캘린더 일정')]]}],
-      [TR('고치기'),TR('기록 띠를 누르면 고치거나 지울 수 있어요. 고정 일정은 이름을 누르면 그 날만 바꾸거나 쉴 수 있어요.')],
-      [TR('배정 지우기'),TR('점선 칸을 누르면 열리는 창에서 [[배정 지우기]]를 눌러요. 할 일 목록의 🕘 옆 [[×]]로도 지워져요.')]]],
+      [TR('고치기'),TR('기록 띠를 누르면 고치거나 지울 수 있어요. 고정 일정은 이름을 누르면 그 날만 바꾸거나 쉴 수 있어요.')]]],
     [TR('일정과 메모'),[
-      [TR('일정'),TR('그날의 캘린더 일정, 고정 일정, D-day가 시간순으로 나와요. 진행 중인 일정에는 [[지금]]이 붙어요.')],
+      [TR('일정'),TR('그날의 캘린더 일정, 고정 일정, D-day가 시간순으로 나와요. 장소를 적어 둔 일정은 장소도 함께 보여요.')],
       [TR('메모'),TR('그 날의 메모를 적어요. 날짜마다 따로 저장돼요.')]]],
     [TR('화면 바꾸기'),[
       [TR('카드 배치'),TR('날짜 옆의 [[화면 편집]]에서 카드의 순서와 좌우 줄을 바꾸거나 숨겨요.')]]]],
@@ -2458,7 +2497,7 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
     [TR('적기와 진행'),[
       [TR('추가'),TR('맨 위 칸에 적고 [[추가]]를 눌러요. 항목, 마감, 우선순위는 비워 둬도 돼요.')],
       [TR('진행 표시'),TR('이름 아래의 [[시작 전]]을 누르면 [[진행 중]]으로 바뀌어요.')],
-      [TR('완료'),TR('체크하면 우선순위 칸에서 빠지고 아래의 [[완료한 일]]로 가요. 거기서 되돌릴 수 있어요.')]]],
+      [TR('완료'),TR('체크하면 코인 30개를 받고, 아래의 [[완료한 일]]로 가요. 거기서 되돌릴 수 있어요.')]]],
     [TR('우선순위'),[
       [TR('네 칸'),{leg:[['q1',TR('지금 하기: 급하고 중요한 일')],['q2',TR('계획하기: 중요하지만 급하지 않은 일')],['q3',TR('줄이거나 맡기기: 급하지만 덜 중요한 일')],['q4',TR('나중에, 또는 안 하기')]]}],
       [TR('옮기기'),TR('손잡이 [[⠿]]나 제목을 끌어서 옮겨요. 손잡이를 누르기만 하면 칸을 고르는 창이 열려요.')]]],
@@ -2481,7 +2520,7 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
     TR('목표 시간은 설정 탭의 "목표와 하루 기준"에서 카테고리마다 정해요.')],
   [TR('시간표'),'table',TR('수업이나 과외처럼 매주 반복되는 일정을 관리해요.'),[
     [TR('넣기'),[
-      [TR('고정 일정'),TR('[[고정 일정 추가]]에서 요일, 시간, 색을 정해요.')],
+      [TR('고정 일정'),TR('[[고정 일정 추가]]에서 요일, 시간, 색, 장소를 정해요.')],
       [TR('한 번짜리 일정'),TR('추가할 때 반복 칸에서 [[한 번만]]을 고르면 캘린더 일정으로 들어가요.')]]],
     [TR('보기'),[
       [TR('이번 주'),TR('캘린더에 넣은 이번 주 일정과, 이번 주에 쉬거나 바뀐 것까지 함께 보여줘요.')],
@@ -2497,7 +2536,7 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
     TR('쉬는 날의 일정은 타임테이블에서 사라지고, 오늘 탭의 일정 카드에 [[다시 넣기]]로 남아 있어요.')],
   [TR('캘린더'),'cal',TR('날짜가 정해진 일정을 넣고, 할 일과 마감을 달력으로 봐요.'),[
     [TR('월간'),[
-      [TR('일정 넣기'),TR('날짜를 누르고 [[일정 추가]]를 눌러요. 반복 칸에서 [[매주 이 요일]]을 고르면 시간표로 들어가요.')],
+      [TR('일정 넣기'),TR('날짜를 누르고 [[일정 추가]]를 눌러요. 시간과 함께 강의실, 약속 장소 같은 [[장소]]도 적을 수 있어요. 반복 칸에서 [[매주 이 요일]]을 고르면 시간표로 들어가요.')],
       [TR('그날 보기'),TR('날짜를 누르면 오른쪽에 그날의 일정, 할 일, 마감이 모여요. 할 일을 체크하거나 바로 추가할 수 있어요.')],
       [TR('읽는 법'),{leg:[['ev',TR('캘린더 일정')],['task',TR('그날 계획한 할 일')],['due',TR('⏰ 마감')]]}],
       [TR('날짜 옮기기'),TR('할 일, 일정, 마감을 다른 날짜 칸으로 끌어다 놓아요.')]]],
@@ -2509,46 +2548,88 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
   [TR('일기'),'book',TR('하루를 글과 사진으로 남겨요.'),[
     [TR('쓰기'),[
       [TR('글'),TR('칸에 쓰면 저절로 저장돼요.')],
-      [TR('사진'),TR('[[사진 추가]]로 여러 장을 넣을 수 있어요. 누르면 크게 보여요.')]]],
+      [TR('사진'),TR('[[사진 추가]]로 여러 장을 넣을 수 있어요. 누르면 크게 보여요. 사진은 그 기기에만 저장돼요.')]]],
     [TR('다시 보기'),[
       [TR('즐겨찾기'),TR('[[☆ 즐겨찾기]]로 표시해 두고, [[즐겨찾기만]]으로 모아 봐요.')],
       [TR('지난 일기'),TR('아래 목록에서 날짜를 누르면 그 날로 가요.')]]]],
-    TR('날짜 옆에 그날의 공부 시간과 할 일 완료 수가 함께 나와요.')],
-  [TR('설정'),'gear',TR('화면, 타이머, 목표, 카테고리, 저장을 정해요.'),[
+    TR('일기를 30일 쓰면 업적 "기록하는 사람"을 받아요.')],
+  [TR('동물'),'heart',TR('집중하고 할 일을 끝낸 만큼 코인을 모으고, 동물 친구를 키우는 곳이에요.'),[
+    [TR('코인 받는 법'),[
+      [TR('집중'),TR('타이머로 집중한 1분마다 1코인, 그날 첫 집중이면 5코인을 더 받아요. 가끔 [[행운! 코인 2배]]가 터져요.')],
+      [TR('할 일'),TR('할 일을 끝내면 10코인, 마감 전에 끝내면 10코인 더, 장기 할 일을 끝내면 30코인이에요. 체크를 풀면 코인도 돌아가요.')],
+      [TR('보상 기준'),TR('[[내 동물]] 칸의 [[보상 기준]]에서 고른 카테고리의 집중만 코인, 동물 경험치, 업적, 연속 기록에 들어가요. 직접 입력한 기록은 코인이 없어요.')],
+      [TR('연속 기록'),TR('하루에 5분만 집중하거나 할 일 하나만 끝내도 이어져요. 일주일에 하루는 [[지키개]]가 빈 날을 메워 줘요.')],
+      [TR('내 레벨'),TR('지금까지 번 코인으로 레벨이 올라요. 코인을 써도 레벨은 내려가지 않아요.')]]],
+    [TR('내 동물'),[
+      [TR('자라기'),TR('알에서 시작해서 함께 집중한 시간만큼 아기, 어린이, 어른으로 자라요. 집중한 시간은 지금 고른 동물만 키워요.')],
+      [TR('돌보기'),TR('[[밥 주기]](5코인)와 [[물 주기]](2코인)로 배부름과 목마름을 채워요. 못 줘도 아프거나 떠나지 않고 시무룩해질 뿐이에요.')],
+      [TR('유리병'),TR('[[배경]]은 공부방, 숲, 정원 중에 고르고 [[날씨]]는 자동이나 맑음, 흐림, 비, 눈으로 정해요. 낮과 밤은 지금 시각을 따라가요.')],
+      [TR('하는 일'),TR('집중하면 책상에서 책을 읽거나 필기하고, 쉬는 시간과 밤에는 자요. 다른 친구들은 꼬리를 흔들며 응원해요.')],
+      [TR('함께 다니기'),TR('고른 동물이 모든 화면 아래쪽을 돌아다녀요. 누르면 쓰다듬기, 가끔 말풍선으로 말을 걸어요. [[앱 곳곳을 함께 돌아다니기]]와 [[말풍선으로 말 걸기]]로 끌 수 있어요.')]]],
+    [TR('도감과 업적'),[
+      [TR('도감'),TR('모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 정사월과 미카엘은 처음부터 무료예요.')],
+      [TR('업적'),TR('집중 시간, 할 일, 연속 기록, 뽀모도로 횟수, 일기 등 여러 업적이 있어요. 달성하면 코인을 받고, 진행 막대로 얼마나 남았는지 보여요.')]]],
+    [TR('상점과 코인'),[
+      [TR('보상'),TR('[[보상]] 칸에 "유튜브 30분"처럼 받고 싶은 보상과 가격을 직접 정해 두고, 코인이 모이면 사서 즐겨요.')],
+      [TR('옷'),TR('[[옷]] 칸에서 모자, 안경, 목걸이, 등에 메는 것을 사요. 산 옷은 모든 동물이 함께 입을 수 있어요. 몇몇은 레벨이나 업적으로 열려요.')],
+      [TR('코인 기록'),TR('[[코인]] 칸에서 언제 무엇으로 코인을 얻고 썼는지 볼 수 있어요. 화면 위의 코인 버튼을 눌러도 돼요.')]]]],
+    TR('위젯 Parameter에 [[동물]]이라고 적으면 홈 화면과 잠금 화면에서도 동물을 지켜볼 수 있어요.')],
+  [TR('설정'),'gear',TR('화면, 타이머, 알림, 위젯, 목표, 카테고리, 저장을 정해요.'),[
     [TR('화면'),[
-      [TR('밝기, 색상, 글꼴'),TR('밝은 화면과 어두운 화면, 색상 17가지와 직접 고른 색, 글꼴을 골라요.')],
+      [TR('밝기, 색상, 글꼴'),TR('밝은 화면과 어두운 화면, 색상 17가지와 직접 고른 색, 글꼴을 골라요. 타이머 색도 함께 바뀌어요.')],
+      [TR('언어'),TR('[[한국어]]와 [[English]] 중에 골라요. 기기마다 따로 정할 수 있어요.')],
       [TR('오늘 탭 배치'),TR('[[카드 순서와 줄 바꾸기]]로 오늘 탭의 카드 배치를 바꿔요.')]]],
     [TR('타이머'),[
-      [TR('시간'),TR('집중, 짧은 휴식, 긴 휴식의 길이와 긴 휴식까지의 횟수를 정해요.')],
-      [TR('동작'),TR('휴식과 집중의 자동 시작, 알림음, 타이머 중 화면 켜 두기를 켜고 꺼요.')]]],
+      [TR('시간'),TR('집중, 짧은 휴식, 긴 휴식의 길이와 긴 휴식까지의 횟수를 정해요. 오늘 탭의 타이머에서도 바로 바꿀 수 있어요.')],
+      [TR('동작'),TR('휴식과 집중의 자동 시작, [[끝날 때 알림음]], 타이머 중 화면 켜 두기를 켜고 꺼요.')]]],
+    [TR('알림'),[
+      [TR('켜기'),TR('[[이 기기에서 알림 켜기]]를 누르면 뽀모도로가 끝날 때, 할 일 마감 전, 일정 시작 전에 알림이 와요. 기기마다 따로 켜야 해요.')],
+      [TR('아이폰'),TR('홈 화면에 추가한 Align 앱에서만 켤 수 있고, 앱이 떠 있을 때 알림이 와요. 소리를 들으려면 무음 모드를 풀어 주세요.')],
+      [TR('소리'),TR('[[소리 종류]]에서 차임, 종소리, 마림바 등을 고르고 미리 들어 봐요.')]]],
+    [TR('위젯'),[
+      [TR('준비'),TR('App Store에서 [[Scriptable]]을 설치하고, [[위젯 코드 복사]]를 눌러 Scriptable에 붙여넣은 뒤 한 번 실행해 로그인해요.')],
+      [TR('종류'),TR('위젯 편집의 Parameter를 비우면 오늘의 집중·할 일·일정, [[일정]]이라고 적으면 오늘 일정만, [[동물]]이라고 적으면 유리병 속 동물이 보여요. 잠금 화면 위젯도 같아요.')],
+      [TR('집중 시간 기준'),TR('[[위젯의 집중 시간 기준]]에서 위젯에 보일 카테고리를 골라요.')]]],
     [TR('목표와 하루 기준'),[
       [TR('목표'),TR('카테고리마다 하루와 주간 목표 시간을 적어요. 비워 두면 목표가 없는 거예요.')],
       [TR('하루 시작 시각'),TR('이 시각 전의 새벽 기록은 전날로 들어가요.')]]],
     [TR('카테고리와 항목'),[
       [TR('추가와 고치기'),TR('카테고리와 항목을 추가하고, 이름과 색을 바꿔요.')],
+      [TR('순서'),TR('카테고리 이름 옆의 손잡이를 끌어서 순서를 바꿔요. 할 일 목록에도 같은 순서로 보여요.')],
       [TR('보관'),TR('안 쓰는 것은 [[보관]]하면 선택 목록에서 빠지고 기록은 남아요.')]]],
     [TR('저장'),[
-      [TR('데이터 폴더'),TR('[[데이터 폴더 연결]]로 기록을 PC의 폴더에 파일로 저장해요.')],
-      [TR('백업'),TR('[[JSON 백업]]으로 내보내고 [[JSON 백업 가져오기]]로 다시 불러와요.')]]]],
-    TR('설정도 기록과 함께 데이터 폴더에 저장돼요.')],
+      [TR('기기 간 동기화'),TR('[[새 계정 만들기]]나 [[로그인]]을 하면 아이폰과 컴퓨터의 기록이 자동으로 맞춰져요. 일기 사진과 진행 중인 타이머는 기기마다 따로예요.')],
+      [TR('백업'),TR('[[JSON 백업]]으로 내보내고 [[JSON 백업 가져오기]]로 다시 불러와요.')],
+      [TR('데이터 폴더'),TR('PC의 Chrome이나 Edge에서는 [[데이터 폴더 연결]]로 기록을 폴더에 파일로도 저장할 수 있어요.')]]]],
+    TR('설정도 기록과 함께 계정에 저장돼요. 언어와 알림은 기기마다 따로예요.')],
   [TR('검색과 저장'),'search',TR('기록을 찾는 법과, 기록이 어디에 저장되는지예요.'),[
     [TR('검색'),[
       [TR('찾기'),TR('위쪽의 [[검색]]은 일기, 메모, 할 일, 일정, 회고, 대시보드를 한꺼번에 찾아요. 결과를 누르면 그 날짜로 가요.')]]],
-    [TR('저장'),[
-      [TR('저장 상태'),TR('화면 오른쪽 위에 기록이 지금 어디에 저장되는지 나와요.')],
-      [TR('다시 연결'),TR('[[데이터 폴더 다시 연결 필요]]가 뜨면 화면을 아무 곳이나 한 번 누르세요. 크롬이 물으면 [[방문할 때마다 허용]]을 고르면 다음부터 묻지 않아요.')],
-      [TR('연결 전의 기록'),TR('사라지지 않아요. 브라우저에 있다가 연결하는 순간 폴더 파일에 합쳐져요.')],
-      [TR('다른 PC에서 쓰기'),TR('데이터 폴더를 통째로 옮긴 뒤, 그 PC에서 같은 폴더를 연결해요.')]]],
-    [TR('폰에서'),[
-      [TR('여는 법'),TR('아이폰의 파일 앱에서는 작동하지 않아요. 웹 주소로 열어야 해요.')],
-      [TR('폴더 저장'),TR('PC의 Chrome이나 Edge에서만 돼요.')]]]],
+    [TR('저장 상태'),[
+      [TR('읽는 법'),TR('화면 왼쪽 위에 기록이 지금 어디에 저장되는지 나와요. [[클라우드에 저장됨]]이면 계정에 안전하게 들어간 거예요. 누르면 자세히 알려 줘요.')],
+      [TR('인터넷이 없을 때'),TR('기록은 기기에 먼저 저장되고, 인터넷이 연결되면 자동으로 계정에 올라가요.')],
+      [TR('실시간'),TR('같은 계정으로 로그인한 다른 기기에서 바꾼 내용이 몇 초 안에 바로 반영돼요.')]]],
+    [TR('앱으로 쓰기'),[
+      [TR('아이폰'),TR('Safari로 열고 공유 버튼 → [[홈 화면에 추가]]를 누르면 앱처럼 쓸 수 있어요. 알림도 이렇게 추가한 앱에서만 돼요.')],
+      [TR('맥'),TR('Safari에서 [[파일 → Dock에 추가]]를 누르거나, Chrome 주소창 오른쪽의 설치 버튼을 눌러요.')],
+      [TR('새 버전'),TR('새 버전이 나오면 앱을 다시 열 때 저절로 바뀌어요.')]]]],
     '']];
+const START_HELP=()=>[ // 처음 시작하기: 계정 → 앱 설치 → 첫 기록
+  h('p',{class:'hintro'},TR('처음 한 번만 하면 돼요. 계정을 만들고, 홈 화면에 앱으로 추가해 두면 편해요.')),
+  h('section',{class:'hgrp'},h('h4',null,TR('1. 계정 만들기')),h('div',{class:'hitem'},h('div',{class:'hd'},rich(TR('[[설정 → 저장]]의 [[기기 간 동기화]]에서 이메일과 비밀번호로 [[새 계정 만들기]]를 눌러요. 다른 기기에서는 같은 계정으로 [[로그인]]만 하면 기록이 똑같이 보여요.')))),
+    fbCfg&&!fbUser?h('button',{class:'primary',onclick:()=>onboard(0)},TR('지금 계정 만들기')):fbUser?h('p',{class:'small muted'},fbUser.email+TR(' 계정으로 로그인돼 있어요.')):null),
+  h('section',{class:'hgrp'},h('h4',null,TR('2. 앱으로 추가하기')),
+    h('div',{class:'hitem'},h('div',{class:'ht'},TR('아이폰')),h('div',{class:'hd'},rich(TR('Safari로 Align 주소를 열고, 아래쪽 공유 버튼 → [[홈 화면에 추가]]를 눌러요.')))),
+    h('div',{class:'hitem'},h('div',{class:'ht'},TR('맥')),h('div',{class:'hd'},rich(TR('Safari에서 [[파일 → Dock에 추가]]를 누르거나, Chrome 주소창 오른쪽의 설치 버튼을 눌러요.'))))),
+  h('section',{class:'hgrp'},h('h4',null,TR('3. 첫 기록 남기기')),h('div',{class:'hitem'},h('div',{class:'hd'},rich(TR('오늘 탭에서 할 일을 적고 [[▶]]를 눌러 타이머를 시작해요. 끝나면 코인과 함께 동물 친구가 자라요.'))))),
+  ...(!isIOS&&fsOK()?[h('section',{class:'hgrp'},h('h4',null,TR('PC에서 폴더에도 저장하기 (선택)')),h('div',{style:'display:grid;gap:.6rem'},folderSteps(()=>helpDlg(TR('처음 시작하기')))))]:[]),
+  h('p',{class:'htip'},TR('전체 흐름을 다시 보려면 아래의 "시작 안내 다시 보기"를 누르세요.'))];
 function helpDlg(which){ // ? 버튼: 보고 있는 탭의 설명부터 열고, 왼쪽 목록으로 다른 화면 설명으로 넘어감
-  const MAP={today:TR('오늘'),dash:TR('대시보드'),stats:TR('통계'),plan:TR('시간표'),cal:TR('캘린더'),diary:TR('일기'),set:TR('설정')}, START=TR('처음 시작하기'), names=[START].concat(HELP.map(x=>x[0])), icons={}; icons[START]='spark'; HELP.forEach(x=>{icons[x[0]]=x[1]});
+  const MAP={today:TR('오늘'),dash:TR('대시보드'),stats:TR('통계'),plan:TR('시간표'),cal:TR('캘린더'),diary:TR('일기'),pet:TR('동물'),set:TR('설정')}, START=TR('처음 시작하기'), names=[START].concat(HELP.map(x=>x[0])), icons={}; icons[START]='spark'; HELP.forEach(x=>{icons[x[0]]=x[1]});
   const nav=h('div',{class:'hnav2',role:'group','aria-label':TR('설명할 화면')}), pane=h('div',{class:'hpane'});
   const item=x=>h('div',{class:'hitem'},h('div',{class:'ht'},x[0]),h('div',{class:'hd'},x[1]&&x[1].leg?h('div',{class:'hleg'},x[1].leg.map(l=>h('span',null,h('i',{class:'lg lg-'+l[0]}),l[1]))):rich(x[1])));
   const show=t=>{nav.replaceChildren(...names.map(n=>h('button',{type:'button','aria-pressed':String(n===t),onclick:()=>show(n)},ic(icons[n]),h('span',null,n))));
-    if(t===START) pane.replaceChildren(h('h3',null,ic('spark'),t),h('p',{class:'hintro'},TR('처음 한 번만 하면 돼요. 기록을 PC의 폴더에 파일로 저장해 두는 설정이에요.')),h('div',{style:'display:grid;gap:.6rem'},folderSteps(()=>helpDlg(START))),h('p',{class:'htip'},TR('전체 흐름을 다시 보려면 아래의 "시작 안내 다시 보기"를 누르세요.')));
+    if(t===START) pane.replaceChildren(h('h3',null,ic('spark'),t),...START_HELP());
     else{const s=HELP.find(x=>x[0]===t); pane.replaceChildren(h('h3',null,ic(s[1]),t),h('p',{class:'hintro'},s[2]),...s[3].map(g=>h('section',{class:'hgrp'},h('h4',null,g[0]),g[1].map(item))),...(s[4]?[h('p',{class:'htip'},rich(s[4]))]:[]))}
     pane.scrollTop=0};
   openDlg(TR('사용 설명서'),h('div',{class:'hwrap'},nav,pane),[h('button',{style:'margin-right:auto',onclick:()=>onboard(0)},TR('시작 안내 다시 보기')),h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'xwide');
