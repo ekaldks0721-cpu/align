@@ -2700,6 +2700,11 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   rock:{n:TR('돌멩이'),pal:['#383C44','#9EA4AE','#B8BEC6','#7A8088','#E8A0A8'],mark:'speckle moss'},
   chul:{n:TR('철컹이'),pal:['#2A2028','#F4D0B0','#F8F8FF','#1E1A22','#F4A0A0'],body:{shirt:'l',sleeve:'l',pants:'#3A4A6A',shoes:'#F0F0F4'},mark:'stetho',acts:['cram','game','ramen','walk','sleep'],lines:'CHUL'},
   yongbok:{n:TR('용복이'),pal:['#2A2030','#F6D8BE','#E8DCA8','#3A8CE0','#F4A8A8'],body:{shirt:'l',sleeve:'#FFFFFF',short:1,pants:'#24242C',shoes:'#F0F0F4',deco:[[6,1,'#2A2030'],[9,1,'#2A2030'],[6,2,'#2A2030'],[9,2,'#2A2030']]},mark:'yongbok',idol:1,acts:['dance','dance','bake','critter','walk'],lines:'YONG'},
+  simhomer:{n:TR('호머 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#D0A878'],body:{shirt:'l',sleeve:'l',short:1,belly:1,pants:'#78B8F0',shoes:'#404048'},acts:['donut','donut','doh','sleep','wag'],lines:'SIMHOMER'},
+  marge:{n:TR('마지 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#3A70D8','#2A5CC0'],body:{shirt:'#B8E080',sleeve:'b',dress:1,pants:'#B8E080',shoes:'#E04030',deco:[[6,0,'#E04030'],[8,0,'#E04030'],[7,0,'#B82820'],[9,0,'#B82820']]},acts:['bake','read','wag'],lines:'MARGE'},
+  bart:{n:TR('바트 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#F0A0A0'],body:{shirt:'#F05030',short:1,shorts:1,pants:'#3A70D0',shoes:'#3A70D0'},acts:['skate','skate','wag','cheer'],lines:'BART'},
+  lisa:{n:TR('리사 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#F0A0A0'],body:{shirt:'#F06030',sleeve:'b',dress:1,pants:'#F06030',shoes:'#E04030',deco:[[6,0,'#FFFFFF'],[7,0,'#E8E8F0'],[8,0,'#FFFFFF'],[9,0,'#E8E8F0']]},acts:['sax','sax','read','write'],lines:'LISA'},
+  maggie:{n:TR('매기 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#F0A0A0'],mark:'mgpaci mgbow',body:{shirt:'#90D0F0',sleeve:'#90D0F0',dress:1,size:1,pants:'#90D0F0',shoes:'#90D0F0'},acts:['wag','cheer','sleep'],lines:'MAGGIE'},
   homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],body:{shirt:'l',sleeve:'l',short:1,pants:'#4A5A80',shoes:'#383848',hair:1},mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
   prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],body:{shirt:'a',sleeve:'a',pants:'#2E3550',shoes:'#2A1A12',deco:[[6,0,'l'],[9,0,'l'],[6,1,'l'],[9,1,'l']]},mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
   ghost:{n:TR('유령'),pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
@@ -2760,6 +2765,12 @@ const YONGBOK={ // 용복이: 위로 풍성한 파란 머리(가운데 가르마
   2:{g:['','.....oo..oo.....','...ooaaooaaoo...','..oaaaaaaaaaao..','.oaaaaaaaaaaaao.','.oaaaaaaaaaaaao.','.oaaaaabbaaaaao.','oaaaabbbbbbaaaao','oaaabebbbbebaaao','.oobbebbbbebboo.','..obcbbbbbbcbo..','...obbbmmbbbo...','....obbbbbbo....','.....oobboo.....','..ollllllllllo..','..oooooooooooo..'],top:2,ey:8,my:11,ny:13,R:14},
   3:{g:['.....oo..oo.....','...ooaaooaaoo...','..oaaaaaaaaaao..','.oaaaaaaaaaaaao.','.oaaaaaaaaaaaao.','.oaaaaabbaaaaao.','oaaaabbbbbbaaaao','oaaabebbbbebaaao','.oobbebbbbebboo.','..obcbbbbbbcbo..','...obbbmmbbbo...','....obbbbbbo....','.....oobboo.....','..ollllllllllo..','.ollllllllllllo.','..oooooooooooo..'],top:1,ey:7,my:10,ny:12,R:14}};
 SP.yongbok.tpl=YONGBOK;
+// 심슨 가족: 크고 동그란 눈(흰자+테두리), 노란 피부
+const T_SIMHOMER=(g=>({1:g,2:g,3:g}))({g:['.......o.o......','......o.o.......','.....oooooo.....','....obbbbbbo....','...obbbbbbbbo...','..obbbbbbbbbbo..','..obooobooobbo..','..oowewowewobo..','.obowwwowwwobo..','.obbooobooobbo..','..obcccbbbmcbo..','..obcmmmmmccbo..','...obccccccbo...','....oobbbboo....','......oooo......','................'],top:2,ey:7,my:11,ny:13,R:14});
+const T_MARGE=(g=>({1:g,2:g,3:g}))({g:['......oooo......','.....oaaaao.....','....oaaacaao....','...oacaaaaaao...','...oaaaaacaao...','...oaacaaaaao...','...oaaaaaacao...','...oooobooobo...','...owewowewoo...','...owwwowwwoo...','...ooooboombo...','...obbmmmmbbo...','....ooobbooo....','.......oo.......','................','................'],top:0,ey:8,my:11,ny:12,R:14});
+const T_BART=(g=>({1:g,2:g,3:g}))({g:['....o.o.o.o.....','...obobobobo....','...obbbbbbbbo...','...obbbbbbbbo...','...obbbbbbbbo...','...obbbbbbbbo...','...oooobooobo...','...owewowewoo...','..oowwwowwwoo...','...oooobooobo...','...obbbbbbmbo...','...obbmmmmbbo...','...obbbbbbbbo...','....oobbbboo....','......oooo......','................'],top:0,ey:7,my:11,ny:13,R:14});
+const T_LISA=(g=>({1:g,2:g,3:g}))({g:['.....o..o.o.....','...oobooboboo...','..obbbbbbbbbbo..','.obobbbbbbbbobo.','..oobbbbbbbboo..','...oooobooobo...','...owewowewoo...','...owwwowwwoo...','...oooobooobo...','...obbbbbbmbo...','...obbmmmmbbo...','...obbbbbbbbo...','....ooobbooo....','.......oo.......','................','................'],top:0,ey:6,my:10,ny:12,R:14});
+SP.simhomer.tpl=T_SIMHOMER; SP.marge.tpl=T_MARGE; SP.bart.tpl=T_BART; SP.lisa.tpl=T_LISA; SP.maggie.tpl=T_LISA;
 const POODLE={ // 보르미: 동그랗고 복슬복슬한 푸들 머리
   1:{g:['','','','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','....obbllbbo....','.....oooooo.....'],top:5,ey:10,my:12,ny:13,R:12,small:1},
   2:{g:['','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','...obllllllbo...','...obllllllbo...','...obboooobbo...','...oooo..oooo...'],top:2,ey:7,my:9,ny:11,R:13},
@@ -2852,6 +2863,8 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('moss')>=0){const g='#6CB04C'; [[6,t],[7,t],[8,t],[9,t],[5,t+1],[7,t+1]].forEach(([x,y])=>{if(gget(G,x,y)!=='.') gset(G,x,y,g)})}
   if(mk.indexOf('wavy')>=0){const y1=s?14:14; for(let x=0;x<16;x++){G[15][x]='.'; if(G[y1][x]!=='.') G[y1][x]=x%3===0?'o':'b'} for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===1) G[15][x]='o'; for(let x=0;x<16;x++) if(G[y1][x]==='b'&&x%3===2) G[15][x]='o'}
   if(mk.indexOf('stetho')>=0&&!s){const g='#6A7080', y=A.ny+1; [[5,y],[4,y+1],[4,y+2],[10,y],[11,y+1],[11,y+2]].forEach(([x,yy])=>gset(G,x,yy,g)); gset(G,11,y+3,'#A8B0C0')} // 청진기
+  if(mk.indexOf('mgpaci')>=0){const r='#E04030'; gset(G,7,m,r); gset(G,8,m,r); gset(G,7,m+1,'#F8E060')} // 매기의 쪽쪽이
+  if(mk.indexOf('mgbow')>=0){const c='#80C8F0'; [[6,1],[7,2],[8,2],[9,1],[6,2],[9,2]].forEach(([x,y])=>gset(G,x,y,c))} // 하늘색 리본
   if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my; [[5,t],[10,t],[6,t+1],[9,t+1],[4,t+2],[11,t+2]].forEach(([x,y])=>{if(gget(G,x,y)==='a') gset(G,x,y,'#7EC4F8')}); [[6,e+2],[9,e+2]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,'#C88A68')});
     gset(G,7,m,'#B85860'); gset(G,8,m,'#B85860'); if(!s) for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4')} // 머리 결 · 주근깨 · 장밋빛 입 · 체인 목걸이
   if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'o'); gset(G,9,m-1,'o'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080');
@@ -2862,8 +2875,15 @@ function bodyG(spk,st,tailF){
   return G;
 }
 // 얼굴 바꾸기
+let CURSP='';
 function eyesG(G,st,kind){
   const A=tplA(st), y=A.ey, xs=[5,10];
+  if(SP[CURSP]&&SP[CURSP].simp){[4,8].forEach(xl=>{ // 심슨 눈: 눈꺼풀이 내려오거나 눈동자가 움직여요
+    const row=(yy,c)=>{for(let x=xl;x<=xl+2;x++) gset(G,x,yy,c)};
+    if(kind==='blink'||kind==='sleep'){row(y,'b'); row(y+1,'o')}
+    else if(kind==='happy'){row(y,'b'); row(y+1,'b'); gset(G,xl+1,y,'o'); gset(G,xl,y+1,'o'); gset(G,xl+2,y+1,'o')}
+    else if(kind==='down'){row(y,'#FFFFFF'); row(y+1,'#FFFFFF'); gset(G,xl+1,y+1,'e')}
+    else if(kind==='sad'){row(y,'b'); row(y+1,'#FFFFFF'); gset(G,xl+1,y+1,'e')}}); return}
   xs.forEach(x=>{
     if(kind==='blink'||kind==='sleep'){gset(G,x,y,'b'); gset(G,x,y+1,'o'); gset(G,x+(x<8?-1:1),y+1,'o')}
     else if(kind==='happy'){gset(G,x,y,'o'); gset(G,x,y+1,'b'); gset(G,x-1,y+1,'o'); gset(G,x+1,y+1,'o')}
@@ -2944,12 +2964,14 @@ function propG(G,st,kind,f){
   if(kind==='brownie'){const y=A.ny+1, t='#A8B0B8', b='#5A3020', c='#7A4830'; for(let x=4;x<=11;x++) gset(G,x,y+1,t); [[5,y],[6,y],[9,y],[10,y]].forEach(([x,yy])=>gset(G,x,yy,b)); gset(G,5,y,c); gset(G,9,y,c); gset(G,3,y+1,'b'); gset(G,12,y+1,'b'); if(f){gset(G,6,y-2,'#D8E0E8'); gset(G,10,y-3,'#D8E0E8')}} // 갓 구운 브라우니
   if(kind==='critter'){const y=A.ny+1, o='#F0B060', w='#FFF8F0', e='#202020'; gset(G,6,y-1,o); gset(G,9,y-1,o); for(let x=6;x<=9;x++){gset(G,x,y,o); gset(G,x,y+1,w)} gset(G,6,y,e); gset(G,9,y,e); gset(G,7,y+1,'#F890A0'); gset(G,5,y+1,'b'); gset(G,10,y+1,'b')} // 작은 햄스터
   if(kind==='heart'){const p='#F05878', t=tplA(st).top; [[12,t-1],[14,t-1],[12,t],[13,t],[14,t],[13,t+1]].forEach(([x,y])=>gset(G,x,y,p))}
+  if(kind==='donut'){const y=A.ny+(f?0:1), p='#F088B0', d='#D8A048'; [[6,y],[7,y],[8,y],[5,y+1],[9,y+1],[6,y+2],[7,y+2],[8,y+2]].forEach(([x,yy])=>gset(G,x,yy,p)); gset(G,7,y+1,d); gset(G,6,y,'#FFF060'); gset(G,8,y+2,'#60C0F0'); gset(G,4,y+1,'b'); gset(G,10,y+1,'b')} // 분홍 도넛
+  if(kind==='sax'){const y=A.ny+1, g='#E8B830', k='#B88818'; [[9,y-1],[9,y],[10,y+1],[10,y+2],[9,y+3],[8,y+3],[8,y+2]].forEach(([x,yy])=>gset(G,x,yy,g)); gset(G,8,y+2,k); gset(G,7,y+3,f?'#FFF0A0':k); gset(G,8,y,'b'); gset(G,11,y+1,'b'); if(f){gset(G,12,y-2,'#2A2018'); gset(G,13,y-3,'#2A2018')}} // 색소폰과 음표
   if(kind==='sweat') gset(G,12,tplA(st).top+1,PROPC.d);
 }
 
 // 자세 하나 그리기 → 색 칸 배열
 function poseG(spk,st,wear,pose,xp){
-  CTPL=(SP[spk]||{}).tpl||null;
+  CTPL=(SP[spk]||{}).tpl||null; CURSP=spk;
   const sp=SP[spk]||SP.cat;
   if(st===0){let G=fromRows(EGG); if(xp>=20) [[6,9],[7,10],[8,9],[9,10]].forEach(([x,y])=>gset(G,x,y,'o')); if(pose==='egg1') G=shiftG(G,-1,0); if(pose==='egg2') G=shiftG(G,1,0); return {G,pal:sp.pal}}
   const f=/1$/.test(pose)?1:0, base=pose.replace(/[01]$/,'');
@@ -2967,6 +2989,8 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='dance'){eyesG(G,st,'happy'); propG(G,st,'arms',f)}
   if(base==='bake'){propG(G,st,'brownie',f); eyesG(G,st,'happy')}
   if(base==='critter'){propG(G,st,'critter',f); eyesG(G,st,'happy'); if(f) propG(G,st,'heart',0)}
+  if(base==='donut'){propG(G,st,'donut',f); eyesG(G,st,f?'happy':'down')}
+  if(base==='sax'){propG(G,st,'sax',f); eyesG(G,st,'blink')}
   if(base==='meat'){propG(G,st,'meat',f); eyesG(G,st,'happy'); if(f) mouthG(G,st,'open')}
   if(base==='lego'){propG(G,st,'lego',f); eyesG(G,st,'down')}
   if(base==='bed'){eyesG(G,st,'blink'); propG(G,st,'blanket',f); if(f) propG(G,st,'z',0)}
@@ -2978,6 +3002,7 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='cheer') propG(G,st,'arms',f);
   if(sp.idol){const y=tplA(st).ey, W='#FFFFFF'; if(G[y][5]==='e'&&G[y+1][5]==='e'&&G[y][10]==='e'&&G[y+1][10]==='e') // 눈을 뜨고 있으면 반짝이는 아몬드 눈으로
     [[4,y,'e'],[5,y,W],[6,y,'e'],[4,y+1,W],[5,y+1,'e'],[6,y+1,'e'],[11,y,'e'],[10,y,'e'],[9,y,W],[11,y+1,W],[10,y+1,'e'],[9,y+1,'e']].forEach(([x,yy,c])=>gset(G,x,yy,c))}
+  if(sp.simp) for(const r of G) for(let x=0;x<16;x++) if(r[x]==='w') r[x]='#FFFFFF'; // 심슨 눈은 새하얗게
   if(sp.body) return {G:humanG(spk,st,base,f,G),pal:sp.pal};
   if(base==='squash'||base==='sleep'&&!f||base==='sad'&&f||base==='wag'&&f&&!sp.tail) G=squashG(G);
   if(base==='cheer'&&f) G=shiftG(G,0,-2);
@@ -2986,12 +3011,12 @@ function poseG(spk,st,wear,pose,xp){
   return {G,pal:sp.pal};
 }
 /* ---------- 사람 몸: 머리(16×16 틀의 목까지) 아래에 몸통·팔·다리를 그려 16×24 한 장으로 ---------- */
-const HUMAN_H=24, HSIT=['read','write','game','cram','sleep','lego','drive','ramen','bed','plush'], HHOLD=['read','write','game','cram','ramen','lego','drive','plush','bake','critter','meat','eat','coffee'];
+const HUMAN_H=24, HSIT=['read','write','game','cram','sleep','lego','drive','ramen','bed','plush'], HHOLD=['read','write','game','cram','ramen','lego','drive','plush','bake','critter','meat','eat','coffee','donut','sax'];
 const spriteH=(spk,st)=>st&&SP[spk]&&SP[spk].body?HUMAN_H:16;
 const humanCut=A=>{for(let y=A.my+1;y<16;y++){const n=((A.g[y]||'').match(/b/g)||[]).length; if(n<=4) return n?y:y-1} return 15}; // 목이 끝나는 줄
 const HB={3:{th:6,lh:3,x0:5,x1:10},2:{th:5,lh:2,x0:5,x1:10},1:{th:3,lh:1,x0:6,x1:9}};
 function humanG(spk,st,base,f,G0){
-  const sp=SP[spk], B=sp.body, A=tplA(st), P=HB[st]||HB[3], cut=humanCut(A), N=22-(P.th+P.lh+1), t0=N+1, t1=N+P.th, x0=P.x0, x1=P.x1;
+  const sp=SP[spk], B=sp.body, A=tplA(st), P=HB[B.size?Math.min(B.size,st):st]||HB[3], cut=humanCut(A), N=22-(P.th+P.lh+1), t0=N+1, t1=N+P.th, x0=P.x0, x1=P.x1;
   const H=Array.from({length:HUMAN_H},()=>Array(16).fill('.')), set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) H[y][x]=c};
   const sit=HSIT.indexOf(base)>=0, skin='b', sl=B.sleeve||B.shirt, nSl=B.short?1:P.th-2;
   // 팔 모양: 왼팔 L, 오른팔 R
@@ -3007,17 +3032,20 @@ function humanG(spk,st,base,f,G0){
   // 몸통
   for(let y=t0;y<=t1;y++){const w=y===t0?0:1; for(let x=x0-w;x<=x1+w;x++) set(x,y,y>t1-(st===1?1:2)?B.pants:B.shirt)}
   for(let x=x0;x<=x1;x++) set(x,t0,B.shirt);
+  if(B.belly) for(let y=t0+2;y<=t1-1;y++){set(x0-2,y,y>t1-2?B.pants:B.shirt); set(x1+2,y,y>t1-2?B.pants:B.shirt)} // 호머의 배
   if(B.hair) for(let y=t0;y<=t0+1;y++){set(x0-1,y,'a'); set(x0,y,'a'); set(x1,y,'a'); set(x1+1,y,'a')}
   (B.deco||[]).forEach(([x,dy,c])=>{if(st>1&&x>=x0&&x<=x1) set(x,t0+dy,c)});
   // 다리
   const lx=[x0,x0+1], rx=[x1-1,x1], ground=t1+P.lh+1;
   if(legs==='sit'){for(let x=x0-2;x<=x1+2;x++) set(x,t1+1,B.pants); set(x0-3,t1+1,B.shoes); set(x1+3,t1+1,B.shoes)}
+  else if(B.dress){for(let y=t1+1;y<ground;y++){const w=y===ground-1?2:1; for(let x=x0-w;x<=x1+w;x++) set(x,y,B.pants)} // 원피스: 다리 대신 치맛자락
+    [[x0,legs==='stepL'],[x1,legs==='stepR']].forEach(([x,up])=>{set(x,ground-(up?1:0),B.shoes); set(x+(x<8?-1:1),ground-(up?1:0),B.shoes)})}
   else{
-    const leg=(xs,lift,dx)=>{for(let y=t1+1;y<=ground-1-lift;y++) xs.forEach(x=>set(x+dx,y,B.pants)); [xs[0]-1,xs[0],xs[1]].forEach(x=>set(x+dx+(xs[0]>7?1:0),ground-lift,B.shoes))};
+    const leg=(xs,lift,dx)=>{for(let y=t1+1;y<=ground-1-lift;y++) xs.forEach(x=>set(x+dx,y,B.shorts&&y>t1+1?skin:B.pants)); [xs[0]-1,xs[0],xs[1]].forEach(x=>set(x+dx+(xs[0]>7?1:0),ground-lift,B.shoes))};
     leg(lx,legs==='stepL'?1:0,legs==='kickL'?-1:0); leg(rx,legs==='stepR'?1:0,legs==='kickR'?1:0);
   }
   // 팔 (아래쪽에 있는 팔은 머리보다 먼저)
-  const arm=(side,kind)=>{const ax=side<0?x0-2:x1+2, inn=side<0?x0-1:x1+1, out=side<0?ax-1:ax+1, len=P.th-1;
+  const arm=(side,kind)=>{const ax=side<0?x0-2-(B.belly?1:0):x1+2+(B.belly?1:0), inn=side<0?x0-1:x1+1, out=side<0?ax-1:ax+1, len=P.th-1;
     if(kind==='down'||kind==='fwd'){const n=kind==='fwd'?len-1:len; for(let i=0;i<n;i++) set(ax,t0+1+i,i<Math.min(nSl,n-1)?sl:skin)}
     if(kind==='hold'){set(ax,t0+1,sl); if(len>2) set(ax,t0+2,nSl>1?sl:skin); set(inn,t0+(len>2?3:2),skin)}};
   arm(-1,L); arm(1,R);
@@ -3031,6 +3059,7 @@ function humanG(spk,st,base,f,G0){
     if(kind==='point'){set(ax,t0,sl)}
     if(kind==='face'){set(ax,t0,sl); for(let y=t0-1;y>=A.ey+off+1;y--) set(ax+o,y,skin)}};
   upArm(-1,L); upArm(1,R);
+  if(base==='skate'){for(let x=x0-3;x<=x1+3;x++) set(x,ground+1,x===x0-2||x===x1+2?'#303030':'#C84828'); if(f) for(let y=0;y<HUMAN_H;y++) H[y].push(H[y].shift())} // 스케이트보드
   if(base==='bed'){for(let y=N;y<HUMAN_H;y++) for(let x=0;x<16;x++) if(H[y][x]!=='.'&&!(y===N&&H[y][x]!=='o')) H[y][x]=(x+y)%4===0?'#A8C0F0':'#6A8CD8'; for(let x=x0-3;x<=x1+3;x++){set(x,N,'#A8C0F0')}}
   // 테두리
   const add=[]; for(let y=0;y<HUMAN_H;y++)for(let x=0;x<16;x++) if(H[y][x]==='.'&&[[1,0],[-1,0],[0,1],[0,-1]].some(([a,b])=>{const yy=y+b, xx=x+a; if(xx<0||yy<0||xx>15||yy>=HUMAN_H) return false; const v=H[yy][xx]; return v!=='.'&&v!=='o'&&v!=='e'&&v!=='m'})) add.push([x,y]);
@@ -3179,7 +3208,7 @@ function setTerra(k,v){S.settings.v.terra=Object.assign(terraCfg(),{[k]:v}); S.s
 const ACTORS=[], PST={}, FX={}; let actTimer=null, actN=0;
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SEQ={stand:['stand','stand','stand','stand','squash','squash'],walk:['stand','squash'],read:['read0','read0','read0','read1'],write:['write0','write1'],sleep:['sleep0','sleep0','sleep0','sleep1','sleep1','sleep1'],
-  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
+  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],donut:['donut0','donut0','donut1','donut1'],sax:['sax0','sax1'],skate:['skate0','skate1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
 function petReact(kind,ms){FX.kind=kind; FX.until=Date.now()+(ms||3000)}
 function focusState(){return {run:!!T.running, focus:T.running&&isFocus(), rest:T.running&&!isFocus()}}
 function actorPose(a){ // 지금 상황에 맞는 행동 고르기
@@ -3374,7 +3403,7 @@ function shopDlg(it){
 function buyReward(it){if(!spend(it.cost,TR('보상')+' · '+it.name,'reward')) return; setTimeout(checkProgress,50); celebrate((it.emoji||'🎁')+' '+it.name,TR('마음껏 즐기세요! 열심히 번 거예요'),true); render()}
 
 /* 화면: 오늘 탭 동물 카드 (작은 유리병) */
-const POSE_TXT={dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
+const POSE_TXT={donut:TR('도넛 먹는 중'),sax:TR('색소폰 부는 중'),skate:TR('스케이트보드 타는 중'),dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
 function pxBar(v,n,cls){n=n||10; const on=Math.round(Math.max(0,Math.min(1,v))*n); return h('span',{class:'pxbar'+(cls?' '+cls:''),role:'img','aria-label':Math.round(v*100)+'%'},Array.from({length:n},(_,i)=>h('i',{class:i<on?'on':''})))}
 function lvInfo(xp){const L=petLv(xp), a=lvXP(L), b=lvXP(L+1); return {L,v:(xp-a)/(b-a),left:b-xp}}
 function pxHud(p,st){
@@ -3465,6 +3494,11 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['cram10',TR('벼락치기 달인'),TR('마감 당일에 할 일 10개 끝내기'),10,'cram',100],
   ['ontime10',TR('약속 지키기'),TR('마감 전에 할 일 10개 끝내기'),10,'ontime',60],
   ['ybfan',TR('철컹이의 최애'),TR('철컹이와 함께하기'),1,'chulPet',20],
+  ['simp1',TR('스프링필드에서 온 편지'),TR('Homer K와 함께하기'),1,'famHK',20],
+  ['simp2',TR('결혼기념일'),TR('호머 심슨과 함께하기'),1,'famHomer',20],
+  ['simp3',TR('말썽꾸러기 등장'),TR('마지 심슨과 함께하기'),1,'famMarge',20],
+  ['simp4',TR('똑똑한 동생'),TR('바트 심슨과 함께하기'),1,'famBart',20],
+  ['simp5',TR('막내의 첫 걸음'),TR('리사 심슨과 함께하기'),1,'famLisa',20],
   ['doh1',TR('또우!'),TR('끝낸 할 일의 체크를 다시 풀기 (실수해도 괜찮아요)'),1,'dohs',20],
   ['ontime50',TR('마감 지킴이'),TR('마감 전에 할 일 50개 끝내기'),50,'ontime',250],
   ['diary7',TR('일주일의 일기'),TR('일기 7일 쓰기'),7,'diary',50],
@@ -3488,7 +3522,7 @@ const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 �
   fox:{lv:8,price:1600},bear:{lv:10,price:2000},panda:{lv:12,price:2800},tiger:{lv:15,price:3500},dragon:{lv:20,price:8000},
   sheep:{ach:'t50',price:1000},squirrel:{ach:'early10',price:1500},raccoon:{ach:'night10',price:1500},koala:{ach:'s30',price:2200},
   hedgehog:{ach:'deep120',price:1800},
-  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},yongbok:{ach:'ybfan',price:800},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
+  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},yongbok:{ach:'ybfan',price:800},simhomer:{ach:'simp1',price:800},marge:{ach:'simp2',price:900},bart:{ach:'simp3',price:900},lisa:{ach:'simp4',price:1000},maggie:{ach:'simp5',price:1200},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
 const achById=id=>ACH.find(a=>a[0]===id);
 /* 오늘의 미션 · 이번 주 미션: 해내면 저절로 코인을 받아요 (지난 날짜는 다시 셈하지 않아요) */
 const doneOn=k=>allOf('tasks-').filter(t=>t.done&&t.doneAt&&dayKey(t.doneAt)===k).length;
@@ -3529,6 +3563,7 @@ function achStats(){
     questDays:coins.filter(c=>String(c.id).indexOf('qa:')===0).length,questWeeks:coins.filter(c=>String(c.id).indexOf('qw:')===0).length,
     pomos:logs.filter(s=>s.kind==='pomo').length,quicks:logs.filter(s=>s.quick).length,fullWeeks,weekends,goalDays:Object.keys(day).filter(k=>day[k]>=gsec).length,
     dohs:items('dohs').length,chulPet:ps.some(p=>p.sp==='chul')?1:0,
+    famHK:+ps.some(p=>p.sp==='homer'),famHomer:+ps.some(p=>p.sp==='simhomer'),famMarge:+ps.some(p=>p.sp==='marge'),famBart:+ps.some(p=>p.sp==='bart'),famLisa:+ps.some(p=>p.sp==='lisa'),
     cram:allOf('tasks-').filter(t=>t.done&&t.due&&t.doneAt&&dayKey(t.doneAt)===t.due).length,
     ontime:coins.filter(c=>String(c.id).indexOf('td:')===0).length,lucky:coins.filter(c=>String(c.id).indexOf('l:')===0).length,care:coins.filter(c=>c.kind==='care').length,
     spent:coins.reduce((a,c)=>a+(c.amt<0?-c.amt:0),0),petLv:Math.max(0,...ps.map(p=>petLv(petXP(p)))),subjWeek:Math.max(0,...Object.values(sw).map(x=>x.size)),
@@ -3710,8 +3745,14 @@ const YONG_LINES={ // 용복이: 짧은 영어 추임새와 다정한 말
   day:[TR('건강해야 돼'),TR('행복하자'),TR('Yo, 물 마셨어?'),TR('작은 동물 보고 싶다…'),TR('같이 춤출래? Yeah!')],
   evening:[TR('오늘도 고생했어, My Stay~'),TR('브라우니 구울까?'),TR('맛있게 먹어!')],
   night:[TR('잘 자, Stay~'),TR('No worries, 내일 또 하자'),TR('건강해야 돼, 얼른 자!')]};
+const SIMHOMER_LINES={tap:[TR("D'oh!"),TR('Woo-hoo!'),TR('음… 도넛…'),TR('Why you little!'),TR('Mmm… donuts')],focus:[TR('오늘은 진짜 집중이다, 우후!'),TR('…자는 거 아님, 생각하는 중')],rest:[TR('소파로 출발!'),TR('도넛 먹고 올게')],done:[TR('Woo-hoo!'),TR('나 천재인가?')],morning:[TR("D'oh! 벌써 아침이야?")],day:[TR('도넛 먹고 싶다'),TR('발전소 가기 싫어…')],evening:[TR('저녁은 돼지갈비!'),TR('TV 보자')],night:[TR('침대 최고…')]};
+const MARGE_LINES={tap:[TR('Hmmm…'),TR('호머~!'),TR('우리 가족 최고야'),TR('정리 정돈 잘했니?')],focus:[TR('엄마가 응원할게'),TR('차근차근 하면 돼')],rest:[TR('간식 줄까?'),TR('잠깐 쉬어도 괜찮아')],done:[TR('정말 장하구나!'),TR('잘했어, 얘야')],morning:[TR('아침 먹고 가렴')],day:[TR('물 마시렴'),TR('방 청소는 했니?')],evening:[TR('저녁 먹자~')],night:[TR('이제 자야지')]};
+const BART_LINES={tap:[TR('Eat my shorts!'),TR('Ay caramba!'),TR('Cowabunga!'),TR("Don't have a cow, man!"),TR('난 바트 심슨이야!')],focus:[TR('공부? …알았어, 5분만')],rest:[TR('스케이트보드 타러 간다!')],done:[TR('Cowabunga!'),TR('Ay caramba! 해냈다!')],morning:[TR('학교 가기 싫어…')],day:[TR('장난칠 거리 없나?')],evening:[TR('숙제는 내일…')],night:[TR('아직 안 졸려!')]};
+const LISA_LINES={tap:[TR('색소폰 들어 볼래?'),TR('책 읽는 게 제일 좋아'),TR('지식은 힘이야!'),TR('공부는 재밌어!')],focus:[TR('집중! 나도 같이 공부할게'),TR('A+ 받자!')],rest:[TR('색소폰 한 곡 불게')],done:[TR('완벽해!'),TR('오늘도 성장했어')],morning:[TR('좋은 아침! 오늘 계획은?')],day:[TR('도서관 가고 싶다')],evening:[TR('오늘 배운 거 정리하자')],night:[TR('내일도 열심히!')]};
+const MAGGIE_LINES={tap:[TR('*쪽쪽*'),TR('…!'),TR('까르르'),TR('*쪽쪽쪽*')],focus:[TR('*쪽쪽*')],rest:[TR('…zZ')],done:[TR('*짝짝짝*')],morning:[TR('*쪽*')],day:[TR('까르르')],evening:[TR('*쪽쪽*')],night:[TR('zZ…')]};
 const CHUL_YB={tap:[TR('용복이 최고…'),TR('용복아 사랑해!'),TR('용복이 무대 봤어?')],day:[TR('용복이 브라우니 먹고 싶다'),TR('용복이 보러 가고 싶어…')],done:[TR('용복이도 칭찬해 줄 거야!')]}; // 철컹이는 용복이를 좋아해요
-const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&sp.lines==='PROF'?PROF_LINES:sp&&sp.lines==='CHUL'?CHUL_LINES:sp&&sp.lines==='HOMER'?HOMER_LINES:sp&&sp.lines==='YONG'?YONG_LINES:null;
+const LINESETS={PROF:PROF_LINES,CHUL:CHUL_LINES,HOMER:HOMER_LINES,YONG:YONG_LINES,SIMHOMER:SIMHOMER_LINES,MARGE:MARGE_LINES,BART:BART_LINES,LISA:LISA_LINES,MAGGIE:MAGGIE_LINES};
+const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&LINESETS[sp.lines];
   const base=(L&&L[k])||LINES[k]; return sp&&sp.lines==='CHUL'&&CHUL_YB[k]&&pets().some(q=>q.sp==='yongbok')?base.concat(CHUL_YB[k]):base};
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 function buddySay(text,ms){
