@@ -1535,7 +1535,7 @@ window.I18N_EN={
 "고른 동물이 모든 화면 아래쪽을 돌아다녀요. 누르면 쓰다듬기, 가끔 말풍선으로 말을 걸어요. [[앱 곳곳을 함께 돌아다니기]]와 [[말풍선으로 말 걸기]]로 끌 수 있어요.": "Your chosen pet roams the bottom of every screen. Tap it for a pat; it sometimes talks in speech bubbles. Turn these off with [[Walk around the app with me]] and [[Talk in speech bubbles]].",
 "도감과 업적": "Pet book & achievements",
 "도감": "Pet book",
-"모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 우리 집 친구인 정사월, 미카엘, 유니, 이뚝불은 처음부터 무료예요.": "Every pet is listed here. Locked ones show as silhouettes; once unlocked by level or achievement, adopt them with coins. Family pals Sawol, Mikael, Yuni and Ttukbul are free from the start.",
+"모든 동물이 모여 있어요. 잠긴 동물은 그림자로 보이고, 레벨이나 업적으로 열린 뒤 코인으로 데려와요. 우리 집 친구인 정사월, 미카엘, 유니, 이뚝불, 보르미는 처음부터 무료예요.": "Every pet is listed here. Locked ones show as silhouettes; once unlocked by level or achievement, adopt them with coins. Family pals Sawol, Mikael, Yuni, Ttukbul and Bormi are free from the start.",
 "집중 시간, 할 일, 연속 기록, 뽀모도로 횟수, 일기 등 여러 업적이 있어요. 달성하면 코인을 받고, 진행 막대로 얼마나 남았는지 보여요.": "Achievements cover focus time, tasks, streaks, pomodoros, diary and more. Each gives coins, and progress bars show how far you have to go.",
 "상점과 코인": "Shop & coins",
 "[[보상]] 칸에 \"유튜브 30분\"처럼 받고 싶은 보상과 가격을 직접 정해 두고, 코인이 모이면 사서 즐겨요.": "In [[Rewards]], set rewards you want, like \"30 min of YouTube\", with your own prices, then buy them when you have the coins.",
@@ -1826,5 +1826,6 @@ window.I18N_EN={
 "이제 누울 시간이야": "Time to lie down",
 "심슨 정주행 각": "Simpsons marathon time",
 "침대 최고…": "Bed is the best…",
-"Why you little… 졸음아!": "Why you little… sleepiness!"
+"Why you little… 졸음아!": "Why you little… sleepiness!",
+"보르미": "Bormi"
 };
