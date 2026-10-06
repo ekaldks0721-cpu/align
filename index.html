@@ -497,7 +497,7 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
 /* 할 일: 카테고리·항목별로 묶기, 끌어서 순서 바꾸기 */
 .tasks li.kcat{display:block;padding:.2rem 0 .35rem;border-bottom:0}
 .kch{display:flex;align-items:center;gap:.45rem;margin:.55rem 0 .1rem;font:600 .9rem var(--serif);color:var(--ink)}
-.kch .dot{width:.65em;height:.65em} .kch .n{margin-left:auto;font:400 .78rem var(--sans);color:var(--ink2)}
+.kch .kgrip{margin-left:-.3rem;margin-right:-.15rem} .kch .n{margin-left:auto;font:400 .78rem var(--sans);color:var(--ink2)}
 .ksh{display:flex;align-items:center;gap:.4rem;margin:.35rem 0 0 .2rem;font-size:.8rem;font-weight:500;color:var(--ink2)}
 .ksh .dot{width:.55em;height:.55em}
 .tasks ul.kgl{list-style:none;margin:0;padding:0 0 0 .2rem;border-left:2px solid color-mix(in srgb,var(--c) 45%,transparent)}
@@ -1198,7 +1198,7 @@ function renderTasks(){
   $('#k-sum').textContent=ts.length?ts.filter(t=>t.done).length+' / '+ts.length+' 완료'+(sumE||sumA?', 실제 '+fmtHMS(sumA)+(sumE?' / 예상 '+fmtHMS(sumE):''):''):'';
   const taskRow=t=>{
     const mine=sess.filter(s=>s.task===t.id), n=mine.filter(s=>s.kind==='pomo').length, tot=mine.reduce((a,s)=>a+sessDur(s),0);
-    return h('li',{class:t.done?'done':'','data-id':t.id},h('button',{class:'kgrip','aria-label':'끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)',title:'끌어서 순서 바꾸기',onpointerdown:e=>kDrag(e),onkeydown:e=>kKey(e)},'⋮⋮'),
+    return h('li',{class:t.done?'done':'','data-id':t.id},h('button',{class:'kgrip','aria-label':'끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)',title:'끌어서 순서 바꾸기',onpointerdown:e=>kDrag(e,kSaveOrder),onkeydown:e=>kKey(e,kSaveOrder)},'⋮⋮'),
       h('input',{type:'checkbox',checked:!!t.done,'aria-label':'완료',onchange:e=>{const it=clone(t); it.done=e.target.checked; it.doneAt=it.done?Date.now():null; put('tasks-'+t.date.slice(0,7),it); render()}}),
       h('span',{class:'t'},h('span',null,h('button',{class:'ktitle',title:'할 일 고치기',onclick:()=>taskDlg(t)},t.title),t.rep?h('span',{class:'small muted',title:'반복 할 일'},' ↻'):null,t.orig&&t.orig!==t.date?h('span',{class:'small muted',title:'처음 계획한 날 '+t.orig},' ↷ '+mdOf(t.orig)+'에서'+(t.moves>1?' (미룸 '+t.moves+'회)':'')):null),
         t.due?(()=>{const el=h('span',{}); el._t=t; paintDue(el); return el})():null,
@@ -1209,8 +1209,8 @@ function renderTasks(){
       !t.done&&!t.rep?h('button',{class:'quiet','aria-label':'다른 날로 옮기기',title:'다른 날로 옮기기',onclick:()=>moveDlg(t)},ic('cal')):null,
       h('button',{class:'quiet','aria-label':'지우기',onclick:()=>{del('tasks-'+t.date.slice(0,7),t.id); render()}},'×'));
   };
-  list.replaceChildren(...(ts.length?kGroups(ts).map(g=>h('li',{class:'kcat'},
-      h('div',{class:'kch'},h('i',{class:'dot',style:'background:'+g.color}),g.name,h('span',{class:'n num'},g.done+' / '+g.n)),
+  list.replaceChildren(...(ts.length?kGroups(ts).map(g=>h('li',{class:'kcat','data-cid':g.id},
+      h('div',{class:'kch'},g.id?h('button',{class:'kgrip','aria-label':'"'+g.name+'" 카테고리를 끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)',title:'끌어서 카테고리 순서 바꾸기',onpointerdown:e=>kDrag(e,kSaveCatOrder),onkeydown:e=>kKey(e,kSaveCatOrder)},'⋮⋮'):null,g.name,h('span',{class:'n num'},g.done+' / '+g.n)),
       g.subs.map(sg=>[sg.showHead?h('div',{class:'ksh'},h('i',{class:'dot',style:'background:'+sg.color}),sg.name):null,
         h('ul',{class:'kgl',style:'--c:'+sg.color},sg.tasks.map(taskRow))]))):[h('li',{class:'empty art'},'아직 할 일이 없어요. 아래에 적고 예상 시간을 정해 추가한 뒤, ▶를 누르면 타이머가 그 할 일에 맞춰져요. 왼쪽 ⋮⋮를 끌면 순서를 바꿀 수 있어요.')]));
   const od=viewDate===today()?pastTasks():[], carry=$('#k-carry');
@@ -1224,7 +1224,7 @@ function kGroups(ts){ // 카테고리 → 항목 순서(설정 순서)로 묶음
       const sa=sub(a.sub).id, sb2=sub(b.sub).id; if(sa!==sb2) return (sa?so[sa]??1e8:1e9)-(sb2?so[sb2]??1e8:1e9); return (a.o||0)-(b.o||0)})
     .forEach(t=>{const c=keyC(t); if(!byCat.has(c)) byCat.set(c,new Map()); const m=byCat.get(c), sid=sub(t.sub).id||''; if(!m.has(sid)) m.set(sid,[]); m.get(sid).push(t)});
   return [...byCat].map(([c,m])=>{const cc=c?cat(c):null, all=[...m.values()].flat();
-    return {name:cc?cc.name:'항목 없음',color:cc?cc.color:PALETTE[7],n:all.length,done:all.filter(t=>t.done).length,
+    return {id:cc?c:'',name:cc?cc.name:'항목 없음',color:cc?cc.color:PALETTE[7],n:all.length,done:all.filter(t=>t.done).length,
       subs:[...m].map(([sid,tl])=>{const sb=sid?sub(sid):null; return {name:sb?sb.name:'',color:sb?sb.color:PALETTE[7],showHead:!!sb&&!(m.size===1&&cc&&sb.name===cc.name),tasks:tl}})}});
 }
 function kSaveOrder(ul){ // 화면에 보이는 순서대로 o를 다시 매김 (그 묶음이 원래 쓰던 o 값들을 순서대로 나눠 가짐)
@@ -1232,9 +1232,14 @@ function kSaveOrder(ul){ // 화면에 보이는 순서대로 o를 다시 매김 
   const os=ts.map(t=>t.o||0).sort((a,b)=>a-b); for(let i=1;i<os.length;i++) if(os[i]<=os[i-1]) os[i]=os[i-1]+1; // 같은 값이 겹치면 벌려 둠
   let n=0; ts.forEach((t,i)=>{if((t.o||0)!==os[i]){put('tasks-'+t.date.slice(0,7),Object.assign(clone(t),{o:os[i]})); n++}}); return n;
 }
+function kSaveCatOrder(ul){ // 카테고리 순서는 설정의 카테고리 순서 자체를 바꿈 (보이는 카테고리끼리 원래 o 값을 나눠 가짐)
+  const cs=[...ul.children].map(li=>li.dataset.cid).filter(Boolean).map(cat).filter(Boolean);
+  const os=cs.map(c=>c.o||0).sort((a,b)=>a-b); for(let i=1;i<os.length;i++) if(os[i]<=os[i-1]) os[i]=os[i-1]+1;
+  let n=0; cs.forEach((c,i)=>{if((c.o||0)!==os[i]){put('cats',Object.assign(clone(c),{o:os[i]})); n++}}); return n;
+}
 let kDragging=false;
-function kDrag(e){
-  if(e.button>0) return; e.preventDefault(); const grip=e.currentTarget, li=grip.closest('li'), ul=li.parentElement, before=[...ul.children].map(x=>x.dataset.id).join();
+function kDrag(e,save){
+  if(e.button>0) return; e.preventDefault(); const grip=e.currentTarget, li=grip.closest('li'), ul=li.parentElement, sig=()=>[...ul.children].map(x=>x.dataset.id||x.dataset.cid).join(), before=sig();
   kDragging=true; li.classList.add('kdrag'); document.body.classList.add('dragging');
   const y0=e.clientY; let y=y0, moved=false, raf=0;
   const place=()=>{const sib=[...ul.children].filter(x=>x!==li), nx=sib.find(x=>{const r=x.getBoundingClientRect(); return y<r.top+r.height/2});
@@ -1245,13 +1250,13 @@ function kDrag(e){
   // 항목이 자리를 옮기면 손잡이가 손가락을 놓쳐서, 화면 전체에서 움직임을 받음
   const up=ev=>{if(ev.pointerId!==e.pointerId) return; window.removeEventListener('pointermove',mv); window.removeEventListener('pointerup',up); window.removeEventListener('pointercancel',up); cancelAnimationFrame(raf);
     li.classList.remove('kdrag'); document.body.classList.remove('dragging'); kDragging=false;
-    if([...ul.children].map(x=>x.dataset.id).join()!==before&&kSaveOrder(ul)){render(); toast('순서를 바꿨어요')}};
+    if(sig()!==before&&save(ul)){render(); toast('순서를 바꿨어요')}};
   window.addEventListener('pointermove',mv,{passive:false}); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up);
 }
-function kKey(e){ // 키보드: 손잡이에서 ↑↓로 한 칸씩
-  if(e.key!=='ArrowUp'&&e.key!=='ArrowDown') return; e.preventDefault(); const li=e.currentTarget.closest('li'), ul=li.parentElement, id=li.dataset.id;
+function kKey(e,save){ // 키보드: 손잡이에서 ↑↓로 한 칸씩
+  if(e.key!=='ArrowUp'&&e.key!=='ArrowDown') return; e.preventDefault(); const li=e.currentTarget.closest('li'), ul=li.parentElement, sel=li.dataset.id!=null?'li[data-id="'+li.dataset.id+'"]':'li[data-cid="'+li.dataset.cid+'"]';
   if(e.key==='ArrowUp'&&li.previousElementSibling) ul.insertBefore(li,li.previousElementSibling); else if(e.key==='ArrowDown'&&li.nextElementSibling) ul.insertBefore(li.nextElementSibling,li); else return;
-  if(kSaveOrder(ul)){render(); const g=document.querySelector('#k-list li[data-id="'+id+'"] .kgrip'); if(g) g.focus()}
+  if(save(ul)){render(); const g=document.querySelector('#k-list '+sel+' .kgrip'); if(g) g.focus()}
 }
 const mdOf=k=>parts(k)[1]+'/'+parts(k)[2];
 const dayDiff=(a,b)=>Math.round((new Date(parts(b)[0],parts(b)[1]-1,parts(b)[2])-new Date(parts(a)[0],parts(a)[1]-1,parts(a)[2]))/864e5);
