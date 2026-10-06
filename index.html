@@ -2691,7 +2691,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
   sawol:{n:TR('정사월'),special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
   yuni:{n:TR('유니'),special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
-  ttukbul:{n:TR('이뚝불'),special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'gecko',mark:'lashes geckoeyes'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
+  ttukbul:{n:TR('이뚝불'),special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'gecko',mark:'lashes geckoeyes geckosmile'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
   mikael:{n:TR('미카엘'),special:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
 const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면 레벨이나 업적으로 열려요
   flower:{n:TR('꽃핀'),slot:'head',price:150},sprout:{n:TR('새싹'),slot:'head',price:150},starpin:{n:TR('별 핀'),slot:'head',price:200},ribbon:{n:TR('리본'),slot:'head',price:200},
@@ -2710,10 +2710,10 @@ const TPL={
   2:{g:['','','','','','.....oooooo.....','....obbbbbbo....','...obbbbbbbbo...','...obebbbbebo...','...obebbbbebo...','...ocbbmmbbco...','...obbbbbbbbo...','....obllllbo....','....obllllbo....','....obbbbbbo....','....ooo..ooo....'],top:5,ey:8,my:10,ny:11,R:12},
   3:{g:['','','','','.....oooooo.....','...oobbbbbboo...','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obllllllbo...','...obllllllbo...','...obbllllbbo...','...obboooobbo...','...oooo..oooo...'],top:4,ey:7,my:9,ny:10,R:13}};
 let CTPL=null; const tplA=st=>CTPL&&CTPL[st]||TPL[st]; // 동물마다 따로 그린 몸 틀이 있으면 그걸 써요
-const GECKO={ // 크레스티드 게코: 몸보다 넓은 납작한 머리, 위로 튀어나온 큰 눈, 얼굴을 가로지르는 입, 옆으로 벌린 짧은 다리
-  1:{g:['','','','','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obmmmmmmmmmmbo.','..obbbbbbbbbbo..','...obllllllbo...','..oobbbbbbbboo..','...oo......oo...'],top:7,ey:9,my:11,ny:13,R:12,small:1,lash:[[3,6],[5,6]]},
-  2:{g:['','','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obbbbbbbbbbbbo.','.obmmmmmmmmmmbo.','..obbbbbbbbbbo..','...obllllllbo...','..obobllllbobo..','.oooobbbbbboooo.','.....oooooo.....'],top:5,ey:7,my:10,ny:12,R:13,lash:[[3,4],[5,4],[4,3]]},
-  3:{g:['','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obbbbbbbbbbbbo.','.obmmmmmmmmmmbo.','..obbbbbbbbbbo..','...oobllllboo...','..obobllllbobo..','.obbobllllbobbo.','.oooobbbbbboooo.','.....oooooo.....'],top:4,ey:6,my:9,ny:11,R:13,lash:[[3,3],[5,3],[6,3],[4,2]]}};
+const GECKO={ // 크레스티드 게코: 몸보다 넓은 납작한 머리, 위로 튀어나온 큰 눈, 활짝 웃는 입, 옆으로 벌린 짧은 다리
+  1:{g:['','','','','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obbbbbbbbbbbbo.','.obbbbbbbbbbbbo.','..obbbbbbbbbbo..','..oobllllllboo..','...oo......oo...'],top:7,ey:9,my:11,ny:13,R:12,small:1,lash:[[3,6],[5,6]]},
+  2:{g:['','','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obbbbbbbbbbbbo.','.obbbbbbbbbbbbo.','..obbbbbbbbbbo..','...obllllllbo...','..obobllllbobo..','.oooobbbbbboooo.','.....oooooo.....'],top:5,ey:7,my:9,ny:12,R:13,lash:[[3,4],[5,4],[4,3]]},
+  3:{g:['','','','','...oooo..oooo...','..obbbboobbbbo..','.obbbebbbbebbbo.','.obbbebbbbebbbo.','.obbbbbbbbbbbbo.','.obbbbbbbbbbbbo.','.obbbbbbbbbbbbo.','..obbbbbbbbbbo..','...oobllllboo...','..obobllllbobo..','.oooobbbbbboooo.','.....oooooo.....'],top:4,ey:6,my:9,ny:12,R:13,lash:[[3,3],[5,3],[6,3],[4,2]]}};
 SP.ttukbul.tpl=GECKO;
 const EGG=['','','','','......oooo......','.....owwwwo.....','....owwwwwwo....','....owbbwwwo....','...owwbbwwwwo...','...owwwwwbbwo...','...owwwwwbbwo...','...owbwwwwwwo...','...owwwwwwwwo...','....owwwbwwo....','....owwwwwwo....','.....oooooo.....'];
 const newG=()=>Array.from({length:16},()=>Array(16).fill('.'));
@@ -2764,6 +2764,10 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('dogmouth')>=0){gset(G,6,m+1,'o'); gset(G,9,m+1,'o')}
   if(mk.indexOf('smile')>=0){gset(G,5,m-1,'m'); gset(G,10,m-1,'m')}
   if(mk.indexOf('nostrils')>=0){gset(G,6,m-1,'o'); gset(G,9,m-1,'o')}
+  if(mk.indexOf('geckosmile')>=0){ // 입꼬리가 올라간 U자 웃음 + 발그레한 볼
+    for(let x=3;x<=12;x++) if(G[m][x]==='m') G[m][x]='b';
+    [[3,m],[12,m],[4,m+1],[5,m+1],[6,m+1],[7,m+1],[8,m+1],[9,m+1],[10,m+1],[11,m+1]].forEach(([x,y])=>gset(G,x,y,'m'));
+    gset(G,2,m,'c'); gset(G,13,m,'c')}
   if(mk.indexOf('geckoeyes')>=0) [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1]].forEach(([a,b])=>{if(G[b][a]==='b') G[b][a]='#F2E4BC'}));
   if(mk.indexOf('pinkearsc')>=0){if(s) both(G,5,t-1,'c'); else{both(G,4,t-1,'c'); both(G,5,t-1,'c'); both(G,5,t,'c')}}
   if(mk.indexOf('orangecap')>=0){const paint=(x,y)=>{if(G[y]&&G[y][x]==='b') G[y][x]='a'}; [4,5,6,9,10,11].forEach(x=>{paint(x,t); paint(x,t+1)}); if(!s) [3,12].forEach(x=>paint(x,t+1))}
