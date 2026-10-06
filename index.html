@@ -479,7 +479,7 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
   .top{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--paper);padding:.45rem 1rem}
   .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;order:0;width:auto;border-radius:0;gap:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));
     background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--rule);box-shadow:0 -6px 24px rgba(20,48,120,.08)}
-  .tabs button{min-height:50px;border-radius:12px}
+  .tabs button{min-height:50px;border-radius:12px;white-space:nowrap;padding:.25em 0;letter-spacing:-.02em}
   .tabs button[aria-selected=true]{box-shadow:none;background:var(--soft)}
   main{padding-bottom:1.2rem}
   .by-foot{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom,0px))}
@@ -600,6 +600,26 @@ section[data-card=pet] h2,.pxui h2{font-family:inherit;font-weight:700;font-size
 .celeb.out{opacity:0;transition:opacity .2s steps(2)}
 @media (prefers-reduced-motion:no-preference){.celeb{animation:pop .3s steps(3)}}
 @keyframes pop{0%{transform:translate(-50%,-50%) scale(.6)}100%{transform:translate(-50%,-50%) scale(1)}}
+.pxtabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:.7rem}
+.pxui .pxtabs button{flex:1 1 auto;min-height:38px;padding:.2em .6em;font-size:14px}
+.pxui .pxtabs button[aria-selected=true]{background:var(--px-ink);color:var(--px-bg);font-weight:700;transform:translate(2px,2px);box-shadow:none}
+.pxchk{display:inline-flex;align-items:center;gap:.4rem;font-size:14px;margin-right:1rem} .pxchk input{accent-color:#283048}
+.shopit.lock{background:var(--px-soft);border-style:dashed} .sil svg rect{fill:var(--px-ink)!important;opacity:.28}
+.achlist{list-style:none;margin:.6rem 0 0;padding:0;display:flex;flex-direction:column;gap:.45rem}
+.achlist li{display:flex;align-items:center;gap:.7rem;padding:.55rem .7rem;border:2px solid var(--px-line);background:var(--px-bg)}
+.achlist li:not(.done){background:var(--px-soft)} .achlist li:not(.done) .achic{opacity:.45}
+.achic .pxi{width:32px;height:32px} .achtx{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15rem}
+#buddy{position:fixed;left:0;bottom:0;z-index:35;pointer-events:none;will-change:transform;line-height:0}
+#buddy[hidden]{display:none!important}
+#buddy .bpet{pointer-events:auto;background:none;border:0;padding:0;margin:0;min-height:0;min-width:0;box-shadow:none;cursor:pointer;display:block;line-height:0}
+#buddy .bpet:active{transform:none} #buddy svg{image-rendering:pixelated;display:block}
+#buddy .bbub{position:absolute;bottom:100%;margin-bottom:6px;white-space:nowrap;max-width:min(80vw,22rem);overflow:hidden;text-overflow:ellipsis;line-height:1.4;font-size:14px;
+  background:var(--px-bg);color:var(--px-ink);border:2px solid var(--px-line);box-shadow:3px 3px 0 var(--px-line);padding:.25rem .6rem}
+#buddy .bheart{position:absolute;left:50%;bottom:100%;margin-left:-8px;line-height:0}
+@media (prefers-reduced-motion:no-preference){#buddy .bheart{animation:bheart 1s steps(4) forwards}}
+@keyframes bheart{to{transform:translateY(-28px);opacity:0}}
+body.kb #buddy{display:none!important}
+@media print{#buddy{display:none!important}}
 @media (max-width:520px){.shopgrid{grid-template-columns:repeat(2,minmax(0,1fr))} .pxui{font-size:15px}}
 </style>
 </head>
@@ -613,6 +633,7 @@ section[data-card=pet] h2,.pxui h2{font-family:inherit;font-weight:700;font-size
     <button role="tab" data-v="plan">시간표</button>
     <button role="tab" data-v="cal">캘린더</button>
     <button role="tab" data-v="diary">일기</button>
+    <button role="tab" data-v="pet">동물</button>
     <button role="tab" data-v="set">설정</button>
   </nav>
   <button id="coin" class="quiet" title="코인과 동물 친구">🪙 0</button>
@@ -2540,7 +2561,7 @@ function helpDlg(which){ // ? 버튼: 보고 있는 탭의 설명부터 열고, 
 $('#help').onclick=()=>helpDlg();
 
 /* ---------- 꾸밈: 탭·카드 제목 아이콘, 빈 화면 그림 ---------- */
-const TABIC={dash:'grid',today:'sun',stats:'chart',plan:'table',cal:'cal',diary:'book',set:'gear'};
+const TABIC={pet:'heart',dash:'grid',today:'sun',stats:'chart',plan:'table',cal:'cal',diary:'book',set:'gear'};
 document.querySelectorAll('.tabs button').forEach(b=>b.prepend(ic(TABIC[b.dataset.v]))); $('#find').prepend(ic('search'));
 const H2IC=[[TR('동물 친구'),'heart'],[TR('메모'),'pen'],[TR('할 일'),'list'],[TR('일정'),'bell'],[TR('타임테이블'),'rows'],[TR('목표별'),'target'],[TR('주간 회고'),'pen'],[TR('카테고리별'),'pie'],[TR('시간대별'),'clock'],[TR('최근 22주'),'grid'],[TR('기록'),'rows'],[TR('주간 시간표'),'table'],['D-day','flag'],
   [TR('지난 일기'),'book'],[TR('화면'),'palette'],[TR('타이머'),'clock'],[TR('목표와 하루 기준'),'target'],[TR('카테고리와 항목'),'tag'],[TR('저장'),'folder'],[TR('아직 기록이 없어요'),'spark']];
@@ -2562,7 +2583,19 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   penguin:{n:TR('펭귄'),price:200,pal:['#101830','#3058A0','#F8F8F8','#F8A018','#F8A0B0'],mark:'mask beak feet'},
   fox:{n:TR('여우'),price:250,pal:['#501808','#F07028','#FFF8F0','#401808','#F89090'],ear:'tri',tail:'bushy',mark:'foxface'},
   bear:{n:TR('곰'),price:300,pal:['#3A2010','#B07040','#F0D0A0','#704020','#F09080'],ear:'round',mark:'muzzle'},
-  dragon:{n:TR('아기 용'),price:600,pal:['#302070','#8878F8','#E8E0FF','#F8C838','#F8A0C8'],ear:'horn',tail:'thin',mark:'wings belly'}};
+  dragon:{n:TR('아기 용'),price:600,pal:['#302070','#8878F8','#E8E0FF','#F8C838','#F8A0C8'],ear:'horn',tail:'thin',mark:'wings belly'},
+  pig:{n:TR('아기 돼지'),pal:['#6A2838','#F8B0C0','#FFE0E8','#D85878','#F87890'],ear:'tri',tail:'curl',mark:'snout'},
+  sheep:{n:TR('양'),pal:['#4A4048','#F8F8F0','#FFFFFF','#584850','#F8A0B0'],ear:'flop',mark:'wool'},
+  raccoon:{n:TR('너구리'),pal:['#181820','#A0A0B0','#F0F0F0','#585868','#F8A0A0'],ear:'round',tail:'ringed',mark:'bandit'},
+  panda:{n:TR('판다'),pal:['#181820','#FFFFFF','#FFFFFF','#282830','#F8A0B0'],ear:'round',earC:'a',mark:'patches arms'},
+  koala:{n:TR('코알라'),pal:['#383840','#A8A8B8','#E8E8F0','#F0F0F8','#F8A0B0'],ear:'big',mark:'bignose'},
+  squirrel:{n:TR('다람쥐'),pal:['#4A2410','#C87838','#FFF0D8','#8A4818','#F89090'],ear:'tri',tail:'bushy',mark:'stripes'},
+  hedgehog:{n:TR('고슴도치'),pal:['#3A2818','#F0D0A8','#FFF0E0','#7A5838','#F89090'],mark:'spikes'},
+  duck:{n:TR('오리'),pal:['#304050','#F8F8F8','#FFFFFF','#F8A020','#F8B0B0'],ear:'tuft',mark:'beak feet'},
+  owl:{n:TR('부엉이'),pal:['#3A2414','#A87048','#F0D8B0','#F8C838','#F8A090'],ear:'horn',mark:'owleyes beak'},
+  tiger:{n:TR('호랑이'),pal:['#281810','#F89020','#FFF8F0','#281810','#F89090'],ear:'round',tail:'ringed',mark:'tigerstripes'},
+  axolotl:{n:TR('우파루파'),pal:['#702848','#F8B8D0','#FFE8F0','#E85890','#F87898'],ear:'gills',mark:'wide'},
+  unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'}};
 const OUT={ // 옷: 머리·얼굴·목 칸에 하나씩
   flower:{n:TR('꽃핀'),slot:'head',price:30},ribbon:{n:TR('리본'),slot:'head',price:40},cap:{n:TR('야구 모자'),slot:'head',price:60},
   beanie:{n:TR('털모자'),slot:'head',price:80},wizard:{n:TR('마법사 모자'),slot:'head',price:150},crown:{n:TR('왕관'),slot:'head',price:200},
@@ -2589,10 +2622,12 @@ function outlineG(G){ // 몸 색 칸 옆의 빈칸에 테두리를 둘러요
   add.forEach(([x,y])=>G[y][x]='o');
 }
 function bodyG(spk,st,tailF){
-  const sp=SP[spk]||SP.cat, A=TPL[st], G=fromRows(A.g), t=A.top, s=A.small, mk=sp.mark||'';
+  const sp=SP[spk]||SP.cat, A=TPL[st], G=fromRows(A.g), t=A.top, s=A.small, mk=sp.mark||'', ec=sp.earC||'b';
   // 귀
   if(sp.ear==='tri') s?(both(G,5,t-1,'b'),both(G,5,t,'b')):(both(G,4,t-2,'b'),both(G,4,t-1,'a'),both(G,5,t-1,'b'),both(G,4,t,'b'),both(G,5,t,'b'),both(G,6,t,'b'));
-  if(sp.ear==='round') s?(both(G,5,t,'b'),both(G,5,t-1,'b')):(both(G,4,t-1,'b'),both(G,5,t-1,'b'),both(G,4,t,'b'),both(G,5,t,'a'));
+  if(sp.ear==='round') s?(both(G,5,t,ec),both(G,5,t-1,ec)):(both(G,4,t-1,ec),both(G,5,t-1,ec),both(G,4,t,ec),both(G,5,t,'a'));
+  if(sp.ear==='big'){if(s){both(G,4,t,'b'); both(G,4,t-1,'b'); both(G,3,t,'b')} else{[[2,t-1],[3,t-1],[4,t-1],[1,t],[2,t],[3,t],[4,t],[2,t+1],[3,t+1]].forEach(([x,y])=>both(G,x,y,'b')); both(G,3,t,'a'); both(G,2,t,'a')}}
+  if(sp.ear==='gills'){[[2,t+1],[1,t],[1,t+2],[2,t+3],[0,t+3]].forEach(([x,y])=>both(G,x,y,'a'))}
   if(sp.ear==='long'){const n=s?3:5; for(let i=0;i<n;i++){both(G,5,t-i,'b'); both(G,6,t-i,i&&i<n-1?'a':'b')}}
   if(sp.ear==='flop'){if(s){both(G,3,t+1,'a'); both(G,2,t+2,'a'); both(G,2,t+3,'a')} else{both(G,3,t+1,'a'); both(G,2,t+2,'a'); both(G,3,t+2,'a'); both(G,1,t+3,'a'); both(G,2,t+3,'a'); both(G,1,t+4,'a'); both(G,2,t+4,'a')}}
   if(sp.ear==='horn'){both(G,5,t-1,'a'); if(!s) both(G,5,t-2,'a')}
@@ -2604,6 +2639,8 @@ function bodyG(spk,st,tailF){
   if(!s&&sp.tail==='stub') ink(G,tf?[[R,Y],[R+1,Y-1]]:[[R,Y],[R+1,Y]],'b',1);
   if(!s&&sp.tail==='bushy'){ink(G,tf?[[R,Y],[R,Y+1],[R+1,Y-1],[R+1,Y],[R+1,Y+1],[R+2,Y-2],[R+2,Y-1]]:[[R,Y],[R,Y+1],[R+1,Y],[R+1,Y+1],[R+1,Y-1],[R+1,Y-2],[R+2,Y-1]],'b',1); gset(G,R+2,tf?Y-2:Y-1,'l'); if(!tf) gset(G,R+1,Y-2,'l')}
   if(sp.tail==='puff') ink(G,[[R,Y+1]],'l',1);
+  if(!s&&sp.tail==='curl') ink(G,tf?[[R,Y],[R+1,Y-1],[R+1,Y]]:[[R,Y],[R+1,Y],[R+1,Y+1]],'a',1);
+  if(!s&&sp.tail==='ringed') ink(G,(tf?[[R,Y+1],[R+1,Y+1],[R+2,Y],[R+2,Y-1]]:[[R,Y+1],[R+1,Y],[R+1,Y-1],[R+1,Y-2]]).map((q,i)=>q),'b',1),(tf?[[R+1,Y+1],[R+2,Y-1]]:[[R+1,Y],[R+1,Y-2]]).forEach(([x,y])=>gset(G,x,y,'a'));
   if(!s&&mk.indexOf('wings')>=0){const L=15-R; ink(G,tf?[[L,A.ny-1],[L-1,A.ny-2],[L,A.ny-2]]:[[L,A.ny-1],[L-1,A.ny-1],[L,A.ny]],'a',1); ink(G,tf?[[R,A.ny-1],[R+1,A.ny-2],[R,A.ny-2]]:[[R,A.ny-1],[R+1,A.ny-1],[R,A.ny]],'a',1)}
   // 무늬
   const m=A.my;
@@ -2614,6 +2651,17 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('foxface')>=0) for(let y=m;y<=m+1;y++) for(let x=4;x<=11;x++) if(G[y][x]==='b') G[y][x]='l';
   if(mk.indexOf('cheeks')>=0){both(G,4,m,'c'); both(G,4,m+1,'c'); if(!s) both(G,3,m,'c')}
   if(mk.indexOf('wide')>=0){gset(G,6,m,'m'); gset(G,9,m,'m')}
+  if(mk.indexOf('snout')>=0){for(let x=6;x<=9;x++) gset(G,x,m,'a'); gset(G,7,m,'m'); gset(G,8,m,'m'); if(!s) for(let x=6;x<=9;x++) gset(G,x,m+1,'a')}
+  if(mk.indexOf('wool')>=0){[4,6,8,10].forEach(x=>{if(gget(G,x,t-1)==='.') gset(G,x,t-1,'b')}); both(G,2,A.ny,'b'); for(let y=A.ey-1;y<=m;y++) for(let x=5;x<=10;x++) if(G[y][x]==='b') G[y][x]='l'}
+  if(mk.indexOf('bandit')>=0) [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey-1]].forEach(([a,b])=>{if(G[b][a]==='b') G[b][a]='a'}));
+  if(mk.indexOf('patches')>=0) [5,10].forEach(x=>{[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey-1],[x,A.ey+2]].forEach(([a,b])=>{if(G[b][a]==='b'||G[b][a]==='l') G[b][a]='a'}); gset(G,x,A.ey,'w'); gset(G,x,A.ey+1,'a')});
+  if(mk.indexOf('arms')>=0&&!s) for(let y=A.ny;y<=A.ny+1;y++){both(G,3,y,'a'); if(gget(G,4,y)==='b'||gget(G,4,y)==='l') both(G,4,y,'a')}
+  if(mk.indexOf('bignose')>=0){gset(G,7,m-1,'o'); gset(G,8,m-1,'o'); gset(G,7,m,'o'); gset(G,8,m,'o')}
+  if(mk.indexOf('spikes')>=0){for(let x=3;x<=12;x+=2){gset(G,x,t-1,'a'); gset(G,x+1,t,'a'===gget(G,x+1,t)?'a':gget(G,x+1,t))} for(let x=4;x<=11;x+=2) gset(G,x,t,'a'); [[2,t+1],[1,t+2],[2,t+3],[1,t+4]].forEach(([x,y])=>{if(!s) both(G,x,y,'a')}); for(let x=5;x<=10;x++) if(G[t+1][x]==='b') G[t+1][x]='a'}
+  if(mk.indexOf('owleyes')>=0) [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey-1],[x,A.ey+2]].forEach(([a,b])=>{if(G[b][a]==='b'||G[b][a]==='c') G[b][a]='l'}));
+  if(mk.indexOf('tigerstripes')>=0){[[7,t+1],[8,t+1],[7,t+2],[3,A.ey],[3,A.ey+2],[12,A.ey],[12,A.ey+2]].forEach(([x,y])=>{if(G[y][x]==='b') G[y][x]='a'}); if(!s) [[4,A.ny],[11,A.ny],[4,A.ny+2],[11,A.ny+2]].forEach(([x,y])=>{if(G[y][x]==='b') G[y][x]='a'})}
+  if(mk.indexOf('mane')>=0){[[3,t],[4,t-1],[3,t+1],[2,t+2],[3,t+2],[2,t+3]].forEach(([x,y])=>gset(G,x,y,'c')); if(!s) [[2,t+4],[1,t+3]].forEach(([x,y])=>gset(G,x,y,'c'))}
+  if(mk.indexOf('unihorn')>=0){gset(G,7,t-1,'a'); gset(G,8,t-1,'a'); gset(G,8,t-2,'a'); if(!s) gset(G,8,t-3,'a')}
   if(mk.indexOf('belly')>=0&&!s) for(let y=A.ny+1;y<A.ny+4;y+=2) for(let x=6;x<=9;x++) if(G[y][x]==='l') G[y][x]='a';
   if(mk.indexOf('feet')>=0&&st>1){const fy=14; for(let x=0;x<16;x++) if(G[fy][x]==='b') G[fy][x]='a'}
   outlineG(G); return G;
@@ -2726,13 +2774,16 @@ const PXI={
   egg:['..oooo..','.owwwwo.','owwbwwwo','owwwwbwo','owbwwwwo','owwwwwwo','.owwwwo.','..oooo..'],
   check:['........','.......o','......oo','o....oo.','oo..oo..','.oooo...','..oo....','........'],
   clover:['.oo.oo..','oggogg..','oggggo..','.oggoggo','oggggggo','oggoggo.','.o.o.o..','...o....'],
+  trophy:['.oooooo.','oyyyyyyo','oyywyyyo','.oyyyyo.','..oyyo..','...oo...','..oyyo..','.oooooo.'],
+  lock:['..oooo..','.o....o.','.o....o.','oooooooo','oyyyyyyo','oyyooyyo','oyyyyyyo','oooooooo'],
+  book:['oooooooo','orrowwwo','orrowbwo','orrowwwo','orrowbwo','orrowwwo','oooooooo','........'],
   sprout:['........','.oo..oo.','oggooggo','.oggggo.','...oo...','...oo...','..oKKo..','.oooooo.']};
 const PXC={o:'#283048',y:'#F8C838',w:'#FFFFFF',K:'#B07838',r:'#E84848',b:'#58A8F0',g:'#58C058'};
 const PXI_SVG={};
 function pxi(name){const rows=PXI[name]; if(!rows) return document.createTextNode('');
   if(!PXI_SVG[name]){let out=''; rows.forEach((r,y)=>{let x=0; while(x<8){const ch=r[x]; if(ch==='.'){x++; continue} let n=1; while(x+n<8&&r[x+n]===ch) n++; out+='<rect x="'+x+'" y="'+y+'" width="'+n+'" height="1" fill="'+PXC[ch]+'"/>'; x+=n}}); PXI_SVG[name]=out}
   return h('span',{class:'pxi','aria-hidden':'true'},svgEl(8,8,PXI_SVG[name]))}
-const EMO={'🪙':'coin','🔥':'flame','🛡':'shield','🍚':'rice','💧':'drop','⭐':'star','🎁':'gift','🐾':'paw','👒':'hat','🥚':'egg','✓':'check','🍀':'clover','🌱':'sprout','🐣':'egg','🏁':'star','❤':'heart'};
+const EMO={'🏆':'trophy','🔒':'lock','🔓':'lock','📖':'book','🪙':'coin','🔥':'flame','🛡':'shield','🍚':'rice','💧':'drop','⭐':'star','🎁':'gift','🐾':'paw','👒':'hat','🥚':'egg','✓':'check','🍀':'clover','🌱':'sprout','🐣':'egg','🏁':'star','❤':'heart'};
 const EMO_RE=new RegExp('('+Object.keys(EMO).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')\uFE0F?','u');
 function pxText(s){ // 글 속의 이모지를 픽셀 아이콘으로 바꿔요
   const out=[]; String(s).split(EMO_RE).forEach((part,i)=>{if(!part) return; if(i%2) out.push(pxi(EMO[part])); else out.push(part)}); return out;
@@ -2870,7 +2921,8 @@ function showFrame(a,fr){
 function engine(){
   actN++; for(let i=ACTORS.length-1;i>=0;i--){const a=ACTORS[i]; if(!a.svg.isConnected){ACTORS.splice(i,1); continue} if(document.visibilityState==='visible'&&a.svg.getBoundingClientRect().width) stepActor(a)}
   WXL.forEach((w,i)=>{if(!w.svg.isConnected){WXL.splice(i,1); return} if(w.frames.length>1) w.g.innerHTML=w.frames[actN%w.frames.length]});
-  if(!ACTORS.length&&!WXL.length){clearInterval(actTimer); actTimer=null}
+  if(buddyEl&&!buddyEl.hidden&&document.visibilityState==='visible') stepBuddy();
+  if(!ACTORS.length&&!WXL.length&&!(buddyEl&&!buddyEl.hidden)){clearInterval(actTimer); actTimer=null}
 }
 const WXL=[];
 function startEngine(){if(!actTimer&&!reduceMotion()) actTimer=setInterval(engine,250)}
@@ -2908,9 +2960,9 @@ function award(id,amt,why){ // 같은 일로 두 번 받지 않게 id로 확인 
   const ts=Date.now(); put('coins-'+monthOf(ts),{id,ts,amt,why}); paintCoin(); return amt;
 }
 function unaward(id){const d=findDoc('coins-',id); if(d){del(d,id); paintCoin()}}
-function spend(amt,why){
+function spend(amt,why,kind){
   const bal=coinBal(); if(bal<amt){toast(TR('코인이 모자라요')+' ('+bal+' / '+amt+')'); return false}
-  const ts=Date.now(); put('coins-'+monthOf(ts),{id:uid(),ts,amt:-amt,why}); paintCoin(); return true;
+  const ts=Date.now(); put('coins-'+monthOf(ts),Object.assign({id:uid(),ts,amt:-amt,why},kind?{kind}:{})); paintCoin(); return true;
 }
 
 /* 끝낸 순간의 축하: 픽셀 색종이 + 코인 + 동물이 폴짝 (움직임 줄이기 설정이면 조용히 알림만) */
@@ -2941,16 +2993,16 @@ function rewardSession(it,quick){ // 집중 1분 = 1코인, 그날 첫 집중 +5
   if(first&&award('d:'+k,5,TR('오늘의 첫 집중'))){got+=5; sub=TR('오늘의 첫 집중 +5')}
   const lucky=Math.random()<.2&&award('l:'+it.id,mins,TR('행운 보너스 (코인 2배)')); if(lucky){got+=mins; sub=TR('🍀 행운! 코인 2배')}
   if(quick) sub=TR('5분 해냈어요! 시작이 제일 어려운 거예요');
-  if(got) celebrate('+'+got+' '+COIN,sub,!!lucky);
-  checkGrowth(); checkStreak();
+  if(got){celebrate('+'+got+' '+COIN,sub,!!lucky); buddySay(pick(LINES.done))}
+  checkGrowth(); checkStreak(); checkProgress();
 }
 function rewardTask(t,done){
   if(!done){unaward('t:'+t.id); unaward('td:'+t.id); return}
   let got=award('t:'+t.id,10,TR('할 일 완료')+' · '+t.title);
   if(t.due&&Date.now()<=dueTs(t)) got+=award('td:'+t.id,10,TR('마감 전 완료')+' · '+t.title);
-  if(got) celebrate('+'+got+' '+COIN,'✓ '+t.title); checkStreak();
+  if(got){celebrate('+'+got+' '+COIN,'✓ '+t.title); buddySay(pick(LINES.done))} checkStreak(); checkProgress();
 }
-function rewardGoal(g){const got=award('g:'+g.id,30,TR('장기 할 일 완료')+' · '+g.title); if(got) celebrate('+'+got+' '+COIN,'🏁 '+g.title,true)}
+function rewardGoal(g){const got=award('g:'+g.id,30,TR('장기 할 일 완료')+' · '+g.title); if(got) celebrate('+'+got+' '+COIN,'🏁 '+g.title,true); checkProgress()}
 
 /* 부드러운 연속 기록: 5분 집중하거나 할 일 하나만 끝내도 그날은 채워져요. 주(월~일)마다 하루는 지키개가 메워 줘요 */
 const dayKept=k=>dayTotal(k)>=300||tasksOf(k).some(t=>t.done);
@@ -2977,10 +3029,10 @@ function setActivePet(id){S.settings.v.activePet=id; S.settings.m=Date.now(); S.
 function checkGrowth(){const p=activePet(); if(!p) return; const st=stageOf(petXP(p)); if(st>(p.stage||0)){put('pets',Object.assign(clone(p),{stage:st}));
   celebrate(st===1?TR('🐣 태어났어요!'):st===2?TR('🌱 쑥쑥 자랐어요!'):TR('⭐ 어른이 됐어요!'),p.name+' · '+STAGES[st][1],true)}}
 function adoptPet(spk,free){
-  const sp=SP[spk]; if(!free&&!spend(sp.price,TR('입양')+' · '+sp.n)) return;
+  const sp=SP[spk]; if(!free&&(!spOpen(spk)||!spend(spPrice(spk),TR('입양')+' · '+sp.n,'pet'))) return;
   const now=Date.now(), id=uid(); put('pets',{id,sp:spk,name:sp.n,born:now,fed:now,water:now,o:now,wear:{},stage:0});
   S.settings.v.activePet=id; S.settings.m=now; S.dirty.settings=1; saveLocal(); schedulePush();
-  celebrate('🥚 '+sp.n,TR('알을 품기 시작했어요. 30분 집중하면 태어나요'),true); render();
+  celebrate('🥚 '+sp.n,TR('알을 품기 시작했어요. 30분 집중하면 태어나요'),true); petTab='home'; checkProgress(); render();
 }
 function careFor(p,kind){
   const k=kind==='food', cost=k?5:2, key=k?'fed':'water', f=fullOf(p[key],k?36:24);
@@ -3006,7 +3058,7 @@ function shopDlg(it){
      h('button',{class:'primary',onclick:()=>{const name=fN.value.trim(), cost=Math.max(1,parseInt(fC.value)||0); if(!name){toast(TR('보상 이름을 적어 주세요')); return}
        put('shop',Object.assign(isNew?{id:uid()}:clone(it),{name,cost,emoji:fE.value.trim()||'🎁'})); closeDlg(); render()}},isNew?TR('추가'):TR('저장'))]);
 }
-function buyReward(it){if(!spend(it.cost,TR('보상')+' · '+it.name)) return; celebrate((it.emoji||'🎁')+' '+it.name,TR('마음껏 즐기세요! 열심히 번 거예요'),true); render()}
+function buyReward(it){if(!spend(it.cost,TR('보상')+' · '+it.name,'reward')) return; setTimeout(checkProgress,50); celebrate((it.emoji||'🎁')+' '+it.name,TR('마음껏 즐기세요! 열심히 번 거예요'),true); render()}
 
 /* 화면: 오늘 탭 동물 카드 (작은 유리병) */
 const POSE_TXT={read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
@@ -3030,59 +3082,230 @@ function renderPetCard(){
 }
 function moodText(p,mood){return mood==='egg'?TR('따뜻하게 품는 중'):mood==='sad'?(fullOf(p.fed,36)<.15?TR('배고파요'):TR('목말라요')):mood==='happy'?TR('기분 최고'):TR('괜찮아요')}
 
-/* 화면: 코인과 동물 (화면 위 코인 버튼) */
-let shopTab='reward';
+/* ---------- 레벨·업적·해금 ---------- */
+// 내 레벨은 지금까지 번 코인(쓴 것 빼지 않음)으로 올라가요. 새 동물은 레벨이나 업적으로 열리고, 열린 뒤에 코인으로 데려와요
+const earnedCoins=()=>allOf('coins-').reduce((a,c)=>a+(c.amt>0?c.amt:0),0);
+const myLv=e=>Math.floor(Math.sqrt(Math.max(0,e==null?earnedCoins():e)/20))+1, myLvCoins=n=>20*(n-1)*(n-1);
+const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인
+  ['first',TR('첫 걸음'),TR('처음으로 집중 기록 남기기'),1,'logs',10],
+  ['focus10',TR('열 시간의 힘'),TR('집중 10시간 채우기'),10,'hours',30],
+  ['focus50',TR('공부벌레'),TR('집중 50시간 채우기'),50,'hours',80],
+  ['focus100',TR('백 시간 클럽'),TR('집중 100시간 채우기'),100,'hours',150],
+  ['focus300',TR('집중의 장인'),TR('집중 300시간 채우기'),300,'hours',400],
+  ['task10',TR('하나씩 차근차근'),TR('할 일 10개 끝내기'),10,'tasks',20],
+  ['task100',TR('해치우기 선수'),TR('할 일 100개 끝내기'),100,'tasks',100],
+  ['goal1',TR('큰 산 하나'),TR('장기 할 일 하나 끝내기'),1,'goals',30],
+  ['streak3',TR('불씨'),TR('3일 연속 기록'),3,'streak',15],
+  ['streak7',TR('일주일 내내'),TR('7일 연속 기록'),7,'streak',40],
+  ['streak30',TR('한 달의 기적'),TR('30일 연속 기록'),30,'streak',200],
+  ['early',TR('아침형 인간'),TR('아침 7시 전에 15분 넘게 집중'),1,'early',20],
+  ['owl',TR('밤의 공부꾼'),TR('밤 11시 넘어서 15분 넘게 집중'),1,'night',20],
+  ['deep90',TR('몰입의 순간'),TR('타이머로 한 번에 90분 넘게 집중'),1,'deep',40],
+  ['pets3',TR('작은 동물원'),TR('동물 3마리와 함께하기'),3,'pets',30],
+  ['pets5',TR('동물 친구 부자'),TR('동물 5마리와 함께하기'),5,'pets',60],
+  ['grown',TR('다 컸네!'),TR('동물 한 마리를 어른까지 키우기'),1,'grown',100],
+  ['wear5',TR('패션왕'),TR('옷 5벌 모으기'),5,'wear',40],
+  ['treat',TR('나를 위한 선물'),TR('상점에서 보상 한 번 사기'),1,'treats',10],
+  ['rich',TR('티끌 모아 태산'),TR('코인 1,000개 벌기 (누적)'),1000,'earned',50]];
+const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 데려오는 값
+  chick:{lv:2,price:120},hamster:{lv:3,price:150},pig:{lv:3,price:150},frog:{lv:4,price:200},duck:{lv:4,price:180},penguin:{lv:5,price:200},
+  fox:{lv:6,price:250},bear:{lv:7,price:300},panda:{lv:8,price:350},tiger:{lv:10,price:400},dragon:{lv:12,price:600},
+  sheep:{ach:'task10',price:150},squirrel:{ach:'early',price:200},raccoon:{ach:'owl',price:200},koala:{ach:'streak7',price:250},
+  hedgehog:{ach:'deep90',price:250},owl:{ach:'focus50',price:350},axolotl:{ach:'pets5',price:400},unicorn:{ach:'streak30',price:800}};
+const achById=id=>ACH.find(a=>a[0]===id);
+const hasAch=id=>!!items('achv').find(x=>x.id===id);
+function achStats(){
+  const logs=allOf('log-'); let sec=0, early=0, night=0, deep=0;
+  logs.forEach(s=>{if(!s.segs||!s.segs.length) return; const d=sessDur(s); sec+=d; const hr=new Date(s.segs[0][0]*1e3).getHours();
+    if(d>=900&&hr>=4&&hr<7) early=1; if(d>=900&&(hr>=23||hr<3)) night=1; if(s.kind!=='manual'&&d>=5400) deep=1});
+  const ps=pets();
+  return {logs:logs.length,hours:Math.floor(sec/3600),tasks:allOf('tasks-').filter(t=>t.done).length,goals:ltAll().filter(g=>g.status==='done').length,streak:softStreak().n,early,night,deep,
+    pets:ps.length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins()};
+}
+const spPrice=k=>UNLOCK[k]?UNLOCK[k].price:(SP[k].price||100);
+function spOpen(k,lv){const u=UNLOCK[k]; if(!u) return true; return u.lv?(lv==null?myLv():lv)>=u.lv:hasAch(u.ach)}
+function lockText(k){const u=UNLOCK[k]; if(!u) return ''; if(u.lv) return 'Lv '+u.lv+TR(' 되면 열려요'); const a=achById(u.ach); return TR('업적 「')+a[1]+TR('」 달성하면 열려요')}
+let progBusy=false;
+function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해요. 처음 한 번은 지난 기록으로 조용히 채워요
+  if(progBusy) return; progBusy=true;
+  try{
+    const first=!items('lvl').length, st=achStats(), fresh=[];
+    ACH.forEach(a=>{if(!hasAch(a[0])&&(st[a[4]]||0)>=a[3]){put('achv',{id:a[0],ts:Date.now()}); award('a:'+a[0],a[5],TR('업적')+' · '+a[1]); fresh.push(a)}});
+    const lv=myLv(), seen=items('lvl').reduce((m,x)=>Math.max(m,x.n||0),0);
+    if(lv>seen) put('lvl',{id:'L'+lv,n:lv});
+    const newSp=Object.keys(UNLOCK).filter(k=>spOpen(k,lv)&&!items('dex').find(x=>x.id===k));
+    newSp.forEach(k=>put('dex',{id:k}));
+    if(first){if(fresh.length||newSp.length) toast(TR('지난 기록으로 업적 ')+fresh.length+TR('개를 달성했어요! 동물 탭에서 확인해 보세요')); return}
+    fresh.forEach(a=>celebrate('🏆 '+a[1],TR('업적 달성')+' · +'+a[5]+' 🪙',true));
+    if(lv>seen) celebrate('⭐ LEVEL UP! Lv '+lv,TR('레벨이 올랐어요!'),true);
+    newSp.forEach(k=>celebrate('🔓 '+SP[k].n,TR('새 친구를 데려올 수 있어요! 동물 탭 → 도감'),true));
+    if(fresh.length||newSp.length) buddySay(TR('우와, 새로운 게 열렸어!'));
+  } finally{progBusy=false}
+}
+
+/* 화면: 동물 탭 (내 동물 · 도감 · 업적 · 상점 · 코인) */
+let petTab='home', shopTab='reward';
 function renderPet(){
-  const sec=$('#v-pet'), ps=pets(), p=activePet(), st=softStreak(), bal=coinBal(), tc=terraCfg();
-  const segOf=(opts,cur,fn,label)=>h('div',{class:'seg wrap',role:'group','aria-label':label},opts.map(o=>h('button',{'aria-pressed':String(cur===o[0]),onclick:()=>fn(o[0])},o[1])));
-  let main;
-  const jar=mountTerra(6), status=h('span',{class:'pstat'});
-  ACTORS.filter(a=>a.svg===jar.firstChild&&a.active).forEach(a=>{a.label=status; status.textContent=POSE_TXT[actorPose(a)]||''});
-  const sceneRow=h('div',null,h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('배경')),segOf(TERRA_THEMES,tc.theme,v=>setTerra('theme',v),TR('배경'))),h('div',{class:'pxrow'},h('span',{class:'small lab'},TR('날씨')),segOf(WX_OPTS,tc.wx,v=>setTerra('wx',v),TR('날씨'))));
-  if(!p) main=h('section',{class:'card pxcard'},pxHud(null,st),jar,h('h2',null,TR('첫 동물 친구를 골라요')),h('p',{class:'small'},TR('처음 한 마리는 무료예요. 알에서 시작해서, 집중한 시간만큼 자라요.')),
-    h('div',{class:'petgrid'},['cat','dog','bunny'].map(k=>h('button',{class:'petpick',onclick:()=>adoptPet(k,true)},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n),h('span',{class:'small'},TR('무료'))))),sceneRow);
-  else{
-    const xp=petXP(p), sg=stageOf(xp), nx=STAGES[sg+1], mood=petMood(p), f=fullOf(p.fed,36), w=fullOf(p.water,24), li=lvInfo(xp);
-    const meter=(icon,lab,v,cls)=>h('div',{class:'meter'},pxi(icon),h('span',null,lab),pxBar(v,10,cls),h('span',{class:'num small'},Math.round(v*100)+'%'));
-    main=h('section',{class:'card pxcard'},
-      h('div',{class:'pxhud'},h('span',{class:'lv'},'Lv '+li.L),h('b',{class:'pname'},p.name),h('button',{class:'quiet tiny',onclick:()=>renamePet(p),'aria-label':TR('이름 바꾸기')},'✎'),h('span',{class:'sp'}),
-        h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi',title:st.shield?TR('🛡 이번 주 지키개 있음'):TR('🛡 이번 주 지키개 씀')},pxi('shield'),st.shield?'1':'0'),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
-      jar,
-      h('div',{class:'pxrow'},h('span',null,SP[p.sp].n+' · '+STAGES[sg][1]+' · '),status,h('span',{class:'sp small'},moodText(p,mood))),
-      h('div',{class:'pxrow'},h('span',{class:'small'},'EXP'),pxBar(li.v,16),h('span',{class:'small'},'Lv '+(li.L+1)+TR('까지 ')+fmtDur(li.left*60))),
-      h('p',{class:'small',style:'margin:.2rem 0 0'},nx?TR('다음 단계(')+nx[1]+TR(')까지 ')+fmtDur((nx[0]-xp)*60)+TR(' 집중')+' · '+TR('함께 집중 ')+fmtDur(xp*60):TR('다 자랐어요! 옷을 입혀 보세요')+' · '+TR('함께 집중 ')+fmtDur(xp*60)),
-      sg?h('div',{class:'meters'},meter('rice',TR('배부름'),f,'warm'),meter('drop',TR('목마름'),w,'cool')):h('p',{class:'small'},TR('알은 밥을 먹지 않아요. 집중하면 따뜻해져서 태어나요.')),
-      sg?h('div',{class:'pxrow',style:'justify-content:center'},h('button',{onclick:()=>careFor(p,'food')},pxi('rice'),TR('밥 주기')+' · 5',pxi('coin')),h('button',{onclick:()=>careFor(p,'water')},pxi('drop'),TR('물 주기')+' · 2',pxi('coin'))):null,
-      h('p',{class:'small',style:'text-align:center;margin:.5rem 0 0'},TR('집중하면 책상에서 책을 읽고, 쉬는 시간엔 자요. 다른 친구들은 꼬리를 흔들며 응원해요.')),
-      ps.length>1?h('div',{class:'petrow'},ps.map(q=>h('button',{class:'petsm','aria-pressed':String(q.id===p.id),onclick:()=>setActivePet(q.id),title:q.name},petSVG(q.sp,stageOf(petXP(q)),q.wear,petMood(q),48,petXP(q)),h('span',null,q.name),h('span',{class:'small'},'Lv '+petLv(petXP(q)))))):null,
-      ps.length>1?h('p',{class:'small',style:'text-align:center;margin:.3rem 0 0'},TR('고른 동물이 지금 함께 집중하는 친구예요. 집중한 시간은 그 동물만 키워요.')):null,
-      sceneRow,h('p',{class:'small',style:'margin:.3rem 0 0'},TR('낮과 밤은 지금 시각을 따라가요. 날씨를 자동으로 두면 날마다 바뀌어요.')));
+  const sec=$('#v-pet'), ps=pets(), p=activePet(), st=softStreak(), bal=coinBal(), e=earnedCoins(), lv=myLv(e);
+  const segOf=(opts,cur,fn,label)=>h('div',{class:'seg wrap',role:'group','aria-label':label},opts.map(o=>h('button',{'aria-pressed':String(cur===o[0]),onclick:()=>fn(o[0])},...pxText(o[1]))));
+  const nOpen=Object.keys(SP).filter(k=>spOpen(k,lv)).length, nAch=items('achv').length;
+  const head=h('section',{class:'card pxcard'},h('div',{class:'pxhud'},h('span',{class:'lv'},TR('내 레벨')+' '+lv),pxBar((e-myLvCoins(lv))/(myLvCoins(lv+1)-myLvCoins(lv)),12),h('span',{class:'small hudi'},TR('다음 레벨까지 ')+(myLvCoins(lv+1)-e),pxi('coin')),
+      h('span',{class:'sp'}),h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
+    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+ps.length+'/'+Object.keys(SP).length],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['coin',TR('🪙 코인')]]
+      .map(o=>h('button',{role:'tab','aria-selected':String(petTab===o[0]),onclick:()=>{petTab=o[0]; renderPet(); window.scrollTo(0,0)}},...pxText(o[1])))));
+  let body=[];
+  if(petTab==='home'){
+    const tc=terraCfg(), jar=mountTerra(6), status=h('span',{class:'pstat'});
+    ACTORS.filter(a=>a.svg===jar.firstChild&&a.active).forEach(a=>{a.label=status; status.textContent=POSE_TXT[actorPose(a)]||''});
+    const chk=(k,label)=>h('label',{class:'pxchk'},h('input',{type:'checkbox',checked:S.settings.v[k]!==false,onchange:ev=>setBuddy(k,ev.target.checked)}),label);
+    const opts=h('div',null,h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('배경')),segOf(TERRA_THEMES,tc.theme,v=>setTerra('theme',v),TR('배경'))),
+      h('div',{class:'pxrow'},h('span',{class:'small lab'},TR('날씨')),segOf(WX_OPTS,tc.wx,v=>setTerra('wx',v),TR('날씨'))),
+      h('div',{class:'pxrow wrap'},chk('buddy',TR('앱 곳곳을 함께 돌아다니기')),chk('buddyTalk',TR('말풍선으로 말 걸기'))),
+      h('p',{class:'small',style:'margin:.3rem 0 0'},TR('고른 동물이 화면 아래쪽을 돌아다니며 함께 공부해요. 집중할 땐 조용히 책을 읽고, 쉬는 시간엔 자요. 눌러서 쓰다듬어 보세요.')));
+    if(!p) body=[h('section',{class:'card pxcard'},jar,h('h2',null,TR('첫 동물 친구를 골라요')),h('p',{class:'small'},TR('처음 한 마리는 무료예요. 알에서 시작해서, 집중한 시간만큼 자라요.')),
+      h('div',{class:'petgrid'},['cat','dog','bunny'].map(k=>h('button',{class:'petpick',onclick:()=>adoptPet(k,true)},petSVG(k,3,{},'happy',64),h('b',null,SP[k].n),h('span',{class:'small'},TR('무료'))))),opts)];
+    else{
+      const xp=petXP(p), sg=stageOf(xp), nx=STAGES[sg+1], mood=petMood(p), f=fullOf(p.fed,36), w=fullOf(p.water,24), li=lvInfo(xp);
+      const meter=(icon,lab,v,cls)=>h('div',{class:'meter'},pxi(icon),h('span',null,lab),pxBar(v,10,cls),h('span',{class:'num small'},Math.round(v*100)+'%'));
+      body=[h('section',{class:'card pxcard'},
+        h('div',{class:'pxhud'},h('span',{class:'lv'},'Lv '+li.L),h('b',{class:'pname'},p.name),h('button',{class:'quiet tiny',onclick:()=>renamePet(p),'aria-label':TR('이름 바꾸기')},'✎'),h('span',{class:'sp small'},moodText(p,mood))),
+        jar,
+        h('div',{class:'pxrow'},h('span',null,SP[p.sp].n+' · '+STAGES[sg][1]+' · '),status),
+        h('div',{class:'pxrow'},h('span',{class:'small'},'EXP'),pxBar(li.v,16),h('span',{class:'small'},'Lv '+(li.L+1)+TR('까지 ')+fmtDur(li.left*60))),
+        h('p',{class:'small',style:'margin:.2rem 0 0'},(nx?TR('다음 단계(')+nx[1]+TR(')까지 ')+fmtDur((nx[0]-xp)*60)+TR(' 집중'):TR('다 자랐어요! 옷을 입혀 보세요'))+' · '+TR('함께 집중 ')+fmtDur(xp*60)),
+        sg?h('div',{class:'meters'},meter('rice',TR('배부름'),f,'warm'),meter('drop',TR('목마름'),w,'cool')):h('p',{class:'small'},TR('알은 밥을 먹지 않아요. 집중하면 따뜻해져서 태어나요.')),
+        sg?h('div',{class:'pxrow',style:'justify-content:center'},h('button',{onclick:()=>careFor(p,'food')},pxi('rice'),TR('밥 주기')+' · 5',pxi('coin')),h('button',{onclick:()=>careFor(p,'water')},pxi('drop'),TR('물 주기')+' · 2',pxi('coin'))):null,
+        ps.length>1?h('div',{class:'petrow'},ps.map(q=>h('button',{class:'petsm','aria-pressed':String(q.id===p.id),onclick:()=>setActivePet(q.id),title:q.name},petSVG(q.sp,stageOf(petXP(q)),q.wear,petMood(q),48,petXP(q)),h('span',null,q.name),h('span',{class:'small'},'Lv '+petLv(petXP(q)))))):null,
+        ps.length>1?h('p',{class:'small',style:'text-align:center;margin:.3rem 0 0'},TR('고른 동물이 지금 함께 집중하는 친구예요. 집중한 시간은 그 동물만 키워요.')):null,
+        opts)];
+    }
   }
-  // 상점
-  const tabs=h('div',{class:'seg wrap'},[['reward',TR('🎁 보상')],['pet',TR('🐾 동물')],['wear',TR('👒 옷')]].map(o=>h('button',{'aria-pressed':String(shopTab===o[0]),onclick:()=>{shopTab=o[0]; renderPet()}},...pxText(o[1]))));
-  const price=n=>h('span',{class:'num price'},pxi('coin'),String(n));
-  let body;
-  if(shopTab==='reward'){const its=shopItems();
-    body=[h('p',{class:'small'},TR('공부하고 받고 싶은 보상을 직접 정해요. 코인이 모이면 떳떳하게 사서 즐기세요.')),
-      its.length?h('div',{class:'shopgrid'},its.map(it=>h('div',{class:'shopit'},h('span',{class:'emo'},it.emoji||'🎁'),h('b',null,it.name),price(it.cost),
-        h('div',{class:'row'},h('button',{class:bal>=it.cost?'primary':'',disabled:bal<it.cost,onclick:()=>buyReward(it)},bal>=it.cost?TR('사기'):TR('부족')+' '+(it.cost-bal)),h('button',{class:'quiet tiny',onclick:()=>shopDlg(it),'aria-label':TR('고치기')},'✎'))))):
-        h('div',null,h('p',{class:'small',style:'margin:.2rem 0 .4rem'},TR('예시를 눌러 바로 넣을 수 있어요:')),h('div',{class:'chips'},SHOP_IDEAS.map(x=>h('button',{class:'chip',onclick:()=>{put('shop',{id:uid(),emoji:x[0],name:x[1],cost:x[2]}); render()}},x[0]+' '+x[1]+' · '+x[2])))),
-      h('button',{style:'margin-top:.8rem',onclick:()=>shopDlg(null)},TR('＋ 보상 추가'))]}
-  else if(shopTab==='pet'){const owned=new Set(ps.map(q=>q.sp));
-    body=[h('p',{class:'small'},TR('새 친구는 알로 와요. 고른 동물과 함께 집중한 시간만큼 자라요.')),h('div',{class:'shopgrid'},Object.keys(SP).map(k=>{const sp=SP[k], has=owned.has(k), pr=sp.price||100;
-      return h('div',{class:'shopit'},petSVG(k,3,{},'happy',64),h('b',null,sp.n),has?h('span',{class:'price'},TR('함께 있어요')):price(pr),has?null:h('button',{class:bal>=pr?'primary':'',disabled:bal<pr||!p,onclick:()=>adoptPet(k,false)},TR('입양')))}))]}
-  else{const own=new Set(items('wardrobe').map(x=>x.id)), pw=p?p.wear||{}:{};
-    body=[h('p',{class:'small'},p?TR('산 옷은 모든 동물이 같이 입을 수 있어요. 누르면 입히거나 벗겨요.'):TR('먼저 동물 친구를 데려오세요.')),h('div',{class:'shopgrid'},Object.keys(OUT).map(k=>{const o=OUT[k], has=own.has(k), on=pw[o.slot]===k;
-      return h('div',{class:'shopit'+(on?' on':'')},p?petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'happy',64):null,h('b',null,o.n),has?h('span',{class:'price'},on?TR('입는 중'):TR('가지고 있어요')):price(o.price),
-        !p?null:has?h('button',{onclick:()=>{const wear=Object.assign({},pw); if(on) delete wear[o.slot]; else wear[o.slot]=k; put('pets',Object.assign(clone(p),{wear})); render()}},on?TR('벗기기'):TR('입히기')):
-          h('button',{class:bal>=o.price?'primary':'',disabled:bal<o.price,onclick:()=>{if(!spend(o.price,TR('옷')+' · '+o.n)) return; put('wardrobe',{id:k}); const wear=Object.assign({},pw,{[o.slot]:k}); put('pets',Object.assign(clone(p),{wear})); celebrate('👒 '+o.n,p.name+TR('에게 입혔어요'),false); render()}},TR('사기')))}))]}
-  const shop=h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('상점')),h('span',{class:'sp hudi'},pxi('coin'),bal.toLocaleString(LOC))),tabs,...body);
-  // 코인 기록과 규칙
-  const led=allOf('coins-').sort((a,b)=>b.ts-a.ts).slice(0,20);
-  const hist=h('section',{class:'card pxcard'},h('h2',null,TR('코인 기록')),led.length?h('ul',{class:'list'},led.map(c=>h('li',null,h('span',{class:'when num'},mdOf(dayKey(c.ts))+' '+hm(new Date(c.ts).getHours()*60+new Date(c.ts).getMinutes())),h('span',{style:'flex:1;min-width:0;overflow-wrap:anywhere'},c.why||''),h('b',{class:'num '+(c.amt>0?'plus':'minus')},(c.amt>0?'+':'')+c.amt)))):h('p',{class:'empty'},TR('아직 코인 기록이 없어요. 타이머로 집중하거나 할 일을 끝내 보세요.')));
-  const rules=h('section',{class:'card pxcard'},h('h2',null,TR('코인 받는 법')),h('ul',{class:'list'},[[TR('집중 1분'),'+1'],[TR('그날 첫 집중'),'+5'],[TR('할 일 완료'),'+10'],[TR('마감 전에 끝내기'),'+10'],[TR('장기 할 일 완료'),'+30'],[TR('집중이 끝날 때 가끔 행운'),TR('2배')],[TR('연속 3·7·14·30일…'),TR('연속 일수 × 2')]].map(r=>h('li',null,h('span',{style:'flex:1'},r[0]),h('b',{class:'num'},r[1])))),
-    h('p',{class:'small',style:'margin:.6rem 0 0'},TR('타이머로 잰 집중만 코인이 돼요. 직접 입력한 기록은 코인이 없어요. 할 일 체크를 풀면 받은 코인도 돌아가요.')));
-  sec.replaceChildren(h('div',{class:'pxui stack'},main,h('div',{class:'two'},h('div',{class:'stack'},shop,rules),h('div',{class:'stack'},hist))));
+  else if(petTab==='dex'){
+    const owned=new Set(ps.map(q=>q.sp)), nextLv=Object.keys(UNLOCK).filter(k=>UNLOCK[k].lv&&UNLOCK[k].lv>lv).sort((a,b)=>UNLOCK[a].lv-UNLOCK[b].lv)[0];
+    body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('동물 도감')),h('span',{class:'sp small'},TR('함께 ')+ps.length+' · '+TR('열림 ')+nOpen+' / '+Object.keys(SP).length)),
+      h('p',{class:'small'},TR('레벨이 오르거나 업적을 달성하면 새 친구가 열려요. 열린 친구는 코인으로 데려올 수 있어요.')+(nextLv?' '+TR('다음 레벨 해금: ')+SP[nextLv].n+' (Lv '+UNLOCK[nextLv].lv+')':'')),
+      h('div',{class:'shopgrid'},Object.keys(SP).map(k=>{const sp=SP[k], has=owned.has(k), open=spOpen(k,lv), pr=spPrice(k), mine=ps.find(q=>q.sp===k);
+        if(has) return h('div',{class:'shopit on'},petSVG(k,mine?Math.max(1,stageOf(petXP(mine))):3,mine?mine.wear:{},'happy',64),h('b',null,sp.n),h('span',{class:'price'},TR('함께 있어요')+(mine?' · Lv '+petLv(petXP(mine)):'')),
+          mine&&mine.id!==p.id?h('button',{onclick:()=>{setActivePet(mine.id); petTab='home'; renderPet()}},TR('함께 다니기')):h('span',{class:'small'},TR('지금 친구')));
+        if(!open) return h('div',{class:'shopit lock'},h('span',{class:'pix sil'},petSVG(k,3,{},'stand',64).firstChild),h('b',null,'???'),h('span',{class:'small'},...pxText('🔒 '+lockText(k))));
+        return h('div',{class:'shopit'},petSVG(k,3,{},'happy',64),h('b',null,sp.n),h('span',{class:'num price'},pxi('coin'),String(pr)),
+          (fr=>h('button',{class:fr||bal>=pr?'primary':'',disabled:!fr&&bal<pr,onclick:()=>adoptPet(k,fr)},fr?TR('무료로 데려오기'):TR('입양')))(!ps.length&&['cat','dog','bunny'].indexOf(k)>=0))}))) ];
+  }
+  else if(petTab==='ach'){
+    const S2=achStats();
+    body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('업적')),h('span',{class:'sp small'},nAch+' / '+ACH.length)),
+      h('p',{class:'small'},TR('업적을 달성하면 코인을 받고, 몇몇 업적은 새 동물을 열어 줘요.')),
+      h('ul',{class:'achlist'},ACH.map(a=>{const done=hasAch(a[0]), v=Math.min(a[3],S2[a[4]]||0), unl=Object.keys(UNLOCK).filter(k=>UNLOCK[k].ach===a[0]);
+        return h('li',{class:done?'done':''},h('span',{class:'achic'},pxi(done?'trophy':'lock')),h('span',{class:'achtx'},h('b',null,a[1]),h('span',{class:'small'},a[2]+(unl.length?' · '+TR('해금: ')+unl.map(k=>done?SP[k].n:'???').join(', '):'')),
+          a[3]>1&&!done?h('span',{class:'pxrow',style:'margin:0'},pxBar(v/a[3],10),h('span',{class:'small num'},v.toLocaleString(LOC)+' / '+a[3].toLocaleString(LOC))):null),
+          h('span',{class:'hudi'},pxi('coin'),'+'+a[5]))}))) ];
+  }
+  else if(petTab==='shop'){
+    const price=n=>h('span',{class:'num price'},pxi('coin'),String(n)); let inner;
+    if(shopTab==='reward'){const its=shopItems();
+      inner=[h('p',{class:'small'},TR('공부하고 받고 싶은 보상을 직접 정해요. 코인이 모이면 떳떳하게 사서 즐기세요.')),
+        its.length?h('div',{class:'shopgrid'},its.map(it=>h('div',{class:'shopit'},h('span',{class:'emo'},it.emoji||'🎁'),h('b',null,it.name),price(it.cost),
+          h('div',{class:'row'},h('button',{class:bal>=it.cost?'primary':'',disabled:bal<it.cost,onclick:()=>buyReward(it)},bal>=it.cost?TR('사기'):TR('부족')+' '+(it.cost-bal)),h('button',{class:'quiet tiny',onclick:()=>shopDlg(it),'aria-label':TR('고치기')},'✎'))))):
+          h('div',null,h('p',{class:'small',style:'margin:.2rem 0 .4rem'},TR('예시를 눌러 바로 넣을 수 있어요:')),h('div',{class:'chips'},SHOP_IDEAS.map(x=>h('button',{class:'chip',onclick:()=>{put('shop',{id:uid(),emoji:x[0],name:x[1],cost:x[2]}); render()}},x[0]+' '+x[1]+' · '+x[2])))),
+        h('button',{style:'margin-top:.8rem',onclick:()=>shopDlg(null)},TR('＋ 보상 추가'))]}
+    else{const own=new Set(items('wardrobe').map(x=>x.id)), pw=p?p.wear||{}:{};
+      inner=[h('p',{class:'small'},p?TR('산 옷은 모든 동물이 같이 입을 수 있어요. 누르면 입히거나 벗겨요.'):TR('먼저 동물 친구를 데려오세요.')),h('div',{class:'shopgrid'},Object.keys(OUT).map(k=>{const o=OUT[k], has=own.has(k), on=pw[o.slot]===k;
+        return h('div',{class:'shopit'+(on?' on':'')},p?petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'happy',64):null,h('b',null,o.n),has?h('span',{class:'price'},on?TR('입는 중'):TR('가지고 있어요')):price(o.price),
+          !p?null:has?h('button',{onclick:()=>{const wear=Object.assign({},pw); if(on) delete wear[o.slot]; else wear[o.slot]=k; put('pets',Object.assign(clone(p),{wear})); render()}},on?TR('벗기기'):TR('입히기')):
+            h('button',{class:bal>=o.price?'primary':'',disabled:bal<o.price,onclick:()=>{if(!spend(o.price,TR('옷')+' · '+o.n,'wear')) return; put('wardrobe',{id:k}); const wear=Object.assign({},pw,{[o.slot]:k}); put('pets',Object.assign(clone(p),{wear})); celebrate('👒 '+o.n,p.name+TR('에게 입혔어요'),false); checkProgress(); render()}},TR('사기')))}))]}
+    body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('상점')),h('span',{class:'sp hudi'},pxi('coin'),bal.toLocaleString(LOC))),
+      h('div',{class:'seg wrap'},[['reward',TR('🎁 보상')],['wear',TR('👒 옷')]].map(o=>h('button',{'aria-pressed':String(shopTab===o[0]),onclick:()=>{shopTab=o[0]; renderPet()}},...pxText(o[1])))),...inner)];
+  }
+  else{
+    const led=allOf('coins-').sort((a,b)=>b.ts-a.ts).slice(0,40);
+    body=[h('div',{class:'two'},h('section',{class:'card pxcard'},h('h2',null,TR('코인 받는 법')),h('ul',{class:'list'},[[TR('집중 1분'),'+1'],[TR('그날 첫 집중'),'+5'],[TR('할 일 완료'),'+10'],[TR('마감 전에 끝내기'),'+10'],[TR('장기 할 일 완료'),'+30'],[TR('집중이 끝날 때 가끔 행운'),TR('2배')],[TR('연속 3·7·14·30일…'),TR('연속 일수 × 2')],[TR('업적 달성'),'+10~400']].map(r=>h('li',null,h('span',{style:'flex:1'},r[0]),h('b',{class:'num'},r[1])))),
+        h('p',{class:'small',style:'margin:.6rem 0 0'},TR('타이머로 잰 집중만 코인이 돼요. 직접 입력한 기록은 코인이 없어요. 할 일 체크를 풀면 받은 코인도 돌아가요.'))),
+      h('section',{class:'card pxcard'},h('h2',null,TR('코인 기록')),led.length?h('ul',{class:'list'},led.map(c=>h('li',null,h('span',{class:'when num'},mdOf(dayKey(c.ts))+' '+hm(new Date(c.ts).getHours()*60+new Date(c.ts).getMinutes())),h('span',{style:'flex:1;min-width:0;overflow-wrap:anywhere'},c.why||''),h('b',{class:'num '+(c.amt>0?'plus':'minus')},(c.amt>0?'+':'')+c.amt)))):h('p',{class:'empty'},TR('아직 코인 기록이 없어요. 타이머로 집중하거나 할 일을 끝내 보세요.'))))];
+  }
+  sec.replaceChildren(h('div',{class:'pxui stack'},head,...body));
+}
+
+/* ---------- 함께 다니는 동물: 앱 화면 아래쪽을 돌아다니며 같이 공부해요 ---------- */
+const BUDDY={x:24,dir:1,act:'stand',t:6,fi:0,cur:'',sayT:0,nextTalk:0};
+let buddyEl=null;
+const buddyOn=()=>S.settings.v.buddy!==false, talkOn=()=>S.settings.v.buddyTalk!==false;
+function setBuddy(k,v){S.settings.v[k]=v; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); render()}
+const LINES={
+  tap:[TR('헤헤, 간지러워!'),TR('오늘도 같이 힘내자!'),TR('쓰다듬어 줘서 고마워'),TR('너랑 있으면 좋아'),TR('뭐 하고 있었어?'),TR('나 여기 있어!')],
+  focus:[TR('같이 집중하자!'),TR('나도 옆에서 책 읽을게'),TR('조용히 응원할게'),TR('우리 할 수 있어!')],
+  rest:[TR('푹 쉬어!'),TR('나 잠깐 잘게… zZ'),TR('물 한 잔 마시고 와')],
+  done:[TR('해냈다!'),TR('최고야!'),TR('역시 너야!'),TR('하나 끝! 멋지다')],
+  morning:[TR('좋은 아침!'),TR('오늘 할 일 뭐야?'),TR('아침 공부는 꿀맛이야')],
+  day:[TR('물 한 잔 마셨어?'),TR('기지개 한 번 켜자'),TR('조금씩 하면 돼'),TR('잠깐 쉬어도 괜찮아'),TR('5분만 해 볼까?')],
+  evening:[TR('오늘도 수고했어'),TR('저녁은 먹었어?'),TR('오늘 한 거 정말 많아')],
+  night:[TR('늦었어, 얼른 자자…'),TR('졸려… zZ'),TR('내일 또 하자')]};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function buddySay(text,ms){
+  if(!buddyEl||buddyEl.hidden||!talkOn()||!text) return; const b=buddyEl.querySelector('.bbub');
+  b.textContent=text; b.hidden=false; BUDDY.sayT=Date.now()+(ms||3500); placeBubble();
+}
+function placeBubble(){const b=buddyEl&&buddyEl.querySelector('.bbub'); if(!b||b.hidden) return; const w=b.offsetWidth, W=innerWidth; b.style.left=Math.max(8-BUDDY.x,Math.min(0,W-BUDDY.x-w-8))+'px'}
+function buddyTap(){
+  const p=activePet(); if(!p) return; const st=stageOf(petXP(p));
+  if(!st){buddySay(TR('…따뜻해. 곧 나갈게!')); return}
+  BUDDY.act='jump'; BUDDY.t=6;
+  const heart=h('span',{class:'bheart'},pxi('heart')); buddyEl.append(heart); setTimeout(()=>heart.remove(),1100);
+  const mood=petMood(p), tot=dayTotal(today());
+  buddySay(mood==='sad'?(fullOf(p.fed,36)<.15?TR('배고파… 밥 줄래?'):TR('목말라… 물 줄래?')):Math.random()<.35&&tot>=60?TR('오늘 ')+fmtDur(tot)+TR(' 집중했어! 대단해'):pick(LINES.tap));
+}
+function paintBuddy(){
+  const p=activePet(), show=buddyOn()&&!!p&&view!=='pet';
+  if(!show){if(buddyEl) buddyEl.hidden=true; return}
+  if(!buddyEl){
+    buddyEl=h('div',{id:'buddy',class:'pxui'},h('div',{class:'bbub',hidden:true}),h('button',{class:'bpet','aria-label':TR('동물 친구 쓰다듬기'),onclick:buddyTap}));
+    BUDDY.svg=svgEl(16,16,''); buddyEl.querySelector('.bpet').append(BUDDY.svg); document.body.append(buddyEl);
+    BUDDY.x=Math.round(innerWidth*.15); BUDDY.nextTalk=Date.now()+4000;
+  }
+  const was=buddyEl.hidden; buddyEl.hidden=false; if(BUDDY.pet!==p.id){BUDDY.pet=p.id; BUDDY.cur=''} stepBuddy(); startEngine();
+  if(was&&!BUDDY.greeted){BUDDY.greeted=1; const hr=hourNow(); setTimeout(()=>buddySay(pick(hr<11&&hr>=5?LINES.morning:hr<18?LINES.day:hr<23?LINES.evening:LINES.night)),1500)}
+}
+function stepBuddy(){
+  if(!buddyEl||buddyEl.hidden) return;
+  const b=BUDDY, p=activePet(); if(!p) return; const xp=petXP(p), st=stageOf(xp), W=innerWidth, sc=W<600?3:4, w=16*sc, now=Date.now(), F=focusState();
+  // 아래 탭 막대 바로 위에 서요 (폰). 컴퓨터에서는 화면 맨 아래
+  const tb=document.querySelector('.tabs'); let bottom=0; if(tb&&getComputedStyle(tb).position==='fixed'){const r=tb.getBoundingClientRect(); if(r.top>innerHeight/2) bottom=innerHeight-r.top}
+  let pose, move=0;
+  if(!st){pose=SEQ.egg[b.fi%SEQ.egg.length]; b.x=Math.min(Math.max(8,b.x),W-w-8)}
+  else{
+    const sad=petMood(p)==='sad', hr=hourNow();
+    if(FX.until>now){pose=FX.kind}
+    else if(F.focus){pose=Math.floor(now/9000)%3===2?'write':'read'; if(b.mode!=='focus'){b.mode='focus'; buddySay(pick(LINES.focus))}}
+    else if(F.rest){pose='sleep'; if(b.mode!=='rest'){b.mode='rest'; buddySay(pick(LINES.rest))}}
+    else{
+      b.mode='';
+      if(--b.t<=0){ // 다음 행동 고르기
+        const r=Math.random(), night=hr>=23||hr<6;
+        if(night&&r<.6){b.act='sleep'; b.t=40+Math.random()*60}
+        else if(r<.38){b.act='walk'; b.t=10+Math.random()*30; b.dir=Math.random()<.5?-1:1}
+        else if(r<.46&&!sad){b.act='run'; b.t=6+Math.random()*10; b.dir=Math.random()<.5?-1:1}
+        else if(r<.6){b.act='stand'; b.t=8+Math.random()*16}
+        else if(r<.7&&!sad){b.act='wag'; b.t=8+Math.random()*10}
+        else if(r<.78){b.act='look'; b.t=8+Math.random()*8}
+        else if(r<.86){b.act='read'; b.t=24+Math.random()*30}
+        else if(r<.9&&!sad){b.act='jump'; b.t=4}
+        else{b.act='sleep'; b.t=20+Math.random()*40}
+        if(sad&&(b.act==='walk')) b.t/=2;
+      }
+      const a=b.act;
+      pose=a==='walk'||a==='run'?(sad?'sad':'walk'):a==='look'?'stand':a==='jump'?'cheer':a==='stand'&&sad?'sad':a;
+      if(a==='walk') move=(sad?1:2)*sc; if(a==='run') move=4*sc;
+      if(a==='look'&&b.t%4===0) b.dir*=-1;
+      if(now>b.nextTalk){b.nextTalk=now+(70+Math.random()*120)*1000; if(Math.random()<.7) buddySay(sad?(fullOf(p.fed,36)<.15?TR('배고파… 밥 줄래?'):TR('목말라… 물 줄래?')):pick(hr>=5&&hr<11?LINES.morning:hr<18?LINES.day:hr<23?LINES.evening:LINES.night))}
+    }
+  }
+  if(move){b.x+=b.dir*Math.round(move); if(b.x<8){b.x=8; b.dir=1} if(b.x>W-w-8){b.x=W-w-8; b.dir=-1}}
+  b.x=Math.min(Math.max(8,b.x),Math.max(8,W-w-8));
+  const seq=SEQ[pose]||[pose]; b.fi=(b.fi+1)%24; let fr=seq[b.fi%seq.length]; if(fr==='stand'&&Math.random()<.05) fr='blink';
+  const flip=b.dir<0&&!/read|write/.test(fr), key=p.id+fr+(flip?'f':'')+JSON.stringify(p.wear||{})+st;
+  if(b.cur!==key){b.cur=key; b.svg.innerHTML=spriteSVG(p.sp,st,p.wear,fr,xp,flip)}
+  b.svg.setAttribute('width',w); b.svg.setAttribute('height',w);
+  buddyEl.style.bottom=bottom+'px'; buddyEl.style.transform='translateX('+b.x+'px)';
+  if(b.sayT&&now>b.sayT){b.sayT=0; buddyEl.querySelector('.bbub').hidden=true} else placeBubble();
 }
 function showView(v){ // 탭이 없는 화면(코인·동물)도 같은 방식으로 열기
   jFlush(); rvFlush(); memoFlush(); if(editing){editing=false; applyLayout(true); paintEdit()} view=v;
@@ -3094,14 +3317,14 @@ function showView(v){ // 탭이 없는 화면(코인·동물)도 같은 방식�
 let view='today', enterT=null;
 function enter(v){const sec=$('#v-'+v); sec.classList.remove('enter'); void sec.offsetWidth; sec.classList.add('enter'); clearTimeout(enterT); enterT=setTimeout(()=>sec.classList.remove('enter'),900)}
 const R={today:renderToday,dash:renderDash,stats:renderStats,plan:renderPlan,cal:renderCal,diary:renderDiary,set:renderSet,pet:renderPet}, VIEWS=Object.keys(R);
-function render(){applyLook(); R[view](); paintCoin()}
+function render(){applyLook(); R[view](); paintCoin(); paintBuddy()}
 document.querySelector('.tabs').addEventListener('click',e=>{
   let b=e.target.closest('button[data-v]'); // 아이콘이나 글자를 눌러도 그 버튼으로 처리
   if(!b&&e.clientX){let best=1e9; document.querySelectorAll('.tabs button').forEach(x=>{const r=x.getBoundingClientRect(), dd=Math.abs(e.clientX-(r.left+r.width/2)); if(dd<best){best=dd; b=x}})} // 탭 사이 틈을 누르면 가장 가까운 탭으로
   const v=b&&b.dataset.v; if(!v) return; showView(v)});
-$('#coin').onclick=()=>showView('pet');
+$('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
-setCloud('local'); render(); decorate(); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
+setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
 initFolder().then(()=>{ // 기록이 하나도 없는 첫 실행에만 시작 안내를 띄움
   let seen=true; try{seen=!!localStorage.getItem(OB)}catch(e){}
   if(!seen&&!allOf('log-').length&&!allOf('tasks-').length&&!dlg.open) onboard(0)});
