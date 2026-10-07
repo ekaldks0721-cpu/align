@@ -2721,6 +2721,13 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   patrick:{n:TR("뚱이"),pal:["#4A2028", "#F8A0B0", "#FFFFFF", "#4A2028", "#E87888"],body:{"shirt": "b", "sleeve": "b", "shorts": 1, "pants": "#78C850", "shoes": "b", "deco": [[6, 4, "#A060C8"], [9, 5, "#A060C8"], [8, 4, "#F8E060"]]},food:'icecream',acts:["sleep", "sleep", "snack", "wag"],lines:'PATRICK'},
   sandy:{n:TR("다람이"),pal:["#3A2A18", "#B07848", "#FFFFFF", "#3A2A18", "#D89870"],body:{"shirt": "#F4F4F8", "sleeve": "#F4F4F8", "pants": "#F4F4F8", "shoes": "#A8B0B8"},food:'acorn',acts:["karate", "karate", "snack", "read"],lines:'SANDY'},
   krabs:{n:TR("집게사장"),pal:["#3A1010", "#E04030", "#FFFFFF", "#3A1010", "#F09080"],body:{"shirt": "#5A90D0", "sleeve": "#5A90D0", "short": 1, "shorts": 1, "pants": "#8A5A3A", "shoes": "b"},acts:["money", "money", "wag"],lines:'KRABS'},
+  chiikawa:{n:TR("치이카와"),pal:["#3A3238", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#F8A8B8"],ear:'round',mark:'cheeks',acts:["weed", "weed", "cry", "snack", "stick"],food:'cupcake',lines:'CHIIKAWA'},
+  hachiware:{n:TR("하치와레"),pal:["#2A3440", "#FFFFFF", "#FFFFFF", "#7FA8C8", "#F8A8B8"],ear:'tri',earC:'a',mark:'cheeks hachicap',acts:["guitar", "sing", "weed", "cheer"],food:'cupcake',lines:'HACHIWARE'},
+  usagi:{n:TR("우사기"),pal:["#4A3A28", "#FFF0C0", "#FFF8E0", "#F8B8C0", "#F8A8B8"],ear:'long',mark:'cheeks',acts:["yaha", "yaha", "snack", "weed"],food:'icecream',lines:'USAGI'},
+  momonga:{n:TR("모몽가"),pal:["#3A3030", "#FFFFFF", "#FFFFFF", "#D8B890", "#F8A8B8"],ear:'round',earC:'a',mark:'cheeks momocap',acts:["float", "cheer", "snack"],food:'cupcake',lines:'MOMONGA'},
+  kurimanju:{n:TR("쿠리만쥬"),pal:["#3A2A20", "#F4DCC0", "#FFF4E8", "#A8683A", "#F8A8B8"],mark:'cheeks kuricap',acts:["drink", "drink", "snack", "sleep"],food:'bread',lines:'KURIMANJU'},
+  rakko:{n:TR("랏코"),pal:["#2A2018", "#A88868", "#F0E4D8", "#7A5A40", "#F8A8B8"],ear:'round',mark:'cheeks rakkoface',acts:["stick", "stick", "snack", "swim"],food:'cupcake',lines:'RAKKO'},
+  shisa:{n:TR("시사"),pal:["#4A2A10", "#F8C870", "#FFF0D0", "#E87830", "#F8A8B8"],ear:'tri',mark:'cheeks shisamane',acts:["ramen", "ramen", "snack", "wag"],food:'bread',lines:'SHISA'},
   dora:{n:TR('도라에몽'),dora:1,pal:['#1A2A40','#FFFFFF','#FFFFFF','#1CA0E8','#E02828'],body:{shirt:'#1CA0E8',sleeve:'#1CA0E8',belly:1,pants:'#1CA0E8',shoes:'#FFFFFF',deco:[[5,0,'#E02828'],[6,0,'#E02828'],[7,0,'#F8C830'],[8,0,'#F8C830'],[9,0,'#E02828'],[10,0,'#E02828'],[7,1,'#C89818'],[8,1,'#C89818'],[6,2,'#FFFFFF'],[7,2,'#FFFFFF'],[8,2,'#FFFFFF'],[9,2,'#FFFFFF'],[6,3,'#FFFFFF'],[7,3,'#1A2A40'],[8,3,'#1A2A40'],[9,3,'#FFFFFF'],[6,4,'#FFFFFF'],[7,4,'#FFFFFF'],[8,4,'#FFFFFF'],[9,4,'#FFFFFF']]},acts:['dorayaki','dorayaki','pocket','pocket','copter','door','mouse','wag','dance'],lines:'DORA'},
   simhomer:{n:TR('호머 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#D0A878'],body:{shirt:'l',sleeve:'l',short:1,belly:1,pants:'#78B8F0',shoes:'#404048'},acts:['donut','donut','doh','sleep','wag'],lines:'SIMHOMER'},
   marge:{n:TR('마지 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#3A70D8','#2A5CC0'],body:{shirt:'#B8E080',sleeve:'b',dress:1,pants:'#B8E080',shoes:'#E04030',deco:[[6,0,'#E04030'],[8,0,'#E04030'],[7,0,'#B82820'],[9,0,'#B82820']]},acts:['bake','read','wag'],lines:'MARGE'},
@@ -2906,6 +2913,12 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('unihorn')>=0){gset(G,7,t-1,'a'); gset(G,8,t-1,'a'); gset(G,8,t-2,'a'); if(!s) gset(G,8,t-3,'a')}
   if(mk.indexOf('belly')>=0&&!s) for(let y=A.ny+1;y<A.ny+4;y+=2) for(let x=6;x<=9;x++) if(G[y][x]==='l') G[y][x]='a';
   if(mk.indexOf('feet')>=0&&st>1){const fy=14; for(let x=0;x<16;x++) if(G[fy][x]==='b') G[fy][x]='a'}
+  // 먼작귀 친구들
+  if(mk.indexOf('hachicap')>=0){for(let y=t+1;y<=t+2;y++) for(let x=3;x<=12;x++) if((x<=6||x>=9)&&gget(G,x,y)==='b') gset(G,x,y,'a'); [3,4,11,12].forEach(x=>{if(gget(G,x,t+3)==='b') gset(G,x,t+3,'a')})} // 하치와레의 갈라진 무늬
+  if(mk.indexOf('momocap')>=0){for(let y=t+1;y<=t+2;y++) for(let x=3;x<=12;x++) if(gget(G,x,y)==='b') gset(G,x,y,'a')}
+  if(mk.indexOf('kuricap')>=0){for(let y=t+1;y<=t+2;y++) for(let x=2;x<=13;x++) if(gget(G,x,y)==='b') gset(G,x,y,'a'); gset(G,6,t+1,'#D8A070')} // 밤 껍질
+  if(mk.indexOf('rakkoface')>=0){for(let y=A.ey-1;y<=A.my+1;y++) for(let x=4;x<=11;x++) if(gget(G,x,y)==='b') gset(G,x,y,'l')}
+  if(mk.indexOf('shisamane')>=0){[[3,t],[2,t+1],[3,t+1],[2,t+2],[1,t+3],[2,t+3],[2,t+4]].forEach(([x,y])=>{both(G,x,y,'a')})} // 사자 갈기
   // 공룡들 (테두리를 그리기 전에 모양을 더해요)
   const fillE=(x,y,c)=>{if(gget(G,x,y)==='.') gset(G,x,y,c)};
   if(mk.indexOf('rexjaw')>=0){for(let x=6;x<=9;x++) gset(G,x,m,'m'); gset(G,6,m+1,'w'); gset(G,9,m+1,'w'); if(!s){fillE(3,A.ny+1,'b'); fillE(12,A.ny+1,'b')}} // 큰 턱과 이빨, 짧은 앞발
@@ -3047,6 +3060,10 @@ function propG(G,st,kind,f){
   if(kind==='bubble'){const y=A.my, w='#A8E0F8'; gset(G,10,y,'#F8A020'); gset(G,11,y-1,'#F8A020'); (f?[[13,y-3],[14,y-5],[12,y-6]]:[[12,y-2],[14,y-3],[13,y-5]]).forEach(([x,yy])=>{gset(G,x,yy,w)}); gset(G,9,A.ny+1,'b')} // 비눗방울
   if(kind==='clarinet'){const y=A.my, k='#202028'; for(let yy=y+1;yy<=A.ny+3;yy++) gset(G,7,yy,k); gset(G,6,A.ny+3,k); gset(G,8,A.ny+3,k); gset(G,7,A.ny+1,'#C8D0D8'); gset(G,6,A.ny+1,'b'); gset(G,8,A.ny+2,'b'); if(f){gset(G,12,y-3,k); gset(G,12,y-4,k); gset(G,13,y-4,k)}} // 클라리넷
   if(kind==='money'){const y=A.ny+1, g='#78C070', d='#3A8A40'; for(let x=5;x<=10;x++){gset(G,x,y,g); gset(G,x,y+1,g)} gset(G,7,y,d); gset(G,8,y+1,d); gset(G,4,y+1,'b'); gset(G,11,y+1,'b'); if(f){gset(G,12,y-2,'#F8C830'); gset(G,13,y-3,'#FFF080')}} // 돈다발
+  if(kind==='weed'){const y=A.ny+1, g='#58B048', d='#3A8A30', r='#A07040'; [[6,y-1],[8,y-2],[9,y-1],[7,y],[8,y]].forEach(([x,yy])=>gset(G,x,yy,f&&yy<y?d:g)); gset(G,7,y+1,r); gset(G,8,y+1,r); if(f) gset(G,8,y+2,r); gset(G,5,y+1,'b'); gset(G,10,y+1,'b')} // 풀뽑기
+  if(kind==='mic'){const y=A.my+1, k='#404048'; gset(G,10,y,k); gset(G,11,y,k); gset(G,11,y+1,'#909098'); gset(G,11,y+2,'#909098'); gset(G,10,y+2,'b'); if(f){gset(G,13,y-3,'#2A2030'); gset(G,13,y-4,'#2A2030'); gset(G,14,y-4,'#2A2030')} else {gset(G,2,y-3,'#2A2030'); gset(G,2,y-4,'#2A2030')}} // 노래방 마이크
+  if(kind==='beer'){const y=f?A.my:A.ny+1, x=f?9:10, a='#F0A830', w='#FFFFFF'; gset(G,x,y,w); gset(G,x+1,y,w); gset(G,x,y+1,a); gset(G,x+1,y+1,a); gset(G,x,y+2,a); gset(G,x+1,y+2,a); gset(G,x+2,y+1,'#C8D0D8'); if(f){gset(G,3,A.my,'#E8F0F8'); gset(G,2,A.my-1,'#E8F0F8')}} // 시원한 한 잔, 하아~
+  if(kind==='stick'){const y=A.ny, c='#A07040'; (f?[[12,y],[13,y-1],[14,y-2],[15,y-3]]:[[12,y+1],[13,y],[14,y-1],[14,y-2]]).forEach(([x,yy])=>gset(G,x,yy,c)); gset(G,12,y+1,'b')} // 토벌 막대
   if(kind==='sweat') gset(G,12,tplA(st).top+1,PROPC.d);
 }
 
@@ -3071,6 +3088,12 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='bake'){propG(G,st,'brownie',f); eyesG(G,st,'happy')}
   if(base==='critter'){propG(G,st,'critter',f); eyesG(G,st,'happy'); if(f) propG(G,st,'heart',0)}
   const A=tplA(st);
+  if(base==='weed'){propG(G,st,'weed',f); propG(G,st,'sweat',0); eyesG(G,st,'down')}
+  if(base==='cry'){eyesG(G,st,'sad'); mouthG(G,st,'sad'); const tc='#78C8F8'; [[4,A.ey+1+(f?1:0)],[11,A.ey+1+(f?0:1)],[4,A.ey+2+(f?1:0)]].forEach(([x,y])=>gset(G,x,y,tc))} // 엉엉
+  if(base==='sing'){propG(G,st,'mic',f); eyesG(G,st,'happy'); mouthG(G,st,'open')}
+  if(base==='yaha'){eyesG(G,st,'happy'); mouthG(G,st,'open')}
+  if(base==='drink'){propG(G,st,'beer',f); if(f) eyesG(G,st,'blink'); else eyesG(G,st,'happy')}
+  if(base==='stick'){propG(G,st,'stick',f); propG(G,st,'arms',f)}
   if(base==='snack'){propG(G,st,'food',f); if(f) mouthG(G,st,'open'); else eyesG(G,st,'happy')}
   if(base==='toy'){propG(G,st,'toy',f); eyesG(G,st,'happy')}
   if(base==='fire'){mouthG(G,st,'open'); const y=A.my, c1='#F8A020', c2='#F86020', c3='#F8E060'; (f?[[12,y],[13,y],[14,y],[15,y],[13,y-1],[14,y+1],[15,y-1]]:[[12,y],[13,y],[14,y],[13,y-1]]).forEach(([x,yy],i)=>gset(G,x,yy,i%3===0?c3:i%2?c1:c2))} // 작은 불꽃
@@ -3105,6 +3128,7 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='karate'||base==='jelly') eyesG(G,st,'happy');
   if(sp.body) return {G:humanG(spk,st,base,f,G),pal:sp.pal};
   if(base==='float'){eyesG(G,st,'happy'); G=shiftG(G,0,f?-1:0)}
+  if(base==='yaha') G=shiftG(G,0,f?-2:0);
   if(base==='roar') G=shiftG(G,f?1:-1,0);
   if(base==='squash'||base==='sleep'&&!f||base==='sad'&&f||base==='wag'&&f&&!sp.tail) G=squashG(G);
   if(base==='cheer'&&f) G=shiftG(G,0,-2);
@@ -3321,7 +3345,7 @@ function setTerra(k,v){S.settings.v.terra=Object.assign(terraCfg(),{[k]:v}); S.s
 const ACTORS=[], PST={}, FX={}; let actTimer=null, actN=0;
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SEQ={stand:['stand','stand','stand','stand','squash','squash'],walk:['stand','squash'],read:['read0','read0','read0','read1'],write:['write0','write1'],sleep:['sleep0','sleep0','sleep0','sleep1','sleep1','sleep1'],
-  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],donut:['donut0','donut0','donut1','donut1'],spatula:['spatula0','spatula1'],jelly:['jelly0','jelly1'],bubble:['bubble0','bubble1'],karate:['karate0','karate1'],clarinet:['clarinet0','clarinet0','clarinet1','clarinet1'],money:['money0','money0','money1','money1'],surgery:['surgery0','surgery0','surgery1','surgery1'],guitar:['guitar0','guitar1'],snack:['snack0','snack0','snack1','snack1'],toy:['toy0','toy1'],float:['float0','float0','float1','float1'],onsen:['onsen0','onsen0','onsen1','onsen1'],swim:['swim0','swim1'],sparkle:['sparkle0','sparkle1'],fire:['fire0','fire1','fire1','fire0'],roar:['roar0','roar1','roar0','roar1'],dorayaki:['dorayaki0','dorayaki0','dorayaki1','dorayaki1'],copter:['copter0','copter1'],pocket:['pocket0','pocket0','pocket1','pocket1'],door:['door0','door0','door1','door1'],mouse:['mouse0','mouse1'],sax:['sax0','sax1'],skate:['skate0','skate1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
+  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],donut:['donut0','donut0','donut1','donut1'],weed:['weed0','weed0','weed1','weed1'],cry:['cry0','cry1'],sing:['sing0','sing1'],yaha:['yaha0','yaha1','yaha0','yaha1'],drink:['drink0','drink0','drink1','drink1'],stick:['stick0','stick1'],spatula:['spatula0','spatula1'],jelly:['jelly0','jelly1'],bubble:['bubble0','bubble1'],karate:['karate0','karate1'],clarinet:['clarinet0','clarinet0','clarinet1','clarinet1'],money:['money0','money0','money1','money1'],surgery:['surgery0','surgery0','surgery1','surgery1'],guitar:['guitar0','guitar1'],snack:['snack0','snack0','snack1','snack1'],toy:['toy0','toy1'],float:['float0','float0','float1','float1'],onsen:['onsen0','onsen0','onsen1','onsen1'],swim:['swim0','swim1'],sparkle:['sparkle0','sparkle1'],fire:['fire0','fire1','fire1','fire0'],roar:['roar0','roar1','roar0','roar1'],dorayaki:['dorayaki0','dorayaki0','dorayaki1','dorayaki1'],copter:['copter0','copter1'],pocket:['pocket0','pocket0','pocket1','pocket1'],door:['door0','door0','door1','door1'],mouse:['mouse0','mouse1'],sax:['sax0','sax1'],skate:['skate0','skate1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
 function petReact(kind,ms){FX.kind=kind; FX.until=Date.now()+(ms||3000)}
 function focusState(){return {run:!!T.running, focus:T.running&&isFocus(), rest:T.running&&!isFocus()}}
 function actorPose(a){ // 지금 상황에 맞는 행동 고르기
@@ -3516,7 +3540,7 @@ function shopDlg(it){
 function buyReward(it){if(!spend(it.cost,TR('보상')+' · '+it.name,'reward')) return; setTimeout(checkProgress,50); celebrate((it.emoji||'🎁')+' '+it.name,TR('마음껏 즐기세요! 열심히 번 거예요'),true); render()}
 
 /* 화면: 오늘 탭 동물 카드 (작은 유리병) */
-const POSE_TXT={spatula:TR("게살버거 굽는 중"),jelly:TR("해파리 잡는 중"),bubble:TR("비눗방울 부는 중"),karate:TR("가라테 하는 중"),clarinet:TR("클라리넷 부는 중"),money:TR("돈 세는 중"),surgery:TR("수술하는 중"),guitar:TR("기타 치는 중"),snack:TR("간식 먹는 중"),toy:TR("장난감 갖고 노는 중"),float:TR("둥실둥실 떠 있는 중"),onsen:TR("온천 즐기는 중"),swim:TR("헤엄치는 중"),sparkle:TR("반짝이는 중"),fire:TR("불꽃 뿜는 중"),roar:TR("포효하는 중"),dorayaki:TR('도라야키 먹는 중'),copter:TR('대나무 헬리콥터로 나는 중'),pocket:TR('비밀 도구 꺼내는 중'),door:TR('어디로든 문 여는 중'),mouse:TR('쥐를 보고 깜짝 놀란 중'),donut:TR('도넛 먹는 중'),sax:TR('색소폰 부는 중'),skate:TR('스케이트보드 타는 중'),dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
+const POSE_TXT={weed:TR("풀뽑기 하는 중"),cry:TR("울먹이는 중"),sing:TR("노래 부르는 중"),yaha:TR("야하! 외치는 중"),drink:TR("한 잔 하는 중"),stick:TR("토벌하는 중"),spatula:TR("게살버거 굽는 중"),jelly:TR("해파리 잡는 중"),bubble:TR("비눗방울 부는 중"),karate:TR("가라테 하는 중"),clarinet:TR("클라리넷 부는 중"),money:TR("돈 세는 중"),surgery:TR("수술하는 중"),guitar:TR("기타 치는 중"),snack:TR("간식 먹는 중"),toy:TR("장난감 갖고 노는 중"),float:TR("둥실둥실 떠 있는 중"),onsen:TR("온천 즐기는 중"),swim:TR("헤엄치는 중"),sparkle:TR("반짝이는 중"),fire:TR("불꽃 뿜는 중"),roar:TR("포효하는 중"),dorayaki:TR('도라야키 먹는 중'),copter:TR('대나무 헬리콥터로 나는 중'),pocket:TR('비밀 도구 꺼내는 중'),door:TR('어디로든 문 여는 중'),mouse:TR('쥐를 보고 깜짝 놀란 중'),donut:TR('도넛 먹는 중'),sax:TR('색소폰 부는 중'),skate:TR('스케이트보드 타는 중'),dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
 function pxBar(v,n,cls){n=n||10; const on=Math.round(Math.max(0,Math.min(1,v))*n); return h('span',{class:'pxbar'+(cls?' '+cls:''),role:'img','aria-label':Math.round(v*100)+'%'},Array.from({length:n},(_,i)=>h('i',{class:i<on?'on':''})))}
 function lvInfo(xp){const L=petLv(xp), a=lvXP(L), b=lvXP(L+1); return {L,v:(xp-a)/(b-a),left:b-xp}}
 function pxHud(p,st){
@@ -3606,6 +3630,7 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['pets10',TR('동물 친구 부자'),TR('동물 10마리와 함께하기'),10,'pets',200],
   ['dino5',TR('공룡 박사'),TR('공룡 5종과 함께하기'),5,'dinos',300],
   ['dinoall',TR('쥬라기 공원'),TR('공룡 9종과 모두 함께하기'),9,'dinos',1000],
+  ['chiikawa7',TR("먼가 작고 귀여운 녀석들"),TR("먼작귀 친구 7명과 모두 함께하기"),7,'chii',500],
   ['bikini',TR("비키니 시티 주민"),TR("스폰지밥 친구 5명과 모두 함께하기"),5,'bikini',500],
   ['greysloan',TR("그레이 슬론 기념병원"),TR("그레이 아나토미 친구 8명과 모두 함께하기"),8,'greys',800],
   ['pets15',TR('동물 농장'),TR('동물 15마리와 함께하기'),15,'pets',300],
@@ -3712,7 +3737,7 @@ const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 �
   fox:{lv:8,price:1600},bear:{lv:10,price:2000},panda:{lv:12,price:2800},tiger:{lv:15,price:3500},dragon:{lv:20,price:8000},
   sheep:{ach:'t50',price:1000},squirrel:{ach:'early10',price:1500},raccoon:{ach:'night10',price:1500},koala:{ach:'s30',price:2200},
   hedgehog:{ach:'deep120',price:1800},
-  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},yongbok:{ach:'ybfan',price:800},dora:{ach:'dora22',price:700},sponge:{ach:'quick5',price:1200},patrick:{own:'sponge',price:1000},squid:{own:'sponge',price:1200},sandy:{own:'sponge',price:1500},krabs:{ach:'rich10k',price:2000},stv:{ach:'night10',price:1800},meredith:{ach:'day6',price:1500},cristina:{own:'meredith',price:1500},derek:{own:'meredith',price:1800},bailey:{ach:'early10',price:1500},webber:{own:'bailey',price:1800},alex:{own:'cristina',price:1500},mark:{own:'derek',price:1600},amelia:{own:'derek',price:1800},trike:{lv:11,price:2200},stego:{lv:13,price:2600},ptera:{ach:'early10',price:2000},ankylo:{ach:'week25',price:2400},pachy:{ach:'deep120',price:2000},brachio:{lv:16,price:3200},spino:{lv:18,price:3800},trex:{ach:'day10',price:4500},simhomer:{ach:'simp1',price:800},marge:{ach:'simp2',price:900},bart:{ach:'simp3',price:900},lisa:{ach:'simp4',price:1000},maggie:{ach:'simp5',price:1200},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
+  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},yongbok:{ach:'ybfan',price:800},dora:{ach:'dora22',price:700},chiikawa:{ach:'tday5',price:1200},hachiware:{own:'chiikawa',price:1200},usagi:{own:'chiikawa',price:1200},momonga:{own:'usagi',price:1300},kurimanju:{own:'hachiware',price:1300},shisa:{own:'hachiware',price:1300},rakko:{ach:'deep120',price:1800},sponge:{ach:'quick5',price:1200},patrick:{own:'sponge',price:1000},squid:{own:'sponge',price:1200},sandy:{own:'sponge',price:1500},krabs:{ach:'rich10k',price:2000},stv:{ach:'night10',price:1800},meredith:{ach:'day6',price:1500},cristina:{own:'meredith',price:1500},derek:{own:'meredith',price:1800},bailey:{ach:'early10',price:1500},webber:{own:'bailey',price:1800},alex:{own:'cristina',price:1500},mark:{own:'derek',price:1600},amelia:{own:'derek',price:1800},trike:{lv:11,price:2200},stego:{lv:13,price:2600},ptera:{ach:'early10',price:2000},ankylo:{ach:'week25',price:2400},pachy:{ach:'deep120',price:2000},brachio:{lv:16,price:3200},spino:{lv:18,price:3800},trex:{ach:'day10',price:4500},simhomer:{ach:'simp1',price:800},marge:{ach:'simp2',price:900},bart:{ach:'simp3',price:900},lisa:{ach:'simp4',price:1000},maggie:{ach:'simp5',price:1200},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
 const achById=id=>ACH.find(a=>a[0]===id);
 /* 오늘의 미션 · 이번 주 미션: 해내면 저절로 코인을 받아요 (지난 날짜는 다시 셈하지 않아요) */
 const doneOn=k=>allOf('tasks-').filter(t=>t.done&&t.doneAt&&dayKey(t.doneAt)===k).length;
@@ -3767,6 +3792,7 @@ function achStats(){
     deep180,lunch:Object.keys(ld).length,bestMonth:mx(mo),studyDays:Object.keys(day).filter(k=>day[k]>=300).length,subjAll:new Set(logs.map(s=>s.sub||'-')).size,
     bestTaskDay:(m=>Math.max(0,...Object.values(m)))(allOf('tasks-').filter(t=>t.done&&t.doneAt).reduce((m,t)=>{const k=dayKey(t.doneAt); m[k]=(m[k]||0)+1; return m},{})),
     dinos:new Set(ps.map(p=>p.sp).filter(k=>SP[k]&&SP[k].lines==='DINO')).size,
+    chii:['chiikawa','hachiware','usagi','momonga','kurimanju','rakko','shisa'].filter(k=>ps.some(p=>p.sp===k)).length,
     bikini:['sponge','squid','patrick','sandy','krabs'].filter(k=>ps.some(p=>p.sp===k)).length,
     greys:['meredith','derek','cristina','bailey','webber','alex','mark','amelia'].filter(k=>ps.some(p=>p.sp===k)).length,
     people:ps.filter(p=>SP[p.sp]&&SP[p.sp].body).length,famAll:+['simhomer','marge','bart','lisa','maggie'].every(k=>ps.some(p=>p.sp===k)),lvl:myLv(),
@@ -3809,7 +3835,7 @@ let petTab='home', shopTab='reward', achCatSel='all', achShow='all';
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
 const ACH_FUN=['lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1'];
 const ACH_KEYCAT={streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
-  pets:'pet',dinos:'pet',greys:'pet',bikini:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin'};
+  pets:'pet',dinos:'pet',greys:'pet',bikini:'pet',chii:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin'};
 const achCat=a=>ACH_FUN.indexOf(a[0])>=0?'fun':ACH_KEYCAT[a[4]]||'focus';
 function renderPet(){
   const sec=$('#v-pet'), allPs=pets(), ps=shownPets(), arch=archPets(), p=activePet(), st=softStreak(), bal=coinBal(), e=earnedCoins(), lv=myLv(e);
@@ -4028,7 +4054,14 @@ const SB_LINES={SPONGE:{tap:[TR("준비됐어! 준비됐어!"),TR("게살버거 
   PATRICK:{tap:[TR("나는 뚱이야!"),TR("마요네즈도 악기야?"),TR("바위 밑이 제일 좋아"),TR("…뭐라고?"),TR("배고파")],focus:[TR("생각하는 중… 아무 생각 안 하는 중")],rest:[TR("바위 밑에서 잘래")],done:[TR("우와, 내가 했어?"),TR("스폰지밥! 나 해냈어!")],day:[TR("아이스크림 먹고 싶다")],night:[TR("쿨쿨…")]},
   SANDY:{tap:[TR("하이-야!"),TR("텍사스가 그리워"),TR("과학 실험 중이야!"),TR("공기 헬멧은 필수지"),TR("가라테 한 판 할래?")],focus:[TR("과학자의 집중력을 보여 줄게")],rest:[TR("도토리 간식 시간!")],done:[TR("이햐! 해냈어!"),TR("완벽한 실험 결과야")],morning:[TR("좋은 아침, 친구!")],day:[TR("나무 집 정리하러 갈래")],night:[TR("겨울잠 준비해야 하나?")]},
   KRABS:{tap:[TR("돈! 돈! 돈!"),TR("게살버거 비법은 비밀이야"),TR("1원도 소중해"),TR("플랑크톤이 또 왔나?"),TR("아우아우아우")],focus:[TR("시간은 돈이야! 집중!")],rest:[TR("금고 확인하고 올게")],done:[TR("이익이다! 하하!"),TR("코인이 쌓인다!")],morning:[TR("가게 문 열 시간이다")],day:[TR("손님이 많으면 좋겠군")],night:[TR("오늘 매출 계산해야지")]}};
-const LINESETS={...SB_LINES,...GA_LINES,DINO:DINO_LINES,DORA:DORA_LINES,PROF:PROF_LINES,CHUL:CHUL_LINES,HOMER:HOMER_LINES,YONG:YONG_LINES,SIMHOMER:SIMHOMER_LINES,MARGE:MARGE_LINES,BART:BART_LINES,LISA:LISA_LINES,MAGGIE:MAGGIE_LINES};
+const CHII_LINES={CHIIKAWA:{tap:[TR("와아…"),TR("흐에…"),TR("(울먹울먹)"),TR("풀뽑기 검정 꼭 붙고 싶어…"),TR("하치와레~"),TR("디저트 먹고 싶어…")],focus:[TR("(꾹 참고 집중…)"),TR("열심히… 할게…")],rest:[TR("(쿨쿨…)")],done:[TR("해냈다…! (감격)"),TR("와아…!")],day:[TR("풀뽑기 하러 가야지…")],night:[TR("무서워… 같이 자도 돼?")]},
+  HACHIWARE:{tap:[TR("어떻게든 되라!"),TR("치이카와! 같이 가자"),TR("노래방 갈래?"),TR("기타 연습 중이야"),TR("괜찮아, 괜찮아!")],focus:[TR("같이 하면 할 수 있어!")],done:[TR("해냈어! 최고야!"),TR("봐, 어떻게든 됐잖아!")],day:[TR("오늘은 뭐 하고 놀까?")],night:[TR("내일도 힘내자!")]},
+  USAGI:{tap:[TR("야하!"),TR("우라!"),TR("후웅…"),TR("하아?"),TR("룰루룰루"),TR("우라라라라!")],focus:[TR("…(진지)"),TR("우라!")],done:[TR("야하~!!"),TR("우라라라!")],day:[TR("(먹을 거 찾는 중)")],night:[TR("(벌러덩)")]},
+  MOMONGA:{tap:[TR("칭찬해 줘!"),TR("나 귀엽지?"),TR("이거 내 거야!"),TR("안아 줘!")],done:[TR("더 칭찬해 줘!")],day:[TR("관심 받고 싶어")],night:[TR("혼자 자기 싫어")]},
+  KURIMANJU:{tap:[TR("하아~ (한 모금)"),TR("안주 만들었어"),TR("오늘도 수고했어"),TR("하아~ 맛있다")],done:[TR("건배!")],day:[TR("오늘 저녁 안주는 뭘로 할까")],night:[TR("하아~ 좋은 밤이야")]},
+  RAKKO:{tap:[TR("토벌은 나한테 맡겨"),TR("단 거 좋아해"),TR("더 강해져야 해"),TR("훈련은 매일")],focus:[TR("집중이 곧 힘이다")],done:[TR("좋아, 잘했다")],day:[TR("토벌 의뢰 확인하러 간다")],night:[TR("내일도 훈련이다")]},
+  SHISA:{tap:[TR("어서 오세요!"),TR("라멘 가게 일 열심히 할게요"),TR("배우는 중이에요!"),TR("하이사이~")],done:[TR("열심히 했어요!")],day:[TR("라멘 가게 일하러 가요")],night:[TR("오늘도 수고하셨습니다!")]}};
+const LINESETS={...CHII_LINES,...SB_LINES,...GA_LINES,DINO:DINO_LINES,DORA:DORA_LINES,PROF:PROF_LINES,CHUL:CHUL_LINES,HOMER:HOMER_LINES,YONG:YONG_LINES,SIMHOMER:SIMHOMER_LINES,MARGE:MARGE_LINES,BART:BART_LINES,LISA:LISA_LINES,MAGGIE:MAGGIE_LINES};
 const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&(LINESETS[sp.lines]||ANIMAL_LINES[p.sp]);
   const base=(L&&L[k])||LINES[k]; return sp&&sp.lines==='CHUL'&&CHUL_YB[k]&&pets().some(q=>q.sp==='yongbok')?base.concat(CHUL_YB[k]):base};
 const pick=a=>a[Math.floor(Math.random()*a.length)];
