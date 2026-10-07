@@ -2681,30 +2681,30 @@ new MutationObserver(decorate).observe($('main'),{childList:true,subtree:true});
 /* ---------- 8비트 동물 (16×16 칸, 게임보이 컬러 느낌) ---------- */
 // 동물마다 색은 5개(테두리·몸·배·무늬·볼)만 써요. 명암은 거의 없이 평평하게, 움직임은 2~4장 그림을 바꿔 가며 삐걱삐걱
 const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
-  cat:{n:TR('고양이'),price:0,pal:['#4A2414','#F89838','#FFF0C8','#C05810','#F87878'],ear:'tri',tail:'thin',mark:'stripes'},
-  dog:{n:TR('강아지'),price:0,pal:['#4A3020','#F8D898','#FFF8E8','#A86030','#F89090'],ear:'flop',tail:'stub',mark:'muzzle'},
-  bunny:{n:TR('토끼'),price:0,pal:['#584870','#F8F8F8','#FFFFFF','#F890B0','#F890B0'],ear:'long',tail:'puff'},
-  chick:{n:TR('병아리'),price:120,pal:['#704010','#F8E038','#FFF8A0','#F88018','#F8A0A0'],ear:'tuft',mark:'beak feet'},
-  hamster:{n:TR('햄스터'),price:150,pal:['#5A3010','#F0A848','#FFF8E8','#F890A0','#F87890'],ear:'round',mark:'cheeks'},
-  frog:{n:TR('개구리'),price:200,pal:['#184820','#58C050','#D8F8A0','#309030','#F8A0A0'],ear:'bumps',mark:'wide'},
-  penguin:{n:TR('펭귄'),price:200,pal:['#101830','#3058A0','#F8F8F8','#F8A018','#F8A0B0'],mark:'mask beak feet'},
-  fox:{n:TR('여우'),price:250,pal:['#501808','#F07028','#FFF8F0','#401808','#F89090'],ear:'tri',tail:'bushy',mark:'foxface'},
-  bear:{n:TR('곰'),price:300,pal:['#3A2010','#B07040','#F0D0A0','#704020','#F09080'],ear:'round',mark:'muzzle'},
-  dragon:{n:TR('아기 용'),price:600,pal:['#302070','#8878F8','#E8E0FF','#F8C838','#F8A0C8'],ear:'horn',tail:'thin',mark:'wings belly'},
-  pig:{n:TR('아기 돼지'),pal:['#6A2838','#F8B0C0','#FFE0E8','#D85878','#F87890'],ear:'tri',tail:'curl',mark:'snout'},
-  sheep:{n:TR('양'),pal:['#4A4048','#F8F8F0','#FFFFFF','#584850','#F8A0B0'],ear:'flop',mark:'wool'},
-  raccoon:{n:TR('너구리'),pal:['#2A1C14','#A87C58','#E8D4B8','#3A2A20','#F0A090'],ear:'round',tail:'bushy',mark:'bandit'},
-  panda:{n:TR('판다'),pal:['#181820','#FFFFFF','#FFFFFF','#282830','#F8A0B0'],ear:'round',earC:'a',mark:'patches arms'},
-  koala:{n:TR('코알라'),pal:['#383840','#A8A8B8','#E8E8F0','#F0F0F8','#F8A0B0'],ear:'big',mark:'bignose'},
-  squirrel:{n:TR('다람쥐'),pal:['#4A2410','#C87838','#FFF0D8','#8A4818','#F89090'],ear:'tri',tail:'bushy',mark:'stripes'},
-  hedgehog:{n:TR('고슴도치'),pal:['#3A2818','#F0D0A8','#FFF0E0','#7A5838','#F89090'],mark:'spikes'},
-  duck:{n:TR('오리'),pal:['#304050','#F8F8F8','#FFFFFF','#F8A020','#F8B0B0'],ear:'tuft',mark:'beak feet'},
-  owl:{n:TR('부엉이'),pal:['#3A2414','#A87048','#F0D8B0','#F8C838','#F8A090'],ear:'horn',mark:'owleyes beak'},
-  tiger:{n:TR('호랑이'),pal:['#281810','#F89020','#FFF8F0','#281810','#F89090'],ear:'round',tail:'ringed',mark:'tigerstripes'},
-  axolotl:{n:TR('우파루파'),pal:['#702848','#F8B8D0','#FFE8F0','#E85890','#F87898'],ear:'gills',mark:'wide'},
-  capybara:{n:TR('카피바라'),pal:['#3E2614','#B07C4A','#D8AC78','#4A2A18','#E89880'],mark:'yuzu'},
-  pelican:{n:TR('펠리컨'),pal:['#3A4050','#F8F8F4','#FFFFFF','#F8A030','#F8B8B8'],ear:'tuft',mark:'pouch feet'},
-  rock:{n:TR('돌멩이'),pal:['#383C44','#9EA4AE','#B8BEC6','#7A8088','#E8A0A8'],mark:'speckle moss'},
+  cat:{n:TR('고양이'),acts:["snack", "toy", "sleep", "wag"],food:'fish',toy:'yarn',price:0,pal:['#4A2414','#F89838','#FFF0C8','#C05810','#F87878'],ear:'tri',tail:'thin',mark:'stripes'},
+  dog:{n:TR('강아지'),acts:["snack", "toy", "wag", "cheer"],food:'bone',toy:'ball',price:0,pal:['#4A3020','#F8D898','#FFF8E8','#A86030','#F89090'],ear:'flop',tail:'stub',mark:'muzzle'},
+  bunny:{n:TR('토끼'),acts:["snack", "cheer", "sleep"],food:'carrot',price:0,pal:['#584870','#F8F8F8','#FFFFFF','#F890B0','#F890B0'],ear:'long',tail:'puff'},
+  chick:{n:TR('병아리'),acts:["snack", "cheer", "wag"],food:'seed',price:120,pal:['#704010','#F8E038','#FFF8A0','#F88018','#F8A0A0'],ear:'tuft',mark:'beak feet'},
+  hamster:{n:TR('햄스터'),acts:["snack", "snack", "toy", "sleep"],food:'seed',toy:'ball',price:150,pal:['#5A3010','#F0A848','#FFF8E8','#F890A0','#F87890'],ear:'round',mark:'cheeks'},
+  frog:{n:TR('개구리'),acts:["snack", "cheer", "swim"],food:'bug',price:200,pal:['#184820','#58C050','#D8F8A0','#309030','#F8A0A0'],ear:'bumps',mark:'wide'},
+  penguin:{n:TR('펭귄'),acts:["snack", "swim", "wag"],food:'fish',price:200,pal:['#101830','#3058A0','#F8F8F8','#F8A018','#F8A0B0'],mark:'mask beak feet'},
+  fox:{n:TR('여우'),acts:["snack", "toy", "wag"],food:'grape',toy:'ball',price:250,pal:['#501808','#F07028','#FFF8F0','#401808','#F89090'],ear:'tri',tail:'bushy',mark:'foxface'},
+  bear:{n:TR('곰'),acts:["snack", "sleep", "wag"],food:'honey',price:300,pal:['#3A2010','#B07040','#F0D0A0','#704020','#F09080'],ear:'round',mark:'muzzle'},
+  dragon:{n:TR('아기 용'),acts:["fire", "fire", "float", "meat"],price:600,pal:['#302070','#8878F8','#E8E0FF','#F8C838','#F8A0C8'],ear:'horn',tail:'thin',mark:'wings belly'},
+  pig:{n:TR('아기 돼지'),acts:["snack", "onsen", "sleep"],food:'apple',pal:['#6A2838','#F8B0C0','#FFE0E8','#D85878','#F87890'],ear:'tri',tail:'curl',mark:'snout'},
+  sheep:{n:TR('양'),acts:["snack", "sleep", "wag"],food:'leaf',pal:['#4A4048','#F8F8F0','#FFFFFF','#584850','#F8A0B0'],ear:'flop',mark:'wool'},
+  raccoon:{n:TR('너구리'),acts:["ramen", "snack", "sleep"],food:'apple',pal:['#2A1C14','#A87C58','#E8D4B8','#3A2A20','#F0A090'],ear:'round',tail:'bushy',mark:'bandit'},
+  panda:{n:TR('판다'),acts:["snack", "snack", "sleep", "toy"],food:'bamboo',toy:'ball',pal:['#181820','#FFFFFF','#FFFFFF','#282830','#F8A0B0'],ear:'round',earC:'a',mark:'patches arms'},
+  koala:{n:TR('코알라'),acts:["snack", "sleep", "sleep"],food:'leaf',pal:['#383840','#A8A8B8','#E8E8F0','#F0F0F8','#F8A0B0'],ear:'big',mark:'bignose'},
+  squirrel:{n:TR('다람쥐'),acts:["snack", "snack", "cheer"],food:'acorn',pal:['#4A2410','#C87838','#FFF0D8','#8A4818','#F89090'],ear:'tri',tail:'bushy',mark:'stripes'},
+  hedgehog:{n:TR('고슴도치'),acts:["snack", "sleep", "cheer"],food:'apple',pal:['#3A2818','#F0D0A8','#FFF0E0','#7A5838','#F89090'],mark:'spikes'},
+  duck:{n:TR('오리'),acts:["snack", "swim", "wag"],food:'bread',pal:['#304050','#F8F8F8','#FFFFFF','#F8A020','#F8B0B0'],ear:'tuft',mark:'beak feet'},
+  owl:{n:TR('부엉이'),acts:["float", "read", "sleep"],food:'bug',pal:['#3A2414','#A87048','#F0D8B0','#F8C838','#F8A090'],ear:'horn',mark:'owleyes beak'},
+  tiger:{n:TR('호랑이'),acts:["meat", "roar", "sleep"],pal:['#281810','#F89020','#FFF8F0','#281810','#F89090'],ear:'round',tail:'ringed',mark:'tigerstripes'},
+  axolotl:{n:TR('우파루파'),acts:["swim", "float", "snack"],food:'bug',pal:['#702848','#F8B8D0','#FFE8F0','#E85890','#F87898'],ear:'gills',mark:'wide'},
+  capybara:{n:TR('카피바라'),acts:["onsen", "onsen", "snack", "sleep"],food:'orange',pal:['#3E2614','#B07C4A','#D8AC78','#4A2A18','#E89880'],mark:'yuzu'},
+  pelican:{n:TR('펠리컨'),acts:["snack", "swim", "cheer"],food:'fish',pal:['#3A4050','#F8F8F4','#FFFFFF','#F8A030','#F8B8B8'],ear:'tuft',mark:'pouch feet'},
+  rock:{n:TR('돌멩이'),acts:["sleep", "sparkle"],pal:['#383C44','#9EA4AE','#B8BEC6','#7A8088','#E8A0A8'],mark:'speckle moss'},
   chul:{n:TR('철컹이'),pal:['#2A2028','#F4D0B0','#F8F8FF','#1E1A22','#F4A0A0'],body:{shirt:'l',sleeve:'l',pants:'#3A4A6A',shoes:'#F0F0F4'},mark:'stetho',acts:['cram','game','ramen','walk','sleep'],lines:'CHUL'},
   yongbok:{n:TR('용복이'),pal:['#2A2030','#F6D8BE','#E8DCA8','#3A8CE0','#F4A8A8'],body:{shirt:'l',sleeve:'#FFFFFF',short:1,pants:'#24242C',shoes:'#F0F0F4',deco:[[6,1,'#2A2030'],[9,1,'#2A2030'],[6,2,'#2A2030'],[9,2,'#2A2030']]},mark:'yongbok',idol:1,acts:['dance','dance','bake','critter','walk'],lines:'YONG'},
   dora:{n:TR('도라에몽'),dora:1,pal:['#1A2A40','#FFFFFF','#FFFFFF','#1CA0E8','#E02828'],body:{shirt:'#1CA0E8',sleeve:'#1CA0E8',belly:1,pants:'#1CA0E8',shoes:'#FFFFFF',deco:[[5,0,'#E02828'],[6,0,'#E02828'],[7,0,'#F8C830'],[8,0,'#F8C830'],[9,0,'#E02828'],[10,0,'#E02828'],[7,1,'#C89818'],[8,1,'#C89818'],[6,2,'#FFFFFF'],[7,2,'#FFFFFF'],[8,2,'#FFFFFF'],[9,2,'#FFFFFF'],[6,3,'#FFFFFF'],[7,3,'#1A2A40'],[8,3,'#1A2A40'],[9,3,'#FFFFFF'],[6,4,'#FFFFFF'],[7,4,'#FFFFFF'],[8,4,'#FFFFFF'],[9,4,'#FFFFFF']]},acts:['dorayaki','dorayaki','pocket','pocket','copter','door','mouse','wag','dance'],lines:'DORA'},
@@ -2715,24 +2715,24 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   maggie:{n:TR('매기 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#F0A0A0'],mark:'mgpaci mgbow',body:{shirt:'#90D0F0',sleeve:'#90D0F0',dress:1,size:1,pants:'#90D0F0',shoes:'#90D0F0'},acts:['wag','cheer','sleep'],lines:'MAGGIE'},
   homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],body:{shirt:'l',sleeve:'l',short:1,pants:'#4A5A80',shoes:'#383848',hair:1},mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
   prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],body:{shirt:'a',sleeve:'a',pants:'#2E3550',shoes:'#2A1A12',deco:[[6,0,'l'],[9,0,'l'],[6,1,'l'],[9,1,'l']]},mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
-  ghost:{n:TR('유령'),pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
-  dino:{n:TR('공룡'),pal:['#1E4A28','#68C058','#D8F0A8','#F8B830','#F89898'],tail:'thin',mark:'dinoback belly',lines:'DINO'},
-  trex:{n:TR('티라노사우루스'),pal:['#4A2010','#D86A3A','#F8D8A8','#8A3418','#F89090'],tail:'thin',mark:'rexjaw belly',lines:'DINO'},
-  trike:{n:TR('트리케라톱스'),pal:['#1A3A48','#58A8B8','#D8F0E8','#F09040','#F89898'],tail:'thin',mark:'frillhorn belly',lines:'DINO'},
-  stego:{n:TR('스테고사우루스'),pal:['#2A3A18','#88B048','#E8F0B8','#E05838','#F89898'],tail:'thin',mark:'stegoplates belly',lines:'DINO'},
-  brachio:{n:TR('브라키오사우루스'),pal:['#283058','#7898D8','#D8E4F8','#4A68B0','#F8A0B0'],tail:'thin',lines:'DINO'},
-  ptera:{n:TR('프테라노돈'),pal:['#4A2A1A','#D89868','#F8E0C0','#B05830','#F89898'],mark:'pterocrest beak wings',lines:'DINO'},
-  ankylo:{n:TR('안킬로사우루스'),pal:['#3A2A18','#A88858','#E8D8B0','#6A5030','#F89898'],mark:'ankyarmor belly',lines:'DINO'},
-  pachy:{n:TR('파키케팔로사우루스'),pal:['#3A1A3A','#B880C8','#F0E0F8','#7848A0','#F8A0B8'],tail:'thin',mark:'pachydome belly',lines:'DINO'},
-  spino:{n:TR('스피노사우루스'),pal:['#3A1A10','#C8603A','#F8D0B0','#E8A030','#F89898'],tail:'thin',mark:'spinosail belly',lines:'DINO'},
-  rakun:{n:TR('라쿤'),pal:['#181820','#9CA0AC','#F0F0F4','#282830','#F8A0A0'],ear:'round',tail:'ringed',mark:'bigmask'},
-  seal:{n:TR('물개'),pal:['#2A2A34','#8C8CA0','#C8C8D8','#5C5C70','#F0A0B0'],mark:'whiskers flippers'},
-  unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
-  sawol:{n:TR('정사월'),special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
-  yuni:{n:TR('유니'),special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
-  ttukbul:{n:TR('이뚝불'),special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'thin',mark:'lashes geckoeyes wide smile'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
-  bormi:{n:TR('보르미'),special:1,pal:['#4A2216','#B86A3E','#C8804E','#8C4626','#F0909A'],ear:'flop',tail:'curl',mark:'poodle browNose tongue'}, // 갈색 토이 푸들: 복슬복슬한 머리 방울, 늘어진 귀, 짙은 갈색 코, 내민 혀
-  mikael:{n:TR('미카엘'),special:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
+  ghost:{n:TR('유령'),acts:["float", "float", "sparkle", "snack"],food:'candy',pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
+  dino:{n:TR('공룡'),acts:["roar", "snack", "wag"],food:'leaf',pal:['#1E4A28','#68C058','#D8F0A8','#F8B830','#F89898'],tail:'thin',mark:'dinoback belly',lines:'DINO'},
+  trex:{n:TR('티라노사우루스'),acts:["roar", "roar", "meat"],pal:['#4A2010','#D86A3A','#F8D8A8','#8A3418','#F89090'],tail:'thin',mark:'rexjaw belly',lines:'DINO'},
+  trike:{n:TR('트리케라톱스'),acts:["snack", "roar"],food:'leaf',pal:['#1A3A48','#58A8B8','#D8F0E8','#F09040','#F89898'],tail:'thin',mark:'frillhorn belly',lines:'DINO'},
+  stego:{n:TR('스테고사우루스'),acts:["snack", "sleep"],food:'leaf',pal:['#2A3A18','#88B048','#E8F0B8','#E05838','#F89898'],tail:'thin',mark:'stegoplates belly',lines:'DINO'},
+  brachio:{n:TR('브라키오사우루스'),acts:["snack", "snack", "sleep"],food:'leaf',pal:['#283058','#7898D8','#D8E4F8','#4A68B0','#F8A0B0'],tail:'thin',lines:'DINO'},
+  ptera:{n:TR('프테라노돈'),acts:["float", "snack", "swim"],food:'fish',pal:['#4A2A1A','#D89868','#F8E0C0','#B05830','#F89898'],mark:'pterocrest beak wings',lines:'DINO'},
+  ankylo:{n:TR('안킬로사우루스'),acts:["snack", "sleep"],food:'leaf',pal:['#3A2A18','#A88858','#E8D8B0','#6A5030','#F89898'],mark:'ankyarmor belly',lines:'DINO'},
+  pachy:{n:TR('파키케팔로사우루스'),acts:["roar", "snack"],food:'leaf',pal:['#3A1A3A','#B880C8','#F0E0F8','#7848A0','#F8A0B8'],tail:'thin',mark:'pachydome belly',lines:'DINO'},
+  spino:{n:TR('스피노사우루스'),acts:["swim", "snack", "roar"],food:'fish',pal:['#3A1A10','#C8603A','#F8D0B0','#E8A030','#F89898'],tail:'thin',mark:'spinosail belly',lines:'DINO'},
+  rakun:{n:TR('라쿤'),acts:["snack", "swim", "sleep"],food:'apple',pal:['#181820','#9CA0AC','#F0F0F4','#282830','#F8A0A0'],ear:'round',tail:'ringed',mark:'bigmask'},
+  seal:{n:TR('물개'),acts:["snack", "toy", "swim"],food:'fish',toy:'ball',pal:['#2A2A34','#8C8CA0','#C8C8D8','#5C5C70','#F0A0B0'],mark:'whiskers flippers'},
+  unicorn:{n:TR('유니콘'),acts:["sparkle", "sparkle", "float", "snack"],food:'cupcake',pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
+  sawol:{n:TR('정사월'),acts:["snack", "toy", "sleep", "wag"],food:'fish',toy:'yarn',special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
+  yuni:{n:TR('유니'),acts:["snack", "toy", "sleep", "wag"],food:'fish',toy:'yarn',special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
+  ttukbul:{n:TR('이뚝불'),acts:["snack", "cheer", "sleep"],food:'bug',special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'thin',mark:'lashes geckoeyes wide smile'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
+  bormi:{n:TR('보르미'),acts:["snack", "toy", "wag", "cheer"],food:'bone',toy:'ball',special:1,pal:['#4A2216','#B86A3E','#C8804E','#8C4626','#F0909A'],ear:'flop',tail:'curl',mark:'poodle browNose tongue'}, // 갈색 토이 푸들: 복슬복슬한 머리 방울, 늘어진 귀, 짙은 갈색 코, 내민 혀
+  mikael:{n:TR('미카엘'),acts:["snack", "toy", "sleep", "wag"],food:'fish',toy:'yarn',special:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
 const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면 레벨이나 업적으로 열려요
   flower:{n:TR('꽃핀'),slot:'head',price:150},sprout:{n:TR('새싹'),slot:'head',price:150},starpin:{n:TR('별 핀'),slot:'head',price:200},ribbon:{n:TR('리본'),slot:'head',price:200},
   cap:{n:TR('야구 모자'),slot:'head',price:300},beanie:{n:TR('털모자'),slot:'head',price:350},straw:{n:TR('밀짚모자'),slot:'head',price:400},santa:{n:TR('산타 모자'),slot:'head',price:500},
@@ -2976,6 +2976,7 @@ function wearG(G,st,wear){
   if(w.neck==='scarf'){for(let x=3;x<=12;x++){if(gget(G,x,ny)!=='.') gset(G,x,ny,x%3?WEARC.R:WEARC.W)} for(let y=ny+1;y<=ny+3;y++){gset(G,10,y,y%2?WEARC.R:WEARC.W); gset(G,11,y,WEARC.R)}}
   return G;
 }
+const FOOD={"fish": {"c": {"g": "#88A8C8", "d": "#5A7898", "e": "#202020"}, "r": [".gg.d", "gegdd", ".gg.d"]}, "bone": {"c": {"w": "#F8F4E8", "d": "#C8C0B0"}, "r": ["w..w", "wwww", "d..d"]}, "carrot": {"c": {"o": "#F08030", "g": "#58B048"}, "r": [".g.", "ooo", ".o."]}, "seed": {"c": {"k": "#3A3A3A", "w": "#E8E8D8"}, "r": ["kwk", "kwk"]}, "acorn": {"c": {"b": "#8A5A2A", "t": "#D8A060"}, "r": ["bbb", "ttt", ".t."]}, "bamboo": {"c": {"g": "#68B848", "d": "#3A7A28"}, "r": [".g", "dg", ".g", "dg"]}, "honey": {"c": {"y": "#F8C030", "b": "#A86A20"}, "r": ["bbbb", "yyyy", "yyyy"]}, "leaf": {"c": {"g": "#58B048", "d": "#3A8A30"}, "r": [".gg", "gdg", "gg."]}, "bug": {"c": {"k": "#202028", "w": "#C8E0F0"}, "r": ["w.w", ".k."]}, "apple": {"c": {"r": "#E03838", "g": "#58B048"}, "r": [".g.", "rrr", "rrr"]}, "grape": {"c": {"p": "#8A48B8"}, "r": ["ppp", ".pp", ".p."]}, "bread": {"c": {"t": "#D8A050", "c": "#F8E0A8"}, "r": ["tttt", "tcct", "tttt"]}, "orange": {"c": {"o": "#F0A020", "g": "#58B048"}, "r": [".g.", "ooo", "ooo"]}, "candy": {"c": {"p": "#F070B0", "w": "#FFFFFF"}, "r": ["p.p", "wpw", "p.p"]}, "cupcake": {"c": {"p": "#F890C0", "t": "#C88848", "r": "#E03838"}, "r": [".r.", "ppp", "ttt"]}, "icecream": {"c": {"p": "#F8B0C8", "w": "#FFF0D8", "t": "#D8A050"}, "r": ["pp", "ww", "tt"]}}; // 간식 모양 (동물마다 좋아하는 것)
 // 소품: 책·연필·Zz·땀
 const PROPC={p:'#FFFFFF',q:'#5868A0',k:'#E84040',y:'#F8C838',t:'#303030',z:'#5878D8',d:'#78C8F8'};
 function propG(G,st,kind,f){
@@ -3002,6 +3003,8 @@ function propG(G,st,kind,f){
   if(kind==='dorayaki'){const y=A.ny+(f?0:1), k='#B86A30', l='#E8A050', a='#5A2A18'; for(let x=5;x<=10;x++){gset(G,x,y,k); gset(G,x,y+2,k); gset(G,x,y+1,a)} gset(G,5,y,l); gset(G,10,y+2,l); gset(G,4,y+1,'b'); gset(G,11,y+1,'b'); if(f){gset(G,10,y,'.'); gset(G,10,y+1,'.')}} // 도라야키 (한 입 먹으면 귀퉁이가 사라져요)
   if(kind==='donut'){const y=A.ny+(f?0:1), p='#F088B0', d='#D8A048'; [[6,y],[7,y],[8,y],[5,y+1],[9,y+1],[6,y+2],[7,y+2],[8,y+2]].forEach(([x,yy])=>gset(G,x,yy,p)); gset(G,7,y+1,d); gset(G,6,y,'#FFF060'); gset(G,8,y+2,'#60C0F0'); gset(G,4,y+1,'b'); gset(G,10,y+1,'b')} // 분홍 도넛
   if(kind==='sax'){const y=A.ny+1, g='#E8B830', k='#B88818'; [[9,y-1],[9,y],[10,y+1],[10,y+2],[9,y+3],[8,y+3],[8,y+2]].forEach(([x,yy])=>gset(G,x,yy,g)); gset(G,8,y+2,k); gset(G,7,y+3,f?'#FFF0A0':k); gset(G,8,y,'b'); gset(G,11,y+1,'b'); if(f){gset(G,12,y-2,'#2A2018'); gset(G,13,y-3,'#2A2018')}} // 색소폰과 음표
+  if(kind==='food'){const fd=FOOD[(SP[CURSP]||{}).food||'apple'], y=A.ny+(f?0:1), w=fd.r[0].length, x0=Math.round(8-w/2); fd.r.forEach((row,j)=>[...row].forEach((ch,i)=>{if(ch!=='.') gset(G,x0+i,y+j,fd.c[ch])})); if(!A.small){gset(G,x0-1,y+1,'b'); gset(G,x0+w,y+1,'b')}} // 좋아하는 간식
+  if(kind==='toy'){const t=(SP[CURSP]||{}).toy||'ball', y=f?12:13, c=t==='yarn'?'#E04870':'#F0D040', d=t==='yarn'?'#B02848':'#D8A020'; [[12,y],[13,y],[12,y+1],[13,y+1]].forEach(([x,yy])=>gset(G,x,yy,c)); gset(G,13,y,d); if(t==='yarn'){gset(G,11,y+2,d); gset(G,10,y+2,d)} else gset(G,12,y+1,'#FFFFFF')} // 털실·공
   if(kind==='sweat') gset(G,12,tplA(st).top+1,PROPC.d);
 }
 
@@ -3025,6 +3028,14 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='dance'){eyesG(G,st,'happy'); propG(G,st,'arms',f)}
   if(base==='bake'){propG(G,st,'brownie',f); eyesG(G,st,'happy')}
   if(base==='critter'){propG(G,st,'critter',f); eyesG(G,st,'happy'); if(f) propG(G,st,'heart',0)}
+  const A=tplA(st);
+  if(base==='snack'){propG(G,st,'food',f); if(f) mouthG(G,st,'open'); else eyesG(G,st,'happy')}
+  if(base==='toy'){propG(G,st,'toy',f); eyesG(G,st,'happy')}
+  if(base==='fire'){mouthG(G,st,'open'); const y=A.my, c1='#F8A020', c2='#F86020', c3='#F8E060'; (f?[[12,y],[13,y],[14,y],[15,y],[13,y-1],[14,y+1],[15,y-1]]:[[12,y],[13,y],[14,y],[13,y-1]]).forEach(([x,yy],i)=>gset(G,x,yy,i%3===0?c3:i%2?c1:c2))} // 작은 불꽃
+  if(base==='roar'){mouthG(G,st,'open'); gset(G,1,A.top+1,'#F8E8A0'); gset(G,14,A.top+1,'#F8E8A0'); gset(G,0,A.top+2,'#F8E8A0'); gset(G,15,A.top+2,'#F8E8A0')}
+  if(base==='sparkle'){eyesG(G,st,'happy'); const st2='#FFF080'; (f?[[1,3],[14,6],[2,12],[13,1]]:[[14,2],[1,8],[13,12],[3,1]]).forEach(([x,y])=>{if(gget(G,x,y)==='.') gset(G,x,y,st2)})} // 반짝반짝
+  if(base==='onsen'||base==='swim'){if(base==='onsen') eyesG(G,st,'blink'); else eyesG(G,st,'happy'); const ws=A.ny+(base==='onsen'?1:0), w='#78C0E8', l='#B8E4F8'; for(let y=ws;y<16;y++) for(let x=1;x<15;x++) if(gget(G,x,y)!=='.'||x>1&&x<14) gset(G,x,y,y===ws?((x+(f?1:0))%3?l:w):w);
+    if(base==='onsen'){const s2='#F4F6FA'; (f?[[3,ws-2],[12,ws-3]]:[[4,ws-3],[11,ws-2]]).forEach(([x,y])=>{if(gget(G,x,y)==='.') gset(G,x,y,s2)})}} // 온천·헤엄
   if(base==='dorayaki'){propG(G,st,'dorayaki',f); eyesG(G,st,f?'happy':'down')}
   if(base==='copter'||base==='pocket'||base==='door') eyesG(G,st,'happy');
   if(base==='mouse') eyesG(G,st,'sad');
@@ -3043,6 +3054,8 @@ function poseG(spk,st,wear,pose,xp){
     [[4,y,'e'],[5,y,W],[6,y,'e'],[4,y+1,W],[5,y+1,'e'],[6,y+1,'e'],[11,y,'e'],[10,y,'e'],[9,y,W],[11,y+1,W],[10,y+1,'e'],[9,y+1,'e']].forEach(([x,yy,c])=>gset(G,x,yy,c))}
   if(sp.simp) for(const r of G) for(let x=0;x<16;x++) if(r[x]==='w') r[x]='#FFFFFF'; // 심슨 눈은 새하얗게
   if(sp.body) return {G:humanG(spk,st,base,f,G),pal:sp.pal};
+  if(base==='float'){eyesG(G,st,'happy'); G=shiftG(G,0,f?-1:0)}
+  if(base==='roar') G=shiftG(G,f?1:-1,0);
   if(base==='squash'||base==='sleep'&&!f||base==='sad'&&f||base==='wag'&&f&&!sp.tail) G=squashG(G);
   if(base==='cheer'&&f) G=shiftG(G,0,-2);
   if(base==='dance') G=shiftG(G,f?1:-1,f?0:-1);
@@ -3254,7 +3267,7 @@ function setTerra(k,v){S.settings.v.terra=Object.assign(terraCfg(),{[k]:v}); S.s
 const ACTORS=[], PST={}, FX={}; let actTimer=null, actN=0;
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SEQ={stand:['stand','stand','stand','stand','squash','squash'],walk:['stand','squash'],read:['read0','read0','read0','read1'],write:['write0','write1'],sleep:['sleep0','sleep0','sleep0','sleep1','sleep1','sleep1'],
-  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],donut:['donut0','donut0','donut1','donut1'],dorayaki:['dorayaki0','dorayaki0','dorayaki1','dorayaki1'],copter:['copter0','copter1'],pocket:['pocket0','pocket0','pocket1','pocket1'],door:['door0','door0','door1','door1'],mouse:['mouse0','mouse1'],sax:['sax0','sax1'],skate:['skate0','skate1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
+  wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],donut:['donut0','donut0','donut1','donut1'],snack:['snack0','snack0','snack1','snack1'],toy:['toy0','toy1'],float:['float0','float0','float1','float1'],onsen:['onsen0','onsen0','onsen1','onsen1'],swim:['swim0','swim1'],sparkle:['sparkle0','sparkle1'],fire:['fire0','fire1','fire1','fire0'],roar:['roar0','roar1','roar0','roar1'],dorayaki:['dorayaki0','dorayaki0','dorayaki1','dorayaki1'],copter:['copter0','copter1'],pocket:['pocket0','pocket0','pocket1','pocket1'],door:['door0','door0','door1','door1'],mouse:['mouse0','mouse1'],sax:['sax0','sax1'],skate:['skate0','skate1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
 function petReact(kind,ms){FX.kind=kind; FX.until=Date.now()+(ms||3000)}
 function focusState(){return {run:!!T.running, focus:T.running&&isFocus(), rest:T.running&&!isFocus()}}
 function actorPose(a){ // 지금 상황에 맞는 행동 고르기
@@ -3262,7 +3275,7 @@ function actorPose(a){ // 지금 상황에 맞는 행동 고르기
   if(st===0) return 'egg';
   if(a.fixed) return a.fixed;
   if(act&&FX.until>now) return FX.kind;
-  if(F.focus){const acts=(SP[p.sp]||{}).acts; return act?(acts&&Math.floor(now/8000)%4===3?'lecture':Math.floor(now/8000)%3===2?'write':'read'):(acts?'lecture':'wag')}
+  if(F.focus){const acts=(SP[p.sp]||{}).acts; const lec=acts&&acts.indexOf('lecture')>=0; return act?(lec&&Math.floor(now/8000)%4===3?'lecture':Math.floor(now/8000)%3===2?'write':'read'):(lec?'lecture':'wag')}
   if(F.rest) return 'sleep';
   if(a.sad) return a.walk>0?'walk':'sad';
   const hr=hourNow(); if(hr>=23.5||hr<6) return 'sleep';
@@ -3449,7 +3462,7 @@ function shopDlg(it){
 function buyReward(it){if(!spend(it.cost,TR('보상')+' · '+it.name,'reward')) return; setTimeout(checkProgress,50); celebrate((it.emoji||'🎁')+' '+it.name,TR('마음껏 즐기세요! 열심히 번 거예요'),true); render()}
 
 /* 화면: 오늘 탭 동물 카드 (작은 유리병) */
-const POSE_TXT={dorayaki:TR('도라야키 먹는 중'),copter:TR('대나무 헬리콥터로 나는 중'),pocket:TR('비밀 도구 꺼내는 중'),door:TR('어디로든 문 여는 중'),mouse:TR('쥐를 보고 깜짝 놀란 중'),donut:TR('도넛 먹는 중'),sax:TR('색소폰 부는 중'),skate:TR('스케이트보드 타는 중'),dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
+const POSE_TXT={snack:TR("간식 먹는 중"),toy:TR("장난감 갖고 노는 중"),float:TR("둥실둥실 떠 있는 중"),onsen:TR("온천 즐기는 중"),swim:TR("헤엄치는 중"),sparkle:TR("반짝이는 중"),fire:TR("불꽃 뿜는 중"),roar:TR("포효하는 중"),dorayaki:TR('도라야키 먹는 중'),copter:TR('대나무 헬리콥터로 나는 중'),pocket:TR('비밀 도구 꺼내는 중'),door:TR('어디로든 문 여는 중'),mouse:TR('쥐를 보고 깜짝 놀란 중'),donut:TR('도넛 먹는 중'),sax:TR('색소폰 부는 중'),skate:TR('스케이트보드 타는 중'),dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
 function pxBar(v,n,cls){n=n||10; const on=Math.round(Math.max(0,Math.min(1,v))*n); return h('span',{class:'pxbar'+(cls?' '+cls:''),role:'img','aria-label':Math.round(v*100)+'%'},Array.from({length:n},(_,i)=>h('i',{class:i<on?'on':''})))}
 function lvInfo(xp){const L=petLv(xp), a=lvXP(L), b=lvXP(L+1); return {L,v:(xp-a)/(b-a),left:b-xp}}
 function pxHud(p,st){
@@ -3707,10 +3720,10 @@ function achStats(){
     diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins()};
 }
 const spPrice=k=>SP[k].special?0:UNLOCK[k]?UNLOCK[k].price:400; // 처음 세 친구도 두 번째부터는 400
-function spOpen(k,lv){const u=UNLOCK[k]; if(!u||(!u.lv&&!u.ach)) return true; return u.lv?(lv==null?myLv():lv)>=u.lv:hasAch(u.ach)}
+function spOpen(k,lv){const u=UNLOCK[k]; if(!u||(!u.lv&&!u.ach&&!u.own)) return true; if(u.own) return pets().some(p=>p.sp===u.own); return u.lv?(lv==null?myLv():lv)>=u.lv:hasAch(u.ach)}
 const needOpen=u=>!u||(u.lv?myLv()>=u.lv:hasAch(u.ach));
 const needText=u=>u.lv?'Lv '+u.lv+TR(' 되면 열려요'):TR('업적 「')+achById(u.ach)[1]+TR('」 달성하면 열려요');
-function lockText(k){const u=UNLOCK[k]; if(!u) return ''; if(u.lv) return 'Lv '+u.lv+TR(' 되면 열려요'); const a=achById(u.ach); return TR('업적 「')+a[1]+TR('」 달성하면 열려요')}
+function lockText(k){const u=UNLOCK[k]; if(!u) return ''; if(u.own) return TR('「')+SP[u.own].n+TR('」와 함께하면 열려요'); if(u.lv) return 'Lv '+u.lv+TR(' 되면 열려요'); const a=achById(u.ach); return TR('업적 「')+a[1]+TR('」 달성하면 열려요')}
 let progBusy=false;
 function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해요. 처음 한 번은 지난 기록으로 조용히 채워요
   if(progBusy) return; progBusy=true;
@@ -3908,8 +3921,42 @@ const BART_LINES={tap:[TR('Eat my shorts!'),TR('Ay caramba!'),TR('Cowabunga!'),T
 const LISA_LINES={tap:[TR('색소폰 들어 볼래?'),TR('책 읽는 게 제일 좋아'),TR('지식은 힘이야!'),TR('공부는 재밌어!')],focus:[TR('집중! 나도 같이 공부할게'),TR('A+ 받자!')],rest:[TR('색소폰 한 곡 불게')],done:[TR('완벽해!'),TR('오늘도 성장했어')],morning:[TR('좋은 아침! 오늘 계획은?')],day:[TR('도서관 가고 싶다')],evening:[TR('오늘 배운 거 정리하자')],night:[TR('내일도 열심히!')]};
 const MAGGIE_LINES={tap:[TR('*쪽쪽*'),TR('…!'),TR('까르르'),TR('*쪽쪽쪽*')],focus:[TR('*쪽쪽*')],rest:[TR('…zZ')],done:[TR('*짝짝짝*')],morning:[TR('*쪽*')],day:[TR('까르르')],evening:[TR('*쪽쪽*')],night:[TR('zZ…')]};
 const CHUL_YB={tap:[TR('용복이 최고…'),TR('용복아 사랑해!'),TR('용복이 무대 봤어?')],day:[TR('용복이 브라우니 먹고 싶다'),TR('용복이 보러 가고 싶어…')],done:[TR('용복이도 칭찬해 줄 거야!')]}; // 철컹이는 용복이를 좋아해요
+const ANIMAL_LINES={ // 동물마다 성격이 드러나는 말 (없는 상황은 기본 말로)
+  cat:{tap:[TR("냐옹~"),TR("쓰다듬어도 돼… 조금만"),TR("상자 있으면 들어가고 싶어"),TR("키보드 위에 앉아도 돼?")],done:[TR("냐아~ 잘했어")],day:[TR("햇볕 좋은 자리 찾는 중")],night:[TR("밤엔 우다다 시간이야")]},
+  dog:{tap:[TR("멍멍!"),TR("산책 가자!"),TR("공 던져 줘!"),TR("꼬리가 멈추질 않아")],done:[TR("멍! 최고야!")],day:[TR("간식 시간 아니야?")],night:[TR("네 옆에서 잘래")]},
+  bunny:{tap:[TR("깡총깡총"),TR("당근 있어?"),TR("귀가 쫑긋!"),TR("조용히 오물오물")],done:[TR("깡총! 잘했어")],day:[TR("풀밭에서 뛰고 싶다")],night:[TR("귀 접고 잘게")]},
+  chick:{tap:[TR("삐약삐약!"),TR("나도 언젠가 닭이 될까?"),TR("졸졸 따라갈게"),TR("모이 주세요")],done:[TR("삐약! 대단해")],day:[TR("햇살이 따뜻해")],night:[TR("삐약… 졸려")]},
+  hamster:{tap:[TR("볼에 해바라기씨 가득!"),TR("쳇바퀴 돌릴 시간!"),TR("찍찍"),TR("숨겨 둔 간식이 어디 갔지?")],done:[TR("찍! 최고야")],day:[TR("간식 저장 중")],night:[TR("밤이 되니 힘이 나!")]},
+  pig:{tap:[TR("꿀꿀!"),TR("먹는 게 제일 좋아"),TR("진흙 목욕 하고 싶다"),TR("코가 간질간질")],done:[TR("꿀꿀! 잘했어")],day:[TR("사과 먹고 싶다")],night:[TR("배부르니 졸려")]},
+  frog:{tap:[TR("개굴개굴"),TR("파리 잡았다!"),TR("비 오는 날이 좋아"),TR("폴짝!")],done:[TR("개굴! 해냈어")],day:[TR("연못에 가고 싶다")],night:[TR("밤 합창 시간이야")]},
+  penguin:{tap:[TR("뒤뚱뒤뚱"),TR("추운 게 좋아"),TR("생선 있어?"),TR("미끄럼 타고 싶다")],done:[TR("펭! 최고야")],day:[TR("얼음 위에서 쉬고 싶다")],night:[TR("다 같이 모여서 자자")]},
+  fox:{tap:[TR("캥캥!"),TR("꼬리가 폭신하지?"),TR("여우는 영리해"),TR("숨바꼭질 할래?")],done:[TR("캥! 영리하게 해냈네")],day:[TR("포도는 시지 않아")],night:[TR("달빛 산책 가자")]},
+  bear:{tap:[TR("곰곰…"),TR("꿀 냄새 난다"),TR("꼭 안아 줄게"),TR("겨울잠 자고 싶다")],done:[TR("곰! 대단해")],day:[TR("연어 잡으러 갈까")],night:[TR("겨울잠 모드…")]},
+  dragon:{tap:[TR("작은 불꽃 보여 줄게"),TR("언젠가 크게 날 거야"),TR("보물을 모으는 중"),TR("으르릉… 귀엽지?")],done:[TR("불꽃처럼 해냈어!")],day:[TR("날개 연습 중")],night:[TR("보물 위에서 잘래")]},
+  sheep:{tap:[TR("메에~"),TR("털이 폭신폭신"),TR("양 한 마리, 양 두 마리…"),TR("풀이 맛있어")],done:[TR("메에! 잘했어")],day:[TR("들판에서 뛰고 싶다")],night:[TR("양 세다가 잠들 것 같아")]},
+  raccoon:{tap:[TR("너구리 한 마리 몰고 가세요~"),TR("라면 이름이 나랑 같아"),TR("꼬리 줄무늬 멋지지?"),TR("숲이 그리워")],done:[TR("너굴! 해냈다")],day:[TR("라면 끓일까?")],night:[TR("밤 산책은 내 특기")]},
+  panda:{tap:[TR("대나무 맛있어"),TR("데굴데굴 구르기"),TR("흑백이 유행이야"),TR("하루 종일 먹고 자고 싶다")],done:[TR("판다스틱!")],day:[TR("대나무 숲 가고 싶다")],night:[TR("대나무 꿈 꿀래")]},
+  koala:{tap:[TR("졸려…"),TR("유칼립투스 좋아"),TR("하루에 20시간 자"),TR("나무에 매달리고 싶다")],done:[TR("…잘했어 (졸림)")],day:[TR("낮잠 시간이야")],night:[TR("계속 잘 거야")]},
+  squirrel:{tap:[TR("도토리 숨겨 놨어"),TR("볼이 빵빵"),TR("나무 타기 선수야"),TR("어디 숨겼더라?")],done:[TR("찍찍! 대단해")],day:[TR("겨울 준비 중")],night:[TR("나무 구멍에서 잘래")]},
+  hedgehog:{tap:[TR("가시 조심!"),TR("동그랗게 말기!"),TR("사실 부끄러워"),TR("킁킁")],done:[TR("뾰족하게 잘했어!")],day:[TR("벌레 찾는 중")],night:[TR("밤에 산책할래")]},
+  duck:{tap:[TR("꽥꽥!"),TR("연못 가자"),TR("뒤뚱뒤뚱 걷기"),TR("빵 부스러기 있어?")],done:[TR("꽥! 최고야")],day:[TR("물장구 치고 싶다")],night:[TR("날개에 머리 묻고 잘게")]},
+  owl:{tap:[TR("부엉부엉"),TR("밤이 내 시간이야"),TR("지혜는 책에서 나와"),TR("목을 270도 돌릴 수 있어")],done:[TR("부엉! 현명했어")],day:[TR("낮엔 졸려…")],night:[TR("밤샘 공부 같이 하자")]},
+  tiger:{tap:[TR("어흥!"),TR("줄무늬가 멋지지?"),TR("호랑이 기운이 솟아나요"),TR("사실 고양이랑 친척이야")],done:[TR("어흥! 대단해")],day:[TR("사냥 연습 중")],night:[TR("정글의 밤이야")]},
+  axolotl:{tap:[TR("헤헤, 웃는 얼굴이 기본이야"),TR("물속이 편해"),TR("아가미가 팔랑팔랑"),TR("다쳐도 다시 자라")],done:[TR("우파! 해냈어")],day:[TR("물 온도 딱 좋아")],night:[TR("물속에서 둥실")]},
+  capybara:{tap:[TR("…평화롭다"),TR("온천 가고 싶다"),TR("누구랑도 친구 할 수 있어"),TR("서두르지 마")],done:[TR("…잘했네 (느긋)")],day:[TR("유자 하나 머리에 올려 줘")],night:[TR("따뜻하게 자자")]},
+  pelican:{tap:[TR("부리 주머니에 다 들어가"),TR("생선 한 입에 꿀꺽"),TR("바닷바람 좋다"),TR("날개 펴 볼까")],done:[TR("꿀꺽! 잘했어")],day:[TR("바다 보러 가자")],night:[TR("부두에서 잘래")]},
+  rock:{tap:[TR("…"),TR("(돌멩이는 말이 없다)"),TR("굴러갈까 말까"),TR("천 년째 여기 있어")],done:[TR("(돌멩이가 반짝였다)")],day:[TR("햇볕에 데워지는 중")],night:[TR("…")],focus:[TR("(돌멩이처럼 묵묵히)")]},
+  ghost:{tap:[TR("부우~"),TR("놀랐지? 히히"),TR("사실 겁 많은 유령이야"),TR("벽도 통과할 수 있어")],done:[TR("부우~ 대단해!")],day:[TR("낮엔 투명해지는 중")],night:[TR("밤이 내 무대야")]},
+  rakun:{tap:[TR("먹기 전에 씻어야지"),TR("손재주 좋지?"),TR("쓰레기통 아니야, 탐험이야"),TR("가면 쓴 신사")],done:[TR("조물조물 잘했어")],day:[TR("반짝이는 거 찾는 중")],night:[TR("밤 탐험 출발")]},
+  seal:{tap:[TR("아우! 아우!"),TR("박수 쳐 줄게"),TR("공놀이 하자"),TR("바위 위에서 뒹굴뒹굴")],done:[TR("아우! 박수 짝짝")],day:[TR("바다 수영 가자")],night:[TR("파도 소리 들으며 잘래")]},
+  unicorn:{tap:[TR("반짝반짝 빛나!"),TR("무지개 타고 왔어"),TR("꿈은 이루어져"),TR("뿔은 소원을 들어줘")],done:[TR("마법처럼 해냈어!")],day:[TR("무지개 찾으러 갈래")],night:[TR("별빛 아래서 잘게")]},
+  sawol:{tap:[TR("사월이 왔다냥"),TR("츄르 줘"),TR("나 예쁘지?"),TR("창밖 구경 중")],done:[TR("냥! 잘했어")],day:[TR("햇볕 낮잠 자야지")],night:[TR("같이 자자냥")]},
+  yuni:{tap:[TR("유니 불렀어?"),TR("간식은 언제나 환영"),TR("꾹꾹이 해 줄게"),TR("골골골…")],done:[TR("골골! 최고야")],day:[TR("창가 자리 찜")],night:[TR("이불 속으로 쏙")]},
+  mikael:{tap:[TR("미카엘이다"),TR("우아하게 걷는 중"),TR("조용한 게 좋아"),TR("눈빛으로 말하는 중")],done:[TR("우아하게 해냈군")],day:[TR("높은 곳에 올라가고 싶다")],night:[TR("조용히 지켜볼게")]},
+  ttukbul:{tap:[TR("뚝불이야!"),TR("벽 타기 선수"),TR("속눈썹 예쁘지?"),TR("눈 핥는 중")],done:[TR("뚝! 해냈어")],day:[TR("귀뚜라미 먹고 싶다")],night:[TR("밤엔 활발해져")]},
+  bormi:{tap:[TR("보르미 왔어요!"),TR("곱슬곱슬 귀엽지?"),TR("산책 가요!"),TR("혀 쏙!")],done:[TR("멍! 최고예요")],day:[TR("간식 주세요")],night:[TR("품에 안겨 잘래요")]}};
 const LINESETS={DINO:DINO_LINES,DORA:DORA_LINES,PROF:PROF_LINES,CHUL:CHUL_LINES,HOMER:HOMER_LINES,YONG:YONG_LINES,SIMHOMER:SIMHOMER_LINES,MARGE:MARGE_LINES,BART:BART_LINES,LISA:LISA_LINES,MAGGIE:MAGGIE_LINES};
-const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&LINESETS[sp.lines];
+const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&(LINESETS[sp.lines]||ANIMAL_LINES[p.sp]);
   const base=(L&&L[k])||LINES[k]; return sp&&sp.lines==='CHUL'&&CHUL_YB[k]&&pets().some(q=>q.sp==='yongbok')?base.concat(CHUL_YB[k]):base};
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 function buddySay(text,ms){
@@ -3947,7 +3994,7 @@ function stepBuddy(){
   else{
     const sad=petMood(p)==='sad', hr=hourNow();
     if(FX.until>now){pose=FX.kind}
-    else if(F.focus){const acts=(SP[p.sp]||{}).acts; pose=acts&&Math.floor(now/9000)%4===3?'lecture':Math.floor(now/9000)%3===2?'write':'read'; if(b.mode!=='focus'){b.mode='focus'; buddySay(pick(petLines('focus')))}}
+    else if(F.focus){const acts=(SP[p.sp]||{}).acts; pose=acts&&acts.indexOf('lecture')>=0&&Math.floor(now/9000)%4===3?'lecture':Math.floor(now/9000)%3===2?'write':'read'; if(b.mode!=='focus'){b.mode='focus'; buddySay(pick(petLines('focus')))}}
     else if(F.rest){pose='sleep'; if(b.mode!=='rest'){b.mode='rest'; buddySay(pick(petLines('rest')))}}
     else{
       b.mode='';
