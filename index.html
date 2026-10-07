@@ -151,7 +151,7 @@ main{max-width:1080px;margin:0 auto;padding:1.1rem 1rem 2rem}
 .empty{color:var(--ink2);padding:.8rem 0}
 
 /* 텐미닛 타임테이블 */
-.tt{user-select:none;-webkit-user-select:none}
+.tt{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .tt-head,.tt-row{display:grid;grid-template-columns:2.1rem 1fr;align-items:stretch}
 .tt-head span{font-size:.72rem;color:var(--ink2);text-align:center;padding-bottom:.2rem}
 .tt-head div{display:grid;grid-template-columns:repeat(6,1fr)}
@@ -711,7 +711,7 @@ body.kb #buddy{display:none!important}
       <div class="row"><h2>타임테이블</h2><span class="sp num" id="tt-total"></span></div>
       <div id="tt-goals"></div>
       <div class="chips" id="tt-cats" style="margin-top:.6rem"></div>
-      <p class="small muted" style="margin:.5rem 0 .6rem">한 칸은 10분. 빈 칸을 누르거나 끌어서 기록·할 일 배정·일정을 추가해요. 색 띠는 한 기록, 점선 칸은 시간을 배정한 할 일, 옅게 칠한 넓은 띠는 시간표의 고정 일정이에요. 고정 일정 이름을 누르면 그 날만 시간을 바꾸거나 쉴 수 있어요.</p>
+      <p class="small muted" style="margin:.5rem 0 .6rem">한 칸은 10분. 빈 칸을 누르거나 끌어서(폰에서는 꾹 누른 채 끌어서) 기록·할 일 배정·일정을 추가해요. 색 띠는 한 기록, 점선 칸은 시간을 배정한 할 일, 옅게 칠한 넓은 띠는 시간표의 고정 일정이에요. 고정 일정 이름을 누르면 그 날만 시간을 바꾸거나 쉴 수 있어요.</p>
       <div class="tt" id="tt"></div>
       <div class="legend" id="tt-legend"></div>
     </section>
@@ -1495,9 +1495,16 @@ function renderTable(){
   const cellAt=(x,y)=>{const el=document.elementFromPoint(x,y); return el&&el.classList.contains('cell')&&tt.contains(el)?+el.dataset.m:null};
   const mark=()=>{const lo=Math.min(anchor,cur), hi=Math.max(anchor,cur); tt.querySelectorAll('.cell').forEach(c=>c.classList.toggle('sel',+c.dataset.m>=lo&&+c.dataset.m<=hi))};
   const open=(a,b)=>{const st=dayStartTs(viewDate); sessionDlg(null,st+a*6e4,st+b*6e4)};
-  tt.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0||!e.target.classList.contains('cell')) return; anchor=cur=+e.target.dataset.m; mark(); e.preventDefault()});
-  window.addEventListener('pointermove',e=>{if(anchor==null) return; const m=cellAt(e.clientX,e.clientY); if(m!=null&&m!==cur){cur=m; mark()}});
-  window.addEventListener('pointerup',()=>{if(anchor==null) return; const lo=Math.min(anchor,cur), hi=Math.max(anchor,cur); const single=lo===hi; anchor=null; upAt=Date.now();
+  // 마우스는 바로 끌고, 손가락은 꾹 누르면(0.35초) 끌기가 시작돼요. 그냥 쓸어 넘기면 화면이 스크롤돼요
+  let lp=null, sx=0, sy=0; const start=m=>{anchor=cur=m; mark()}, stopLp=()=>{clearTimeout(lp); lp=null};
+  tt.addEventListener('pointerdown',e=>{if(!e.target.classList.contains('cell')) return; const m=+e.target.dataset.m;
+    if(e.pointerType==='mouse'){if(e.button!==0) return; start(m); e.preventDefault(); return}
+    sx=e.clientX; sy=e.clientY; stopLp(); lp=setTimeout(()=>{lp=null; start(m); if(navigator.vibrate) navigator.vibrate(12)},350)});
+  tt.addEventListener('touchmove',e=>{if(anchor!=null) e.preventDefault()},{passive:false}); // 고르는 동안은 화면이 움직이지 않게
+  tt.addEventListener('contextmenu',e=>{if(anchor!=null||lp) e.preventDefault()});
+  window.addEventListener('pointercancel',()=>{stopLp(); if(anchor==null) return; anchor=null; tt.querySelectorAll('.sel').forEach(c=>c.classList.remove('sel'))});
+  window.addEventListener('pointermove',e=>{if(lp&&(Math.abs(e.clientX-sx)>8||Math.abs(e.clientY-sy)>8)) stopLp(); if(anchor==null) return; const m=cellAt(e.clientX,e.clientY); if(m!=null&&m!==cur){cur=m; mark()}});
+  window.addEventListener('pointerup',()=>{stopLp(); if(anchor==null) return; const lo=Math.min(anchor,cur), hi=Math.max(anchor,cur); const single=lo===hi; anchor=null; upAt=Date.now();
     tt.querySelectorAll('.sel').forEach(c=>c.classList.remove('sel')); open(lo,single?lo+30:hi+10)});
   tt.addEventListener('click',e=>{if(Date.now()-upAt<500||!e.target.classList.contains('cell')) return; const m=+e.target.dataset.m; open(m,m+30)});
 })();
@@ -2499,7 +2506,7 @@ const HELP=[ // 화면마다: [이름, 아이콘, 한 줄 소개, [[묶음 이�
       [TR('미루기'),TR('못 끝낸 일은 [[지난 미완료]]에서 오늘로 옮기거나 내일로 미뤄요.')],
       [TR('장기 할 일 꺼내기'),TR('[[대시보드에서 가져오기]]로 대시보드의 일을 오늘 할 일로 꺼내요.')]]],
     [TR('타임테이블'),[
-      [TR('넣기'),TR('한 칸이 10분이에요. 빈 칸을 누르거나 끌어서 [[기록]], [[할 일 배정]], [[일정]] 중에 골라 넣어요.')],
+      [TR('넣기'),TR('한 칸이 10분이에요. 빈 칸을 누르거나 끌어서 [[기록]], [[할 일 배정]], [[일정]] 중에 골라 넣어요. 폰에서는 빈 칸을 꾹 누르고 있다가 그대로 끌면 돼요.')],
       [TR('읽는 법'),{leg:[['bar',TR('실제로 한 기록')],['plan',TR('시간을 배정한 할 일')],['fix',TR('시간표의 고정 일정')],['cal',TR('캘린더 일정')]]}],
       [TR('고치기'),TR('기록 띠를 누르면 고치거나 지울 수 있어요. 고정 일정은 이름을 누르면 그 날만 바꾸거나 쉴 수 있어요.')]]],
     [TR('일정과 메모'),[
