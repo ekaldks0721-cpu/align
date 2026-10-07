@@ -2882,7 +2882,8 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   rakun:{n:TR('라쿤'),acts:["snack", "swim", "sleep"],food:'apple',pal:['#181820','#9CA0AC','#F0F0F4','#282830','#F8A0A0'],ear:'round',tail:'ringed',mark:'bigmask'},
   seal:{n:TR('물개'),acts:["snack", "toy", "swim"],food:'fish',toy:'ball',pal:['#2A2A34','#8C8CA0','#C8C8D8','#5C5C70','#F0A0B0'],mark:'whiskers flippers'},
   unicorn:{n:TR('유니콘'),acts:["sparkle", "sparkle", "float", "snack"],food:'cupcake',pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
-  sawol:{n:TR('정사월'),acts:["snack", "toy", "sleep", "wag"],food:'bone',toy:'ball',special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 강아지: 쫑긋한 분홍 귀, 말린 꼬리
+  sawol:{n:TR('정사월'),acts:["stare", "stare", "stare", "sleep", "sleep", "shy", "snack"],food:'bone',toy:'ball',special:1,timid:1,calls:1,
+    traits:[TR('겁이 많은 소심소심 왕소심이에요. 다른 친구가 다가오면 덜덜 떨어요'),TR('대부분 심드렁해서 불러도(쓰다듬어도) 잘 오지 않아요'),TR('"산책?"과 "냠냠?"에만 번쩍 반응해요 (동물 탭의 버튼)'),TR('그래도 언니를 정말 좋아해요')],pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 강아지: 쫑긋한 분홍 귀, 말린 꼬리
   yuni:{n:TR('유니'),acts:["snack", "toy", "sleep", "wag"],food:'fish',toy:'yarn',special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
   ttukbul:{n:TR('이뚝불'),acts:["snack", "cheer", "sleep"],food:'bug',special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'thin',mark:'lashes geckoeyes wide smile'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
   bormi:{n:TR('보르미'),acts:["snack", "gobble", "gobble", "toy", "wag", "cheer", "sniff"],food:'bone',toy:'ball',special:1,glutton:1,brush:1,dogHate:1,pal:['#4A2216','#B86A3E','#C8804E','#8C4626','#F0909A'],ear:'flop',tail:'curl',mark:'poodle browNose tongue'}, // 갈색 토이 푸들: 복슬복슬한 머리 방울, 늘어진 귀, 짙은 갈색 코, 내민 혀
@@ -3279,7 +3280,9 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='beg'){const y=A.ey; [[4,y,'e'],[5,y,'w'],[4,y+1,'e'],[5,y+1,'e'],[10,y,'w'],[11,y,'e'],[10,y+1,'e'],[11,y+1,'e']].forEach(([x,yy,c])=>gset(G,x,yy,c)); // 반짝이는 조르는 눈
     const by=Math.min(14,A.ny+2), r='#E06060', w='#F8F0E8'; for(let x=5;x<=10;x++) gset(G,x,by+1,r); for(let x=4;x<=11;x++) gset(G,x,by,x===4||x===11?r:w); // 빈 밥그릇
     if(f){mouthG(G,st,'open'); gset(G,9,A.my+2,'#78C8F8'); gset(G,13,A.top,'#F05878'); gset(G,13,A.top+2,'#F05878')}} // 침 꼴깍
-  if(base==='stare'){const d='#8A8070'; if(f){gset(G,12,A.top-2,d); gset(G,13,A.top-2,d); gset(G,14,A.top-2,d)} else{gset(G,12,A.top-2,d); gset(G,13,A.top-2,d)}} // …(무표정으로 빤히)
+  if(base==='shy'){eyesG(G,st,'sad'); propG(G,st,'sweat',0); if(f) gset(G,3,A.top+2,'#78C8F8')} // 덜덜 (겁먹음)
+  if(base==='zoom'){eyesG(G,st,'happy'); mouthG(G,st,'open'); propG(G,st,'heart',0)} // 산책?! 신나서 폴짝폴짝
+  if(base==='stare'){if(!CTPL) eyesG(G,st,'down'); const d='#8A8070'; if(f){gset(G,12,A.top-2,d); gset(G,13,A.top-2,d); gset(G,14,A.top-2,d)} else{gset(G,12,A.top-2,d); gset(G,13,A.top-2,d)}} // …(무표정으로 빤히)
   if(base==='pounce'){eyesG(G,st,f?'blink':'down'); if(f){const w='#F4F8FC'; for(let x=3;x<=12;x++) gset(G,x,15,w); [[2,14],[13,14],[1,13],[14,12]].forEach(([x,y])=>gset(G,x,y,w))}} // 폴짝 뛰어 눈에 머리부터 쏙
   if(base==='hive'){const y=A.my+2, h='#E0A030', d='#8A5A18'; [[6,y],[7,y],[8,y],[9,y],[5,y+1],[6,y+1],[7,y+1],[8,y+1],[9,y+1],[10,y+1],[5,y+2],[6,y+2],[7,y+2],[8,y+2],[9,y+2],[10,y+2]].forEach(([x,yy])=>gset(G,x,yy,yy===y+1?d:h)); gset(G,7,y+2,'#3A2410');
     const B='#F8D030'; (f?[[1,A.top+1],[13,A.top],[14,A.ey+1],[2,A.ey+3]]:[[2,A.top],[14,A.top+2],[1,A.ey+2],[13,A.ey+4]]).forEach(([x,yy])=>{gset(G,x,yy,B); gset(G,x+1,yy,'#202020')}); eyesG(G,st,'happy')} // 벌집 털기 (벌에 쏘여도 신경 안 써)
@@ -3316,6 +3319,8 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='dance') G=shiftG(G,f?1:-1,f?0:-1);
   if(base==='aegyo'&&f) G=shiftG(G,-1,0); // 고개 갸웃
   if(base==='pounce') G=shiftG(G,0,f?1:-2);
+  if(base==='shy') G=shiftG(G,f?1:0,0);
+  if(base==='zoom') G=shiftG(G,f?1:-1,f?-2:0);
   if(base==='dig'&&f) G=squashG(G);
   if(base==='sleep') propG(G,st,'z',f);
   return {G,pal:sp.pal};
@@ -3560,7 +3565,7 @@ function setTerra(k,v){S.settings.v.terra=Object.assign(terraCfg(),{[k]:v}); S.s
 /* 움직임: 한 타이머가 0.25초마다 모든 유리병 속 동물의 그림을 한 장씩 넘겨요 */
 const ACTORS=[], PST={}, FX={}; let actTimer=null, actN=0;
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-const SEQ={stare:['stare0','stare0','stare0','stare1','stare1','stare1'],pounce:['pounce0','pounce0','pounce1','pounce1','pounce1'],hive:['hive0','hive1'],dig:['dig0','dig1'],bark:['bark0','bark1','bark0','bark1'],sniff:['sniff0','sniff1'],brush:['brush0','brush0','brush1','brush1'],gobble:['gobapple0','gobapple0','gobapple1','gobapple1','gobbread0','gobbread0','gobbread1','gobbread1','gobcandy0','gobcandy0','gobcandy1','gobcandy1','gobcupcake0','gobcupcake0','gobcupcake1','gobcupcake1','gobicecream0','gobicecream0','gobicecream1','gobicecream1','goborange0','goborange0','goborange1','goborange1','gobhoney0','gobhoney0','gobhoney1','gobhoney1','gobgrape0','gobgrape0','gobgrape1','gobgrape1'],beg:['beg0','beg0','beg1','beg1'],aegyo:['aegyo0','aegyo0','aegyo1','aegyo1'],dollhug:['dollhug0','dollhug0','dollhug1','dollhug1'],stand:['stand','stand','stand','stand','squash','squash'],walk:['stand','squash'],read:['read0','read0','read0','read1'],write:['write0','write1'],sleep:['sleep0','sleep0','sleep0','sleep1','sleep1','sleep1'],
+const SEQ={shy:['shy0','shy1','shy0','shy1'],zoom:['zoom0','zoom1'],stare:['stare0','stare0','stare0','stare1','stare1','stare1'],pounce:['pounce0','pounce0','pounce1','pounce1','pounce1'],hive:['hive0','hive1'],dig:['dig0','dig1'],bark:['bark0','bark1','bark0','bark1'],sniff:['sniff0','sniff1'],brush:['brush0','brush0','brush1','brush1'],gobble:['gobapple0','gobapple0','gobapple1','gobapple1','gobbread0','gobbread0','gobbread1','gobbread1','gobcandy0','gobcandy0','gobcandy1','gobcandy1','gobcupcake0','gobcupcake0','gobcupcake1','gobcupcake1','gobicecream0','gobicecream0','gobicecream1','gobicecream1','goborange0','goborange0','goborange1','goborange1','gobhoney0','gobhoney0','gobhoney1','gobhoney1','gobgrape0','gobgrape0','gobgrape1','gobgrape1'],beg:['beg0','beg0','beg1','beg1'],aegyo:['aegyo0','aegyo0','aegyo1','aegyo1'],dollhug:['dollhug0','dollhug0','dollhug1','dollhug1'],stand:['stand','stand','stand','stand','squash','squash'],walk:['stand','squash'],read:['read0','read0','read0','read1'],write:['write0','write1'],sleep:['sleep0','sleep0','sleep0','sleep1','sleep1','sleep1'],
   wag:['wag0','wag1'],lecture:['lecture0','lecture0','lecture1','lecture1'],game:['game0','game1'],meat:['meat0','meat0','meat1','meat1'],donut:['donut0','donut0','donut1','donut1'],evil:['evil0','evil0','evil0','evil1'],streak:['streak0','streak1'],halo:['halo0','halo0','halo1','halo1'],weed:['weed0','weed0','weed1','weed1'],cry:['cry0','cry1'],sing:['sing0','sing1'],yaha:['yaha0','yaha1','yaha0','yaha1'],drink:['drink0','drink0','drink1','drink1'],stick:['stick0','stick1'],spatula:['spatula0','spatula1'],jelly:['jelly0','jelly1'],bubble:['bubble0','bubble1'],karate:['karate0','karate1'],clarinet:['clarinet0','clarinet0','clarinet1','clarinet1'],money:['money0','money0','money1','money1'],surgery:['surgery0','surgery0','surgery1','surgery1'],guitar:['guitar0','guitar1'],snack:['snack0','snack0','snack1','snack1'],toy:['toy0','toy1'],float:['float0','float0','float1','float1'],onsen:['onsen0','onsen0','onsen1','onsen1'],swim:['swim0','swim1'],sparkle:['sparkle0','sparkle1'],fire:['fire0','fire1','fire1','fire0'],roar:['roar0','roar1','roar0','roar1'],dorayaki:['dorayaki0','dorayaki0','dorayaki1','dorayaki1'],copter:['copter0','copter1'],pocket:['pocket0','pocket0','pocket1','pocket1'],door:['door0','door0','door1','door1'],mouse:['mouse0','mouse1'],sax:['sax0','sax1'],skate:['skate0','skate1'],dance:['dance0','dance1','dance0','dance1'],bake:['bake0','bake0','bake1','bake1'],critter:['critter0','critter0','critter1','critter1'],lego:['lego0','lego0','lego1','lego1'],bed:['bed0','bed0','bed0','bed1','bed1','bed1'],drive:['drive0','drive1'],plush:['plush0','plush1'],doh:['doh0','doh0','doh0','doh1','doh1'],ramen:['ramen0','ramen0','ramen1','ramen1'],cram:['cram0','cram1','cram0','cram1'],coffee:['coffee0','coffee0','coffee0','coffee1','coffee1','coffee0'],cheer:['cheer0','cheer1'],eat:['eat0','eat1'],sad:['sad0','sad0','sad0','sad1'],egg:['egg','egg','egg','egg1','egg','egg2','egg','egg']};
 function petReact(kind,ms){FX.kind=kind; FX.until=Date.now()+(ms||3000)}
 function focusState(){return {run:!!T.running, focus:T.running&&isFocus(), rest:T.running&&!isFocus()}}
@@ -3574,6 +3579,7 @@ function actorPose(a){ // 지금 상황에 맞는 행동 고르기
   if(act&&FX.until>now) return FX.kind;
   if(F.focus){const acts=(SP[p.sp]||{}).acts; const lec=acts&&acts.indexOf('lecture')>=0; if(SP[p.sp]&&SP[p.sp].sleepy&&Math.floor(now/8000)%3===1) return 'sleep'; return act?(lec&&Math.floor(now/8000)%4===3?'lecture':Math.floor(now/8000)%3===2?'write':'read'):(lec?'lecture':'wag')}
   if(F.rest) return 'sleep';
+  if(SP[p.sp]&&SP[p.sp].timid&&ACTORS.some(o=>o!==a&&o.svg===a.svg&&o.st&&Math.abs(o.x-a.x)<12&&(o.walk>0||actorPose(o)==='bark'))) return 'shy'; // 겁쟁이: 누가 다가오면 덜덜
   if(SP[p.sp]&&SP[p.sp].dogHate&&!a.sad){const foe=dogFoe(a); if(foe&&Math.floor(now/5000)%3!==2){a.dir=foe.x>a.x?1:-1; return 'bark'}} // 다른 강아지를 보면 짖어요
   if(a.sad) return a.walk>0?'walk':'sad';
   const hr=hourNow(); if(hr>=23.5||hr<6) return 'sleep';
@@ -3733,6 +3739,9 @@ function adoptPet(spk,free){
   S.settings.v.activePet=id; S.settings.m=now; S.dirty.settings=1; saveLocal(); schedulePush();
   celebrate('🥚 '+sp.n,TR('알을 품기 시작했어요. 30분 집중하면 태어나요'),true); petTab='home'; checkProgress(); render();
 }
+function callPet(p,kind){ // 사월이를 부르는 마법의 말: "산책?" "냠냠?"
+  if(!p) return; if(kind==='walk'){petReact('zoom',4500); buddySay(pick(SAWOL_WALK))} else{petReact('beg',4000); buddySay(pick(SAWOL_YUM))}
+  toast(p.name+(kind==='walk'?TR('이가 번쩍 일어났어요!'):TR('이가 귀를 쫑긋 세웠어요!'))); render()}
 function brushPet(p){ // 털 빗기: 코인 없이 언제든 (보르미가 정말 좋아해요)
   if(!p) return; petReact('brush',4000); buddySay(pick(BORMI_BRUSH)); toast(p.name+TR('의 털을 빗어 줬어요. 기분이 최고래요!'));
   {const k=today(), cur=items('pats').find(x=>x.id===k); put('pats',{id:k,n:(cur&&cur.n||0)+1})} render()}
@@ -3764,7 +3773,7 @@ function shopDlg(it){
 function buyReward(it){if(!spend(it.cost,TR('보상')+' · '+it.name,'reward')) return; setTimeout(checkProgress,50); celebrate((it.emoji||'🎁')+' '+it.name,TR('마음껏 즐기세요! 열심히 번 거예요'),true); render()}
 
 /* 화면: 오늘 탭 동물 카드 (작은 유리병) */
-const POSE_TXT={stare:TR('심드렁하게 빤히 보는 중'),pounce:TR('우는토끼 잡으러 폴짝!'),hive:TR('벌집 터는 중 (벌? 신경 안 씀)'),dig:TR('땅 파는 중'),bark:TR('멍멍! 짖으며 경계하는 중'),sniff:TR('먹을 거 찾아 킁킁대는 중'),brush:TR('털 빗질 받는 중'),gobble:TR('이것저것 다 먹는 중'),beg:TR('간식 달라고 조르는 중'),aegyo:TR('애교 부리는 중'),dollhug:TR('인형 꼭 껴안는 중'),evil:TR("창밖에서 지켜보는 중"),streak:TR("연속 기록 불태우는 중"),halo:TR("하늘나라에서 잠깐 돌아온 중"),weed:TR("풀뽑기 하는 중"),cry:TR("울먹이는 중"),sing:TR("노래 부르는 중"),yaha:TR("야하! 외치는 중"),drink:TR("한 잔 하는 중"),stick:TR("토벌하는 중"),spatula:TR("게살버거 굽는 중"),jelly:TR("해파리 잡는 중"),bubble:TR("비눗방울 부는 중"),karate:TR("가라테 하는 중"),clarinet:TR("클라리넷 부는 중"),money:TR("돈 세는 중"),surgery:TR("수술하는 중"),guitar:TR("기타 치는 중"),snack:TR("간식 먹는 중"),toy:TR("장난감 갖고 노는 중"),float:TR("둥실둥실 떠 있는 중"),onsen:TR("온천 즐기는 중"),swim:TR("헤엄치는 중"),sparkle:TR("반짝이는 중"),fire:TR("불꽃 뿜는 중"),roar:TR("포효하는 중"),dorayaki:TR('도라야키 먹는 중'),copter:TR('대나무 헬리콥터로 나는 중'),pocket:TR('비밀 도구 꺼내는 중'),door:TR('어디로든 문 여는 중'),mouse:TR('쥐를 보고 깜짝 놀란 중'),donut:TR('도넛 먹는 중'),sax:TR('색소폰 부는 중'),skate:TR('스케이트보드 타는 중'),dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
+const POSE_TXT={shy:TR('겁먹고 덜덜 떠는 중'),zoom:TR('산책이다! 신나서 폴짝폴짝'),stare:TR('심드렁하게 빤히 보는 중'),pounce:TR('우는토끼 잡으러 폴짝!'),hive:TR('벌집 터는 중 (벌? 신경 안 씀)'),dig:TR('땅 파는 중'),bark:TR('멍멍! 짖으며 경계하는 중'),sniff:TR('먹을 거 찾아 킁킁대는 중'),brush:TR('털 빗질 받는 중'),gobble:TR('이것저것 다 먹는 중'),beg:TR('간식 달라고 조르는 중'),aegyo:TR('애교 부리는 중'),dollhug:TR('인형 꼭 껴안는 중'),evil:TR("창밖에서 지켜보는 중"),streak:TR("연속 기록 불태우는 중"),halo:TR("하늘나라에서 잠깐 돌아온 중"),weed:TR("풀뽑기 하는 중"),cry:TR("울먹이는 중"),sing:TR("노래 부르는 중"),yaha:TR("야하! 외치는 중"),drink:TR("한 잔 하는 중"),stick:TR("토벌하는 중"),spatula:TR("게살버거 굽는 중"),jelly:TR("해파리 잡는 중"),bubble:TR("비눗방울 부는 중"),karate:TR("가라테 하는 중"),clarinet:TR("클라리넷 부는 중"),money:TR("돈 세는 중"),surgery:TR("수술하는 중"),guitar:TR("기타 치는 중"),snack:TR("간식 먹는 중"),toy:TR("장난감 갖고 노는 중"),float:TR("둥실둥실 떠 있는 중"),onsen:TR("온천 즐기는 중"),swim:TR("헤엄치는 중"),sparkle:TR("반짝이는 중"),fire:TR("불꽃 뿜는 중"),roar:TR("포효하는 중"),dorayaki:TR('도라야키 먹는 중'),copter:TR('대나무 헬리콥터로 나는 중'),pocket:TR('비밀 도구 꺼내는 중'),door:TR('어디로든 문 여는 중'),mouse:TR('쥐를 보고 깜짝 놀란 중'),donut:TR('도넛 먹는 중'),sax:TR('색소폰 부는 중'),skate:TR('스케이트보드 타는 중'),dance:TR('춤추는 중'),bake:TR('브라우니 굽는 중'),critter:TR('작은 동물 안고 있는 중'),meat:TR('고기 먹는 중'),lego:TR('레고 조립하는 중'),bed:TR('침대에 누워 있는 중'),drive:TR('드라이브하는 중'),plush:TR('치이카와 안고 있는 중'),doh:TR('또우!'),game:TR('게임하는 중'),ramen:TR('불닭볶음면 먹는 중'),cram:TR('벼락치기 중'),lecture:TR('강의하는 중'),coffee:TR('커피 마시는 중'),read:TR('책 읽는 중'),write:TR('필기하는 중'),sleep:TR('쿨쿨 자는 중'),wag:TR('꼬리 흔들며 응원 중'),walk:TR('산책 중'),stand:TR('빈둥빈둥'),eat:TR('냠냠 먹는 중'),sad:TR('시무룩'),egg:TR('따뜻하게 품는 중'),cheer:TR('신났어요!')};
 function pxBar(v,n,cls){n=n||10; const on=Math.round(Math.max(0,Math.min(1,v))*n); return h('span',{class:'pxbar'+(cls?' '+cls:''),role:'img','aria-label':Math.round(v*100)+'%'},Array.from({length:n},(_,i)=>h('i',{class:i<on?'on':''})))}
 function lvInfo(xp){const L=petLv(xp), a=lvXP(L), b=lvXP(L+1); return {L,v:(xp-a)/(b-a),left:b-xp}}
 function pxHud(p,st){
@@ -4062,7 +4071,7 @@ const BASE_ACTS=['stand','walk','wag','cheer','eat','sleep','read','write'];
 function dexDetail(k){ // 도감: 동물 하나의 동작과 대사를 모두 보여줘요
   const sp=SP[k], mine=pets().find(q=>q.sp===k), xp=mine?petXP(mine):0, st=mine&&stageOf(xp)?stageOf(xp):3; // 아직 알이면 다 자란 모습으로
   const L=LINESETS[sp.lines]||ANIMAL_LINES[k]||{}, own=Object.keys(L).length>0;
-  const acts=[...new Set([...(sp.acts||[]).filter(a=>a!=='walk'),...(sp.dogHate?['bark']:[]),...(sp.brush?['brush']:[]),...BASE_ACTS])].filter(a=>SEQ[a]||a==='stand'||a==='walk');
+  const acts=[...new Set([...(sp.acts||[]).filter(a=>a!=='walk'),...(sp.dogHate?['bark']:[]),...(sp.calls?['zoom','beg']:[]),...(sp.brush?['brush']:[]),...BASE_ACTS])].filter(a=>SEQ[a]||a==='stand'||a==='walk');
   // 움직이는 큰 그림
   const hh=spriteH(k,st), sc=hh>16?6:8, svg=svgEl(16,hh,''), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g); svg.setAttribute('width',16*sc); svg.setAttribute('height',hh*sc);
   const a={pet:{id:'dex-'+k,sp:k,wear:mine?mine.wear:{}},st,xp,svg,g,x:0,y:0,noLift:1,dir:1,fi:0,walk:0,fixed:acts[0],active:true,cur:''};
@@ -4092,6 +4101,7 @@ function dexDetail(k){ // 도감: 동물 하나의 동작과 대사를 모두 �
   if(k==='duo') extra.push([TR('오늘 집중을 안 했을 때'),DUO_NAG]);
   if(sp.glutton) extra.push([TR('배불러도 밥을 줄 때'),GLUT_MORE[k]||MIK_MORE]);
   if(sp.dogHate) extra.push([TR('다른 강아지가 있을 때'),BORMI_DOG]);
+  if(sp.calls) extra.push([TR('"산책?" 하고 부를 때'),SAWOL_WALK],[TR('"냠냠?" 하고 부를 때'),SAWOL_YUM],[TR('그냥 부를 때 (대부분)'),SAWOL_IGNORE],[TR('가끔 언니라서 봐줄 때'),SAWOL_UNNI],[TR('겁먹었을 때'),SAWOL_SCARED]);
   if(sp.brush) extra.push([TR('털을 빗어 줄 때'),BORMI_BRUSH]);
   if(sp.lines==='CHUL') extra.push([TR('용복이와 함께 있을 때'),Object.values(CHUL_YB).flat()]);
   extra.forEach(([lab,arr])=>sits.push(h('div',{class:'dexline'},h('b',null,lab),h('ul',null,arr.map(t=>h('li',null,t))))));
@@ -4145,7 +4155,7 @@ function renderPet(){
         h('div',{class:'pxrow'},h('span',{class:'small'},'EXP'),pxBar(li.v,16),h('span',{class:'small'},'Lv '+(li.L+1)+TR('까지 ')+fmtDur(li.left*60))),
         h('p',{class:'small',style:'margin:.2rem 0 0'},(nx?TR('다음 단계(')+nx[1]+TR(')까지 ')+fmtDur((nx[0]-xp)*60)+TR(' 집중'):TR('다 자랐어요! 옷을 입혀 보세요'))+' · '+TR('함께 집중 ')+fmtDur(xp*60)),
         sg?h('div',{class:'meters'},meter('rice',TR('배부름'),f,'warm'),meter('drop',TR('목마름'),w,'cool')):h('p',{class:'small'},TR('알은 밥을 먹지 않아요. 집중하면 따뜻해져서 태어나요.')),
-        sg?h('div',{class:'pxrow',style:'justify-content:center'},h('button',{onclick:()=>careFor(p,'food')},pxi('rice'),TR('밥 주기')+' · 5',pxi('coin')),h('button',{onclick:()=>careFor(p,'water')},pxi('drop'),TR('물 주기')+' · 2',pxi('coin')),SP[p.sp].brush?h('button',{onclick:()=>brushPet(p)},'🪮 '+TR('털 빗기')):null):null,
+        sg?h('div',{class:'pxrow',style:'justify-content:center'},h('button',{onclick:()=>careFor(p,'food')},pxi('rice'),TR('밥 주기')+' · 5',pxi('coin')),h('button',{onclick:()=>careFor(p,'water')},pxi('drop'),TR('물 주기')+' · 2',pxi('coin')),SP[p.sp].brush?h('button',{onclick:()=>brushPet(p)},'🪮 '+TR('털 빗기')):null,SP[p.sp].calls?h('button',{onclick:()=>callPet(p,'walk')},'🦮 '+TR('"산책?"')):null,SP[p.sp].calls?h('button',{onclick:()=>callPet(p,'yum')},'🍖 '+TR('"냠냠?"')):null):null,
         ps.length>1?h('div',{class:'petrow'},ps.map(q=>h('button',{class:'petsm','aria-pressed':String(q.id===p.id),onclick:()=>setActivePet(q.id),title:q.name},petSVG(q.sp,stageOf(petXP(q)),q.wear,petMood(q),48,petXP(q)),h('span',null,q.name),h('span',{class:'small'},'Lv '+petLv(petXP(q)))))):null,
         ps.length>1?h('p',{class:'small',style:'text-align:center;margin:.3rem 0 0'},TR('고른 동물이 지금 함께 집중하는 친구예요. 집중한 시간은 그 동물만 키워요.')):null,
         ps.length>5?h('p',{class:'small',style:'text-align:center;margin:.2rem 0 0'},TR('유리병에는 다섯 마리까지 나와요. 쉬게 하고 싶은 친구는 보관해 두세요.')):null,
@@ -4315,7 +4325,9 @@ const ANIMAL_LINES={ // 동물마다 성격이 드러나는 말 (없는 상황�
   rakun:{tap:[TR("먹기 전에 씻어야지"),TR("손재주 좋지?"),TR("쓰레기통 아니야, 탐험이야"),TR("가면 쓴 신사")],done:[TR("조물조물 잘했어")],day:[TR("반짝이는 거 찾는 중")],night:[TR("밤 탐험 출발")]},
   seal:{tap:[TR("아우! 아우!"),TR("박수 쳐 줄게"),TR("공놀이 하자"),TR("바위 위에서 뒹굴뒹굴")],done:[TR("아우! 박수 짝짝")],day:[TR("바다 수영 가자")],night:[TR("파도 소리 들으며 잘래")]},
   unicorn:{tap:[TR("반짝반짝 빛나!"),TR("무지개 타고 왔어"),TR("꿈은 이루어져"),TR("뿔은 소원을 들어줘")],done:[TR("마법처럼 해냈어!")],day:[TR("무지개 찾으러 갈래")],night:[TR("별빛 아래서 잘게")]},
-  sawol:{tap:[TR("사월이 왔어요, 멍!"),TR("개껌 줘"),TR("나 예쁘지?"),TR("창밖 구경 중"),TR("꼬리가 저절로 흔들려")],done:[TR("멍! 잘했어")],day:[TR("햇볕 낮잠 자야지"),TR("산책 가고 싶다멍")],night:[TR("같이 자자, 멍")]},
+  sawol:{tap:[TR("…"),TR("(못 들은 척)"),TR("(귀만 살짝 쫑긋)"),TR("부른 거 아니지?")],done:[TR("…잘했네. 언니 최고"),TR("(꼬리 한 번 살랑)")],
+    morning:[TR("…아침"),TR("언니 일어났어?")],day:[TR("…"),TR("산책 안 가?"),TR("(창밖을 멍하니)")],evening:[TR("언니 언제 와…"),TR("냠냠 시간 아니야?")],
+    night:[TR("언니 옆에서 잘래"),TR("무서운 소리 났어… 언니")],focus:[TR("…(언니 옆에 웅크림)"),TR("조용히 있을게")],rest:[TR("산책?"),TR("냠냠?")]},
   yuni:{tap:[TR("유니 불렀어?"),TR("간식은 언제나 환영"),TR("꾹꾹이 해 줄게"),TR("골골골…")],done:[TR("골골! 최고야")],day:[TR("창가 자리 찜")],night:[TR("이불 속으로 쏙")]},
   mikael:{tap:[TR("미카엘이야! 더 쓰다듬어 줘"),TR("킁킁… 너한테서 좋은 냄새 나"),TR("사람이 세상에서 제일 좋아"),TR("부비부비~"),TR("낑낑~ (애교 중)"),TR("인형이랑 같이 왔어"),TR("음냐… 자다 깼는데 너라서 좋아"),TR("배고파… 아까 먹긴 했지만"),TR("무릎 위에 올라가도 돼?"),TR("인형은 절대 안 놓을 거야")],
     done:[TR("잘했어! 상으로 간식 먹자"),TR("최고야! 부비부비 해 줄게"),TR("끝났어? 그럼 같이 낮잠 자자")],
@@ -4366,6 +4378,11 @@ const HBADGER_LINES={tap:[TR('난 신경 안 써'),TR('벌에 쏘여도 괜찮�
   day:[TR('벌집 털러 갈 시간'),TR('땅 파는 중. 방해하지 마')],evening:[TR('오늘도 아무것도 안 무서웠다'),TR('꿀 냄새 따라가는 중')],
   night:[TR('밤 사냥 나간다'),TR('굴 파고 잘게')],focus:[TR('겁먹지 말고 그냥 해'),TR('할 일? 덤벼 보라 그래')],rest:[TR('쉴 땐 꿀이지'),TR('잠깐 굴에서 쉬고 올게')]};
 const LINESETS={TIBFOX:TIBFOX_LINES,HBADGER:HBADGER_LINES,DUO:DUO_LINES,...CHII_LINES,...SB_LINES,...GA_LINES,DINO:DINO_LINES,DORA:DORA_LINES,PROF:PROF_LINES,CHUL:CHUL_LINES,HOMER:HOMER_LINES,YONG:YONG_LINES,SIMHOMER:SIMHOMER_LINES,MARGE:MARGE_LINES,BART:BART_LINES,LISA:LISA_LINES,MAGGIE:MAGGIE_LINES};
+const SAWOL_IGNORE=[TR('…'),TR('(못 들은 척)'),TR('(귀만 살짝 쫑긋, 다시 엎드림)'),TR('부른 거 아니지?'),TR('(심드렁)')];
+const SAWOL_UNNI=[TR('…언니라서 봐주는 거야'),TR('언니 불렀어? …좋아'),TR('(언니한테만 꼬리 살랑)')];
+const SAWOL_WALK=[TR('산책?! 산책!!'),TR('지금? 진짜? 가자!'),TR('목줄 어디 있어?!')];
+const SAWOL_YUM=[TR('냠냠?! 어디? 어디?'),TR('방금 냠냠이라고 했지?!'),TR('냠냠… 냠냠 주세요')];
+const SAWOL_SCARED=[TR('히익…'),TR('무, 무서워'),TR('언니 뒤에 숨을래')];
 const BORMI_DOG=[TR('멍멍멍! 저 강아지 누구예요!'),TR('왈왈! 저리 가!'),TR('으르르… 여긴 내 자리야'),TR('강아지는 싫어요. 사람이 좋아요')];
 const BORMI_MORE=[TR('그것도 먹을래요!'),TR('아직 배 안 불러요!'),TR('뭐든 다 맛있어요'),TR('한 입만요, 한 입만!')];
 const BORMI_BRUSH=[TR('아~ 시원해요'),TR('더 빗어 주세요!'),TR('곱슬곱슬 반짝반짝!'),TR('기분 최고예요')];
@@ -4384,6 +4401,7 @@ function buddyTap(){
   const p=activePet(); if(!p) return; const st=stageOf(petXP(p));
   {const k=today(), cur=items('pats').find(x=>x.id===k); const n=(cur&&cur.n||0)+1; put('pats',{id:k,n}); if(n%10===0) setTimeout(checkProgress,50)} // 쓰다듬은 횟수 (업적용)
   if(!st){buddySay(TR('…따뜻해. 곧 나갈게!')); return}
+  if(SP[p.sp].timid&&petMood(p)!=='sad'){if(Math.random()<.75){BUDDY.act='stare'; BUDDY.t=12; buddySay(pick(SAWOL_IGNORE))} else{BUDDY.act='wag'; BUDDY.t=10; buddySay(pick(SAWOL_UNNI))} return} // 불러도 잘 안 와요 (가끔 언니라서 봐줘요)
   const dora=p.sp==='dora', mik=SP[p.sp]&&SP[p.sp].doll; BUDDY.act=dora?pick(['jump','pocket','copter','dorayaki','door']):p.sp==='duo'?pick(['jump','evil','streak']):mik?pick(['aegyo','aegyo','dollhug']):'jump'; BUDDY.t=dora||mik?12:6;
   const heart=h('span',{class:'bheart'},pxi('heart')); buddyEl.append(heart); setTimeout(()=>heart.remove(),1100);
   const mood=petMood(p), tot=rewardDay(today());
@@ -4417,7 +4435,7 @@ function stepBuddy(){
       if(--b.t<=0){ // 다음 행동 고르기
         const r=Math.random(), night=hr>=23||hr<6, acts=(SP[p.sp]||{}).acts;
         if(night&&r<.6){b.act=p.sp==='chul'?pick(['game','ramen','cram']):p.sp==='homer'?pick(['bed','bed','sleep']):'sleep'; b.t=40+Math.random()*60}
-        else if(acts&&r<.5){b.act=SP[p.sp].dogHate&&ownsOtherDog(p)&&Math.random()<.3?'bark':pick(acts); b.t=16+Math.random()*24; if(b.act==='bark') buddySay(pick(BORMI_DOG))}
+        else if(acts&&r<.5){b.act=SP[p.sp].dogHate&&ownsOtherDog(p)&&Math.random()<.3?'bark':pick(acts); b.t=16+Math.random()*24; if(b.act==='bark') buddySay(pick(BORMI_DOG)); if(b.act==='shy') buddySay(pick(SAWOL_SCARED))}
         else if(r<.38){b.act='walk'; b.t=10+Math.random()*30; b.dir=Math.random()<.5?-1:1}
         else if(r<.46&&!sad){b.act='run'; b.t=6+Math.random()*10; b.dir=Math.random()<.5?-1:1}
         else if(r<.6){b.act='stand'; b.t=8+Math.random()*16}
@@ -4489,7 +4507,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v54'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v55'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
