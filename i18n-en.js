@@ -3095,5 +3095,6 @@ window.I18N_EN={
 "이모지 부자": "Emoji Millionaire",
 "일기 한 편에 이모지를 10개 넘게 쓰기": "Use more than 10 emoji in one diary entry",
 "같이 졸면서 공부": "Dozing While Studying Together",
-"미카엘과 함께 10시간 집중하기": "Focus for 10 hours with Mikael"
+"미카엘과 함께 10시간 집중하기": "Focus for 10 hours with Mikael",
+"어두운 화면으로 쓰기 (설정의 \"어둡게\", 또는 기기가 다크 모드일 때 \"기기 설정 따름\")": "Use a dark screen (\"Dark\" in settings, or \"Follow device\" while your device is in dark mode)"
 };

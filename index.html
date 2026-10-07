@@ -870,7 +870,7 @@ function applyLook(){
 }
 function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){memOnly=true} scheduleFolder()}
 const cfg=k=>{const v=S.settings.v[k]; return v==null?DEF[k]:v};
-function setCfg(k,v){S.settings.v[k]=v; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); agg=null; schedulePush(); render()}
+function setCfg(k,v){S.settings.v[k]=v; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); agg=null; schedulePush(); render(); if(k==='theme') setTimeout(checkProgress,300)}
 const items=d=>Object.values(S.docs[d]||{}).filter(i=>!i.x);
 function put(d,it){it.m=Date.now(); (S.docs[d]||(S.docs[d]={}))[it.id]=it; touch(d)}
 function del(d,id){if(!S.docs[d]) return; S.docs[d][id]={id,m:Date.now(),x:1}; touch(d)}
@@ -3967,7 +3967,7 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['pat100',TR('쓰다듬기 중독'),TR('화면 속 친구를 100번 쓰다듬기'),100,'pats',50],
   ['help1',TR('설명서를 읽는 희귀한 사람'),TR('사용 설명서(?)를 열어 보기'),1,'help',20],
   ['search10',TR('탐정 놀이'),TR('검색창을 10번 열기'),10,'search',30],
-  ['dark',TR('어둠의 자식'),TR('다크 모드로 바꾸기'),1,'darkMode',20],
+  ['dark',TR('어둠의 자식'),TR('어두운 화면으로 쓰기 (설정의 "어둡게", 또는 기기가 다크 모드일 때 "기기 설정 따름")'),1,'darkMode',20],
   ['jar5',TR('인테리어 장인'),TR('유리병 배경을 5번 바꾸기'),5,'jarTheme',30],
   ['rename5',TR('정체성 혼란'),TR('친구 이름을 5번 바꾸기'),5,'rename',30],
   ['rapid',TR('광클 금지'),TR('10초 안에 친구를 20번 쓰다듬기'),1,'rapid',40],
@@ -4071,7 +4071,7 @@ function achStats(){
         diaryOne:+Object.keys(S.docs).some(d=>{if(d.indexOf('diary-')!==0) return false; const it=jEntry(d.slice(6)); return it&&[...String(it.text||'').trim()].length===1}),
         patDay:Math.max(0,...items('pats').map(x=>x.n||0)),coin1004:+(bal===1004),coin1234:+(bal===1234),
         brush:fun('brush'),walkCall:fun('walkCall'),yumCall:fun('yumCall'),glutBeg:fun('glutBeg'),
-        help:fun('help'),search:fun('search'),jarTheme:fun('jarTheme'),rename:fun('rename'),rapid:fun('rapid'),sleepPat:fun('sleepPat'),foxPat:fun('foxPat'),ignored:fun('ignored'),darkMode:+(cfg('theme')==='dark'),
+        help:fun('help'),search:fun('search'),jarTheme:fun('jarTheme'),rename:fun('rename'),rapid:fun('rapid'),sleepPat:fun('sleepPat'),foxPat:fun('foxPat'),ignored:fun('ignored'),darkMode:+(cfg('theme')==='dark'||cfg('theme')==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches),
         pause10:+st.some(s=>s.segs.length>=11),dLeap:onDay('02-29'),dFri13:+Object.keys(day).some(k=>k.slice(8)==='13'&&wdOf(k)===4&&day[k]>=60),
         nye:+st.some(s=>{const t=new Date(s.segs[0][0]*1e3); return t.getMonth()===11&&t.getDate()===31&&t.getHours()>=23}),
         ...(()=>{const T=allOf('tasks-'), D=T.filter(t=>t.done&&t.doneAt), per={}; T.forEach(t=>{if(t.date) per[t.date]=(per[t.date]||0)+1});
@@ -4578,7 +4578,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v57'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v58'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
