@@ -2716,7 +2716,15 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],body:{shirt:'l',sleeve:'l',short:1,pants:'#4A5A80',shoes:'#383848',hair:1},mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
   prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],body:{shirt:'a',sleeve:'a',pants:'#2E3550',shoes:'#2A1A12',deco:[[6,0,'l'],[9,0,'l'],[6,1,'l'],[9,1,'l']]},mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
   ghost:{n:TR('유령'),pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
-  dino:{n:TR('공룡'),pal:['#1E4A28','#68C058','#D8F0A8','#F8B830','#F89898'],tail:'thin',mark:'dinoback belly'},
+  dino:{n:TR('공룡'),pal:['#1E4A28','#68C058','#D8F0A8','#F8B830','#F89898'],tail:'thin',mark:'dinoback belly',lines:'DINO'},
+  trex:{n:TR('티라노사우루스'),pal:['#4A2010','#D86A3A','#F8D8A8','#8A3418','#F89090'],tail:'thin',mark:'rexjaw belly',lines:'DINO'},
+  trike:{n:TR('트리케라톱스'),pal:['#1A3A48','#58A8B8','#D8F0E8','#F09040','#F89898'],tail:'thin',mark:'frillhorn belly',lines:'DINO'},
+  stego:{n:TR('스테고사우루스'),pal:['#2A3A18','#88B048','#E8F0B8','#E05838','#F89898'],tail:'thin',mark:'stegoplates belly',lines:'DINO'},
+  brachio:{n:TR('브라키오사우루스'),pal:['#283058','#7898D8','#D8E4F8','#4A68B0','#F8A0B0'],tail:'thin',lines:'DINO'},
+  ptera:{n:TR('프테라노돈'),pal:['#4A2A1A','#D89868','#F8E0C0','#B05830','#F89898'],mark:'pterocrest beak wings',lines:'DINO'},
+  ankylo:{n:TR('안킬로사우루스'),pal:['#3A2A18','#A88858','#E8D8B0','#6A5030','#F89898'],mark:'ankyarmor belly',lines:'DINO'},
+  pachy:{n:TR('파키케팔로사우루스'),pal:['#3A1A3A','#B880C8','#F0E0F8','#7848A0','#F8A0B8'],tail:'thin',mark:'pachydome belly',lines:'DINO'},
+  spino:{n:TR('스피노사우루스'),pal:['#3A1A10','#C8603A','#F8D0B0','#E8A030','#F89898'],tail:'thin',mark:'spinosail belly',lines:'DINO'},
   rakun:{n:TR('라쿤'),pal:['#181820','#9CA0AC','#F0F0F4','#282830','#F8A0A0'],ear:'round',tail:'ringed',mark:'bigmask'},
   seal:{n:TR('물개'),pal:['#2A2A34','#8C8CA0','#C8C8D8','#5C5C70','#F0A0B0'],mark:'whiskers flippers'},
   unicorn:{n:TR('유니콘'),pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
@@ -2779,7 +2787,8 @@ const T_MARGE=(g=>({1:g,2:g,3:g}))({g:['......oooo......','.....oaaaao.....','..
 const T_BART=(g=>({1:g,2:g,3:g}))({g:['....o.o.o.o.....','...obobobobo....','...obbbbbbbbo...','...obbbbbbbbo...','...obbbbbbbbo...','...obbbbbbbbo...','...oooobooobo...','...owewowewoo...','..oowwwowwwoo...','...oooobooobo...','...obbbbbbmbo...','...obbmmmmbbo...','...obbbbbbbbo...','....oobbbboo....','......oooo......','................'],top:0,ey:7,my:11,ny:13,R:14});
 const T_LISA=(g=>({1:g,2:g,3:g}))({g:['.....o..o.o.....','...oobooboboo...','..obbbbbbbbbbo..','.obobbbbbbbbobo.','..oobbbbbbbboo..','...oooobooobo...','...owewowewoo...','...owwwowwwoo...','...oooobooobo...','...obbbbbbmbo...','...obbmmmmbbo...','...obbbbbbbbo...','....ooobbooo....','.......oo.......','................','................'],top:0,ey:6,my:10,ny:12,R:14});
 const T_DORA=(g=>({1:g,2:g,3:g}))({g:[[".", ".", ".", ".", ".", "o", "o", "o", "o", "o", "o", ".", ".", ".", ".", "."], [".", ".", ".", "o", "o", "#3A5878", "#3A5878", "a", "a", "#3A5878", "#3A5878", "o", "o", ".", ".", "."], [".", ".", "o", "a", "#3A5878", "b", "b", "#3A5878", "#3A5878", "b", "b", "#3A5878", "a", "o", ".", "."], [".", "o", "a", "a", "#3A5878", "b", "b", "#3A5878", "#3A5878", "b", "b", "#3A5878", "a", "a", "o", "."], ["o", "a", "a", "a", "#3A5878", "b", "e", "#3A5878", "#3A5878", "e", "b", "#3A5878", "a", "a", "a", "o"], ["o", "a", "a", "a", "#3A5878", "b", "b", "#3A5878", "#3A5878", "b", "b", "#3A5878", "a", "a", "a", "o"], ["o", "a", "a", "b", "b", "#3A5878", "#3A5878", "#FFFFFF", "c", "#3A5878", "#3A5878", "b", "b", "a", "a", "o"], ["o", "a", "#3A5878", "#3A5878", "b", "b", "b", "c", "c", "b", "b", "b", "#3A5878", "#3A5878", "a", "o"], ["o", "a", "a", "b", "o", "b", "b", "b", "b", "b", "b", "o", "b", "a", "a", "o"], ["o", "a", "#3A5878", "#3A5878", "b", "o", "o", "o", "o", "o", "o", "b", "#3A5878", "#3A5878", "a", "o"], ["o", "a", "a", "b", "o", "#E03030", "#E03030", "#E03030", "#E03030", "#E03030", "#E03030", "o", "b", "a", "a", "o"], [".", "o", "a", "a", "b", "o", "#E03030", "#F08040", "#F08040", "#E03030", "o", "b", "a", "a", "o", "."], [".", ".", "o", "o", "a", "a", "o", "o", "o", "o", "a", "a", "o", "o", ".", "."], [".", ".", ".", ".", "o", "o", "o", "o", "o", "o", "o", "o", ".", ".", ".", "."], [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."], [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]],top:0,ey:2,my:9,ny:12,cut:12,R:14}); // 도라에몽: 파란 둥근 머리, 하얀 얼굴, 큰 눈, 빨간 코, 수염
-SP.dora.tpl=T_DORA; SP.simhomer.tpl=T_SIMHOMER; SP.marge.tpl=T_MARGE; SP.bart.tpl=T_BART; SP.lisa.tpl=T_LISA; SP.maggie.tpl=T_LISA;
+const T_BRACHIO=(g=>({1:g,2:g,3:g}))({g:["", "....oooooooo....", "...obbbbbbbbo...", "...obebbbbebo...", "...obebbbbebo...", "...obcbmmbcbo...", "....obbbbbbo....", ".....obbbbo.....", ".....obbbbo.....", ".....obbbbo.....", "...oobbbbbboo...", "..obbllllllbbo..", ".obbbllllllbbbo.", ".obbbbllllbbbbo.", "..obbo....obbo..", "..oooo....oooo.."],top:1,ey:3,my:5,ny:10,R:14}); // 브라키오사우루스: 작은 머리, 긴 목
+SP.brachio.tpl=T_BRACHIO; SP.dora.tpl=T_DORA; SP.simhomer.tpl=T_SIMHOMER; SP.marge.tpl=T_MARGE; SP.bart.tpl=T_BART; SP.lisa.tpl=T_LISA; SP.maggie.tpl=T_LISA;
 const POODLE={ // 보르미: 동그랗고 복슬복슬한 푸들 머리
   1:{g:['','','','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','....obbllbbo....','.....oooooo.....'],top:5,ey:10,my:12,ny:13,R:12,small:1},
   2:{g:['','','.....oooooo.....','....obblblbo....','...obblbbblbo...','..obbbbbbbbbbo..','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..obcbbmmbbcbo..','..obbbbbbbbbbo..','...obbbbbbbbo...','...obllllllbo...','...obllllllbo...','...obboooobbo...','...oooo..oooo...'],top:2,ey:7,my:9,ny:11,R:13},
@@ -2867,6 +2876,15 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('unihorn')>=0){gset(G,7,t-1,'a'); gset(G,8,t-1,'a'); gset(G,8,t-2,'a'); if(!s) gset(G,8,t-3,'a')}
   if(mk.indexOf('belly')>=0&&!s) for(let y=A.ny+1;y<A.ny+4;y+=2) for(let x=6;x<=9;x++) if(G[y][x]==='l') G[y][x]='a';
   if(mk.indexOf('feet')>=0&&st>1){const fy=14; for(let x=0;x<16;x++) if(G[fy][x]==='b') G[fy][x]='a'}
+  // 공룡들 (테두리를 그리기 전에 모양을 더해요)
+  const fillE=(x,y,c)=>{if(gget(G,x,y)==='.') gset(G,x,y,c)};
+  if(mk.indexOf('rexjaw')>=0){for(let x=6;x<=9;x++) gset(G,x,m,'m'); gset(G,6,m+1,'w'); gset(G,9,m+1,'w'); if(!s){fillE(3,A.ny+1,'b'); fillE(12,A.ny+1,'b')}} // 큰 턱과 이빨, 짧은 앞발
+  if(mk.indexOf('frillhorn')>=0){for(let y=t-1;y<=t+3;y++){const w=y===t-1?4:y===t?3:2; for(let x=w;x<=15-w;x++) fillE(x,y,'a')} [[5,t-2],[10,t-2],[5,t-3],[10,t-3]].forEach(([x,y])=>gset(G,x,y,'w')); gset(G,7,A.ey+1,'w'); gset(G,8,A.ey+1,'w')} // 프릴과 뿔 세 개
+  if(mk.indexOf('stegoplates')>=0){[4,7,10].forEach((x,i)=>{gset(G,x,t-1,'a'); gset(G,x+1,t-1,'a'); gset(G,x+(i===1?0:i===0?1:0),t-2,'a')}); if(!s){fillE(2,t+2,'a'); fillE(13,t+2,'a'); fillE(2,t+4,'a'); fillE(13,t+4,'a')}} // 등판
+  if(mk.indexOf('pterocrest')>=0){[[9,t-1],[10,t-1],[11,t-2],[12,t-2],[13,t-3]].forEach(([x,y])=>gset(G,x,y,'a')); gset(G,7,m+1,'a'); gset(G,8,m+1,'a')} // 뒤로 뻗은 볏과 긴 부리
+  if(mk.indexOf('ankyarmor')>=0){[[5,t+1],[9,t+1],[7,t+2],[4,A.ny+2],[11,A.ny+2]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,'a')}); [[2,t+3],[13,t+3],[2,t+6],[13,t+6]].forEach(([x,y])=>fillE(x,y,'a')); if(!s){const Y=A.ny+2; [[R,Y],[R+1,Y],[R+1,Y-1],[R+2,Y-1],[R+2,Y]].forEach(([x,y])=>fillE(x,y,'a'))}} // 갑옷과 곤봉 꼬리
+  if(mk.indexOf('pachydome')>=0){for(let x=5;x<=10;x++){gset(G,x,t,'a'); gset(G,x,t-1,'a')} for(let x=6;x<=9;x++) gset(G,x,t-2,'a'); fillE(4,t,'a'); fillE(11,t,'a'); gset(G,4,t-1,'a'); gset(G,11,t-1,'a')} // 단단한 돔 머리
+  if(mk.indexOf('spinosail')>=0){for(let x=5;x<=10;x++){gset(G,x,t,'a'); gset(G,x,t-1,'a'); gset(G,x,t-2,'a')} for(let x=6;x<=9;x++) gset(G,x,t-3,'a'); gset(G,7,t-4,'a'); gset(G,8,t-4,'a'); [6,8].forEach(x=>{gset(G,x,t-1,'c'); gset(G,x+1,t-2,'c')})} // 등의 돛
   outlineG(G);
   if(mk.indexOf('yuzu')>=0){const o='#F89820', d='#C86810', g='#58A040'; [[7,t-2],[8,t-2],[6,t-1],[7,t-1],[8,t-1],[9,t-1]].forEach(([x,y])=>gset(G,x,y,o)); gset(G,9,t-2,d); gset(G,8,t-3,g)} // 머리 위 유자
   if(mk.indexOf('moss')>=0){const g='#6CB04C'; [[6,t],[7,t],[8,t],[9,t],[5,t+1],[7,t+1]].forEach(([x,y])=>{if(gget(G,x,y)!=='.') gset(G,x,y,g)})}
@@ -3519,6 +3537,8 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['pets5b',TR('작은 동물원'),TR('동물 5마리와 함께하기'),5,'pets',60],
   ['people3',TR('사람 친구들'),TR('사람 친구 3명과 함께하기'),3,'people',100],
   ['pets10',TR('동물 친구 부자'),TR('동물 10마리와 함께하기'),10,'pets',200],
+  ['dino5',TR('공룡 박사'),TR('공룡 5종과 함께하기'),5,'dinos',300],
+  ['dinoall',TR('쥬라기 공원'),TR('공룡 9종과 모두 함께하기'),9,'dinos',1000],
   ['pets15',TR('동물 농장'),TR('동물 15마리와 함께하기'),15,'pets',300],
   ['pets25',TR('동물 박물관'),TR('동물 25마리와 함께하기'),25,'pets',800],
   ['grown1',TR('첫 어른'),TR('동물 한 마리를 어른까지 키우기'),1,'grown',60],
@@ -3623,7 +3643,7 @@ const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 �
   fox:{lv:8,price:1600},bear:{lv:10,price:2000},panda:{lv:12,price:2800},tiger:{lv:15,price:3500},dragon:{lv:20,price:8000},
   sheep:{ach:'t50',price:1000},squirrel:{ach:'early10',price:1500},raccoon:{ach:'night10',price:1500},koala:{ach:'s30',price:2200},
   hedgehog:{ach:'deep120',price:1800},
-  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},yongbok:{ach:'ybfan',price:800},dora:{ach:'dora22',price:700},simhomer:{ach:'simp1',price:800},marge:{ach:'simp2',price:900},bart:{ach:'simp3',price:900},lisa:{ach:'simp4',price:1000},maggie:{ach:'simp5',price:1200},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
+  capybara:{lv:9,price:1500},rock:{ach:'fullweek3',price:1200},seal:{ach:'pomo100',price:1800},rakun:{ach:'care100',price:1800},pelican:{ach:'ontime50',price:2000},ghost:{ach:'night10',price:2000},dino:{ach:'h300',price:5000},prof:{ach:'h100',price:3000},chul:{ach:'cram1',price:500},homer:{ach:'doh1',price:500},yongbok:{ach:'ybfan',price:800},dora:{ach:'dora22',price:700},trike:{lv:11,price:2200},stego:{lv:13,price:2600},ptera:{ach:'early10',price:2000},ankylo:{ach:'week25',price:2400},pachy:{ach:'deep120',price:2000},brachio:{lv:16,price:3200},spino:{lv:18,price:3800},trex:{ach:'day10',price:4500},simhomer:{ach:'simp1',price:800},marge:{ach:'simp2',price:900},bart:{ach:'simp3',price:900},lisa:{ach:'simp4',price:1000},maggie:{ach:'simp5',price:1200},owl:{ach:'h100',price:2500},axolotl:{ach:'pets5b',price:3000},unicorn:{ach:'s100',price:8000}};
 const achById=id=>ACH.find(a=>a[0]===id);
 /* 오늘의 미션 · 이번 주 미션: 해내면 저절로 코인을 받아요 (지난 날짜는 다시 셈하지 않아요) */
 const doneOn=k=>allOf('tasks-').filter(t=>t.done&&t.doneAt&&dayKey(t.doneAt)===k).length;
@@ -3677,6 +3697,7 @@ function achStats(){
     coin777:+(coinBal()===777),coin0:+(coinBal()===0&&coins.some(c=>c.amt<0)),pats:items('pats').reduce((a,x)=>a+(x.n||0),0),
     deep180,lunch:Object.keys(ld).length,bestMonth:mx(mo),studyDays:Object.keys(day).filter(k=>day[k]>=300).length,subjAll:new Set(logs.map(s=>s.sub||'-')).size,
     bestTaskDay:(m=>Math.max(0,...Object.values(m)))(allOf('tasks-').filter(t=>t.done&&t.doneAt).reduce((m,t)=>{const k=dayKey(t.doneAt); m[k]=(m[k]||0)+1; return m},{})),
+    dinos:new Set(ps.map(p=>p.sp).filter(k=>SP[k]&&SP[k].lines==='DINO')).size,
     people:ps.filter(p=>SP[p.sp]&&SP[p.sp].body).length,famAll:+['simhomer','marge','bart','lisa','maggie'].every(k=>ps.some(p=>p.sp===k)),lvl:myLv(),
     dohs:items('dohs').length,chulPet:ps.some(p=>p.sp==='chul')?1:0,
     famHK:+ps.some(p=>p.sp==='homer'),famHomer:+ps.some(p=>p.sp==='simhomer'),famMarge:+ps.some(p=>p.sp==='marge'),famBart:+ps.some(p=>p.sp==='bart'),famLisa:+ps.some(p=>p.sp==='lisa'),
@@ -3716,7 +3737,7 @@ let petTab='home', shopTab='reward', achCatSel='all', achShow='all';
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
 const ACH_FUN=['lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1'];
 const ACH_KEYCAT={streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
-  pets:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin'};
+  pets:'pet',dinos:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin'};
 const achCat=a=>ACH_FUN.indexOf(a[0])>=0?'fun':ACH_KEYCAT[a[4]]||'focus';
 function renderPet(){
   const sec=$('#v-pet'), allPs=pets(), ps=shownPets(), arch=archPets(), p=activePet(), st=softStreak(), bal=coinBal(), e=earnedCoins(), lv=myLv(e);
@@ -3872,6 +3893,7 @@ const YONG_LINES={ // 용복이: 짧은 영어 추임새와 다정한 말
   day:[TR('건강해야 돼'),TR('행복하자'),TR('Yo, 물 마셨어?'),TR('작은 동물 보고 싶다…'),TR('같이 춤출래? Yeah!')],
   evening:[TR('오늘도 고생했어, My Stay~'),TR('브라우니 구울까?'),TR('맛있게 먹어!')],
   night:[TR('잘 자, Stay~'),TR('No worries, 내일 또 하자'),TR('건강해야 돼, 얼른 자!')]};
+const DINO_LINES={tap:[TR('크아앙!'),TR('쿵, 쿵, 쿵'),TR('공룡도 공부해!'),TR('운석 조심!'),TR('쥬라기 시대에도 숙제가 있었을까?'),TR('나 화석 아니야!'),TR('크앙~ 반가워!')],focus:[TR('크아앙! 집중 모드!'),TR('공룡처럼 끈기 있게!'),TR('6,600만 년도 버텼는데 25분쯤이야')],rest:[TR('공룡 낮잠 시간… zZ'),TR('나뭇잎 간식 먹고 올게')],done:[TR('크아아앙! 해냈다!'),TR('공룡급 성과야!'),TR('쿵! 하나 끝!')],morning:[TR('크앙~ 좋은 아침!'),TR('쥬라기의 아침이 밝았어')],day:[TR('알 하나 더 품고 싶다'),TR('공룡은 꾸준함이 무기야'),TR('쿵쿵 산책 갈래?')],evening:[TR('오늘도 공룡처럼 열심히!'),TR('노을 보니 백악기 생각나')],night:[TR('크앙… 졸려'),TR('화석처럼 푹 자자')]};
 const DORA_LINES={tap:[TR('도라에몽이야!'),TR('비밀 도구 꺼내 줄까?'),TR('도라야키 있어?'),TR('쥐… 쥐는 싫어!'),TR('나는 고양이형 로봇이야'),TR('22세기에서 왔어!'),TR('대나무 헬리콥터~!'),TR('어디로든 문~!'),TR('또 숙제 미뤘지?'),TR('4차원 주머니에 다 있어!'),TR('방울이 딸랑딸랑'),TR('나 너구리 아니야!'),TR('우후후, 내가 도와줄게')],
   focus:[TR('암기빵이 있으면 좋겠지만… 오늘은 직접 해 보자!'),TR('집중! 내가 옆에서 지켜볼게'),TR('타임머신 타고 미래에서 응원하러 왔어'),TR('비밀 도구 없이도 넌 할 수 있어')],
   rest:[TR('도라야키 먹고 올게!'),TR('잠깐 벽장에서 낮잠… zZ'),TR('대나무 헬리콥터 타고 한 바퀴!')],
@@ -3886,7 +3908,7 @@ const BART_LINES={tap:[TR('Eat my shorts!'),TR('Ay caramba!'),TR('Cowabunga!'),T
 const LISA_LINES={tap:[TR('색소폰 들어 볼래?'),TR('책 읽는 게 제일 좋아'),TR('지식은 힘이야!'),TR('공부는 재밌어!')],focus:[TR('집중! 나도 같이 공부할게'),TR('A+ 받자!')],rest:[TR('색소폰 한 곡 불게')],done:[TR('완벽해!'),TR('오늘도 성장했어')],morning:[TR('좋은 아침! 오늘 계획은?')],day:[TR('도서관 가고 싶다')],evening:[TR('오늘 배운 거 정리하자')],night:[TR('내일도 열심히!')]};
 const MAGGIE_LINES={tap:[TR('*쪽쪽*'),TR('…!'),TR('까르르'),TR('*쪽쪽쪽*')],focus:[TR('*쪽쪽*')],rest:[TR('…zZ')],done:[TR('*짝짝짝*')],morning:[TR('*쪽*')],day:[TR('까르르')],evening:[TR('*쪽쪽*')],night:[TR('zZ…')]};
 const CHUL_YB={tap:[TR('용복이 최고…'),TR('용복아 사랑해!'),TR('용복이 무대 봤어?')],day:[TR('용복이 브라우니 먹고 싶다'),TR('용복이 보러 가고 싶어…')],done:[TR('용복이도 칭찬해 줄 거야!')]}; // 철컹이는 용복이를 좋아해요
-const LINESETS={DORA:DORA_LINES,PROF:PROF_LINES,CHUL:CHUL_LINES,HOMER:HOMER_LINES,YONG:YONG_LINES,SIMHOMER:SIMHOMER_LINES,MARGE:MARGE_LINES,BART:BART_LINES,LISA:LISA_LINES,MAGGIE:MAGGIE_LINES};
+const LINESETS={DINO:DINO_LINES,DORA:DORA_LINES,PROF:PROF_LINES,CHUL:CHUL_LINES,HOMER:HOMER_LINES,YONG:YONG_LINES,SIMHOMER:SIMHOMER_LINES,MARGE:MARGE_LINES,BART:BART_LINES,LISA:LISA_LINES,MAGGIE:MAGGIE_LINES};
 const petLines=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&LINESETS[sp.lines];
   const base=(L&&L[k])||LINES[k]; return sp&&sp.lines==='CHUL'&&CHUL_YB[k]&&pets().some(q=>q.sp==='yongbok')?base.concat(CHUL_YB[k]):base};
 const pick=a=>a[Math.floor(Math.random()*a.length)];
