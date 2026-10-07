@@ -3594,6 +3594,29 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['lv25',TR('레벨 25'),TR('내 레벨 25 달성'),25,'lvl',400],
   ['lv50',TR('레벨 50'),TR('내 레벨 50 달성'),50,'lvl',2000],
   ['h2000',TR('이천 시간의 전설'),TR('집중 2,000시간 채우기'),2000,'hours',3000],
+  ['lucky77',TR('럭키 세븐'),TR('타이머로 딱 77분(77분대) 집중하기'),1,'min77',77],
+  ['newyear',TR('새해 첫 집중'),TR('1월 1일에 집중하기'),1,'dNewYear',50],
+  ['aprilfool',TR('거짓말 아님'),TR('4월 1일에 집중하기'),1,'dApril',41],
+  ['dorabday',TR('도라에몽 생일 축하해!'),TR('도라에몽 생일(9월 3일)에 집중하기'),1,'dDora',93],
+  ['xmas',TR('산타도 공부해'),TR('12월 25일에 집중하기'),1,'dXmas',50],
+  ['midnight',TR('자정을 넘어서'),TR('타이머로 집중하는 사이에 자정이 지나기'),1,'midnight',40],
+  ['friday',TR('불금은 공부와 함께'),TR('금요일 밤 9시 넘어서 30분 넘게 집중하기'),1,'friNight',40],
+  ['monday',TR('월요병 퇴치'),TR('월요일 아침 9시 전에 30분 넘게 집중하기'),1,'monMorning',40],
+  ['owlbird',TR('아침형이자 올빼미형'),TR('같은 날 아침 7시 전과 밤 11시 넘어서 모두 30분 넘게 집중하기'),1,'owlBird',60],
+  ['toss5',TR('내일의 나에게 토스'),TR('할 일 하나를 다섯 번 미루기'),1,'moves5',20],
+  ['novel',TR('대하소설'),TR('일기 한 편을 1,000자 넘게 쓰기'),1,'longDiary',50],
+  ['rename',TR('이름 지어 주기'),TR('동물 이름을 내 마음대로 바꾸기'),1,'renamed',20],
+  ['fullwear',TR('완전 무장'),TR('한 친구에게 머리·얼굴·목·등 옷을 한꺼번에 입히기'),1,'fullWear',60],
+  ['jarfull',TR('유리병 꽉 채우기'),TR('유리병에 친구 다섯을 함께 두기'),1,'jarFull',40],
+  ['archive1',TR('잠깐 쉬어 가렴'),TR('친구 하나를 보관함에 넣어 보기'),1,'archived',15],
+  ['catdog',TR('묘견지간'),TR('고양이와 강아지를 함께 키우기'),1,'catDog',30],
+  ['doramouse',TR('쥐는 싫어!'),TR('도라에몽과 햄스터를 함께 키우기'),1,'doraMouse',30],
+  ['profcram',TR('교수님 몰래 벼락치기'),TR('교수와 철컹이를 함께 키우기'),1,'profChul',30],
+  ['lucky2',TR('겹경사'),TR('두 번 연달아 행운 보너스 받기'),1,'lucky2',77],
+  ['jackpot',TR('잭팟 777'),TR('코인을 딱 777개 가지고 있기'),1,'coin777',77],
+  ['broke',TR('텅장'),TR('코인을 다 써서 0개 만들기'),1,'coin0',30],
+  ['pat100',TR('쓰다듬기 중독'),TR('화면 속 친구를 100번 쓰다듬기'),100,'pats',50],
+  ['pat1000',TR('쓰다듬기 장인'),TR('화면 속 친구를 1,000번 쓰다듬기'),1000,'pats',300],
   ['allday',TR('다재다능'),TR('한 주에 항목 5개 넘게 집중'),5,'subjWeek',120]];
 const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 데려오는 값
   chick:{lv:2,price:500},hamster:{lv:3,price:700},pig:{lv:4,price:800},frog:{lv:5,price:1000},duck:{lv:6,price:1000},penguin:{lv:7,price:1300},
@@ -3640,6 +3663,18 @@ function achStats(){
     early:Object.keys(ed).length,night:Object.keys(nd).length,deep120,deep90,deep60,focus22,
     questDays:coins.filter(c=>String(c.id).indexOf('qa:')===0).length,questWeeks:coins.filter(c=>String(c.id).indexOf('qw:')===0).length,
     pomos:logs.filter(s=>s.kind==='pomo').length,quicks:logs.filter(s=>s.quick).length,fullWeeks,weekends,goalDays:Object.keys(day).filter(k=>day[k]>=gsec).length,
+    min77:logs.filter(s=>s.kind!=='manual'&&Math.floor(sessDur(s)/60)===77).length,
+    dNewYear:+Object.keys(day).some(k=>k.slice(5)==='01-01'&&day[k]>=60),dApril:+Object.keys(day).some(k=>k.slice(5)==='04-01'&&day[k]>=60),dDora:+Object.keys(day).some(k=>k.slice(5)==='09-03'&&day[k]>=60),dXmas:+Object.keys(day).some(k=>k.slice(5)==='12-25'&&day[k]>=60),
+    midnight:+logs.some(s=>s.kind!=='manual'&&s.segs&&s.segs.length&&new Date(s.segs[0][0]*1e3).toDateString()!==new Date(s.segs[s.segs.length-1][1]*1e3).toDateString()),
+    friNight:+logs.some(s=>{if(!s.segs||!s.segs.length) return false; const t=new Date(s.segs[0][0]*1e3); return t.getDay()===5&&t.getHours()>=21&&sessDur(s)>=1800}),
+    monMorning:+logs.some(s=>{if(!s.segs||!s.segs.length) return false; const t=new Date(s.segs[0][0]*1e3); return t.getDay()===1&&t.getHours()>=4&&t.getHours()<9&&sessDur(s)>=1800}),
+    owlBird:+Object.keys(ed).some(k=>nd[k]),moves5:+allOf('tasks-').some(t=>(t.moves||0)>=5),
+    longDiary:+Object.keys(S.docs).some(d=>{if(d.indexOf('diary-')!==0) return false; const it=jEntry(d.slice(6)); return it&&String(it.text||'').length>=1000}),
+    renamed:+ps.some(p=>SP[p.sp]&&p.name&&p.name!==SP[p.sp].n),fullWear:+ps.some(p=>p.wear&&['head','face','neck','back'].every(k=>p.wear[k])),
+    jarFull:+(shownPets().length>=5),archived:+ps.some(p=>p.arch),
+    catDog:+(ps.some(p=>p.sp==='cat')&&ps.some(p=>p.sp==='dog')),doraMouse:+(ps.some(p=>p.sp==='dora')&&ps.some(p=>p.sp==='hamster')),profChul:+(ps.some(p=>p.sp==='prof')&&ps.some(p=>p.sp==='chul')),
+    lucky2:(()=>{const L=new Set(coins.filter(c=>String(c.id).indexOf('l:')===0).map(c=>String(c.id).slice(2))), ss=logs.filter(s=>s.kind!=='manual'&&s.segs&&s.segs.length).sort((a,b)=>a.segs[0][0]-b.segs[0][0]); return +ss.some((s,i)=>i>0&&L.has(s.id)&&L.has(ss[i-1].id))})(),
+    coin777:+(coinBal()===777),coin0:+(coinBal()===0&&coins.some(c=>c.amt<0)),pats:items('pats').reduce((a,x)=>a+(x.n||0),0),
     deep180,lunch:Object.keys(ld).length,bestMonth:mx(mo),studyDays:Object.keys(day).filter(k=>day[k]>=300).length,subjAll:new Set(logs.map(s=>s.sub||'-')).size,
     bestTaskDay:(m=>Math.max(0,...Object.values(m)))(allOf('tasks-').filter(t=>t.done&&t.doneAt).reduce((m,t)=>{const k=dayKey(t.doneAt); m[k]=(m[k]||0)+1; return m},{})),
     people:ps.filter(p=>SP[p.sp]&&SP[p.sp].body).length,famAll:+['simhomer','marge','bart','lisa','maggie'].every(k=>ps.some(p=>p.sp===k)),lvl:myLv(),
@@ -3851,6 +3886,7 @@ function buddySay(text,ms){
 function placeBubble(){const b=buddyEl&&buddyEl.querySelector('.bbub'); if(!b||b.hidden) return; const w=b.offsetWidth, W=innerWidth; b.style.left=Math.max(8-BUDDY.x,Math.min(0,W-BUDDY.x-w-8))+'px'}
 function buddyTap(){
   const p=activePet(); if(!p) return; const st=stageOf(petXP(p));
+  {const k=today(), cur=items('pats').find(x=>x.id===k); const n=(cur&&cur.n||0)+1; put('pats',{id:k,n}); if(n%10===0) setTimeout(checkProgress,50)} // 쓰다듬은 횟수 (업적용)
   if(!st){buddySay(TR('…따뜻해. 곧 나갈게!')); return}
   const dora=p.sp==='dora'; BUDDY.act=dora?pick(['jump','pocket','copter','dorayaki','door']):'jump'; BUDDY.t=dora?12:6;
   const heart=h('span',{class:'bheart'},pxi('heart')); buddyEl.append(heart); setTimeout(()=>heart.remove(),1100);
