@@ -3830,7 +3830,11 @@ function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해�
 }
 
 /* 화면: 동물 탭 (내 동물 · 도감 · 업적 · 상점 · 코인) */
-let petTab='home', shopTab='reward', achCatSel='all', achShow='all';
+let petTab='home', shopTab='reward', achCatSel='all', achShow='all', dexCat='all', dexShow='all';
+// 도감 종류: 시리즈 캐릭터는 시리즈끼리, 나머지는 생김새로
+const DEX_SERIES={simpsons:['simhomer','marge','bart','lisa','maggie'],greys:['meredith','derek','cristina','bailey','webber','alex','mark','amelia'],sponge:['sponge','squid','patrick','sandy','krabs'],chii:['chiikawa','hachiware','usagi','momonga','kurimanju','rakko','shisa']};
+const DEX_CATS=[['all',TR('전체')],['animal',TR('🐾 동물')],['family',TR('🏠 우리 집')],['dino',TR('🦖 공룡')],['people',TR('🙂 사람·캐릭터')],['simpsons',TR('🍩 심슨 가족')],['greys',TR('🏥 그레이 아나토미')],['sponge',TR('🍍 스폰지밥')],['chii',TR('🌼 먼작귀')]];
+function dexCatOf(k){const sp=SP[k]||{}; for(const c in DEX_SERIES) if(DEX_SERIES[c].indexOf(k)>=0) return c; if(sp.special) return 'family'; if(sp.lines==='DINO') return 'dino'; if(sp.body||k==='dora') return 'people'; return 'animal'}
 // 업적 종류: 통계 키로 나누고, 재미 업적은 따로 모아요
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
 const ACH_FUN=['lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1'];
@@ -3879,10 +3883,14 @@ function renderPet(){
     }
   }
   else if(petTab==='dex'){
-    const owned=new Set(allPs.map(q=>q.sp)), nextLv=Object.keys(UNLOCK).filter(k=>UNLOCK[k].lv&&UNLOCK[k].lv>lv).sort((a,b)=>UNLOCK[a].lv-UNLOCK[b].lv)[0];
+    const owned=new Set(allPs.map(q=>q.sp)), dexList=Object.keys(SP).filter(k=>(dexCat==='all'||dexCatOf(k)===dexCat)&&(dexShow==='all'||(dexShow==='have'?owned.has(k):dexShow==='open'?!owned.has(k)&&spOpen(k,lv):!owned.has(k)&&!spOpen(k,lv))));
+    const nextLv=Object.keys(UNLOCK).filter(k=>UNLOCK[k].lv&&UNLOCK[k].lv>lv).sort((a,b)=>UNLOCK[a].lv-UNLOCK[b].lv)[0];
     body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('동물 도감')),h('span',{class:'sp small'},TR('함께 ')+allPs.length+' · '+TR('열림 ')+nOpen+' / '+Object.keys(SP).length)),
       h('p',{class:'small'},TR('레벨이 오르거나 업적을 달성하면 새 친구가 열려요. 열린 친구는 코인으로 데려올 수 있어요.')+(nextLv?' '+TR('다음 레벨 해금: ')+SP[nextLv].n+' (Lv '+UNLOCK[nextLv].lv+')':'')),
-      h('div',{class:'shopgrid'},Object.keys(SP).map(k=>{const sp=SP[k], has=owned.has(k), open=spOpen(k,lv), pr=spPrice(k), mine=ps.find(q=>q.sp===k)||allPs.find(q=>q.sp===k);
+      h('div',{class:'seg wrap',role:'group','aria-label':TR('도감 종류')},DEX_CATS.map(o=>{const l=Object.keys(SP).filter(k=>o[0]==='all'||dexCatOf(k)===o[0]); return h('button',{'aria-pressed':String(dexCat===o[0]),onclick:()=>{dexCat=o[0]; renderPet()}},...pxText(o[1]),h('span',{class:'small num',style:'margin-left:.3em;opacity:.7'},l.filter(k=>owned.has(k)).length+'/'+l.length))})),
+      h('div',{class:'pxrow wrap',style:'margin-top:.5rem'},segOf([['all',TR('모두')],['have',TR('함께하는 친구')],['open',TR('데려올 수 있는 친구')],['lock',TR('아직 잠긴 친구')]],dexShow,v=>{dexShow=v; renderPet()},TR('획득 여부'))),
+      (dexList.length?null:h('p',{class:'empty'},dexShow==='have'?TR('이 종류에서 아직 함께하는 친구가 없어요.'):dexShow==='open'?TR('지금 데려올 수 있는 친구가 없어요. 레벨을 올리거나 업적을 달성해 보세요.'):dexShow==='lock'?TR('이 종류는 모두 열렸어요! 🎉'):TR('친구가 없어요.'))),
+      h('div',{class:'shopgrid'},dexList.map(k=>{const sp=SP[k], has=owned.has(k), open=spOpen(k,lv), pr=spPrice(k), mine=ps.find(q=>q.sp===k)||allPs.find(q=>q.sp===k);
         if(has) return h('div',{class:'shopit on'},petSVG(k,mine?Math.max(1,stageOf(petXP(mine))):3,mine?mine.wear:{},'happy',64),h('b',null,sp.n),h('span',{class:'price'},(mine&&mine.arch?TR('보관 중'):TR('함께 있어요'))+(mine?' · Lv '+petLv(petXP(mine)):'')),
           mine&&mine.arch?h('button',{onclick:()=>archivePet(mine,false)},TR('보관함에서 꺼내기')):mine&&p&&mine.id!==p.id?h('button',{onclick:()=>{setActivePet(mine.id); petTab='home'; renderPet()}},TR('함께 다니기')):h('span',{class:'small'},TR('지금 친구')));
         if(!open) return h('div',{class:'shopit lock'},h('span',{class:'pix sil'},petSVG(k,3,{},'stand',64).firstChild),h('b',null,'???'),h('span',{class:'small'},...pxText('🔒 '+lockText(k))));

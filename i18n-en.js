@@ -2688,5 +2688,21 @@ window.I18N_EN={
 "라멘 가게 일하러 가요": "Off to work at the ramen shop",
 "오늘도 수고하셨습니다!": "Thank you for your hard work today!",
 "먼가 작고 귀여운 녀석들": "Nanka chiisakute kawaii yatsu",
-"먼작귀 친구 7명과 모두 함께하기": "Have all 7 Chiikawa friends"
+"먼작귀 친구 7명과 모두 함께하기": "Have all 7 Chiikawa friends",
+"🏠 우리 집": "🏠 Family",
+"🦖 공룡": "🦖 Dinosaurs",
+"🙂 사람·캐릭터": "🙂 People & characters",
+"🍩 심슨 가족": "🍩 The Simpsons",
+"🏥 그레이 아나토미": "🏥 Grey's Anatomy",
+"🍍 스폰지밥": "🍍 SpongeBob",
+"🌼 먼작귀": "🌼 Chiikawa",
+"도감 종류": "Collection type",
+"함께하는 친구": "With me",
+"데려올 수 있는 친구": "Ready to adopt",
+"아직 잠긴 친구": "Still locked",
+"획득 여부": "Owned status",
+"이 종류에서 아직 함께하는 친구가 없어요.": "No friends of this type with you yet.",
+"지금 데려올 수 있는 친구가 없어요. 레벨을 올리거나 업적을 달성해 보세요.": "Nobody to adopt right now. Level up or unlock achievements.",
+"이 종류는 모두 열렸어요! 🎉": "Everything of this type is unlocked! 🎉",
+"친구가 없어요.": "No friends here."
 };
