@@ -603,6 +603,19 @@ section[data-card=pet] h2,.pxui h2{font-family:inherit;font-weight:700;font-size
 .shopit b{font-size:14px;overflow-wrap:anywhere} .shopit.on{background:var(--px-soft)}
 .shopit .emo{font-size:2rem;line-height:1.2} .shopit .price{display:inline-flex;align-items:center;gap:.2rem;font-size:13px} .shopit .row{justify-content:center;gap:.3rem}
 .shopit button{padding:.2em .8em}
+.shopit .dexmore{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.2rem;border:0;background:none;color:inherit;width:100%;cursor:pointer}
+.shopit .dexmore .small{opacity:.75}
+.dexhero{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:.6rem;background:var(--px-bg,#FFF8E8);border:2px solid var(--px-line,#202838)}
+.dexhero svg{image-rendering:pixelated;display:block}
+.dexcap{font-size:14px}
+.dexacts{display:flex;flex-wrap:wrap;gap:.3rem}
+.dexacts button{padding:.25em .6em;font-size:13px}
+.dexacts button[aria-pressed=true]{background:var(--px-ink,#202838);color:var(--px-bg,#FFF8E8)}
+.dextr{margin:0;padding-left:1.1rem}
+.dexlines{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.5rem}
+.dexline{background:var(--soft);border-radius:10px;padding:.5rem .7rem}
+.dexline ul{margin:.25rem 0 0;padding-left:1rem;font-size:.9rem}
+dialog h3{margin:.9rem 0 .4rem}
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
 .celeb{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:61;pointer-events:none;background:var(--px-bg);color:var(--px-ink);border:4px solid var(--px-line);
   box-shadow:6px 6px 0 var(--px-line);padding:.8rem 1.4rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.3rem;text-align:center;min-width:13rem;max-width:calc(100vw - 32px)}
@@ -4007,6 +4020,45 @@ function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해�
 }
 
 /* 화면: 동물 탭 (내 동물 · 도감 · 업적 · 상점 · 코인) */
+const FOOD_N={fish:TR('생선'),bone:TR('뼈다귀'),carrot:TR('당근'),seed:TR('해바라기씨'),acorn:TR('도토리'),bamboo:TR('대나무'),honey:TR('꿀'),leaf:TR('나뭇잎'),bug:TR('벌레'),apple:TR('사과'),grape:TR('포도'),bread:TR('빵'),orange:TR('귤'),candy:TR('사탕'),cupcake:TR('컵케이크'),icecream:TR('아이스크림')};
+const LINE_SIT=[['tap',TR('쓰다듬을 때')],['done',TR('할 일을 끝냈을 때')],['focus',TR('집중할 때')],['rest',TR('쉴 때')],['morning',TR('아침')],['day',TR('낮')],['evening',TR('저녁')],['night',TR('밤')]];
+const BASE_ACTS=['stand','walk','wag','cheer','eat','sleep','read','write'];
+function dexDetail(k){ // 도감: 동물 하나의 동작과 대사를 모두 보여줘요
+  const sp=SP[k], mine=pets().find(q=>q.sp===k), xp=mine?petXP(mine):0, st=mine&&stageOf(xp)?stageOf(xp):3; // 아직 알이면 다 자란 모습으로
+  const L=LINESETS[sp.lines]||ANIMAL_LINES[k]||{}, own=Object.keys(L).length>0;
+  const acts=[...new Set([...(sp.acts||[]).filter(a=>a!=='walk'),...BASE_ACTS])].filter(a=>SEQ[a]||a==='stand'||a==='walk');
+  // 움직이는 큰 그림
+  const hh=spriteH(k,st), sc=hh>16?6:8, svg=svgEl(16,hh,''), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g); svg.setAttribute('width',16*sc); svg.setAttribute('height',hh*sc);
+  const a={pet:{id:'dex-'+k,sp:k,wear:mine?mine.wear:{}},st,xp,svg,g,x:0,y:0,noLift:1,dir:1,fi:0,walk:0,fixed:acts[0],active:true,cur:''};
+  const cap=h('b',{class:'dexcap'}), btns=[];
+  const play=act=>{a.fixed=act; a.fi=0; a.cur=''; cap.textContent=POSE_TXT[act]||act; btns.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.a===act))); showFrame(a,(SEQ[act]||SEQ.stand)[0])};
+  acts.forEach(act=>btns.push(h('button',{'data-a':act,onclick:()=>play(act)},...pxText(POSE_TXT[act]||act))));
+  ACTORS.push(a); startEngine(); play(acts[0]);
+  // 특징
+  const traits=[];
+  traits.push(TR('좋아하는 먹이: ')+(FOOD_N[sp.food||'apple']||sp.food));
+  if(sp.toy) traits.push(TR('좋아하는 장난감: ')+(sp.toy==='yarn'?TR('털실'):TR('공')));
+  if(sp.doll) traits.push(TR('자기를 닮은 회색 인형을 늘 물고 다녀요'));
+  if(sp.sleepy) traits.push(TR('잠꾸러기라서 한번 자면 오래 자고, 집중할 때도 옆에서 졸아요'));
+  if(sp.doll) traits.push(TR('배가 불러도 밥을 더 달라고 졸라요'));
+  if((sp.acts||[]).indexOf('lecture')>=0) traits.push(TR('집중할 때 옆에서 강의해요'));
+  if(k==='dora') traits.push(TR('쓰다듬으면 비밀 도구를 꺼내요'));
+  if(k==='duo') traits.push(TR('오후 3시가 지나도 집중을 안 했으면 잔소리해요'));
+  if(sp.lines==='CHUL') traits.push(TR('용복이가 있으면 용복이 이야기를 해요'));
+  if(sp.special) traits.push(TR('우리 집 친구예요'));
+  // 대사
+  const sits=LINE_SIT.map(([key,lab])=>{const arr=L[key], def=!arr; return h('div',{class:'dexline'},h('b',null,lab,def?h('span',{class:'small muted'},' '+TR('(기본 대사)')):null),h('ul',null,(arr||LINES[key]||[]).map(t=>h('li',null,t))))});
+  const extra=[];
+  if(k==='duo') extra.push([TR('오늘 집중을 안 했을 때'),DUO_NAG]);
+  if(sp.doll) extra.push([TR('배불러도 밥을 줄 때'),MIK_MORE]);
+  if(sp.lines==='CHUL') extra.push([TR('용복이와 함께 있을 때'),Object.values(CHUL_YB).flat()]);
+  extra.forEach(([lab,arr])=>sits.push(h('div',{class:'dexline'},h('b',null,lab),h('ul',null,arr.map(t=>h('li',null,t))))));
+  const body=[h('div',{class:'dexhero pxui'},h('span',{class:'pix'},svg),cap),
+    h('h3',null,TR('동작')+' '+acts.length),h('div',{class:'dexacts pxui'},btns),
+    h('h3',null,TR('특징')),h('ul',{class:'dextr'},traits.map(t=>h('li',null,t))),
+    h('h3',null,TR('대사')),own?null:h('p',{class:'small muted',style:'margin:0'},TR('아직 전용 대사가 없어서 기본 대사를 해요.')),h('div',{class:'dexlines'},sits)];
+  openDlg(sp.n,body,[h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide'); dlg.scrollTop=0;
+}
 let petTab='home', shopTab='reward', achCatSel='all', achShow='all', dexCat='all', dexShow='all';
 // 도감 종류: 시리즈 캐릭터는 시리즈끼리, 나머지는 생김새로
 const DEX_SERIES={simpsons:['simhomer','marge','bart','lisa','maggie'],greys:['meredith','derek','cristina','bailey','webber','alex','mark','amelia'],sponge:['sponge','squid','patrick','sandy','krabs'],chii:['chiikawa','hachiware','usagi','momonga','kurimanju','rakko','shisa']};
@@ -4068,10 +4120,11 @@ function renderPet(){
       h('div',{class:'pxrow wrap',style:'margin-top:.5rem'},segOf([['all',TR('모두')],['have',TR('함께하는 친구')],['open',TR('데려올 수 있는 친구')],['lock',TR('아직 잠긴 친구')]],dexShow,v=>{dexShow=v; renderPet()},TR('획득 여부'))),
       (dexList.length?null:h('p',{class:'empty'},dexShow==='have'?TR('이 종류에서 아직 함께하는 친구가 없어요.'):dexShow==='open'?TR('지금 데려올 수 있는 친구가 없어요. 레벨을 올리거나 업적을 달성해 보세요.'):dexShow==='lock'?TR('이 종류는 모두 열렸어요! 🎉'):TR('친구가 없어요.'))),
       h('div',{class:'shopgrid'},dexList.map(k=>{const sp=SP[k], has=owned.has(k), open=spOpen(k,lv), pr=spPrice(k), mine=ps.find(q=>q.sp===k)||allPs.find(q=>q.sp===k);
-        if(has) return h('div',{class:'shopit on'},petSVG(k,mine?Math.max(1,stageOf(petXP(mine))):3,mine?mine.wear:{},'happy',64),h('b',null,sp.n),h('span',{class:'price'},(mine&&mine.arch?TR('보관 중'):TR('함께 있어요'))+(mine?' · Lv '+petLv(petXP(mine)):'')),
+        const more=h('button',{class:'dexmore',onclick:()=>dexDetail(k),'aria-label':sp.n+' '+TR('자세히 보기')},petSVG(k,mine?Math.max(1,stageOf(petXP(mine))):3,mine?mine.wear:{},'happy',64),h('b',null,sp.n),h('span',{class:'small'},TR('동작·대사 보기 ›')));
+        if(has) return h('div',{class:'shopit on'},more,h('span',{class:'price'},(mine&&mine.arch?TR('보관 중'):TR('함께 있어요'))+(mine?' · Lv '+petLv(petXP(mine)):'')),
           mine&&mine.arch?h('button',{onclick:()=>archivePet(mine,false)},TR('보관함에서 꺼내기')):mine&&p&&mine.id!==p.id?h('button',{onclick:()=>{setActivePet(mine.id); petTab='home'; renderPet()}},TR('함께 다니기')):h('span',{class:'small'},TR('지금 친구')));
         if(!open) return h('div',{class:'shopit lock'},h('span',{class:'pix sil'},petSVG(k,3,{},'stand',64).firstChild),h('b',null,'???'),h('span',{class:'small'},...pxText('🔒 '+lockText(k))));
-        return h('div',{class:'shopit'},petSVG(k,3,{},'happy',64),h('b',null,sp.n),sp.special?h('span',{class:'small'},...pxText('❤ '+TR('우리 집 친구'))):h('span',{class:'num price'},pxi('coin'),String(pr)),
+        return h('div',{class:'shopit'},more,sp.special?h('span',{class:'small'},...pxText('❤ '+TR('우리 집 친구'))):h('span',{class:'num price'},pxi('coin'),String(pr)),
           (fr=>h('button',{class:fr||bal>=pr?'primary':'',disabled:!fr&&bal<pr,onclick:()=>adoptPet(k,fr)},fr?TR('무료로 데려오기'):TR('입양')))(!pr||!allPs.length&&['cat','dog','bunny'].indexOf(k)>=0))}))) ];
   }
   else if(petTab==='quest'){
