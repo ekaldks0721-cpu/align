@@ -1,0 +1,34 @@
+rules_version = '2';
+// Firebase 콘솔 → Firestore Database → 규칙(Rules) 탭에 이 내용을 그대로 붙여넣고 "게시"를 누르세요.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && request.auth.token.email == 'chaeyeonleeeee@gmail.com'; }
+    function isMember(uid) { return exists(/databases/$(database)/documents/members/$(uid)); }
+
+    // 초대코드: 관리자만 만들고 지우고 목록을 봐요. 가입하는 사람은 코드 하나를 '사용됨'으로만 바꿀 수 있어요.
+    match /invites/{code} {
+      allow get: if signedIn();
+      allow list, create, delete: if isAdmin();
+      allow update: if signedIn()
+        && resource.data.used == false
+        && request.resource.data.used == true
+        && request.resource.data.usedBy == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['used', 'usedBy', 'usedEmail', 'usedAt']);
+    }
+
+    // 회원 명단: 아직 안 쓴 초대코드를 같은 순간에 '사용됨'으로 바꿀 때만 자기 자신을 등록할 수 있어요.
+    match /members/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow list, delete: if isAdmin();
+      allow create: if signedIn() && request.auth.uid == uid
+        && get(/databases/$(database)/documents/invites/$(request.resource.data.code)).data.used == false
+        && getAfter(/databases/$(database)/documents/invites/$(request.resource.data.code)).data.usedBy == uid;
+    }
+
+    // 각자의 기록: 본인이고, 초대코드로 가입한 회원(또는 관리자)일 때만 읽고 쓸 수 있어요.
+    match /users/{uid}/{document=**} {
+      allow read, write: if signedIn() && request.auth.uid == uid && (isMember(uid) || isAdmin());
+    }
+  }
+}

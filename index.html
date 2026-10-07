@@ -401,8 +401,19 @@ dialog.wide{width:min(40rem,calc(100vw - 2rem))}
 dialog::backdrop{background:rgba(10,20,50,.45);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 dialog h2{margin-bottom:.9rem}
 dialog .acts{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1.1rem;flex-wrap:wrap}
+#gate{position:fixed;inset:0;z-index:100;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:1.2rem 1rem calc(1.2rem + env(safe-area-inset-bottom,0px));overflow-y:auto}
+#gate .gbox{width:min(24rem,100%);display:grid;gap:.6rem;background:var(--surface);color:var(--ink);border-radius:18px;padding:1.4rem 1.2rem;box-shadow:var(--shadow)}
+#gate h2{margin:0 0 .2rem;font-size:1.3rem}
+#gate input,#gate button{width:100%}
+#gate .gcode{text-transform:uppercase;letter-spacing:.12em;font-family:ui-monospace,Menlo,monospace}
+.invl{display:grid;gap:.35rem;margin:.6rem 0 0;padding:0;list-style:none}
+.invl li{display:flex;align-items:center;gap:.4rem;padding:.4rem .5rem;border-radius:10px;background:var(--soft)}
+.invl li>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.invl button{padding:.3rem .65rem;font-size:.85rem;flex:none}
+.invl code{font-family:ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:.08em}
+.invl li.used code{text-decoration:line-through;opacity:.55}
 #toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);
-  padding:.55rem 1rem;border-radius:99px;font-size:.88rem;z-index:20;max-width:90vw;box-shadow:var(--shadow)}
+  padding:.55rem 1rem;border-radius:99px;font-size:.88rem;z-index:200;max-width:90vw;box-shadow:var(--shadow)}
 
 @media (min-width:860px){
   .top{flex-wrap:nowrap;padding:.6rem 1.5rem} .tabs{order:0;width:auto} .tabs button{flex:none;padding:.25em 1.1em}
@@ -974,8 +985,8 @@ function fbListen(){
 }
 async function initFirebase(){
   if(!fbCfg||fbAuth) return; setCloud('connecting');
-  try{await fbLoad()}catch(e){setCloud('local'); return} // 인터넷이 없으면 나중에(online) 다시 시도
-  fbAuth.onAuthStateChanged(u=>{fbUser=u; if(u) fbListen(); else{fbListen(); setCloud('local')} if(view==='set') render(); if(obStep===0&&dlg.open&&!u) onboard(0)});
+  try{await fbLoad()}catch(e){setCloud('local'); gateOffline=true; if(!gateOK) setGate(true); return} // 인터넷이 없으면 나중에(online) 다시 시도
+  fbAuth.onAuthStateChanged(u=>{fbUser=u; if(!u){fbListen(); setCloud('local')} afterAuth(u); if(view==='set') render()});
 }
 window.addEventListener('online',()=>{if(fbCfg&&!fbAuth) initFirebase(); else if(fbUser&&cloud==='error') fbListen()});
 const FB_ERR={'auth/invalid-credential':TR('이메일이나 비밀번호가 맞지 않아요'),'auth/wrong-password':TR('이메일이나 비밀번호가 맞지 않아요'),'auth/user-not-found':TR('이메일이나 비밀번호가 맞지 않아요'),
@@ -983,8 +994,113 @@ const FB_ERR={'auth/invalid-credential':TR('이메일이나 비밀번호가 맞�
   'auth/invalid-email':TR('이메일 주소를 다시 확인해 주세요'),'auth/missing-password':TR('비밀번호를 입력해 주세요'),'auth/network-request-failed':TR('인터넷 연결을 확인해 주세요'),
   'auth/too-many-requests':TR('시도가 너무 많아요. 잠시 뒤에 다시 해 주세요'),'auth/operation-not-allowed':TR('Firebase에서 이메일/비밀번호 로그인이 아직 켜져 있지 않아요'),
   'auth/configuration-not-found':TR('Firebase에서 로그인 기능(Authentication)이 아직 켜져 있지 않아요'),'permission-denied':TR('Firestore 보안 규칙을 확인해 주세요'),
-  'auth/admin-restricted-operation':TR('새 계정 만들기가 막혀 있어요. 기존 계정으로 로그인해 주세요')};
+  'auth/admin-restricted-operation':TR('새 계정 만들기가 막혀 있어요. 기존 계정으로 로그인해 주세요'),
+  'invite/bad':TR('초대코드가 맞지 않아요. 다시 확인해 주세요'),'invite/used':TR('이미 사용된 초대코드예요. 새 코드를 받아 주세요')};
 const fbErr=e=>FB_ERR[e&&e.code]||TR('잘 안 됐어요. 잠시 뒤 다시 해 보세요')+(e&&e.code?' ('+e.code+')':'');
+/* ---------- 가입 잠금: 초대코드로 가입한 친구만 앱을 쓸 수 있어요 ---------- */
+const ADMIN_EMAIL='chaeyeonleeeee@gmail.com', MEM='align.member', CODE_CH='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const isAdmin=()=>!!(fbUser&&(fbUser.email||'').toLowerCase()===ADMIN_EMAIL);
+const normCode=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const showCode=c=>c.length===8?c.slice(0,4)+'-'+c.slice(4):c;
+const genCode=()=>Array.from(crypto.getRandomValues(new Uint32Array(8)),n=>CODE_CH[n%CODE_CH.length]).join('');
+let gateOK=false, gateBusy=false, gateOffline=false, gateChecking=false, gateMode='new';
+function memCached(){try{return localStorage.getItem(MEM)}catch(e){return null}}
+function setMemCache(id){try{id?localStorage.setItem(MEM,id):localStorage.removeItem(MEM)}catch(e){}}
+async function checkMember(u){ // 이 계정이 초대코드로 가입했는지 확인 (관리자는 언제나 통과)
+  if(isAdmin()) return true;
+  return (await firebase.firestore().collection('members').doc(u.uid).get()).exists}
+async function redeem(code){ // 초대코드를 한 번 쓰고, 이 계정을 회원으로 등록해요
+  const fs=firebase.firestore(), c=normCode(code); if(c.length<6) throw {code:'invite/bad'};
+  const ref=fs.collection('invites').doc(c); let sn;
+  try{sn=await ref.get()}catch(e){throw e&&e.code==='permission-denied'?{code:'invite/bad'}:e}
+  if(!sn.exists) throw {code:'invite/bad'}; if(sn.data().used) throw {code:'invite/used'};
+  const b=fs.batch(), now=Date.now(), em=fbUser.email||'';
+  b.update(ref,{used:true,usedBy:fbUser.uid,usedEmail:em,usedAt:now});
+  b.set(fs.collection('members').doc(fbUser.uid),{code:c,email:em,at:now});
+  try{await b.commit()}catch(e){throw e&&e.code==='permission-denied'?{code:'invite/used'}:e}
+  setMemCache(fbUser.uid)}
+function openApp(){ // 잠금을 풀고 클라우드 동기화를 시작해요
+  if(fbUser){setMemCache(fbUser.uid); if(!fbUnsub) fbListen()}
+  const was=gateOK; setGate(false); if(!was){render(); setTimeout(maybeOnboard,300)}}
+async function afterAuth(u){
+  if(gateBusy) return; // 가입하는 중에는 가입 버튼이 마무리해요
+  if(!u){setMemCache(null); setGate(true); return}
+  if(isAdmin()||memCached()===u.uid){openApp(); // 이 기기에서 확인한 적 있으면 바로 열고, 뒤에서 다시 확인
+    if(!isAdmin()) checkMember(u).then(ok=>{if(!ok&&fbUser===u){setMemCache(null); if(fbUnsub){fbUnsub(); fbUnsub=null} setGate(true)}}).catch(()=>{}); return}
+  gateChecking=true; setGate(true);
+  let ok=false; try{ok=await checkMember(u)}catch(e){}
+  gateChecking=false; if(fbUser!==u) return;
+  if(ok) openApp(); else setGate(true)}
+function setGate(open){
+  let g=$('#gate');
+  if(!open){gateOK=true; if(g) g.remove(); return}
+  gateOK=false; closeDlg();
+  if(!g){g=h('div',{id:'gate',role:'dialog','aria-modal':'true','aria-label':TR('로그인')}); document.body.append(g)}
+  paintGate(g)}
+function paintGate(g){
+  const box=h('div',{class:'gbox'},h('h2',null,'Align')), add=(...xs)=>box.append(...xs.filter(Boolean));
+  const enterGo=(fs,btn)=>fs.forEach(f=>f.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing) btn.click()}));
+  if(!fbAuth||gateChecking){
+    add(h('p',{class:'muted',style:'margin:0'},gateChecking?TR('계정을 확인하는 중이에요…'):gateOffline?TR('로그인하려면 인터넷 연결이 필요해요. 연결한 뒤 다시 시도해 주세요.'):TR('계정 서버에 연결하는 중이에요…')),
+      gateOffline&&!fbAuth?h('button',{class:'primary',onclick:()=>{gateOffline=false; paintGate(g); initFirebase()}},TR('다시 시도')):null);
+  }else if(fbUser){ // 계정은 있지만 초대코드가 확인되지 않은 상태 (예전에 만든 계정 등)
+    const fC=h('input',{class:'gcode',placeholder:TR('초대코드 (예: ABCD-2345)'),autocapitalize:'characters',autocomplete:'off',spellcheck:'false','aria-label':TR('초대코드')});
+    const b=h('button',{class:'primary'},TR('초대코드 확인'));
+    b.onclick=async()=>{if(normCode(fC.value).length<6){toast(TR('초대코드를 입력해 주세요')); fC.focus(); return}
+      b.disabled=true; try{await redeem(fC.value); toast(TR('확인됐어요! 환영해요')); openApp()}catch(e){toast(fbErr(e))} b.disabled=false};
+    enterGo([fC],b);
+    add(h('p',{style:'margin:0'},h('b',null,fbUser.email),TR(' 계정은 아직 초대코드가 확인되지 않았어요. 친구에게 받은 초대코드를 한 번만 입력하면 계속 쓸 수 있어요.')),fC,b,
+      h('button',{class:'quiet',onclick:()=>fbAuth.signOut()},TR('다른 계정으로 로그인')));
+    setTimeout(()=>fC.focus(),80);
+  }else{ // 로그인 / 초대코드로 가입
+    const neu=gateMode==='new';
+    const fE=h('input',{type:'email',placeholder:TR('이메일'),autocomplete:'username',autocapitalize:'off','aria-label':TR('이메일')});
+    const fP=h('input',{type:'password',placeholder:TR('비밀번호 (6자 이상)'),autocomplete:neu?'new-password':'current-password','aria-label':TR('비밀번호')});
+    const fP2=h('input',{type:'password',placeholder:TR('비밀번호 한 번 더'),autocomplete:'new-password','aria-label':TR('비밀번호 확인'),hidden:!neu});
+    const fC=h('input',{class:'gcode',placeholder:TR('초대코드 (예: ABCD-2345)'),autocapitalize:'characters',autocomplete:'off',spellcheck:'false','aria-label':TR('초대코드'),hidden:!neu});
+    const btn=h('button',{class:'primary'},neu?TR('초대코드로 가입하기'):TR('로그인'));
+    btn.onclick=async()=>{const em=fE.value.trim(), pw=fP.value;
+      if(!em){toast(TR('이메일을 입력해 주세요')); fE.focus(); return}
+      if(neu&&pw!==fP2.value){toast(TR('비밀번호가 서로 달라요. 다시 확인해 주세요')); fP2.focus(); return}
+      if(neu&&normCode(fC.value).length<6){toast(TR('초대코드를 입력해 주세요')); fC.focus(); return}
+      btn.disabled=true; gateBusy=true; let ok=false;
+      try{if(neu){await fbAuth.createUserWithEmailAndPassword(em,pw);
+          try{await redeem(fC.value)}catch(e){try{await fbAuth.currentUser.delete()}catch(x){await fbAuth.signOut()} throw e} // 코드가 틀리면 방금 만든 계정은 지워요
+          toast(TR('가입했어요! 환영해요')); ok=true}
+        else{await fbAuth.signInWithEmailAndPassword(em,pw); toast(TR('로그인했어요. 기록을 맞추는 중이에요')); ok=true}}
+      catch(e){toast(fbErr(e))}
+      gateBusy=false; btn.disabled=false; if(ok) afterAuth(fbUser)};
+    enterGo([fE,fP,fP2,fC],btn);
+    add(h('p',{style:'margin:0'},neu?TR('친구에게 받은 초대코드가 있어야 가입할 수 있어요. 이 기기에 있던 기록은 가입하면 계정으로 합쳐져요.'):TR('가입한 이메일과 비밀번호로 로그인하세요.')),
+      fE,fP,fP2,fC,btn,
+      h('button',{class:'quiet',onclick:()=>{gateMode=neu?'in':'new'; paintGate(g)}},neu?TR('이미 계정이 있어요 (로그인)'):TR('처음이에요 (초대코드로 가입)')),
+      neu?null:h('button',{class:'quiet',onclick:async()=>{const em=fE.value.trim(); if(!em){toast(TR('위에 이메일을 먼저 입력해 주세요')); return} try{await fbAuth.sendPasswordResetEmail(em); toast(TR('비밀번호를 바꾸는 메일을 보냈어요'))}catch(e){toast(fbErr(e))}}},TR('비밀번호를 잊었어요')));
+    setTimeout(()=>fE.focus(),80);
+  }
+  g.replaceChildren(box)}
+let invCache=null;
+function inviteBox(){ // 설정: 관리자 계정에만 보이는 초대코드 관리
+  if(!isAdmin()||!window.firebase) return null;
+  const list=h('ul',{class:'invl'});
+  const paint=()=>{if(!invCache){list.replaceChildren(h('li',null,TR('불러오는 중…'))); return}
+    if(invCache.err){list.replaceChildren(h('li',null,invCache.err)); return}
+    if(!invCache.length){list.replaceChildren(h('li',{class:'muted'},TR('아직 만든 초대코드가 없어요.'))); return}
+    list.replaceChildren(...invCache.map(v=>h('li',{class:v.used?'used':''},h('code',null,showCode(v.id)),
+      h('span',{class:'small muted'},v.used?TR('사용됨 · ')+(v.usedEmail||'')+(v.usedAt?' · '+new Date(v.usedAt).toLocaleDateString():''):TR('아직 안 씀')),
+      v.used?null:h('button',{onclick:async()=>{const t=TR('Align 초대코드: ')+showCode(v.id)+'\n'+location.origin+location.pathname;
+        try{await navigator.clipboard.writeText(t); toast(TR('초대 메시지를 복사했어요'))}catch(e){toast(showCode(v.id))}}},TR('복사')),
+      v.used?null:h('button',{class:'quiet','aria-label':TR('지우기'),title:TR('지우기'),onclick:async()=>{if(!await ask(showCode(v.id)+TR(' 코드를 지울까요?'),TR('지우면 이 코드로는 가입할 수 없어요.'),TR('지우기'))) return;
+        try{await firebase.firestore().collection('invites').doc(v.id).delete(); invCache=invCache.filter(x=>x.id!==v.id); paint()}catch(e){toast(fbErr(e))}}},'✕'))))};
+  const load=async()=>{try{const sn=await firebase.firestore().collection('invites').orderBy('createdAt','desc').limit(200).get(); invCache=sn.docs.map(d=>({id:d.id,...d.data()}))}
+    catch(e){invCache={err:fbErr(e)}} paint()};
+  const make=async n=>{const fs=firebase.firestore(), b=fs.batch(), now=Date.now();
+    for(let i=0;i<n;i++) b.set(fs.collection('invites').doc(genCode()),{used:false,createdAt:now+i,by:fbUser.uid});
+    try{await b.commit(); toast(n+TR('개 초대코드를 만들었어요')); invCache=null; paint(); load()}catch(e){toast(fbErr(e))}};
+  if(!invCache) load(); paint();
+  return h('section',{class:'card'},h('h2',null,TR('초대코드 관리')),
+    h('p',{class:'small muted',style:'margin:.3rem 0 .6rem'},TR('이 카드는 관리자 계정에서만 보여요. 코드 하나로 한 명만 가입할 수 있어요. "복사"를 누르면 앱 주소와 함께 초대 메시지가 복사돼요.')),
+    h('div',{class:'row'},h('button',{class:'primary',onclick:()=>make(1)},TR('코드 1개 만들기')),h('button',{onclick:()=>make(5)},TR('코드 5개 만들기')),
+      h('button',{class:'quiet',onclick:()=>{invCache=null; paint(); load()}},TR('새로고침'))),list)}
 function syncBox(){ // 설정 → 저장 카드의 '기기 간 동기화'
   if(!fbCfg) return null;
   const head=h('h3',{style:'margin-top:.9rem'},TR('기기 간 동기화'));
@@ -1074,7 +1190,7 @@ async function initFolder(){
 
 /* ---------- 대화상자 ---------- */
 const dlg=$('#dlg');
-function openDlg(title,body,acts,wide){dlg.classList.toggle('wide',!!wide); dlg.classList.toggle('xwide',wide==='xwide'); dlg.replaceChildren(h('h2',null,title),h('div',{class:'form'},body),h('div',{class:'acts'},acts)); if(!dlg.open) dlg.showModal()}
+function openDlg(title,body,acts,wide){if(fbCfg&&!gateOK) return; dlg.classList.toggle('wide',!!wide); dlg.classList.toggle('xwide',wide==='xwide'); dlg.replaceChildren(h('h2',null,title),h('div',{class:'form'},body),h('div',{class:'acts'},acts)); if(!dlg.open) dlg.showModal()}
 const closeDlg=()=>{if(dlg.open) dlg.close()};
 function ask(title,msg,okLabel){return new Promise(res=>{
   openDlg(title,h('p',{style:'margin:0'},msg),[h('button',{onclick:()=>{closeDlg();res(false)}},TR('그만두기')),h('button',{class:'danger',onclick:()=>{closeDlg();res(true)}},okLabel)]);
@@ -2115,6 +2231,7 @@ function renderSet(){
           h('ul',{class:'list'},ac.map(c=>h('li',null,h('span',{style:'flex:1'},h('b',null,c.name),TR(' 카테고리 (항목 ')+subs().filter(x=>catOf(x.id)===c.id).length+TR('개)')),h('button',{onclick:()=>{const it=clone(c); delete it.arch; put('cats',it); render()}},TR('되살리기')))),
             as.map(x=>h('li',null,h('i',{class:'dot',style:'background:'+x.color}),h('span',{style:'flex:1'},x.name,h('span',{class:'small muted'},' '+catName(catOf(x.id)))),h('button',{onclick:()=>{const it=clone(x); delete it.arch; put('subjects',it); render()}},TR('되살리기')),
               h('button',{class:'quiet',onclick:async()=>{if(await ask('"'+x.name+TR('" 항목을 지울까요?'),TR('이 항목으로 남긴 기록은 지워지지 않고 미분류로 보여요.'),TR('항목 지우기'))){del('subjects',x.id); render()}}},TR('지우기'))))))})()),
+    inviteBox(),
     h('section',{class:'card'},h('h2',null,TR('저장')),syncBox(),
       isIOS&&!fsOK()?[h('h3',{style:'margin-top:.9rem'},TR('아이폰에 저장')),h('p',{class:'small muted',style:'margin:.3rem 0 1rem'},TR('아이폰에서는 기록이 이 앱 안에 저장돼요. 설정의 "JSON 백업"을 누르고 "파일에 저장"을 고르면 iCloud Drive 등에 백업할 수 있어요. 가끔 백업해 두세요.'))]:[
       h('h3',{style:'margin-top:.9rem'},TR('데이터 폴더')),
@@ -4232,9 +4349,11 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-initFolder().then(()=>{ // 기록이 하나도 없는 첫 실행에만 시작 안내를 띄움
-  let seen=true; try{seen=!!localStorage.getItem(OB)}catch(e){}
-  if(!seen&&!allOf('log-').length&&!allOf('tasks-').length&&!dlg.open) onboard(0)});
+function maybeOnboard(){ // 기록이 하나도 없는 첫 실행에만 시작 안내를 띄움
+  if(fbCfg&&!gateOK) return; let seen=true; try{seen=!!localStorage.getItem(OB)}catch(e){}
+  if(!seen&&!allOf('log-').length&&!allOf('tasks-').length&&!dlg.open) onboard(0)}
+if(!fbCfg||memCached()) gateOK=true; else setGate(true); // 가입한 적 있는 기기는 바로 열고, 로그인 상태는 뒤에서 확인
+initFolder().then(maybeOnboard);
 /* ---------- 알림 (앱이 열려 있는 동안) ---------- */
 const NK='align.notify', NF='align.notified';
 const canNotify=()=>'Notification' in window;
