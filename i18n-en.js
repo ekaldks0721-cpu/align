@@ -2853,5 +2853,13 @@ window.I18N_EN={
 "대사": "Lines",
 "아직 전용 대사가 없어서 기본 대사를 해요.": "No special lines yet, so it uses the default lines.",
 "자세히 보기": "details",
-"동작·대사 보기 ›": "Actions & lines ›"
+"동작·대사 보기 ›": "Actions & lines ›",
+"사월이 왔어요, 멍!": "Sawol's here, woof!",
+"개껌 줘": "Give me a chew stick",
+"꼬리가 저절로 흔들려": "My tail wags all by itself",
+"멍! 잘했어": "Woof! Well done",
+"산책 가고 싶다멍": "I wanna go for a walk, woof",
+"같이 자자, 멍": "Let's sleep together, woof",
+"킁킁… 너한테서 좋은 냄새 나": "Sniff sniff… you smell nice",
+"낑낑~ (애교 중)": "Whine whine~ (being cute)"
 };

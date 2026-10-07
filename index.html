@@ -2881,11 +2881,11 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   rakun:{n:TR('라쿤'),acts:["snack", "swim", "sleep"],food:'apple',pal:['#181820','#9CA0AC','#F0F0F4','#282830','#F8A0A0'],ear:'round',tail:'ringed',mark:'bigmask'},
   seal:{n:TR('물개'),acts:["snack", "toy", "swim"],food:'fish',toy:'ball',pal:['#2A2A34','#8C8CA0','#C8C8D8','#5C5C70','#F0A0B0'],mark:'whiskers flippers'},
   unicorn:{n:TR('유니콘'),acts:["sparkle", "sparkle", "float", "snack"],food:'cupcake',pal:['#4A3868','#FFFFFF','#FFF0F8','#F8C838','#F890C8'],ear:'tri',mark:'mane unihorn'},
-  sawol:{n:TR('정사월'),acts:["snack", "toy", "sleep", "wag"],food:'fish',toy:'yarn',special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 털, 쫑긋한 분홍 귀, 말린 꼬리
+  sawol:{n:TR('정사월'),acts:["snack", "toy", "sleep", "wag"],food:'bone',toy:'ball',special:1,pal:['#5A4A48','#FFFFFF','#FFF2E0','#F09AA6','#F8B4BC'],ear:'tri',tail:'plume',mark:'pinknose pinkears'}, // 하얀 강아지: 쫑긋한 분홍 귀, 말린 꼬리
   yuni:{n:TR('유니'),acts:["snack", "toy", "sleep", "wag"],food:'fish',toy:'yarn',special:1,pal:['#5A4448','#FFFFFF','#FFF4EA','#F0A050','#F8B0BA'],ear:'tri',tail:'thin',tailC:'a',mark:'pinknose pinkearsc orangecap'}, // 하얀 털, 머리 위 주황 얼룩, 분홍 귀·코, 주황 꼬리
   ttukbul:{n:TR('이뚝불'),acts:["snack", "cheer", "sleep"],food:'bug',special:1,pal:['#5A4428','#E2BC7C','#F2DCAC','#B88A48','#EBB098'],tail:'thin',mark:'lashes geckoeyes wide smile'}, // 크레스티드 게코: 황갈색, 눈 위 속눈썹 돌기, 세로 동공의 큰 눈, 웃는 입
   bormi:{n:TR('보르미'),acts:["snack", "toy", "wag", "cheer"],food:'bone',toy:'ball',special:1,pal:['#4A2216','#B86A3E','#C8804E','#8C4626','#F0909A'],ear:'flop',tail:'curl',mark:'poodle browNose tongue'}, // 갈색 토이 푸들: 복슬복슬한 머리 방울, 늘어진 귀, 짙은 갈색 코, 내민 혀
-  mikael:{n:TR('미카엘'),acts:["sleep", "sleep", "sleep", "snack", "snack", "beg", "beg", "aegyo", "aegyo", "dollhug"],food:'fish',toy:'yarn',special:1,doll:1,sleepy:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색, 접힌 귀, 가는 꼬리
+  mikael:{n:TR('미카엘'),acts:["sleep", "sleep", "sleep", "snack", "snack", "beg", "beg", "aegyo", "aegyo", "dollhug", "wag"],food:'bone',toy:'ball',special:1,doll:1,sleepy:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색 강아지: 접힌 귀, 가는 꼬리
 const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면 레벨이나 업적으로 열려요
   flower:{n:TR('꽃핀'),slot:'head',price:150},sprout:{n:TR('새싹'),slot:'head',price:150},starpin:{n:TR('별 핀'),slot:'head',price:200},ribbon:{n:TR('리본'),slot:'head',price:200},
   cap:{n:TR('야구 모자'),slot:'head',price:300},beanie:{n:TR('털모자'),slot:'head',price:350},straw:{n:TR('밀짚모자'),slot:'head',price:400},santa:{n:TR('산타 모자'),slot:'head',price:500},
@@ -4273,9 +4273,9 @@ const ANIMAL_LINES={ // 동물마다 성격이 드러나는 말 (없는 상황�
   rakun:{tap:[TR("먹기 전에 씻어야지"),TR("손재주 좋지?"),TR("쓰레기통 아니야, 탐험이야"),TR("가면 쓴 신사")],done:[TR("조물조물 잘했어")],day:[TR("반짝이는 거 찾는 중")],night:[TR("밤 탐험 출발")]},
   seal:{tap:[TR("아우! 아우!"),TR("박수 쳐 줄게"),TR("공놀이 하자"),TR("바위 위에서 뒹굴뒹굴")],done:[TR("아우! 박수 짝짝")],day:[TR("바다 수영 가자")],night:[TR("파도 소리 들으며 잘래")]},
   unicorn:{tap:[TR("반짝반짝 빛나!"),TR("무지개 타고 왔어"),TR("꿈은 이루어져"),TR("뿔은 소원을 들어줘")],done:[TR("마법처럼 해냈어!")],day:[TR("무지개 찾으러 갈래")],night:[TR("별빛 아래서 잘게")]},
-  sawol:{tap:[TR("사월이 왔다냥"),TR("츄르 줘"),TR("나 예쁘지?"),TR("창밖 구경 중")],done:[TR("냥! 잘했어")],day:[TR("햇볕 낮잠 자야지")],night:[TR("같이 자자냥")]},
+  sawol:{tap:[TR("사월이 왔어요, 멍!"),TR("개껌 줘"),TR("나 예쁘지?"),TR("창밖 구경 중"),TR("꼬리가 저절로 흔들려")],done:[TR("멍! 잘했어")],day:[TR("햇볕 낮잠 자야지"),TR("산책 가고 싶다멍")],night:[TR("같이 자자, 멍")]},
   yuni:{tap:[TR("유니 불렀어?"),TR("간식은 언제나 환영"),TR("꾹꾹이 해 줄게"),TR("골골골…")],done:[TR("골골! 최고야")],day:[TR("창가 자리 찜")],night:[TR("이불 속으로 쏙")]},
-  mikael:{tap:[TR("미카엘이야! 더 쓰다듬어 줘"),TR("골골골골…"),TR("사람이 세상에서 제일 좋아"),TR("부비부비~"),TR("냐앙~ (애교 중)"),TR("인형이랑 같이 왔어"),TR("음냐… 자다 깼는데 너라서 좋아"),TR("배고파… 아까 먹긴 했지만"),TR("무릎 위에 올라가도 돼?"),TR("인형은 절대 안 놓을 거야")],
+  mikael:{tap:[TR("미카엘이야! 더 쓰다듬어 줘"),TR("킁킁… 너한테서 좋은 냄새 나"),TR("사람이 세상에서 제일 좋아"),TR("부비부비~"),TR("낑낑~ (애교 중)"),TR("인형이랑 같이 왔어"),TR("음냐… 자다 깼는데 너라서 좋아"),TR("배고파… 아까 먹긴 했지만"),TR("무릎 위에 올라가도 돼?"),TR("인형은 절대 안 놓을 거야")],
     done:[TR("잘했어! 상으로 간식 먹자"),TR("최고야! 부비부비 해 줄게"),TR("끝났어? 그럼 같이 낮잠 자자")],
     morning:[TR("아침밥! 아침밥!"),TR("5분만 더 잘래… zZ"),TR("일어났어? 쓰다듬어 줘")],
     day:[TR("낮잠 자기 딱 좋은 날씨야"),TR("밥 시간 아직이야?"),TR("인형 물고 따라다니는 중"),TR("어디 가? 나도 갈래")],
