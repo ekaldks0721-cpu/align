@@ -3739,16 +3739,17 @@ function adoptPet(spk,free){
   S.settings.v.activePet=id; S.settings.m=now; S.dirty.settings=1; saveLocal(); schedulePush();
   celebrate('🥚 '+sp.n,TR('알을 품기 시작했어요. 30분 집중하면 태어나요'),true); petTab='home'; checkProgress(); render();
 }
+const funInc=k=>{const x=items('fun').find(y=>y.id===k); put('fun',{id:k,n:(x&&x.n||0)+1}); setTimeout(checkProgress,50)}; // 재미 업적용 횟수
 function callPet(p,kind){ // 사월이를 부르는 마법의 말: "산책?" "냠냠?"
-  if(!p) return; if(kind==='walk'){petReact('zoom',4500); buddySay(pick(SAWOL_WALK))} else{petReact('beg',4000); buddySay(pick(SAWOL_YUM))}
+  if(!p) return; funInc(kind==='walk'?'walkCall':'yumCall'); if(kind==='walk'){petReact('zoom',4500); buddySay(pick(SAWOL_WALK))} else{petReact('beg',4000); buddySay(pick(SAWOL_YUM))}
   toast(p.name+(kind==='walk'?TR('이가 번쩍 일어났어요!'):TR('이가 귀를 쫑긋 세웠어요!'))); render()}
 function brushPet(p){ // 털 빗기: 코인 없이 언제든 (보르미가 정말 좋아해요)
-  if(!p) return; petReact('brush',4000); buddySay(pick(BORMI_BRUSH)); toast(p.name+TR('의 털을 빗어 줬어요. 기분이 최고래요!'));
+  if(!p) return; funInc('brush'); petReact('brush',4000); buddySay(pick(BORMI_BRUSH)); toast(p.name+TR('의 털을 빗어 줬어요. 기분이 최고래요!'));
   {const k=today(), cur=items('pats').find(x=>x.id===k); put('pats',{id:k,n:(cur&&cur.n||0)+1})} render()}
 function careFor(p,kind){
   const k=kind==='food', cost=k?5:2, key=k?'fed':'water', f=fullOf(p[key],k?36:24);
   const glut=SP[p.sp]&&SP[p.sp].glutton; // 먹보는 배가 불러도 더 달라고 졸라요
-  if(f>.9){if(k&&glut){petReact('beg',3500); buddySay(pick(GLUT_MORE[p.sp]||MIK_MORE)); toast(TR('배는 부른데 또 달라고 조르고 있어요'))} else toast(k?TR('지금은 배불러요'):TR('지금은 목마르지 않아요')); return}
+  if(f>.9){if(k&&glut){funInc('glutBeg'); petReact('beg',3500); buddySay(pick(GLUT_MORE[p.sp]||MIK_MORE)); toast(TR('배는 부른데 또 달라고 조르고 있어요'))} else toast(k?TR('지금은 배불러요'):TR('지금은 목마르지 않아요')); return}
   if(!spend(cost,(k?TR('밥 주기'):TR('물 주기'))+' · '+p.name,'care')) return; setTimeout(checkProgress,50);
   put('pets',Object.assign(clone(p),{[key]:Date.now()})); petReact('eat',2500); render(); if(k&&glut) setTimeout(()=>buddySay(pick(GLUT_MORE[p.sp]||MIK_MORE)),600);
   toast(k?TR('냠냠! 맛있게 먹었어요'):TR('꿀꺽! 시원해요'));
@@ -3964,6 +3965,31 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['jackpot',TR('잭팟 777'),TR('코인을 딱 777개 가지고 있기'),1,'coin777',77],
   ['broke',TR('텅장'),TR('코인을 다 써서 0개 만들기'),1,'coin0',30],
   ['pat100',TR('쓰다듬기 중독'),TR('화면 속 친구를 100번 쓰다듬기'),100,'pats',50],
+  ['pi314',TR('원주율의 맛'),TR('3월 14일에 집중하기 (3.14…)'),1,'dPi',31],
+  ['hangul',TR('세종대왕님 보고 계세요'),TR('한글날(10월 9일)에 집중하기'),1,'dHangul',40],
+  ['halloween',TR('공부 귀신'),TR('핼러윈(10월 31일)에 집중하기'),1,'dHalloween',31],
+  ['valentine',TR('초콜릿보다 공부'),TR('밸런타인데이(2월 14일)에 집중하기'),1,'dValentine',40],
+  ['pepero',TR('빼빼로 대신 연필'),TR('11월 11일에 집중하기'),1,'dPepero',41],
+  ['wish1111',TR('소원을 빌어요'),TR('11시 11분에 타이머 시작하기'),1,'at1111',51],
+  ['seq1234',TR('하나 둘 셋 넷'),TR('12시 34분에 타이머 시작하기'),1,'at1234',34],
+  ['exact60',TR('칼같은 한 시간'),TR('타이머로 딱 60분(60분대) 집중하기'),1,'min60',40],
+  ['tiny1',TR('시작이 반이다'),TR('타이머로 1분대만 집중하고 끝내기'),1,'tiny',20],
+  ['split10',TR('쪼개기 장인'),TR('하루에 타이머 집중을 10번 하기'),10,'splitDay',60],
+  ['ghost3',TR('귀신도 잠든 시간'),TR('새벽 3시대에 타이머 시작하기'),1,'at3am',40],
+  ['wkhard',TR('주말 반납'),TR('토요일과 일요일 모두 3시간 넘게 집중한 주말'),1,'weekendHard',100],
+  ['tomato4',TR('토마토 한 바구니'),TR('하루에 뽀모도로 4번 끝내기'),4,'tomatoDay',50],
+  ['toss10',TR('미루기 그랜드마스터'),TR('할 일 하나를 열 번 미루기'),1,'moves10',30],
+  ['diary1',TR('할 말은 많지만…'),TR('일기를 딱 한 글자만 쓰기'),1,'diaryOne',20],
+  ['patday',TR('손이 멈추질 않아'),TR('하루에 친구를 100번 쓰다듬기'),100,'patDay',50],
+  ['coin1004',TR('천사 지갑'),TR('코인을 딱 1,004개 갖기'),1,'coin1004',44],
+  ['coin1234',TR('차례대로 모았어요'),TR('코인을 딱 1,234개 갖기'),1,'coin1234',34],
+  ['brush50',TR('동네 미용실 원장님'),TR('보르미 털을 50번 빗어 주기'),50,'brush',80],
+  ['walk30',TR('산책? 산책!'),TR('사월이에게 "산책?"을 30번 외치기'),30,'walkCall',60],
+  ['yum30',TR('냠냠 마법사'),TR('사월이에게 "냠냠?"을 30번 외치기'),30,'yumCall',60],
+  ['glut10',TR('먹보의 보호자'),TR('배부른 먹보 친구에게 또 밥을 주려고 하기 10번'),10,'glutBeg',40],
+  ['dogs4',TR('멍멍 대가족 (보르미는 싫어함)'),TR('강아지, 사월이, 보르미, 미카엘과 모두 함께하기'),1,'dogs4',100],
+  ['foxbear',TR('곰 따라 삼만리'),TR('티벳여우와 곰을 함께 키우기'),1,'foxBear',60],
+  ['fearless',TR('겁 없는 조합'),TR('벌꿀오소리와 호랑이를 함께 키우기'),1,'badgerTiger',60],
   ['pat1000',TR('쓰다듬기 장인'),TR('화면 속 친구를 1,000번 쓰다듬기'),1000,'pats',300],
   ['allday',TR('다재다능'),TR('한 주에 항목 5개 넘게 집중'),5,'subjWeek',120]];
 const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 데려오는 값
@@ -4012,6 +4038,19 @@ function achStats(){
     questDays:coins.filter(c=>String(c.id).indexOf('qa:')===0).length,questWeeks:coins.filter(c=>String(c.id).indexOf('qw:')===0).length,
     pomos:logs.filter(s=>s.kind==='pomo').length,quicks:logs.filter(s=>s.quick).length,fullWeeks,weekends,goalDays:Object.keys(day).filter(k=>day[k]>=gsec).length,
     min77:logs.filter(s=>s.kind!=='manual'&&Math.floor(sessDur(s)/60)===77).length,
+    ...(()=>{const st=logs.filter(s=>s.kind!=='manual'&&s.segs&&s.segs.length), at=(h,m)=>+st.some(s=>{const t=new Date(s.segs[0][0]*1e3); return t.getHours()%12===h%12&&t.getMinutes()===m}), onDay=md=>+Object.keys(day).some(k=>k.slice(5)===md&&day[k]>=60);
+      const per={}, tom={}; st.forEach(s=>{const k=dayKey(s.segs[0][0]*1e3); per[k]=(per[k]||0)+1; if(s.kind==='pomo') tom[k]=(tom[k]||0)+1});
+      const fun=k=>{const x=items('fun').find(y=>y.id===k); return x&&x.n||0}, has=k=>ps.some(p=>p.sp===k), bal=coinBal();
+      return {dPi:onDay('03-14'),dHangul:onDay('10-09'),dHalloween:onDay('10-31'),dValentine:onDay('02-14'),dPepero:onDay('11-11'),
+        at1111:at(11,11),at1234:+st.some(s=>{const t=new Date(s.segs[0][0]*1e3); return t.getHours()===12&&t.getMinutes()===34}),at3am:+st.some(s=>new Date(s.segs[0][0]*1e3).getHours()===3),
+        min60:st.filter(s=>Math.floor(sessDur(s)/60)===60).length,tiny:+st.some(s=>{const d=sessDur(s); return d>=60&&d<120}),
+        splitDay:Math.max(0,...Object.values(per)),tomatoDay:Math.max(0,...Object.values(tom)),
+        weekendHard:+Object.keys(day).some(k=>wdOf(k)===5&&day[k]>=10800&&(day[addDays(k,1)]||0)>=10800),
+        moves10:+allOf('tasks-').some(t=>(t.moves||0)>=10),
+        diaryOne:+Object.keys(S.docs).some(d=>{if(d.indexOf('diary-')!==0) return false; const it=jEntry(d.slice(6)); return it&&[...String(it.text||'').trim()].length===1}),
+        patDay:Math.max(0,...items('pats').map(x=>x.n||0)),coin1004:+(bal===1004),coin1234:+(bal===1234),
+        brush:fun('brush'),walkCall:fun('walkCall'),yumCall:fun('yumCall'),glutBeg:fun('glutBeg'),
+        dogs4:+['dog','sawol','bormi','mikael'].every(has),foxBear:+(has('tibfox')&&has('bear')),badgerTiger:+(has('hbadger')&&has('tiger'))}})(),
     dNewYear:+Object.keys(day).some(k=>k.slice(5)==='01-01'&&day[k]>=60),dApril:+Object.keys(day).some(k=>k.slice(5)==='04-01'&&day[k]>=60),dDora:+Object.keys(day).some(k=>k.slice(5)==='09-03'&&day[k]>=60),dXmas:+Object.keys(day).some(k=>k.slice(5)==='12-25'&&day[k]>=60),
     midnight:+logs.some(s=>s.kind!=='manual'&&s.segs&&s.segs.length&&new Date(s.segs[0][0]*1e3).toDateString()!==new Date(s.segs[s.segs.length-1][1]*1e3).toDateString()),
     friNight:+logs.some(s=>{if(!s.segs||!s.segs.length) return false; const t=new Date(s.segs[0][0]*1e3); return t.getDay()===5&&t.getHours()>=21&&sessDur(s)>=1800}),
@@ -4118,7 +4157,7 @@ const DEX_CATS=[['all',TR('전체')],['animal',TR('🐾 동물')],['family',TR('
 function dexCatOf(k){const sp=SP[k]||{}; for(const c in DEX_SERIES) if(DEX_SERIES[c].indexOf(k)>=0) return c; if(sp.special) return 'family'; if(sp.lines==='DINO') return 'dino'; if(sp.body||k==='dora'||k==='duo') return 'people'; return 'animal'}
 // 업적 종류: 통계 키로 나누고, 재미 업적은 따로 모아요
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
-const ACH_FUN=['duowatch','lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1'];
+const ACH_FUN=['pi314','hangul','halloween','valentine','pepero','wish1111','seq1234','exact60','tiny1','split10','ghost3','wkhard','tomato4','toss10','diary1','patday','coin1004','coin1234','brush50','walk30','yum30','glut10','dogs4','foxbear','fearless','duowatch','lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1'];
 const ACH_KEYCAT={streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
   pets:'pet',dinos:'pet',greys:'pet',bikini:'pet',chii:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin'};
 const achCat=a=>ACH_FUN.indexOf(a[0])>=0?'fun':ACH_KEYCAT[a[4]]||'focus';
@@ -4507,7 +4546,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v55'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v56'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
