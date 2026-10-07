@@ -3711,7 +3711,13 @@ function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해�
 }
 
 /* 화면: 동물 탭 (내 동물 · 도감 · 업적 · 상점 · 코인) */
-let petTab='home', shopTab='reward';
+let petTab='home', shopTab='reward', achCatSel='all', achShow='all';
+// 업적 종류: 통계 키로 나누고, 재미 업적은 따로 모아요
+const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
+const ACH_FUN=['lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1'];
+const ACH_KEYCAT={streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
+  pets:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin'};
+const achCat=a=>ACH_FUN.indexOf(a[0])>=0?'fun':ACH_KEYCAT[a[4]]||'focus';
 function renderPet(){
   const sec=$('#v-pet'), allPs=pets(), ps=shownPets(), arch=archPets(), p=activePet(), st=softStreak(), bal=coinBal(), e=earnedCoins(), lv=myLv(e);
   const segOf=(opts,cur,fn,label)=>h('div',{class:'seg wrap',role:'group','aria-label':label},opts.map(o=>h('button',{'aria-pressed':String(cur===o[0]),onclick:()=>fn(o[0])},...pxText(o[1]))));
@@ -3777,10 +3783,15 @@ function renderPet(){
       h('section',{class:'card pxcard'},h('h2',null,TR('레벨 보너스')),h('p',{class:'small'},TR('레벨이 오를 때마다 레벨 × 20코인을 더 받아요. 다음 레벨(Lv ')+(lv+1)+TR(')에 오르면 ')+(lv+1)*20+TR('코인이에요.')))];
   }
   else if(petTab==='ach'){
-    const S2=achStats();
+    const S2=achStats(), inCat=ACH.filter(a=>achCatSel==='all'||achCat(a)===achCatSel), nDone=inCat.filter(a=>hasAch(a[0])).length;
+    const list=inCat.filter(a=>achShow==='all'||(achShow==='done')===hasAch(a[0])).sort((a,b)=>{if(achShow!=='todo') return 0; const pa=Math.min(1,(S2[a[4]]||0)/a[3]), pb=Math.min(1,(S2[b[4]]||0)/b[3]); return pb-pa}); // 못 한 것만 볼 때는 거의 다 된 것부터
+    const cnt=k=>{const l=ACH.filter(a=>k==='all'||achCat(a)===k); return l.filter(a=>hasAch(a[0])).length+'/'+l.length};
     body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('업적')),h('span',{class:'sp small'},nAch+' / '+ACH.length)),
       h('p',{class:'small'},TR('업적을 달성하면 코인을 받고, 몇몇 업적은 새 동물을 열어 줘요.')),
-      h('ul',{class:'achlist'},ACH.map(a=>{const done=hasAch(a[0]), v=Math.min(a[3],S2[a[4]]||0), unl=Object.keys(UNLOCK).filter(k=>UNLOCK[k].ach===a[0]);
+      h('div',{class:'seg wrap',role:'group','aria-label':TR('업적 종류')},ACH_CATS.map(o=>h('button',{'aria-pressed':String(achCatSel===o[0]),onclick:()=>{achCatSel=o[0]; renderPet()}},...pxText(o[1]),h('span',{class:'small num',style:'margin-left:.3em;opacity:.7'},cnt(o[0]))))),
+      h('div',{class:'pxrow wrap',style:'margin-top:.5rem'},segOf([['all',TR('모두')],['todo',TR('아직 못 한 것')],['done',TR('달성한 것')]],achShow,v=>{achShow=v; renderPet()},TR('완료 여부')),h('span',{class:'sp small'},TR('이 종류에서 ')+nDone+' / '+inCat.length+TR(' 달성'))),
+      list.length?null:h('p',{class:'empty'},achShow==='done'?TR('아직 달성한 업적이 없어요. 하나씩 모아 봐요!'):TR('이 종류의 업적을 모두 달성했어요! 🎉')),
+      h('ul',{class:'achlist'},list.map(a=>{const done=hasAch(a[0]), v=Math.min(a[3],S2[a[4]]||0), unl=Object.keys(UNLOCK).filter(k=>UNLOCK[k].ach===a[0]);
         return h('li',{class:done?'done':''},h('span',{class:'achic'},pxi(done?'trophy':'lock')),h('span',{class:'achtx'},h('b',null,a[1]),h('span',{class:'small'},a[2]+(unl.length?' · '+TR('해금: ')+unl.map(k=>done?SP[k].n:'???').join(', '):'')),
           a[3]>1&&!done?h('span',{class:'pxrow',style:'margin:0'},pxBar(v/a[3],10),h('span',{class:'small num'},v.toLocaleString(LOC)+' / '+a[3].toLocaleString(LOC))):null),
           h('span',{class:'hudi'},pxi('coin'),'+'+a[5]))}))) ];

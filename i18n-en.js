@@ -2135,5 +2135,21 @@ window.I18N_EN={
 "쓰다듬기 중독": "Petting addict",
 "화면 속 친구를 100번 쓰다듬기": "Pet your on-screen friend 100 times",
 "쓰다듬기 장인": "Petting master",
-"화면 속 친구를 1,000번 쓰다듬기": "Pet your on-screen friend 1,000 times"
+"화면 속 친구를 1,000번 쓰다듬기": "Pet your on-screen friend 1,000 times",
+"⏱ 집중": "⏱ Focus",
+"🔥 꾸준함": "🔥 Habits",
+"✅ 할 일": "✅ Tasks",
+"📔 일기·회고": "📔 Diary & reviews",
+"🐾 친구": "🐾 Friends",
+"🪙 코인·레벨": "🪙 Coins & levels",
+"🎲 재미": "🎲 Fun",
+"업적 종류": "Achievement type",
+"모두": "All",
+"아직 못 한 것": "Not yet",
+"달성한 것": "Unlocked",
+"완료 여부": "Completion",
+"이 종류에서 ": "",
+" 달성": " unlocked in this type",
+"아직 달성한 업적이 없어요. 하나씩 모아 봐요!": "No achievements unlocked here yet. Collect them one by one!",
+"이 종류의 업적을 모두 달성했어요! 🎉": "You've unlocked every achievement of this type! 🎉"
 };
