@@ -3366,7 +3366,7 @@ window.I18N_EN={
 "다른 종류에 있을 수 있으니 위에서 '전체'와 '모두'를 눌러 보세요.": "It may be in another group. Try 'All' above.",
 "업적 찾기 (이름이나 할 일)": "Search achievements (name or goal)",
 "☕ 개발자 응원하기": "☕ Support the developer",
-"Align은 혼자 만들고 있는 앱이에요. 서버 비용과 개발에 보태 주시면 큰 힘이 돼요. 응원해도 코인이나 동물 같은 보상은 없고, 마음만 감사히 받을게요.": "Align is made by one person. Chipping in for server and development costs helps a lot. There are no coins or animals for supporting — just a big thank-you.",
+"Align은 혼자 만들고 있는 앱이에요. 서버 비용과 개발에 보태 주시면 큰 힘이 돼요.": "Align is made by one person. Chipping in for server and development costs helps a lot.",
 "고마워요! 더 열심히 공부할게요": "Thank you! I'll study even harder",
 "카카오페이로 응원하기": "Support with KakaoPay",
 "카카오톡이 설치된 휴대폰에서 열면 바로 송금 화면으로 넘어가요.": "Opens the KakaoPay transfer screen directly on a phone with KakaoTalk."
