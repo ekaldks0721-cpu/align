@@ -3750,7 +3750,8 @@ function careFor(p,kind){
   const k=kind==='food', cost=k?5:2, key=k?'fed':'water', f=fullOf(p[key],k?36:24);
   const glut=SP[p.sp]&&SP[p.sp].glutton; // 먹보는 배가 불러도 더 달라고 졸라요
   if(f>.9){if(k&&glut){funInc('glutBeg'); petReact('beg',3500); buddySay(pick(GLUT_MORE[p.sp]||MIK_MORE)); toast(TR('배는 부른데 또 달라고 조르고 있어요'))} else toast(k?TR('지금은 배불러요'):TR('지금은 목마르지 않아요')); return}
-  if(!spend(cost,(k?TR('밥 주기'):TR('물 주기'))+' · '+p.name,'care')) return; setTimeout(checkProgress,50);
+  const wasSad=petMood(p)==='sad';
+  if(!spend(cost,(k?TR('밥 주기'):TR('물 주기'))+' · '+p.name,'care')) return; if(wasSad) funInc('rescue'); else setTimeout(checkProgress,50);
   put('pets',Object.assign(clone(p),{[key]:Date.now()})); petReact('eat',2500); render(); if(k&&glut) setTimeout(()=>buddySay(pick(GLUT_MORE[p.sp]||MIK_MORE)),600);
   toast(k?TR('냠냠! 맛있게 먹었어요'):TR('꿀꺽! 시원해요'));
 }
@@ -4012,6 +4013,65 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['foxbear',TR('곰 따라 삼만리'),TR('티벳여우와 곰을 함께 키우기'),1,'foxBear',60],
   ['fearless',TR('겁 없는 조합'),TR('벌꿀오소리와 호랑이를 함께 키우기'),1,'badgerTiger',60],
   ['pat1000',TR('쓰다듬기 장인'),TR('화면 속 친구를 1,000번 쓰다듬기'),1000,'pats',300],
+  ['food50',TR('든든한 밥상'),TR('밥 50번 주기'),50,'careFood',60],
+  ['food200',TR('셰프 집사'),TR('밥 200번 주기'),200,'careFood',200],
+  ['water50',TR('물 떠 오는 사람'),TR('물 50번 주기'),50,'careWater',50],
+  ['water200',TR('오아시스'),TR('물 200번 주기'),200,'careWater',160],
+  ['careday5',TR('급식 당번'),TR('하루에 친구 5마리에게 밥이나 물 주기'),5,'careDay',60],
+  ['happy3',TR('행복한 동물원'),TR('태어난 친구가 3마리 넘고, 모두 기분 좋은 상태 만들기'),1,'allHappy',50],
+  ['rescue1',TR('구조대 출동'),TR('시무룩한 친구에게 밥이나 물 주기'),1,'rescue',20],
+  ['rescue10',TR('든든한 보호자'),TR('시무룩한 친구를 10번 구해 주기'),10,'rescue',80],
+  ['age30',TR('한 달 된 사이'),TR('한 친구와 30일 넘게 함께하기'),30,'petAge',50],
+  ['age100',TR('백일 잔치'),TR('한 친구와 100일 넘게 함께하기'),100,'petAge',150],
+  ['age365',TR('첫 돌'),TR('한 친구와 1년 넘게 함께하기'),365,'petAge',500],
+  ['pets40',TR('동물 백과사전'),TR('동물 40마리와 함께하기'),40,'pets',1200],
+  ['grown20',TR('육아의 달인'),TR('친구 20마리를 어른으로 키우기'),20,'grown',600],
+  ['pat5000',TR('손끝의 마법사'),TR('화면 속 친구를 5,000번 쓰다듬기'),5000,'pats',600],
+  ['s500',TR('오백 일의 불꽃'),TR('500일 연속 기록'),500,'streak',3000],
+  ['sday200',TR('공부한 날 이백 일'),TR('5분 넘게 집중한 날 200일'),200,'studyDays',500],
+  ['sday500',TR('공부한 날 오백 일'),TR('5분 넘게 집중한 날 500일'),500,'studyDays',1500],
+  ['fullweek10',TR('빈틈없는 열 주'),TR('7일 내내 1시간 넘게 집중한 주 10번'),10,'fullWeeks',1000],
+  ['weekend30',TR('주말 장인'),TR('토·일 모두 1시간 넘게 집중한 주말 30번'),30,'weekends',700],
+  ['goal200',TR('목표 이백 일'),TR('하루 목표를 채운 날 200일'),200,'goalDays',1500],
+  ['fullmonth1',TR('빈틈없는 한 달'),TR('한 달(1일~말일) 내내 매일 1시간 넘게 집중'),1,'fullMonths',800],
+  ['fullmonth3',TR('빈틈없는 석 달'),TR('매일 1시간 넘게 집중한 달 3번'),3,'fullMonths',2000],
+  ['comeback',TR('돌아온 탕아'),TR('일주일 넘게 쉬었다가 다시 5분 넘게 집중하기'),1,'comeback',30],
+  ['t2000',TR('할 일 전설'),TR('할 일 2,000개 끝내기'),2000,'tasks',1500],
+  ['tday15',TR('멈출 수 없어'),TR('하루에 할 일 15개 끝내기'),15,'bestTaskDay',200],
+  ['tday20',TR('할 일 블랙홀'),TR('하루에 할 일 20개 끝내기'),20,'bestTaskDay',300],
+  ['twk30',TR('해치운 한 주'),TR('한 주(월~일)에 할 일 30개 끝내기'),30,'bestTaskWeek',120],
+  ['twk60',TR('할 일 폭격기'),TR('한 주(월~일)에 할 일 60개 끝내기'),60,'bestTaskWeek',300],
+  ['tam10',TR('아침에 해치우기'),TR('오전 9시 전에 할 일 끝내기 10번'),10,'taskAM',40],
+  ['tam100',TR('아침형 해결사'),TR('오전 9시 전에 할 일 끝내기 100번'),100,'taskAM',200],
+  ['rep30',TR('루틴 지킴이'),TR('반복 할 일 30번 끝내기'),30,'repDone',60],
+  ['rep200',TR('루틴 장인'),TR('반복 할 일 200번 끝내기'),200,'repDone',300],
+  ['ahead10',TR('미리미리'),TR('마감 3일 넘게 남기고 할 일 끝내기 10번'),10,'ahead',80],
+  ['perfect1',TR('완벽한 하루'),TR('할 일을 5개 넘게 계획한 날, 하나도 빠짐없이 끝내기'),1,'perfectDay',40],
+  ['perfect10',TR('완벽한 열흘'),TR('계획한 할 일(5개 넘게)을 모두 끝낸 날 10일'),10,'perfectDay',200],
+  ['moved20',TR('미룬 건 미룬 거고'),TR('미뤘던 할 일 20개 끝내기'),20,'movedDone',60],
+  ['ontime300',TR('마감의 전설'),TR('마감 전에 할 일 300번 끝내기'),300,'ontime',600],
+  ['dstreak7',TR('일주일 연속 일기'),TR('7일 연속 일기 쓰기'),7,'diaryStreak',50],
+  ['dstreak30',TR('한 달 연속 일기'),TR('30일 연속 일기 쓰기'),30,'diaryStreak',200],
+  ['dstreak100',TR('백일 연속 일기'),TR('100일 연속 일기 쓰기'),100,'diaryStreak',700],
+  ['dphoto10',TR('사진 일기'),TR('일기에 사진 10장 남기기'),10,'diaryPhotos',40],
+  ['dphoto100',TR('추억 앨범'),TR('일기에 사진 100장 남기기'),100,'diaryPhotos',200],
+  ['dfav10',TR('소중한 날들'),TR('일기 10편을 즐겨찾기하기'),10,'diaryFav',40],
+  ['dchar10k',TR('만 자의 기록'),TR('일기를 모두 합쳐 10,000자 넘게 쓰기'),10000,'diaryChars',80],
+  ['dchar100k',TR('작가 데뷔'),TR('일기를 모두 합쳐 100,000자 넘게 쓰기'),100000,'diaryChars',500],
+  ['rvstreak4',TR('한 달 꼬박 회고'),TR('4주 연속 주간 회고 쓰기'),4,'reviewStreak',80],
+  ['rvstreak12',TR('석 달 꼬박 회고'),TR('12주 연속 주간 회고 쓰기'),12,'reviewStreak',300],
+  ['review100',TR('회고의 전설'),TR('주간 회고 100번 쓰기'),100,'reviews',1500],
+  ['thanks10',TR('감사 일기'),TR('"감사"나 "고마"가 들어간 일기 10편 쓰기'),10,'thanks',60],
+  ['notodo',TR('오늘은 쉬는 날'),TR('"아무것도 안 하기"를 할 일로 적고 끝내기'),1,'noTodo',20],
+  ['tomorrowme',TR('내일의 내가 했다'),TR('제목에 "내일"이 들어간 할 일을 미뤘다가 끝내기'),1,'tomorrowMe',25],
+  ['emojitask',TR('말보다 그림'),TR('이모지로만 된 할 일 끝내기'),1,'emojiTask',20],
+  ['hatestudy',TR('그래도 했다'),TR('일기에 "공부하기 싫다" 쓰기'),1,'diaryHate',20],
+  ['tears',TR('ㅠㅠㅠㅠㅠ'),TR('일기에 ㅠ나 ㅜ를 20개 넘게 쓰기'),1,'diaryTear',20],
+  ['secret',TR('비밀 일기장'),TR('일기에 "비밀" 쓰기'),1,'diarySecret',15],
+  ['petdiary',TR('우리 애 자랑'),TR('일기에 친구 이름 쓰기'),1,'petDiary',20],
+  ['ghost444',TR('4시 44분'),TR('4시 44분에 집중 시작하기'),1,'at444',44],
+  ['samename',TR('누가 누구게?'),TR('두 친구에게 같은 이름 지어 주기'),1,'sameName',20],
+  ['studyname',TR('이름부터 공부'),TR('친구 이름에 "공부" 넣기'),1,'studyName',15],
   ['allday',TR('다재다능'),TR('한 주에 항목 5개 넘게 집중'),5,'subjWeek',120]];
 const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 데려오는 값
   chick:{lv:2,price:500},hamster:{lv:3,price:700},pig:{lv:4,price:800},frog:{lv:5,price:1000},duck:{lv:6,price:1000},penguin:{lv:7,price:1300},
@@ -4105,7 +4165,30 @@ function achStats(){
     cram:allOf('tasks-').filter(t=>t.done&&t.due&&t.doneAt&&dayKey(t.doneAt)===t.due).length,
     ontime:coins.filter(c=>String(c.id).indexOf('td:')===0).length,lucky:coins.filter(c=>String(c.id).indexOf('l:')===0).length,care:coins.filter(c=>c.kind==='care').length,
     spent:coins.reduce((a,c)=>a+(c.amt<0?-c.amt:0),0),petLv:Math.max(0,...ps.map(p=>petLv(petXP(p)))),subjWeek:Math.max(0,...Object.values(sw).map(x=>x.size)),
-    diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins()};
+    diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins(),...achMore(logs,day,dk,ps,coins)};
+}
+function achMore(logs,day,dk,ps,coins){ // 친구·꾸준함·할 일·일기 업적 더 보기
+  const run=(keys,step)=>{let best=0, n=0, prev=null; keys.sort().forEach(k=>{n=prev&&addDays(prev,step)===k?n+1:1; prev=k; best=Math.max(best,n)}); return best};
+  const care=coins.filter(c=>c.kind==='care'), cd={}; care.forEach(c=>{const k=dayKey(c.ts); (cd[k]=cd[k]||new Set()).add(String(c.why||'').split(' · ').slice(1).join(' · '))});
+  const hatched=shownPets().filter(p=>stageOf(petXP(p))), names=ps.map(p=>String(p.name||'').trim()).filter(Boolean);
+  const T=allOf('tasks-'), D=T.filter(t=>t.done&&t.doneAt), wk={}, plan={}; D.forEach(t=>{const k=dayKey(t.doneAt), w=addDays(k,-wdOf(k)); wk[w]=(wk[w]||0)+1});
+  T.filter(t=>!t.rep).forEach(t=>{const x=plan[t.date]=plan[t.date]||[0,0]; x[0]++; if(t.done) x[1]++});
+  const sd=Object.keys(day).filter(k=>day[k]>=300).sort(), mon={}; Object.keys(dk).forEach(k=>{const m=k.slice(0,7); mon[m]=(mon[m]||0)+1});
+  const DI=Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0).map(d=>jEntry(d.slice(6))).filter(Boolean), tx=DI.map(it=>String(it.text||''));
+  const emo=/\p{Extended_Pictographic}/u, emoOnly=t=>emo.test(t)&&!t.replace(/[\p{Extended_Pictographic}\p{Emoji_Modifier}‍️\s]/gu,'');
+  const fun=k=>{const x=items('fun').find(y=>y.id===k); return x&&x.n||0};
+  return {careFood:care.filter(c=>c.amt===-5).length,careWater:care.filter(c=>c.amt===-2).length,careDay:Math.max(0,...Object.values(cd).map(x=>x.size)),
+    allHappy:+(hatched.length>=3&&hatched.every(p=>petMood(p)==='happy')),rescue:fun('rescue'),petAge:Math.max(0,...ps.map(p=>Math.floor((Date.now()-(p.born||p.o||Date.now()))/864e5))),
+    sameName:+(new Set(names).size<names.length),studyName:+names.some(n=>n.indexOf('공부')>=0),petDiary:+tx.some(t=>names.some(n=>[...n].length>=2&&t.indexOf(n)>=0)),
+    fullMonths:Object.keys(mon).filter(m=>{const [y,mm]=m.split('-').map(Number); return m<today().slice(0,7)&&mon[m]===new Date(y,mm,0).getDate()}).length,
+    comeback:+sd.some((k,i)=>i>0&&k>addDays(sd[i-1],7)),
+    bestTaskWeek:Math.max(0,...Object.values(wk)),taskAM:D.filter(t=>{const h=new Date(t.doneAt).getHours(); return h>=4&&h<9}).length,repDone:D.filter(t=>t.rep).length,
+    ahead:D.filter(t=>t.due&&t.doneAt<=dueTs(t)-3*864e5).length,perfectDay:Object.values(plan).filter(x=>x[0]>=5&&x[0]===x[1]).length,movedDone:D.filter(t=>(t.moves||0)>=1).length,
+    noTodo:+D.some(t=>String(t.title||'').replace(/\s/g,'').indexOf('아무것도안하기')>=0),tomorrowMe:+D.some(t=>(t.moves||0)>=1&&String(t.title||'').indexOf('내일')>=0),emojiTask:+D.some(t=>emoOnly(String(t.title||''))),
+    diaryStreak:run(DI.filter(it=>String(it.text||'').trim()||(it.photos||[]).length).map(it=>it.id),1),diaryPhotos:DI.reduce((a,it)=>a+(it.photos||[]).length,0),diaryFav:DI.filter(it=>it.fav).length,
+    diaryChars:tx.reduce((a,t)=>a+[...t.replace(/\s/g,'')].length,0),reviewStreak:run(items('reviews').filter(r=>String(r.text||'').trim()).map(r=>r.id),7),
+    thanks:tx.filter(t=>/감사|고마/.test(t)).length,diaryHate:+tx.some(t=>t.replace(/\s/g,'').indexOf('공부하기싫')>=0),diaryTear:+tx.some(t=>(t.match(/[ㅠㅜ]/g)||[]).length>20),diarySecret:+tx.some(t=>t.indexOf('비밀')>=0),
+    at444:+logs.some(s=>s.kind!=='manual'&&s.segs&&s.segs.length&&(t=>t.getHours()%12===4&&t.getMinutes()===44)(new Date(s.segs[0][0]*1e3)))};
 }
 const spPrice=k=>SP[k].special?0:UNLOCK[k]?UNLOCK[k].price:400; // 처음 세 친구도 두 번째부터는 400
 function spOpen(k,lv){const u=UNLOCK[k]; if(!u||(!u.lv&&!u.ach&&!u.own)) return true; if(u.own) return pets().some(p=>p.sp===u.own); return u.lv?(lv==null?myLv():lv)>=u.lv:hasAch(u.ach)}
@@ -4187,9 +4270,11 @@ const DEX_CATS=[['all',TR('전체')],['animal',TR('🐾 동물')],['family',TR('
 function dexCatOf(k){const sp=SP[k]||{}; for(const c in DEX_SERIES) if(DEX_SERIES[c].indexOf(k)>=0) return c; if(sp.special) return 'family'; if(sp.lines==='DINO') return 'dino'; if(sp.body||k==='dora'||k==='duo') return 'people'; return 'animal'}
 // 업적 종류: 통계 키로 나누고, 재미 업적은 따로 모아요
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
-const ACH_FUN=['help1','search10','dark','jar5','rename5','rapid','sleeppat','foxpat','ignored','pause10','leap','fri13','nye','cinder','oldtask','plan20','longtitle','onechar','kkk','emoji10','mikael10','pi314','hangul','halloween','valentine','pepero','wish1111','seq1234','exact60','tiny1','split10','ghost3','wkhard','tomato4','toss10','diary1','patday','coin1004','coin1234','brush50','walk30','yum30','glut10','dogs4','foxbear','fearless','duowatch','lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1'];
+const ACH_FUN=['help1','search10','dark','jar5','rename5','rapid','sleeppat','foxpat','ignored','pause10','leap','fri13','nye','cinder','oldtask','plan20','longtitle','onechar','kkk','emoji10','mikael10','pi314','hangul','halloween','valentine','pepero','wish1111','seq1234','exact60','tiny1','split10','ghost3','wkhard','tomato4','toss10','diary1','patday','coin1004','coin1234','brush50','walk30','yum30','glut10','dogs4','foxbear','fearless','duowatch','lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1','notodo','tomorrowme','emojitask','hatestudy','tears','secret','petdiary','ghost444','samename','studyname'];
 const ACH_KEYCAT={streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
-  pets:'pet',dinos:'pet',greys:'pet',bikini:'pet',chii:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin'};
+  pets:'pet',dinos:'pet',greys:'pet',bikini:'pet',chii:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin',
+  careFood:'pet',careWater:'pet',careDay:'pet',allHappy:'pet',rescue:'pet',petAge:'pet',pats:'pet',fullMonths:'habit',comeback:'habit',
+  bestTaskWeek:'task',taskAM:'task',repDone:'task',ahead:'task',perfectDay:'task',movedDone:'task',diaryStreak:'note',diaryPhotos:'note',diaryFav:'note',diaryChars:'note',reviewStreak:'note',thanks:'note'};
 const achCat=a=>ACH_FUN.indexOf(a[0])>=0?'fun':ACH_KEYCAT[a[4]]||'focus';
 function renderPet(){
   const sec=$('#v-pet'), allPs=pets(), ps=shownPets(), arch=archPets(), p=activePet(), st=softStreak(), bal=coinBal(), e=earnedCoins(), lv=myLv(e);
@@ -4578,7 +4663,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v58'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v59'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
