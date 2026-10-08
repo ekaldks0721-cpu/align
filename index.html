@@ -2268,7 +2268,15 @@ function renderSet(){
         h('button',{class:'danger sp',onclick:async()=>{if(await ask(TR('모든 기록을 지울까요?'),TR('공부 기록, 할 일, 시간표, 캘린더 일정, D-day, 일기와 사진이 이 기기와 클라우드에서 모두 지워져요. 되돌릴 수 없어요.'),TR('모두 지우기'))){
           const ph=[]; for(const d in S.docs) if(d.indexOf('diary-')===0) items(d).forEach(it=>ph.push(...(it.photos||[]))); ph.forEach(dropPhoto);
           const now=Date.now(); for(const d in S.docs){if(d==='subjects'||d==='cats') continue; for(const k in S.docs[d]) S.docs[d][k]={id:k,m:now,x:1}; S.dirty[d]=1}
-          lastId=null; agg=null; saveLocal(); schedulePush(); tCancel(); toast(TR('모든 기록을 지웠어요'))}}},TR('모든 기록 지우기')))));
+          lastId=null; agg=null; saveLocal(); schedulePush(); tCancel(); toast(TR('모든 기록을 지웠어요'))}}},TR('모든 기록 지우기')))),
+    supportCard());
+}
+const SUPPORT_URL='https://qr.kakaopay.com/FLI9UDvg5';
+function supportCard(){ // 응원은 마음만: 코인이나 동물 같은 보상은 주지 않아요
+  return h('section',{class:'card'},h('h2',null,TR("☕ 개발자 응원하기")),
+    h('p',{class:'small muted',style:'margin:.3rem 0 .8rem'},TR("Align은 혼자 만들고 있는 앱이에요. 서버 비용과 개발에 보태 주시면 큰 힘이 돼요. 응원해도 코인이나 동물 같은 보상은 없고, 마음만 감사히 받을게요.")),
+    h('button',{class:'primary',onclick:()=>{window.open(SUPPORT_URL,'_blank','noopener'); buddySay(TR("고마워요! 더 열심히 공부할게요"))}},TR("카카오페이로 응원하기")),
+    h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR("카카오톡이 설치된 휴대폰에서 열면 바로 송금 화면으로 넘어가요.")));
 }
 
 /* ---------- AI 분석용 텍스트 내보내기 ---------- */
@@ -4735,7 +4743,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v62'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v63'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
