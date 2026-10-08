@@ -3369,5 +3369,7 @@ window.I18N_EN={
 "Align은 혼자 만들고 있는 앱이에요. 서버 비용과 개발에 보태 주시면 큰 힘이 돼요.": "Align is made by one person. Chipping in for server and development costs helps a lot.",
 "고마워요! 더 열심히 공부할게요": "Thank you! I'll study even harder",
 "카카오페이로 응원하기": "Support with KakaoPay",
-"카카오톡이 설치된 휴대폰에서 열면 바로 송금 화면으로 넘어가요.": "Opens the KakaoPay transfer screen directly on a phone with KakaoTalk."
+"카카오톡이 설치된 휴대폰에서 열면 바로 송금 화면으로 넘어가요.": "Opens the KakaoPay transfer screen directly on a phone with KakaoTalk.",
+"친구들 밥값이 조금 모자라요… 🐾": "Our friends' food money is running a little short… 🐾",
+"Align은 혼자 만들고 있어요. 커피 한 잔 값의 응원이 새 친구와 기능을 만드는 힘이 돼요.": "Align is made by one person. A coffee's worth of support helps bring new friends and features."
 };
