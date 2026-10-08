@@ -2208,7 +2208,7 @@ function renderSet(){
     rd.onload=()=>{let p=null; try{p=JSON.parse(rd.result)}catch(err){} if(!p||p.app!=='studylog'||!p.docs){toast(TR('이 앱에서 만든 JSON 파일이 아니에요')); return}
       const n=mergeBackup(p); saveLocal(); schedulePush(); render(); toast(n+TR('개 항목을 가져왔어요'))}; rd.readAsText(f)}});
   const segOf=(k,opts)=>h('div',{class:'seg wrap'},opts.map(o=>h('button',{'aria-pressed':String(cfg(k)===o[0]),onclick:()=>setCfg(k,o[0])},o[1])));
-  $('#v-set').replaceChildren(
+  $('#v-set').replaceChildren(supportCard(),
     h('section',{class:'card'},h('h2',{style:'margin-bottom:.8rem'},TR('화면')),h('div',{class:'form'},
       h('label',null,'언어 · Language',h('div',{class:'seg wrap'},[['ko','한국어'],['en','English']].map(o=>h('button',{'aria-pressed':String(LANG===o[0]),onclick:()=>{if(LANG===o[0]) return;
         S.settings.v.lang=o[0]; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(1); toast(o[0]==='en'?'Switching to English…':'한국어로 바꾸는 중…'); setTimeout(()=>location.reload(),1500)}},o[1])))),
@@ -2268,8 +2268,7 @@ function renderSet(){
         h('button',{class:'danger sp',onclick:async()=>{if(await ask(TR('모든 기록을 지울까요?'),TR('공부 기록, 할 일, 시간표, 캘린더 일정, D-day, 일기와 사진이 이 기기와 클라우드에서 모두 지워져요. 되돌릴 수 없어요.'),TR('모두 지우기'))){
           const ph=[]; for(const d in S.docs) if(d.indexOf('diary-')===0) items(d).forEach(it=>ph.push(...(it.photos||[]))); ph.forEach(dropPhoto);
           const now=Date.now(); for(const d in S.docs){if(d==='subjects'||d==='cats') continue; for(const k in S.docs[d]) S.docs[d][k]={id:k,m:now,x:1}; S.dirty[d]=1}
-          lastId=null; agg=null; saveLocal(); schedulePush(); tCancel(); toast(TR('모든 기록을 지웠어요'))}}},TR('모든 기록 지우기')))),
-    supportCard());
+          lastId=null; agg=null; saveLocal(); schedulePush(); tCancel(); toast(TR('모든 기록을 지웠어요'))}}},TR('모든 기록 지우기')))));
 }
 const SUPPORT_URL='https://qr.kakaopay.com/FLI9UDvg5';
 function supportCard(){ // 응원은 마음만: 코인이나 동물 같은 보상은 주지 않아요
@@ -4790,7 +4789,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v66'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v67'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
