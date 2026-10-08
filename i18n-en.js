@@ -3358,5 +3358,11 @@ window.I18N_EN={
 "🕷 마블": "🕷 Marvel",
 "마블 친구 8명과 모두 함께하기": "Live with all 8 Marvel friends",
 "친절한 이웃": "Friendly Neighbor",
-"스파이더맨과 함께하기": "Live with Spider-Man"
+"스파이더맨과 함께하기": "Live with Spider-Man",
+"직접 고르기": "Custom",
+"색 직접 고르기": "Pick a custom color",
+"찾는 게 없어요.": "Nothing found.",
+"이름으로 찾기 (예: 스파이더맨)": "Search by name (e.g. Spider-Man)",
+"다른 종류에 있을 수 있으니 위에서 '전체'와 '모두'를 눌러 보세요.": "It may be in another group. Try 'All' above.",
+"업적 찾기 (이름이나 할 일)": "Search achievements (name or goal)"
 };
