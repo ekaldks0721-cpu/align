@@ -3517,5 +3517,15 @@ window.I18N_EN={
 "우우 대륙의 친구들": "Friends of Ooo",
 "어드벤처 타임 친구 8명과 모두 함께하기": "Live with all 8 Adventure Time friends",
 "핀과 제이크를 함께 키우기": "Raise Finn and Jake together",
-"보는 법": "How to read"
+"보는 법": "How to read",
+"반복 할 일 자리": "Position of repeating tasks",
+"목록 맨 위": "Top of the list",
+"목록 맨 아래": "Bottom of the list",
+"그날 목록에서 나오는 자리": "Where they appear in each day's list",
+"위로": "Move up",
+"아래로": "Move down",
+"↑↓로 정한 순서는 오늘부터 앞으로의 목록에 적용돼요. 할 일 목록에서 끌어서 순서를 바꿔도 다음 날부터 그 순서로 나와요.": "The order you set with ↑↓ applies from today on. Dragging them in a day's list also saves the order for the following days.",
+"이 날부터 앞으로의 반복 할 일을 모두 고쳤어요": "Updated this and all following repeats",
+"이 날만": "This day only",
+"이 날부터 계속": "This day and after"
 };

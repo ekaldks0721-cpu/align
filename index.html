@@ -387,6 +387,7 @@ body.dragging{user-select:none;-webkit-user-select:none;cursor:grabbing}
 .photos img{width:100%;height:100%;object-fit:cover;display:block}
 dialog img{max-width:100%;max-height:70vh;display:block;margin:0 auto;border-radius:10px}
 .jlist button{display:flex;gap:.8rem;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);border-radius:0;padding:.6rem 0;align-items:baseline;font-weight:400}
+.jlist .reprow{display:flex;align-items:center;gap:.2rem;border-bottom:1px solid var(--rule)} .jlist .reprow>button{flex:1;min-width:0;border-bottom:0} .jlist .reprow>button.mvb{flex:none;width:auto;padding:.4rem .7rem;justify-content:center;font-weight:600}
 .jlist button b{flex:none;font-family:var(--serif);color:var(--accent)} .jlist button span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* 설정 */
@@ -851,7 +852,7 @@ let toastT; function toast(msg){const t=$('#toast'); t.textContent=msg; t.hidden
 
 /* ---------- 상태·로컬 저장 ---------- */
 const LS='studylog.v1', LST='studylog.timer';
-const DEF={focus:25,short:5,long:15,every:4,autoBreak:true,autoFocus:false,sound:true,dayStart:5,dailyGoal:240,weeklyGoal:1500,goalCat:'c-study',theme:'auto',accent:'blue',font:'plex',wake:true,nPomo:true,nDue:30,nEv:10,nSound:true,tone:'chime'};
+const DEF={focus:25,short:5,long:15,every:4,autoBreak:true,autoFocus:false,sound:true,dayStart:5,dailyGoal:240,weeklyGoal:1500,goalCat:'c-study',theme:'auto',accent:'blue',font:'plex',wake:true,nPomo:true,nDue:30,nEv:10,nSound:true,tone:'chime',repPos:'top'};
 let S={settings:{m:0,v:{}},docs:{},dirty:{}};
 let memOnly=false;
 let dir=null, pendingDir=null, dirName='', fState='off', fSavedAt=0, fT=null, fBusy=false, fAgain=false; // 데이터 폴더: off | need | on
@@ -1454,9 +1455,19 @@ function paintCmp(el){
 const kEst=hmsInput(cfg('focus')*60); $('#k-est-box').replaceWith(kEst);
 const dayLabel=ds=>ds.length===7?TR('매일'):ds.join()==='0,1,2,3,4'?TR('평일'):ds.join()==='5,6'?TR('주말'):TR('매주 ')+ds.map(i=>WD[i]).join('·');
 function ensureRepeats(k){ // 그 날짜에 해당하는 반복 할 일을 한 번만 만들어 둠 (지운 것은 다시 만들지 않음)
-  if(k<today()) return; const w=wdOf(k), doc='tasks-'+k.slice(0,7);
+  if(k<today()) return; const w=wdOf(k), doc='tasks-'+k.slice(0,7), rk=repRanks();
   items('repeats').forEach((r,i)=>{if(r.days.indexOf(w)<0||(r.from&&r.from>k)) return; const id='r-'+r.id+'-'+k;
-    if(!(S.docs[doc]&&S.docs[doc][id])) put(doc,{id,date:k,title:r.title,sub:r.sub||'',estSec:r.estSec||0,done:false,o:Date.now()+i,rep:r.id,due:r.dueT!=null?k:'',dueT:r.dueT!=null?r.dueT:null})});
+    if(!(S.docs[doc]&&S.docs[doc][id])) put(doc,{id,date:k,title:r.title,sub:r.sub||'',estSec:r.estSec||0,done:false,o:repO(rk[r.id]??i),rep:r.id,due:r.dueT!=null?k:'',dueT:r.dueT!=null?r.dueT:null,planS:r.planS??null,planE:r.planE??null})});
+}
+const repRanks=()=>{const m={}; items('repeats').slice().sort((a,b)=>(a.o??1e15)-(b.o??1e15)||(a.title<b.title?-1:1)).forEach((r,i)=>m[r.id]=i); return m};
+const repO=i=>(cfg('repPos')==='bottom'?9e12:0)+i; // 반복 할 일의 자리: 그날 목록 맨 위(작은 값) 또는 맨 아래(큰 값)
+function repReorder(from){const rk=repRanks(); allOf('tasks-').forEach(t=>{if(t.rep&&t.date>=from&&rk[t.rep]!=null&&t.o!==repO(rk[t.rep])) put('tasks-'+t.date.slice(0,7),Object.assign(clone(t),{o:repO(rk[t.rep])}))})}
+function repSetOrder(ids){ids.forEach((id,i)=>{const r=items('repeats').find(x=>x.id===id); if(r&&r.o!==i) put('repeats',Object.assign(clone(r),{o:i}))})}
+function repApplyFrom(t,p){ // 반복 할 일을 이 날부터 앞으로 모두 고쳐요 (그 전날까지는 예전 내용 그대로)
+  const r=items('repeats').find(x=>x.id===t.rep);
+  if(r){for(let k=today();k<t.date&&dayDiff(today(),k)<366;k=addDays(k,1)) ensureRepeats(k);
+    put('repeats',Object.assign(clone(r),{title:p.title,sub:p.sub,estSec:p.estSec,dueT:p.dueT,planS:p.planS,planE:p.planE}))}
+  allOf('tasks-').forEach(x=>{if(x.rep===t.rep&&x.date>=t.date) put('tasks-'+x.date.slice(0,7),Object.assign(clone(x),{title:p.title,sub:p.sub,estSec:p.estSec,due:p.dueT!=null?x.date:'',dueT:p.dueT,planS:p.planS,planE:p.planE},x.id===t.id?{lt:p.lt}:{}))});
 }
 function repDlg(r){
   const isNew=!r, cur=r&&r.sub&&sub(r.sub).id?r.sub:'', fT=h('input',{type:'text',value:r?r.title:'',maxlength:120,style:'flex:1;min-width:10rem'}), fS=h('select',null,h('option',{value:'',selected:!cur},TR('항목 없음')),subOptions(cur)), fE=hmsInput(r?r.estSec||0:cfg('focus')*60), fRT=h('input',{type:'time',value:r&&r.dueT!=null?hm(r.dueT):'',style:'width:auto'});
@@ -1469,9 +1480,14 @@ function repDlg(r){
   openDlg(isNew?TR('반복 할 일 추가'):TR('반복 할 일 고치기'),[h('label',null,TR('내용'),fT),h('label',null,TR('항목'),fS),h('label',null,TR('예상 시간'),fE),h('label',null,TR('마감 시각 (선택)'),fRT),h('label',null,TR('요일'),dayBox)],
     [!isNew?h('button',{class:'danger',style:'margin-right:auto',onclick:()=>{del('repeats',r.id); closeDlg(); render(); toast(TR('반복을 끝냈어요. 이미 만들어진 할 일은 남아 있어요.'))}},TR('반복 끝내기')):null,h('button',{onclick:closeDlg},TR('닫기')),h('button',{class:'primary',onclick:save},isNew?TR('반복 할 일 추가'):TR('고친 내용 저장'))]);
 }
-function repListDlg(){const rs=items('repeats');
+function repListDlg(){const rk=repRanks(), rs=items('repeats').slice().sort((a,b)=>rk[a.id]-rk[b.id]);
+  const mv=(i,d)=>{const ids=rs.map(r=>r.id), j=i+d; if(j<0||j>=ids.length) return; [ids[i],ids[j]]=[ids[j],ids[i]]; repSetOrder(ids); repReorder(today()); render(); repListDlg()};
+  const pos=h('div',{class:'seg',role:'group','aria-label':TR("반복 할 일 자리")},[['top',TR("목록 맨 위")],['bottom',TR("목록 맨 아래")]].map(o=>h('button',{type:'button','aria-pressed':String((cfg('repPos')||'top')===o[0]),onclick:()=>{setCfg('repPos',o[0]); repReorder(today()); render(); repListDlg()}},o[1])));
   openDlg(TR('반복 할 일'),[h('p',{class:'small muted',style:'margin:0'},TR('고른 요일마다 할 일 목록에 자동으로 생겨요. 누르면 고치거나 끝낼 수 있어요.')),
-    h('div',{class:'jlist'},rs.map(r=>h('button',{onclick:()=>repDlg(r)},h('span',{style:'flex:1'},r.title),h('span',{class:'small muted',style:'flex:none'},dayLabel(r.days)+(r.dueT!=null?' · '+hm(r.dueT)+TR('까지'):'')))))],
+    h('label',null,TR("그날 목록에서 나오는 자리"),pos),
+    h('div',{class:'jlist'},rs.map((r,i)=>h('div',{class:'reprow'},h('button',{onclick:()=>repDlg(r)},h('span',{style:'flex:1'},r.title),h('span',{class:'small muted',style:'flex:none'},dayLabel(r.days)+(r.dueT!=null?' · '+hm(r.dueT)+TR('까지'):''))),
+      h('button',{class:'quiet mvb',disabled:!i,'aria-label':TR("위로"),onclick:()=>mv(i,-1)},'↑'),h('button',{class:'quiet mvb',disabled:i===rs.length-1,'aria-label':TR("아래로"),onclick:()=>mv(i,1)},'↓')))),
+    rs.length>1?h('p',{class:'small muted',style:'margin:0'},TR("↑↓로 정한 순서는 오늘부터 앞으로의 목록에 적용돼요. 할 일 목록에서 끌어서 순서를 바꿔도 다음 날부터 그 순서로 나와요.")):null],
     [h('button',{onclick:closeDlg},TR('닫기')),h('button',{class:'primary',onclick:()=>repDlg(null)},TR('반복 할 일 추가'))]);
 }
 $('#k-reps').onclick=repListDlg;
@@ -1518,7 +1534,10 @@ function kGroups(ts){ // 카테고리 → 항목 순서(설정 순서)로 묶음
 function kSaveOrder(ul){ // 화면에 보이는 순서대로 o를 다시 매김 (그 묶음이 원래 쓰던 o 값들을 순서대로 나눠 가짐)
   const ids=[...ul.children].map(li=>li.dataset.id).filter(Boolean), ts=ids.map(id=>tasksOf(viewDate).find(t=>t.id===id)).filter(Boolean);
   const os=ts.map(t=>t.o||0).sort((a,b)=>a-b); for(let i=1;i<os.length;i++) if(os[i]<=os[i-1]) os[i]=os[i-1]+1; // 같은 값이 겹치면 벌려 둠
-  let n=0; ts.forEach((t,i)=>{if((t.o||0)!==os[i]){put('tasks-'+t.date.slice(0,7),Object.assign(clone(t),{o:os[i]})); n++}}); return n;
+  let n=0; ts.forEach((t,i)=>{if((t.o||0)!==os[i]){put('tasks-'+t.date.slice(0,7),Object.assign(clone(t),{o:os[i]})); n++}});
+  const moved=ts.filter(t=>t.rep).map(t=>t.rep); if(n&&moved.length>1){const rk=repRanks(), all=Object.keys(rk).sort((a,b)=>rk[a]-rk[b]), slots=all.map((id,i)=>moved.indexOf(id)>=0?i:-1).filter(i=>i>=0); // 끌어서 바꾼 반복 할 일 순서를 다음 날부터도 써요
+    slots.forEach((p,i)=>{all[p]=moved[i]}); repSetOrder(all); repReorder(addDays(viewDate,1))}
+  return n;
 }
 function kSaveCatOrder(ul){ // 카테고리 순서는 설정의 카테고리 순서 자체를 바꿈 (보이는 카테고리끼리 원래 o 값을 나눠 가짐)
   const cs=[...ul.children].map(li=>li.dataset.cid).filter(Boolean).map(cat).filter(Boolean);
@@ -1590,7 +1609,9 @@ function taskDlg(t){
   [fPS,fPE,fD].forEach(x=>x.addEventListener('input',()=>{chk(); clr.hidden=!(fPS.value||fPE.value)})); chk();
   openDlg(TR('할 일 고치기'),[h('label',null,TR('내용'),fT),t.rep?null:h('label',null,TR('계획한 날'),fD),t.rep?null:h('label',null,TR('마감 날짜'),fDue),h('label',null,TR('마감 시각 (선택)'),fDueT),h('label',null,TR('시간 배정 시작 (선택)'),fPS),h('label',null,TR('시간 배정 끝'),fPE),clr,wn,h('label',null,TR('대시보드의 장기 할 일'),fLt),h('label',null,TR('항목'),fS),h('label',null,TR('예상 시간'),fE)],[h('button',{class:'danger',style:'margin-right:auto',onclick:()=>{del('tasks-'+t.date.slice(0,7),t.id); closeDlg(); render(); toast(TR('할 일을 지웠어요'))}},TR('지우기')),
     !t.done&&!t.rep?h('button',{onclick:()=>{closeDlg(); moveDlg(t)}},TR('다른 날로')):null,h('button',{onclick:closeDlg},TR('닫기')),
-    h('button',{class:'primary',onclick:()=>{const v=fT.value.trim(); if(!v){toast(TR('내용을 입력하세요')); return} const dT=fDueT.value?toMin(fDueT.value):null, dD=t.rep?(dT!=null?t.date:''):(fDue.value||(dT!=null?(t.due||t.date):'')); const pS=fPS.value?toMin(fPS.value):null, pE=fPE.value?toMin(fPE.value):null; if((pS==null)!==(pE==null)){toast(TR('배정 시작과 끝을 모두 넣거나 모두 비워 주세요')); return} if(pS!=null&&pE<=pS){toast(TR('배정 끝이 시작보다 늦어야 해요')); return} retask(t,{title:v,sub:fS.value,estSec:fE.get(),date:(t.rep||!fD.value)?t.date:fD.value,due:dD,dueT:dD?dT:null,planS:pS,planE:pE,lt:fLt.value||''}); closeDlg(); render()}},TR('고친 내용 저장'))]);
+    ...(()=>{const save=all=>{const v=fT.value.trim(); if(!v){toast(TR('내용을 입력하세요')); return} const dT=fDueT.value?toMin(fDueT.value):null, dD=t.rep?(dT!=null?t.date:''):(fDue.value||(dT!=null?(t.due||t.date):'')); const pS=fPS.value?toMin(fPS.value):null, pE=fPE.value?toMin(fPE.value):null; if((pS==null)!==(pE==null)){toast(TR('배정 시작과 끝을 모두 넣거나 모두 비워 주세요')); return} if(pS!=null&&pE<=pS){toast(TR('배정 끝이 시작보다 늦어야 해요')); return}
+      const p={title:v,sub:fS.value,estSec:fE.get(),date:(t.rep||!fD.value)?t.date:fD.value,due:dD,dueT:dD?dT:null,planS:pS,planE:pE,lt:fLt.value||''}; if(all){repApplyFrom(t,p); toast(TR("이 날부터 앞으로의 반복 할 일을 모두 고쳤어요"))} else retask(t,p); closeDlg(); render()};
+    return t.rep?[h('button',{onclick:()=>save(false)},TR("이 날만")),h('button',{class:'primary',onclick:()=>save(true)},TR("이 날부터 계속"))]:[h('button',{class:'primary',onclick:()=>save(false)},TR('고친 내용 저장'))]})()]);
 }
 $('#k-duebtn').onclick=()=>{const box=$('#k-due-box'), open=box.hidden; box.hidden=!open; $('#k-duebtn').setAttribute('aria-expanded',String(open)); $('#k-duebtn').textContent=open?TR('마감 닫기'):TR('마감 설정'); if(open&&!$('#k-due').value) $('#k-due').value=viewDate};
 $('#k-due-x').onclick=()=>{$('#k-due').value=''; $('#k-duet').value=''};
@@ -4814,7 +4835,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v70'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v71'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
