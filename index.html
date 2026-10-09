@@ -2983,7 +2983,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
     traits:[TR('네모난 얼굴에 늘 심드렁한 무표정이에요'),TR('눈 속의 우는토끼를 노리고 폴짝 뛰어올라 머리부터 꽂아요'),TR('곰이 있으면 졸졸 따라다녀요 (곰이 땅을 파면 우는토끼가 튀어나오거든요)')]}, // 티벳여우: 네모난 얼굴, 회색 볼털, 하얀 주둥이, 끝이 하얀 꼬리
   hbadger:{n:TR('벌꿀오소리'),acts:["hive", "hive", "dig", "roar", "snack", "sleep"],food:'honey',toy:'ball',pal:['#0A0A0E','#26262E','#ECECE4','#4A4A54','#D88888'],mark:'shine',lines:'HBADGER',
     traits:[TR('머리부터 등까지 은빛 털을 망토처럼 덮은 까만 몸이에요'),TR('겁이 없어서 벌에 쏘여도 벌집을 털고, 사자에게도 덤벼요'),TR('땅을 파는 데 선수예요')]}, // 벌꿀오소리
-  mikael:{n:TR('미카엘'),acts:["sleep", "sleep", "sleep", "snack", "snack", "beg", "beg", "aegyo", "aegyo", "dollhug", "wag"],food:'bone',toy:'ball',special:1,doll:1,sleepy:1,glutton:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'shine slim'}}; // 푸른 회색 강아지: 접힌 귀, 가는 꼬리
+  mikael:{n:TR('미카엘'),acts:["sleep", "sleep", "sleep", "snack", "snack", "beg", "beg", "aegyo", "aegyo", "dollhug", "wag"],food:'bone',toy:'ball',special:1,doll:1,sleepy:1,glutton:1,bigeye:1,pal:['#232A38','#7C8698','#9AA4B4','#D4A4AC','#C8949C'],ear:'rose',tail:'whip',mark:'slim'}}; // 푸른 회색 강아지: 접힌 귀, 가는 꼬리
 const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면 레벨이나 업적으로 열려요
   flower:{n:TR('꽃핀'),slot:'head',price:150},sprout:{n:TR('새싹'),slot:'head',price:150},starpin:{n:TR('별 핀'),slot:'head',price:200},ribbon:{n:TR('리본'),slot:'head',price:200},
   cap:{n:TR('야구 모자'),slot:'head',price:300},beanie:{n:TR('털모자'),slot:'head',price:350},straw:{n:TR('밀짚모자'),slot:'head',price:400},santa:{n:TR('산타 모자'),slot:'head',price:500},
@@ -3240,6 +3240,13 @@ function bodyG(spk,st,tailF){
 let CURSP='';
 function eyesG(G,st,kind){
   const A=tplA(st), y=A.ey, xs=[5,10];
+  if(SP[CURSP]&&SP[CURSP].bigeye){[[5,6],[9,10]].forEach(([a,b])=>{ // 미카엘: 동글동글 까만 눈 (반짝임 한 칸)
+    const row=(yy,c1,c2)=>{gset(G,a,yy,c1); gset(G,b,yy,c2==null?c1:c2)};
+    if(!kind){row(y,'e','w'); row(y+1,'e')}
+    else if(kind==='blink'||kind==='sleep'){row(y,'b'); row(y+1,'o')}
+    else if(kind==='happy'){row(y,'o'); row(y+1,'b'); gset(G,a===5?a-1:b+1,y+1,'o')}
+    else if(kind==='down'){row(y,'b'); row(y+1,'e')}
+    else if(kind==='sad'){row(y,'b'); row(y+1,'e'); gset(G,a===5?b:a,y-1,'o')}}); return}
   const LN=SP[CURSP]&&SP[CURSP].lens; if(LN){for(let x=0;x<16;x++){ // 가면의 렌즈 눈: 위아래 칸을 가려서 표정을 만들어요
     if((kind==='blink'||kind==='sleep')&&gget(G,x,y)===LN) gset(G,x,y,'o'); if(kind==='happy'&&gget(G,x,y+1)===LN) gset(G,x,y+1,'o'); if(kind==='sad'&&gget(G,x,y)===LN&&(x===6||x===9)) gset(G,x,y,'o')} return}
   const EY=SP[CURSP]&&SP[CURSP].eye; if(EY){EY.xs.forEach(xl=>{ // 커다란 눈 (스폰지밥)
@@ -3363,16 +3370,16 @@ function propG(G,st,kind,f){
 }
 
 // 자세 하나 그리기 → 색 칸 배열
-function dollG(G,spk,st,mode){ // 미카엘이 늘 물고 다니는, 자기를 닮은 회색 인형 (입에 귀를 물고 대롱대롱). 몸이 움직인 뒤에 그려서 틀 밖으로 나가도 잘리지 않아요
-  const A=tplA(st), C={K:'#4A5262',D:'#C2C9D4',E:'#2A3040',P:'#E0A8B0'}, R=['K...K','DDDDD','DEDED','DDPDD','.D.D.'];
-  const box=g=>{let t=99,l=99; g.forEach((r,y)=>r.forEach((c,x)=>{if(c!=='.'){if(y<t) t=y; if(x<l) l=x}})); return [t,l]}, [t0,l0]=box(bodyG(spk,st,0)), [t1,l1]=box(G); // 앉기·점프로 몸이 옮겨 간 만큼 인형도 따라가요
-  const side=mode==='side', N=padG(G,2,0,1,4), dx=l1-l0+2, dy=t1-t0, x0=(side?0:1)+dx, y0=(side?11:A.my+1)+dy, W=N[0].length, cells=[];
+function dollG(G,spk,st,mode){ // 미카엘이 좋아하는, 자기를 닮은 회색 인형. 잘 때는 베개로 베고, 껴안을 때는 품에 (몸이 움직인 뒤에 그려서 잘리지 않아요)
+  const A=tplA(st), C={K:'#4A5262',D:'#C2C9D4',E:'#2A3040',P:'#E0A8B0'}, pillow=mode==='pillow';
+  const R=pillow?['.DDDK','DDED.','.PDD.','DDED.','.DDDK']:['K...K','DDDDD','DEDED','DDPDD','.D.D.']; // 베개일 땐 옆으로 누운 인형
+  const box=g=>{let t=99,l=99; g.forEach((r,y)=>r.forEach((c,x)=>{if(c!=='.'){if(y<t) t=y; if(x<l) l=x}})); return [t,l]}, [t0,l0]=box(bodyG(spk,st,0)), [t1,l1]=box(G);
+  const N=padG(G,3,0,1,4), dx=l1-l0+3, dy=t1-t0, x0=(pillow?-2:1)+dx, y0=(pillow?A.ny-2:A.my+1)+dy, W=N[0].length, cells=[];
   const at=(x,y)=>y>=0&&y<N.length&&x>=0&&x<W?N[y][x]:'.', put=(x,y,c)=>{if(y>=0&&y<N.length&&x>=0&&x<W) N[y][x]=c};
   R.forEach((r,j)=>[...r].forEach((c,i)=>{if(c!=='.') cells.push([x0+i,y0+j,c])}));
   const has=new Set(cells.map(([x,y])=>x+','+y));
-  cells.forEach(([x,y])=>[[1,0],[-1,0],[0,1]].forEach(([ax,ay])=>{const nx=x+ax, ny=y+ay; if(!has.has(nx+','+ny)&&at(nx,ny)!=='.') put(nx,ny,C.K)})); // 몸과 구분되게 테두리
+  cells.forEach(([x,y])=>[[1,0],[-1,0],[0,1],[0,-1]].forEach(([ax,ay])=>{const nx=x+ax, ny=y+ay; if(!has.has(nx+','+ny)&&(at(nx,ny)!=='.'||pillow)) put(nx,ny,C.K)})); // 테두리
   cells.forEach(([x,y,c])=>put(x,y,C[c]));
-  if(!side){put(6+dx,A.my+dy,C.K); put(6+dx,A.my+1+dy,C.K)} // 입에 문 귀
   return N;
 }
 function poseG(spk,st,wear,pose,xp){
@@ -3382,7 +3389,7 @@ function poseG(spk,st,wear,pose,xp){
   const f=/1$/.test(pose)?1:0, base=pose.replace(/[01]$/,'');
   let G=bodyG(spk,st,base==='wag'?f:0);
   const ey={blink:'blink',sleep:'sleep',read:'down',write:'down',happy:'happy',wag:'happy',cheer:'happy',eat:'happy',sad:'sad'}[base];
-  if(ey) eyesG(G,st,ey);
+  if(sp.bigeye) eyesG(G,st,''); if(ey) eyesG(G,st,ey);
   if(base==='eat') mouthG(G,st,f?'open':'');
   if(base==='sad') mouthG(G,st,'sad');
   G=wearG(G,st,wear);
@@ -3481,7 +3488,7 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='zoom') G=shiftG(G,f?1:-1,f?-2:0);
   if(base==='dig'&&f) G=squashG(G);
   if(base==='sleep') propG(G,st,'z',f);
-  if(sp.doll&&['read','write','lecture'].indexOf(base)<0) G=dollG(G,spk,st,['snack','eat','beg','food','meat'].indexOf(base)>=0?'side':'');
+  if(sp.doll&&(base==='sleep'||base==='dollhug')) G=dollG(G,spk,st,base==='sleep'?'pillow':''); // 미카엘은 인형을 좋아해서 껴안거나 베고 자요
   if(sp.ext) G=sp.ext(G,st,base,f)||G;
   return {G,pal:sp.pal};
 }
@@ -4469,7 +4476,7 @@ function dexDetail(k){ // 도감: 동물 하나의 동작과 대사를 모두 �
   const traits=[];
   traits.push(TR('좋아하는 먹이: ')+(FOOD_N[sp.food||'apple']||sp.food));
   if(sp.toy) traits.push(TR('좋아하는 장난감: ')+(sp.toy==='yarn'?TR('털실'):TR('공')));
-  if(sp.doll) traits.push(TR('자기를 닮은 회색 인형을 늘 물고 다녀요'));
+  if(sp.doll) traits.push(TR('자기를 닮은 회색 인형을 좋아해서 자주 베고 자요'));
   if(sp.sleepy) traits.push(TR('잠꾸러기라서 한번 자면 오래 자고, 집중할 때도 옆에서 졸아요'));
   if(sp.glutton) traits.push(TR('배가 불러도 밥을 더 달라고 졸라요'));
   if(sp.dogHate) traits.push(TR('동족 혐오가 있어서 다른 강아지를 보면 엄청 짖고 경계해요'));
@@ -4932,7 +4939,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v76'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v78'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;

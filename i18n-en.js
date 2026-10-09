@@ -3759,5 +3759,6 @@ window.I18N_EN={
 "마이멜로디와 쿠로미를 함께 키우기": "Raise My Melody and Kuromi together",
 "스폰지밥과 두들밥을 함께 키우기": "Raise SpongeBob and DoodleBob together",
 "시간 외 근무": "Overtime",
-"나나미와 함께하기": "Live with Nanami"
+"나나미와 함께하기": "Live with Nanami",
+"자기를 닮은 회색 인형을 좋아해서 자주 베고 자요": "Loves a gray plush that looks like him and often sleeps on it"
 };
