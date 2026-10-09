@@ -3076,7 +3076,11 @@ const partsExt=(spk,pad,parts)=>(G,st)=>{if(!st) return G; // 틀 밖 장식(귀
   parts.forEach(p=>p.r.forEach((row,j)=>[...row].forEach((c,i)=>{if(c==='.') return; const x=L+p.x+i+dx, y=Tp+p.y+j+dy; if(!N[y]||x<0||x>=N[y].length) return; if(p.soft&&N[y][x]!=='.') return; N[y][x]=(p.m&&p.m[c])||c})));
   return N};
 const mirror=rows=>rows.map(r=>[...r].reverse().join(''));
-SP.duo.ext=partsExt('duo',[4,0,4,0],(()=>{const w=['....o.','...ob.','..obb.','.obbb.','obbbb.','obbbbb','.ooooo']; return [{x:-4,y:6,r:w},{x:14,y:6,r:mirror(w)}]})()); // 듀오: 어깨에서 아래 바깥으로 뾰족하게 퍼지는 세모 날개 (틀 밖까지)
+SP.duo.ext=(()=>{ // 듀오 날개: 평소엔 살짝 퍼진 세모, 신나면 위로 번쩍, 화나면 옆으로 쫙, 인사할 땐 한쪽만, 졸리거나 책 볼 땐 몸에 착
+  const W={rest:{x:-2,y:7,r:['..o.','.ob.','.ob.','obb.','obbb','.ooo']},up:{x:-4,y:3,r:['o....','oo...','obo..','obbo.','obbbb','.obbb','..obb','...ob']},out:{x:-3,y:8,r:['.oo.','obbb','obbb','.oo.']}};
+  const side=(w,right)=>right?{x:15-w.x-w.r[0].length+1,y:w.y,r:mirror(w.r)}:w, mk=(l,r)=>partsExt('duo',[4,0,4,0],[side(W[l],0),side(W[r],1)]), E={};
+  const FOLD=['sleep','sad','read','write','shy','aegyo','eat','snack','dollhug','beg'], UP=['cheer','streak','halo','happy','dance','yaha','flap','zoom'], OUT=['evil','roar','stare','bark'];
+  return (G,st,base,f)=>{if(!st||FOLD.indexOf(base)>=0) return G; const k=UP.indexOf(base)>=0?'up':OUT.indexOf(base)>=0?'out':'rest', r=base==='wag'&&f?'up':k; return (E[k+r]||(E[k+r]=mk(k,r)))(G,st)}})();
 SP.mymelody.ext=partsExt('mymelody',[1,9,1,0],(()=>{const top=['.oo.','oPPo','oPIo','oPIo'], bot=['oPIo','oPIo','oPPo','oPPo','oPPo'], m={P:'#F8A8C8',I:'#FCD6E4',F:'#F87898',Y:'#F8D030'};
   return [{x:2,y:-8,r:top,m,soft:1},{x:3,y:-4,r:bot,m,soft:1},{x:10,y:-8,r:top,m,soft:1},{x:9,y:-4,r:bot,m,soft:1},{x:12,y:-2,r:['.F.','FYF','.F.'],m}]})()); // 마이멜로디: 위로 길게 솟은 토끼 귀 두건과 꽃
 SP.kuromi.ext=partsExt('kuromi',[6,5,6,0],(()=>{const ear=['......ooo..','....ooKKKo.','..ooKKKKKo.','.oKKKKoooo.','oKKKoo.....','oKKo.......','oPPo.......','.oo........'], m={K:'#2A2A30',P:'#F8A8C8'};
@@ -5000,7 +5004,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v89'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v90'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
