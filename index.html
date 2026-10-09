@@ -18,7 +18,7 @@
 <style>
 :root{
   --paper:color-mix(in srgb,var(--accent) 5%,#F8F9FB); --surface:#FFFFFF; --ink:#0F1E3D; --ink2:#5B6C8F; --rule:#E1E9F5; --rule2:#BCCAE2;
-  --accent:var(--acc-l,#2B5BE0); --soft:color-mix(in srgb,var(--accent) 11%,#fff); --on-accent:#FFFFFF; --rest:#1594BE; --warn:#D2453A; --soon:#B26B00; --blend:multiply; --hl:.85;
+  --accent:var(--acc-l,#2B5BE0); --accent-bg:var(--acc-bg,var(--accent)); --soft:color-mix(in srgb,var(--accent) 11%,#fff); --on-accent:var(--on-acc,#FFFFFF); --ti:var(--ti-l,255,255,255); --rest:#1594BE; --warn:#D2453A; --soon:#B26B00; --blend:multiply; --hl:.85;
   --shadow:0 1px 2px rgba(20,48,120,.05),0 10px 30px rgba(20,48,120,.07);
   --serif:"Outfit","IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
   --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
@@ -26,11 +26,11 @@
 }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
   --paper:#0A1120; --surface:#111A2E; --ink:#E8EEFB; --ink2:#93A4C6; --rule:#1E2A46; --rule2:#35476F;
-  --accent:var(--acc-d,#7CA4FF); --soft:color-mix(in srgb,var(--accent) 16%,#111A2E); --on-accent:#0A1120; --rest:#5CC4E6; --warn:#FF8A7A; --soon:#F5B84B; --blend:normal; --hl:.82;
+  --accent:var(--acc-d,#7CA4FF); --accent-bg:var(--accent); --soft:color-mix(in srgb,var(--accent) 16%,#111A2E); --on-accent:#0A1120; --ti:var(--ti-l,255,255,255); --rest:#5CC4E6; --warn:#FF8A7A; --soon:#F5B84B; --blend:normal; --hl:.82;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25); } }
 :root[data-theme="dark"]{
   --paper:#0A1120; --surface:#111A2E; --ink:#E8EEFB; --ink2:#93A4C6; --rule:#1E2A46; --rule2:#35476F;
-  --accent:var(--acc-d,#7CA4FF); --soft:color-mix(in srgb,var(--accent) 16%,#111A2E); --on-accent:#0A1120; --rest:#5CC4E6; --warn:#FF8A7A; --soon:#F5B84B; --blend:normal; --hl:.82;
+  --accent:var(--acc-d,#7CA4FF); --accent-bg:var(--accent); --soft:color-mix(in srgb,var(--accent) 16%,#111A2E); --on-accent:#0A1120; --ti:var(--ti-l,255,255,255); --rest:#5CC4E6; --warn:#FF8A7A; --soon:#F5B84B; --blend:normal; --hl:.82;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25); }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -38,7 +38,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.5 var(--s
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:var(--surface);border:1px solid var(--rule2);border-radius:10px;padding:.4em .95em;min-height:38px;font-weight:500;transition:background .15s,border-color .15s,color .15s}
 @media (hover:hover){button:hover{border-color:var(--accent);color:var(--accent)}}
-button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+button.primary{background:var(--accent-bg);border-color:var(--accent-bg);color:var(--on-accent);font-weight:600}
 button.primary:hover{color:var(--on-accent);filter:brightness(1.08)}
 button.quiet{background:none;border-color:transparent;color:var(--ink2);padding:.3em .55em}
 @media (hover:hover){button.quiet:hover{color:var(--accent);background:var(--soft);border-color:transparent}}
@@ -85,48 +85,48 @@ main{max-width:1080px;margin:0 auto;padding:1.1rem 1rem 2rem}
 .today{display:grid;gap:1rem}
 .seg{display:inline-flex;background:var(--soft);border-radius:99px;padding:3px}
 .seg button{background:none;border:0;border-radius:99px;min-height:30px;padding:.15em 1em;color:var(--ink2)}
-.seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+.seg button[aria-pressed=true]{background:var(--accent-bg);color:var(--on-accent)}
 
 /* 타이머: 화면에서 유일하게 색을 채운 카드 */
-.timer{text-align:center;border:0;color:#fff;background:linear-gradient(160deg,var(--g1,#1B378F),var(--g2,#2B5BE0) 55%,var(--g3,#4F8BF7));box-shadow:0 14px 34px color-mix(in srgb,var(--g2,#2B5BE0) 32%,transparent);transition:background .4s}
+.timer{text-align:center;border:0;color:rgb(var(--ti));background:linear-gradient(160deg,var(--g1,#1B378F),var(--g2,#2B5BE0) 55%,var(--g3,#4F8BF7));box-shadow:0 14px 34px color-mix(in srgb,var(--g2,#2B5BE0) 32%,transparent);transition:background .4s}
 .timer[data-rest]{background:linear-gradient(160deg,var(--r1,#0C5874),var(--r2,#1594BE) 55%,var(--r3,#4CC3E3));box-shadow:0 14px 34px color-mix(in srgb,var(--r2,#1594BE) 30%,transparent)}
-.timer .seg{background:rgba(255,255,255,.16)}
-.timer .seg button,.timer .seg button:hover{background:none;color:rgba(255,255,255,.8)}
-.timer .seg button[aria-pressed=true]{background:#fff;color:var(--g1,#1B378F)}
+.timer .seg{background:rgba(var(--ti),.16)}
+.timer .seg button,.timer .seg button:hover{background:none;color:rgba(var(--ti),.8)}
+.timer .seg button[aria-pressed=true]{background:rgb(var(--ti));color:var(--g1,#1B378F)}
 .ring{position:relative;width:min(264px,74vw);aspect-ratio:1;margin:1.1rem auto .9rem}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg);display:block}
 .ring circle{fill:none;stroke-width:9}
-.ring .bg{stroke:rgba(255,255,255,.2)}
-.ring .fg{stroke:#fff;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100}
+.ring .bg{stroke:rgba(var(--ti),.2)}
+.ring .fg{stroke:rgb(var(--ti));stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100}
 .ring-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem}
-.phase{margin:0;font-weight:500;font-size:.92rem;color:rgba(255,255,255,.85)}
+.phase{margin:0;font-weight:500;font-size:.92rem;color:rgba(var(--ti),.85)}
 .digits{font:600 clamp(3rem,15vw,3.9rem)/1 var(--serif);letter-spacing:-.02em}
 .digits .d{display:inline-block;width:.6em;text-align:center}
 .timer[data-sw] .digits{font-size:clamp(2.3rem,11.5vw,2.9rem)}
 .dots{display:flex;gap:.4rem;justify-content:center;min-height:9px}
-.dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3)}
-.dots i.on{background:#fff}
+.dots i{width:8px;height:8px;border-radius:50%;background:rgba(var(--ti),.3)}
+.dots i.on{background:rgb(var(--ti))}
 .pick{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:0 0 1rem}
-.pick label{display:flex;align-items:center;gap:.4rem;font-size:.84rem;color:rgba(255,255,255,.85)}
+.pick label{display:flex;align-items:center;gap:.4rem;font-size:.84rem;color:rgba(var(--ti),.85)}
 .pick select{max-width:11rem}
-.timer select,.timer input[type=text]{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff}
+.timer select,.timer input[type=text]{background:rgba(var(--ti),.15);border-color:rgba(var(--ti),.3);color:rgb(var(--ti))}
 .timer select option{color:#0F1E3D;background:#fff}
-.timer input::placeholder{color:rgba(255,255,255,.65)}
-.timer select:focus,.timer input:focus{border-color:#fff;outline-color:rgba(255,255,255,.3)}
+.timer input::placeholder{color:rgba(var(--ti),.65)}
+.timer select:focus,.timer input:focus{border-color:rgb(var(--ti));outline-color:rgba(var(--ti),.3)}
 .btns{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
-.timer button{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);color:#fff}
-.timer button:hover{background:rgba(255,255,255,.24);border-color:#fff;color:#fff}
-.timer .btns .primary{min-width:8rem;min-height:46px;border-radius:99px;background:#fff;border-color:#fff;color:var(--g1,#1B378F);filter:none}
+.timer button{background:rgba(var(--ti),.14);border-color:rgba(var(--ti),.4);color:rgb(var(--ti))}
+.timer button:hover{background:rgba(var(--ti),.24);border-color:rgb(var(--ti));color:rgb(var(--ti))}
+.timer .btns .primary{min-width:8rem;min-height:46px;border-radius:99px;background:rgb(var(--ti));border-color:rgb(var(--ti));color:var(--g1,#1B378F);filter:none}
 .timer[data-rest] .btns .primary,.timer[data-rest] .seg button[aria-pressed=true]{color:var(--r1,#0C5874)}
 .timer .btns button{border-radius:99px}
-.timer button.quiet{background:none;border-color:transparent;color:rgba(255,255,255,.85)}
-.timer :focus-visible{outline-color:#fff}
-.last{margin-top:1.1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.25);text-align:left}
-.last .muted{color:rgba(255,255,255,.8)}
+.timer button.quiet{background:none;border-color:transparent;color:rgba(var(--ti),.85)}
+.timer :focus-visible{outline-color:rgb(var(--ti))}
+.last{margin-top:1.1rem;padding-top:1rem;border-top:1px solid rgba(var(--ti),.25);text-align:left}
+.last .muted{color:rgba(var(--ti),.8)}
 .rate{display:inline-flex;gap:.3rem}
 .rate button{min-height:32px;width:32px;padding:0;border-radius:50%}
-.rate button[aria-pressed=true]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
-.timer .rate button[aria-pressed=true]{background:#fff;color:var(--g1,#1B378F);border-color:#fff}
+.rate button[aria-pressed=true]{background:var(--accent-bg);color:var(--on-accent);border-color:var(--accent-bg)}
+.timer .rate button[aria-pressed=true]{background:rgb(var(--ti));color:var(--g1,#1B378F);border-color:rgb(var(--ti))}
 
 .tasks{list-style:none;margin:.4rem 0;padding:0}
 .tasks li{display:flex;align-items:center;gap:.5rem;padding:.5rem 0;border-bottom:1px solid var(--rule)}
@@ -200,10 +200,10 @@ main{max-width:1080px;margin:0 auto;padding:1.1rem 1rem 2rem}
 .heat i[data-l="4"]{background:var(--accent)}
 .heat i.fut{background:transparent}
 
-.dayb{min-height:32px;padding:0 .55em} .dayb[aria-pressed=true],.dayb[aria-pressed=true]:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.dayb{min-height:32px;padding:0 .55em} .dayb[aria-pressed=true],.dayb[aria-pressed=true]:hover{background:var(--accent-bg);color:var(--on-accent);border-color:var(--accent-bg)}
 mark{background:color-mix(in srgb,var(--accent) 26%,transparent);color:inherit;border-radius:3px;padding:0 1px}
 .found{max-height:52vh;overflow-y:auto}
-button.chip{border:0;min-height:0;cursor:pointer} button.chip:hover{background:var(--accent);color:var(--on-accent)}
+button.chip{border:0;min-height:0;cursor:pointer} button.chip:hover{background:var(--accent-bg);color:var(--on-accent)}
 #rv-text{width:100%;resize:vertical;line-height:1.6;padding:.5em .7em;margin-top:.8rem;min-height:5.5em}
 
 /* 목표 */
@@ -237,7 +237,7 @@ button.chip{border:0;min-height:0;cursor:pointer} button.chip:hover{background:v
 .cc.out{opacity:.42}
 .cc.sel{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
 .cc .dn{font:600 .82rem var(--serif);width:1.7em;height:1.7em;display:grid;place-items:center;border-radius:50%;flex:none}
-.cc.tdy .dn{background:var(--accent);color:var(--on-accent)}
+.cc.tdy .dn{background:var(--accent-bg);color:var(--on-accent)}
 .ce{font-size:.68rem;line-height:1.4;padding:0 4px;border-radius:4px;background:color-mix(in srgb,var(--c) 28%,var(--surface));border-left:2px solid var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:none}
 .cc .more{font-size:.66rem;color:var(--ink2)}
 .list .when{flex:none;min-width:6.2em;font-size:.84rem;color:var(--ink2)}
@@ -304,7 +304,7 @@ dialog.wide.xwide{width:min(56rem,calc(100vw - 2rem))}
 .hnav2{display:flex;flex-direction:column;gap:.15rem}
 .hnav2 button,.hnav2 button:hover{display:flex;align-items:center;justify-content:flex-start;gap:.55rem;width:100%;min-height:38px;padding:.3em .75em;border:0;border-radius:10px;background:none;color:var(--ink2);font-weight:500;text-align:left}
 .hnav2 button:hover{background:var(--soft);color:var(--ink)}
-.hnav2 button[aria-pressed=true],.hnav2 button[aria-pressed=true]:hover{background:var(--accent);color:var(--on-accent);font-weight:600}
+.hnav2 button[aria-pressed=true],.hnav2 button[aria-pressed=true]:hover{background:var(--accent-bg);color:var(--on-accent);font-weight:600}
 .hpane{max-height:66vh;overflow-y:auto;padding-right:.6rem;line-height:1.7}
 .hpane h3{display:flex;align-items:center;gap:.45rem;font-size:1.3rem;margin:0 0 .2rem}
 .hpane h3 svg.ic{color:var(--accent)}
@@ -348,7 +348,7 @@ dialog.wide.xwide{width:min(56rem,calc(100vw - 2rem))}
 .ltm{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .7rem;margin-top:.3rem;font-size:.78rem;color:var(--ink2)}
 .ltm .late{color:var(--warn);font-weight:600} .ltm .soon{color:var(--soon);font-weight:500}
 .pill,.pill:hover{min-height:0;padding:.08em .65em;border-radius:99px;font-size:.74rem;border:1px solid var(--rule2);background:none;color:var(--ink2)}
-.pill.on,.pill.on:hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pill.on,.pill.on:hover{background:var(--accent-bg);border-color:var(--accent-bg);color:var(--on-accent)}
 .lta{display:flex;flex:none}
 .tgoal,.tgoal:hover{display:inline-block;max-width:100%;min-height:0;padding:0;border:0;background:none;border-radius:0;font-size:.78rem;font-weight:400;color:var(--accent);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tgoal:hover{text-decoration:underline}
@@ -463,12 +463,12 @@ h2 .ib svg.ic{width:1em;height:1em;vertical-align:0}
 .hello{flex-basis:100%;font-size:.84rem;font-weight:500;color:var(--accent)}
 .timer{position:relative;overflow:hidden}
 .timer::before,.timer::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
-.timer::before{right:-90px;top:-120px;width:280px;height:280px;background:rgba(255,255,255,.08)}
-.timer::after{left:-70px;bottom:-90px;width:210px;height:210px;border:26px solid rgba(255,255,255,.07)}
+.timer::before{right:-90px;top:-120px;width:280px;height:280px;background:rgba(var(--ti),.08)}
+.timer::after{left:-70px;bottom:-90px;width:210px;height:210px;border:26px solid rgba(var(--ti),.07)}
 .timer>*{position:relative;z-index:1}
-.ring .tk{stroke:rgba(255,255,255,.26);stroke-width:4;stroke-dasharray:.35 1.65;stroke-dashoffset:.175}
-.ring .tk2{stroke:rgba(255,255,255,.5);stroke-width:7;stroke-dasharray:.45 9.55;stroke-dashoffset:.225}
-.timer[data-run] .ring .fg{filter:drop-shadow(0 0 5px rgba(255,255,255,.65))}
+.ring .tk{stroke:rgba(var(--ti),.26);stroke-width:4;stroke-dasharray:.35 1.65;stroke-dashoffset:.175}
+.ring .tk2{stroke:rgba(var(--ti),.5);stroke-width:7;stroke-dasharray:.45 9.55;stroke-dashoffset:.225}
+.timer[data-run] .ring .fg{filter:drop-shadow(0 0 5px rgba(var(--ti),.65))}
 .empty.art{display:block;text-align:center;padding:1.3rem .5rem}
 .artic{display:grid;place-items:center;width:52px;height:52px;margin:0 auto .6rem;border-radius:50%;background:var(--soft);color:var(--accent)}
 .artic svg.ic{width:24px;height:24px}
@@ -479,7 +479,7 @@ h2 .ib svg.ic{width:1em;height:1em;vertical-align:0}
   section.enter>*:nth-child(2){animation-delay:.06s} section.enter>*:nth-child(3){animation-delay:.12s} section.enter>*:nth-child(4){animation-delay:.18s} section.enter>*:nth-child(n+5){animation-delay:.24s}
   button:active{transform:scale(.97)}
   .gcard,.cc{transition:transform .15s,box-shadow .15s,border-color .15s} @media (hover:hover){.gcard:hover,.cc:hover{transform:translateY(-2px);box-shadow:var(--shadow)}}
-  .timer[data-run] .ring .fg{animation:glow 2.4s ease-in-out infinite} @keyframes glow{50%{filter:drop-shadow(0 0 10px rgba(255,255,255,.9))}}
+  .timer[data-run] .ring .fg{animation:glow 2.4s ease-in-out infinite} @keyframes glow{50%{filter:drop-shadow(0 0 10px rgba(var(--ti),.9))}}
 }
 @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
 
@@ -518,9 +518,9 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
 
 /* 뽀모도로 시간 고르기 (타이머 카드 안) */
 .pcfg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;margin:-.3rem 0 1rem}
-.pcfg label{display:flex;flex-direction:column;align-items:stretch;gap:.2rem;font-size:.76rem;color:rgba(255,255,255,.85);min-width:0}
+.pcfg label{display:flex;flex-direction:column;align-items:stretch;gap:.2rem;font-size:.76rem;color:rgba(var(--ti),.85);min-width:0}
 .pcfg select{width:100%;min-width:0;padding-left:.5em;padding-right:.3em}
-.pcfg .sum{grid-column:1/-1;font-size:.84rem;color:rgba(255,255,255,.85)}
+.pcfg .sum{grid-column:1/-1;font-size:.84rem;color:rgba(var(--ti),.85)}
 @media (max-width:420px){.pcfg{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* 할 일: 카테고리·항목별로 묶기, 끌어서 순서 바꾸기 */
@@ -867,6 +867,9 @@ if(!S.docs.cats){ // 카테고리 기본값 (예전 기록의 항목은 모두 '
 }
 // 화면 꾸미기: [이름, 밝은 화면 강조색, 어두운 화면 강조색, 타이머 그라데이션 3색, (휴식 그라데이션 3색)]
 const hexRGB=x=>[1,3,5].map(i=>parseInt(x.substr(i,2),16));
+const lumOf=x=>{const [r,g,b]=hexRGB(x).map(v=>{v/=255; return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}); return .2126*r+.7152*g+.0722*b};
+const contrastOf=(a,b)=>{const x=lumOf(a), y=lumOf(b); return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const readable=(c,bg,min,to)=>{let x=c; for(let t=.05;contrastOf(x,bg)<min&&t<=1;t+=.05) x=mixHex(c,to,t); return x}; // 밝은 테마 색도 글씨가 잘 보이도록 진하게(어두운 화면에선 밝게)
 const mixHex=(x,y,t)=>{const a=hexRGB(x), b=hexRGB(y); return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,'0')).join('')};
 const mkAcc=(name,x)=>[name,x,mixHex(x,'#ffffff',.45),mixHex(x,'#000000',.38),x,mixHex(x,'#ffffff',.28)]; // 색 하나로 어두운 화면용 색과 그라데이션을 만듦
 const hueOf=x=>{const [r,g,b]=hexRGB(x).map(v=>v/255), mx=Math.max(r,g,b), d=mx-Math.min(r,g,b); if(!d) return -1; const hh=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4; return (hh*60+360)%360};
@@ -880,9 +883,12 @@ const FONTS={plex:[TR('기본'),'','"IBM Plex Sans KR",'+SYSF,'"Outfit","IBM Ple
   dodum:[TR('고운돋움'),'Gowun+Dodum','"Gowun Dodum",'+SYSF],batang:[TR('고운바탕'),'Gowun+Batang:wght@400;700','"Gowun Batang","Nanum Myeongjo",Batang,serif']};
 function applyLook(){
   const r=document.documentElement, st=r.style, th=cfg('theme'); if(th==='light'||th==='dark') r.dataset.theme=th; else delete r.dataset.theme;
-  const c=accNow(); st.setProperty('--acc-l',c[1]); st.setProperty('--acc-d',c[2]); [3,4,5].forEach((n,i)=>st.setProperty('--g'+(i+1),c[n]));
+  const c0=accNow(), W='#FFFFFF', K='#000000', pale=contrastOf(c0[1],W)<3; // 아주 밝은 색: 배경은 밝게 두고 그 위 글씨를 어둡게, 글씨로 쓸 땐 진하게
+  const c=[c0[0],readable(c0[1],W,4.6,K),readable(c0[2],'#111A2E',4.6,W)].concat(pale?[c0[1],mixHex(c0[1],W,.25),mixHex(c0[1],W,.5)]:[readable(c0[3],W,4.5,K),readable(c0[4],W,4,K),readable(c0[5],W,3,K)]);
+  st.setProperty('--acc-bg',pale?c0[1]:c[1]); st.setProperty('--on-acc',pale?'#1E2230':'#FFFFFF'); st.setProperty('--ti-l',pale?'30,34,48':'255,255,255');
+  st.setProperty('--acc-l',c[1]); st.setProperty('--acc-d',c[2]); [3,4,5].forEach((n,i)=>st.setProperty('--g'+(i+1),c[n]));
   // 휴식 색도 테마 색에서 만듦: 같은 계열이되 집중보다 밝고 부드럽게 (그래서 테마를 바꾸면 휴식 화면도 같이 바뀜)
-  const rb=c[4], rest=[mixHex(rb,'#000000',.18),mixHex(rb,'#ffffff',.2),mixHex(rb,'#ffffff',.42)];
+  const rb=c[4], rest=pale?[mixHex(c0[1],W,.12),mixHex(c0[1],W,.35),mixHex(c0[1],W,.55)]:[readable(mixHex(rb,'#000000',.18),W,4.5,K),readable(mixHex(rb,'#ffffff',.2),W,3.5,K),readable(mixHex(rb,'#ffffff',.42),W,3,K)];
   [1,2,3].forEach(i=>st.setProperty('--r'+i,rest[i-1]));
   const k=FONTS[cfg('font')]?cfg('font'):'plex', f=FONTS[k];
   if(f[1]&&!document.querySelector('link[data-f="'+k+'"]')){const l=document.createElement('link'); l.rel='stylesheet'; l.href='https://fonts.googleapis.com/css2?family='+f[1]+'&display=swap'; l.dataset.f=k; document.head.append(l)}
@@ -1885,7 +1891,7 @@ function eventDlg(ev){
   const isNew=!ev, fPl=plIn(ev&&ev.place), fT=h('input',{type:'text',value:ev?ev.title:'',maxlength:40,placeholder:TR('예: 수업, 과외')}), fS=h('input',{type:'time',value:hm(ev?ev.s:540)}), fE=h('input',{type:'time',value:ev&&ev.e<1440?hm(ev.e):ev?'23:59':'10:30'});
   let color=ev?ev.color:PALETTE[7]; const picked=new Set(ev?[ev.day]:[wdOf(today())]);
   const dayBox=h('span',{class:'row',style:'gap:.25rem'},WD.map((w,i)=>h('button',{'aria-pressed':String(picked.has(i)),style:'min-height:32px;padding:0 .55em',onclick:e=>{if(isNew){picked.has(i)?picked.delete(i):picked.add(i)}else{picked.clear();picked.add(i);dayBox.querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed','false');b.style.background='';b.style.color=''})}
-    const on=picked.has(i); e.currentTarget.setAttribute('aria-pressed',String(on)); e.currentTarget.style.background=on?'var(--accent)':''; e.currentTarget.style.color=on?'var(--on-accent)':''},...(picked.has(i)?{style:'min-height:32px;padding:0 .55em;background:var(--accent);color:var(--on-accent)'}:{})},w)));
+    const on=picked.has(i); e.currentTarget.setAttribute('aria-pressed',String(on)); e.currentTarget.style.background=on?'var(--accent-bg)':''; e.currentTarget.style.color=on?'var(--on-accent)':''},...(picked.has(i)?{style:'min-height:32px;padding:0 .55em;background:var(--accent);color:var(--on-accent)'}:{})},w)));
   const sw=h('span',{class:'sw'}); const paint=()=>sw.replaceChildren(...swItems(color,c=>{color=c; paint()})); paint();
   const fRep=h('select',null,h('option',{value:'w'},TR('매주 반복')),h('option',{value:'1'},TR('한 번만 (캘린더 일정)'))), fOnce=h('input',{type:'date',value:keyOf(new Date())});
   const lDay=h('label',null,TR('요일'),dayBox), lOnce=h('label',null,TR('날짜'),fOnce), lRep=h('label',null,TR('반복'),fRep), syncRep=()=>{const once=isNew&&fRep.value==='1'; lDay.hidden=once; lOnce.hidden=!once}; fRep.addEventListener('change',syncRep); syncRep();
@@ -2041,6 +2047,11 @@ function taskLi(t,showDate){
     h('button',{class:'quiet',onclick:()=>taskDlg(t)},TR('고치기')));
 }
 const calSeg=()=>h('div',{class:'seg sp'},h('button',{'aria-pressed':String(cView==='month'),onclick:()=>{cView='month'; renderCal()}},TR('월간')),h('button',{'aria-pressed':String(cView==='week'),onclick:()=>{cView='week'; cWeek=cSel; renderCal()}},TR('주간')));
+function calToDay(){ // 목록이 달력 아래에 있을 때(폰·좁은 화면)만 그날 목록으로 내려가요
+  const d=document.querySelector('#v-cal .daycard'), cal=document.querySelector('#v-cal .calcard'); if(!d||!cal||d.getBoundingClientRect().top<cal.getBoundingClientRect().bottom-1) return;
+  const top=document.querySelector('.top'), off=top&&getComputedStyle(top).position==='sticky'?top.getBoundingClientRect().height:0;
+  scrollTo({top:d.getBoundingClientRect().top+scrollY-off-10,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
 function renderCal(){cView==='week'?renderCalWeek():renderCalMonth()}
 function renderCalMonth(){
   const [y,m]=parts(cMonth+'-01'), first=cMonth+'-01', start=addDays(first,-wdOf(first)), n=Math.ceil((wdOf(first)+new Date(y,m,0).getDate())/7)*7, t0=keyOf(new Date());
@@ -2050,7 +2061,7 @@ function renderCalMonth(){
   const reg=new Map(), ents=k=>{const out=(dd[k]||[]).slice(); calOf(k).forEach(e=>{if(!e.src) reg.set('ev:'+e.id,e); out.push({title:(e.cont?'⋯ ':'')+e.title,color:e.color,key:e.src?null:'ev:'+e.id})}); (tk[k]||[]).forEach(t=>{reg.set('tk:'+t.id,t); out.push({title:t.title,color:taskColor(t),task:1,done:t.done,key:'tk:'+t.id})}); (dueBy[k]||[]).forEach(t=>{reg.set('du:'+t.id,t); out.push({title:'⏰ '+t.title,color:'var(--warn)',task:1,due:1,done:t.done,key:'du:'+t.id})}); ltAll().filter(g=>g.status!=='done'&&g.due===k).forEach(g=>out.push({title:'⏰ '+g.title,color:'var(--warn)',task:1,due:1})); return out};
   const go=d=>{cMonth=keyOf(new Date(y,m-1+d,1)).slice(0,7); renderCal()};
   const cells=[]; for(let i=0;i<n;i++){const k=addDays(start,i), list=ents(k), max=3;
-    cells.push(h('button',{class:'cc'+(k.slice(0,7)!==cMonth?' out':'')+(k===t0?' tdy':'')+(k===cSel?' sel':''),'data-date':k,'aria-label':mdLong(k)+TR(', 일정과 할 일 ')+list.length+TR('개'),onclick:()=>{cSel=k; cMonth=k.slice(0,7); renderCal()}},
+    cells.push(h('button',{class:'cc'+(k.slice(0,7)!==cMonth?' out':'')+(k===t0?' tdy':'')+(k===cSel?' sel':''),'data-date':k,'aria-label':mdLong(k)+TR(', 일정과 할 일 ')+list.length+TR('개'),onclick:()=>{cSel=k; cMonth=k.slice(0,7); renderCal(); calToDay()}},
       h('span',{class:'dn'},parts(k)[2]),list.slice(0,max).map(e=>h('span',{class:'ce'+(e.task?' tk':'')+(e.due?' due':'')+(e.done?' dn2':''),style:'--c:'+e.color,'data-k':e.key||null},e.title)),list.length>max?h('span',{class:'more'},'+'+(list.length-max)):null))}
   const calEl=h('div',{class:'cal'},WD.map(w=>h('div',{class:'wd'},w)),cells);
   function monthDrag(e,el,kind,rec){
@@ -2077,7 +2088,7 @@ function renderCalMonth(){
       h('button',{class:'quiet',onclick:()=>{cSel=t0; cMonth=t0.slice(0,7); renderCal()}},TR('오늘')),h('button',{class:'quiet','aria-label':TR('다음 달'),onclick:()=>go(1)},'▶')),calSeg()),
     h('div',{class:'calwrap'},
       h('section',{class:'card calcard'},calEl,h('p',{class:'small muted',style:'margin:.7rem 0 0'},TR('색 띠는 일정, 테두리 칸은 할 일, ⏰는 마감이에요. 끌어서 다른 날짜로 옮길 수 있어요.'))),
-      h('section',{class:'card'},h('div',{class:'row'},h('h2',null,dayTitle(cSel)),h('button',{class:'primary sp',onclick:()=>calDlg(null,cSel)},TR('일정 추가'))),
+      h('section',{class:'card daycard'},h('div',{class:'row'},h('h2',null,dayTitle(cSel)),h('button',{class:'primary sp',onclick:()=>calDlg(null,cSel)},TR('일정 추가'))),
         li.length?h('ul',{class:'list'},li):null,
         h('div',{class:'sub3'},TR('할 일')),h('ul',{class:'list'},dayT.length?dayT.map(t=>taskLi(t)):h('li',{class:'empty'},TR('이 날 계획한 할 일이 없어요.'))),
         dueEl.length?[h('div',{class:'sub3'},TR('이 날 마감')),h('ul',{class:'list'},dueEl.map(t=>taskLi(t,true)))]:null,
@@ -4803,7 +4814,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v68'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v70'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
