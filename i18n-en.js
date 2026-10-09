@@ -3760,5 +3760,9 @@ window.I18N_EN={
 "스폰지밥과 두들밥을 함께 키우기": "Raise SpongeBob and DoodleBob together",
 "시간 외 근무": "Overtime",
 "나나미와 함께하기": "Live with Nanami",
-"자기를 닮은 회색 인형을 좋아해서 자주 베고 자요": "Loves a gray plush that looks like him and often sleeps on it"
+"자기를 닮은 회색 인형을 좋아해서 자주 베고 자요": "Loves a gray plush that looks like him and often sleeps on it",
+"어디든 졸졸 따라다니는 중": "Following you everywhere",
+"인형 베고 자다 왔어": "I was napping on my plush",
+"인형은 내 최고의 베개야": "My plush is the best pillow",
+"인형 베고 조용히 기다릴게": "I'll wait quietly, head on my plush"
 };

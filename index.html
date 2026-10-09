@@ -3336,8 +3336,11 @@ const PROPC={p:'#FFFFFF',q:'#5868A0',k:'#E84040',y:'#F8C838',t:'#303030',z:'#587
 let FOOD_OV=null; // 보르미가 이것저것 먹을 때 그리는 음식
 function propG(G,st,kind,f){
   const A=tplA(st), y0=A.ny+1;
-  if(kind==='book'){const rows=f?['kkkkkk','kpqkqk','kqqkpk','kkkkkk']:['kkkkkk','kqqkqk','kpqkpk','kkkkkk'];
-    rows.forEach((r,j)=>[...r].forEach((c,i)=>gset(G,5+i,y0+j,c==='o'?'o':PROPC[c]))); gset(G,4,y0+1,'b'); gset(G,11,y0+1,'b'); gset(G,4,y0+2,'o'); gset(G,11,y0+2,'o')}
+  if(kind==='book'){ // 펼친 책: 가운데가 접힌 하얀 양쪽 페이지, 글줄, 빨간 표지 (넘길 때 오른쪽 장이 들려요)
+    const C={o:'o',W:'#FFFFFF',L:'#A8B0C0',g:'#C8CED8',k:'#E84040'}, y=Math.min(y0,12), x0=4;
+    const rows=f?['.ooo.....','oWWWg.oo.','oLLWgoWWo','oWLLgWLLo','okkkkkkko']:['.ooo.ooo.','oWWWgWWWo','oLLWgLLWo','oWLLgWLLo','okkkkkkko'];
+    rows.forEach((r,j)=>[...r].forEach((c,i)=>{if(c!=='.') gset(G,x0+i,y-1+j,C[c])}));
+    gset(G,3,y+1,'b'); gset(G,13,y+1,'b'); gset(G,3,y+2,'o'); gset(G,13,y+2,'o')}
   if(kind==='pencil'){const pts=f?[[11,y0+1,PROPC.t],[12,y0,PROPC.y],[13,y0-1,PROPC.y],[14,y0-2,PROPC.y],[15,y0-3,PROPC.p]]:[[11,y0+2,PROPC.t],[12,y0+1,PROPC.y],[13,y0,PROPC.y],[14,y0-1,PROPC.y],[15,y0-2,PROPC.p]];
     pts.forEach(([x,y,c])=>gset(G,x,y,c)); gset(G,10,y0+(f?1:2),'b')}
   if(kind==='z'){const z=[[0,0],[1,0],[2,0],[1,1],[0,2],[1,2],[2,2]], ox=f?12:11, oy=f?0:2; z.forEach(([a,b])=>gset(G,ox+a,oy+b,PROPC.z)); if(f) gset(G,10,3,PROPC.z)}
@@ -3804,7 +3807,7 @@ function actorPose(a){ // 지금 상황에 맞는 행동 고르기
   if(st===0) return 'egg';
   if(a.fixed) return a.fixed;
   if(act&&FX.until>now) return FX.kind;
-  if(F.focus){const fa=focusAct(SP[p.sp]); if(SP[p.sp]&&SP[p.sp].sleepy&&Math.floor(now/8000)%3===1) return 'sleep'; return act?(fa&&Math.floor(now/8000)%4===3?fa:Math.floor(now/8000)%3===2?'write':'read'):(fa||'wag')}
+  if(F.focus){const fa=focusAct(SP[p.sp]); if(SP[p.sp]&&SP[p.sp].sleepy&&Math.floor(now/8000)%3===1) return 'sleep'; return act?(fa&&Math.floor(now/8000)%4===3?fa:Math.floor(now/8000)%3===2?'write':'read'):(fa||wagOr(p.sp,'read'))}
   if(F.rest) return 'sleep';
   if(SP[p.sp]&&SP[p.sp].timid&&ACTORS.some(o=>o!==a&&o.svg===a.svg&&o.st&&Math.abs(o.x-a.x)<12&&(o.walk>0||actorPose(o)==='bark'))) return 'shy'; // 겁쟁이: 누가 다가오면 덜덜
   if(SP[p.sp]&&SP[p.sp].dogHate&&!a.sad){const foe=dogFoe(a); if(foe&&Math.floor(now/5000)%3!==2){a.dir=foe.x>a.x?1:-1; return 'bark'}} // 다른 강아지를 보면 짖어요
@@ -3820,7 +3823,7 @@ function stepActor(a){
     else if(pose==='walk'||pose==='stand'||pose==='sad'){
       if(a.walk>0){a.x+=a.dir; a.walk--; if(a.x<a.min||a.x>a.max){a.x=Math.max(a.min,Math.min(a.max,a.x)); a.walk=0}}
       else if(Math.random()<(a.sad?.02:.06)){const bear=SP[a.pet.sp].followBear&&ACTORS.find(o=>o.svg===a.svg&&o.st&&o.pet.sp==='bear'); a.dir=bear&&Math.abs(bear.x-a.x)>10?(bear.x>a.x?1:-1):Math.random()<.5?-1:1; a.walk=4+Math.floor(Math.random()*14); a.idle=''} // 티벳여우는 곰을 따라다녀요
-      else if(!a.idle&&Math.random()<.03) {const acts=(SP[a.pet.sp]||{}).acts; a.idle=acts?pick(acts):'wag'; a.idleT=(acts?16:8)+Math.floor(Math.random()*8)}
+      else if(!a.idle&&Math.random()<.03) {const acts=(SP[a.pet.sp]||{}).acts; a.idle=acts?pick(acts):wagOr(a.pet.sp,'cheer'); a.idleT=(acts?16:8)+Math.floor(Math.random()*8)}
     }
     if(a.idle&&--a.idleT<=0) a.idle='';
     PST[a.pet.id]={x:a.x,dir:a.dir};
@@ -4465,10 +4468,12 @@ function checkProgress(){ // 업적·레벨업·새 동물 해금을 확인해�
 const FOOD_N={meat:TR('고기'),fish:TR('생선'),bone:TR('뼈다귀'),carrot:TR('당근'),seed:TR('해바라기씨'),acorn:TR('도토리'),bamboo:TR('대나무'),honey:TR('꿀'),leaf:TR('나뭇잎'),bug:TR('벌레'),apple:TR('사과'),grape:TR('포도'),bread:TR('빵'),orange:TR('귤'),candy:TR('사탕'),cupcake:TR('컵케이크'),icecream:TR('아이스크림')};
 const LINE_SIT=[['tap',TR('쓰다듬을 때')],['done',TR('할 일을 끝냈을 때')],['focus',TR('집중할 때')],['rest',TR('쉴 때')],['morning',TR('아침')],['day',TR('낮')],['evening',TR('저녁')],['night',TR('밤')]];
 const BASE_ACTS=['stand','walk','wag','cheer','eat','sleep','read','write'];
+const wagOr=(spk,alt)=>SP[spk]&&SP[spk].body?alt:'wag'; // 사람 캐릭터는 꼬리가 없으니 꼬리 흔들기 대신 다른 동작
+Object.values(SP).forEach(sp=>{if(sp.body&&sp.acts) sp.acts=sp.acts.filter(a=>a!=='wag')});
 function dexDetail(k){ // 도감: 동물 하나의 동작과 대사를 모두 보여줘요
   const sp=SP[k], mine=pets().find(q=>q.sp===k), xp=mine?petXP(mine):0, st=mine&&stageOf(xp)?stageOf(xp):3; // 아직 알이면 다 자란 모습으로
   const L=LINESETS[sp.lines]||ANIMAL_LINES[k]||{}, own=Object.keys(L).length>0;
-  const acts=[...new Set([...(sp.acts||[]).filter(a=>a!=='walk'),...(sp.dogHate?['bark']:[]),...(sp.calls?['zoom','beg']:[]),...(sp.brush?['brush']:[]),...BASE_ACTS])].filter(a=>SEQ[a]||a==='stand'||a==='walk');
+  const acts=[...new Set([...(sp.acts||[]).filter(a=>a!=='walk'),...(sp.dogHate?['bark']:[]),...(sp.calls?['zoom','beg']:[]),...(sp.brush?['brush']:[]),...BASE_ACTS.filter(a=>!(sp.body&&a==='wag'))])].filter(a=>SEQ[a]||a==='stand'||a==='walk');
   // 움직이는 큰 그림
   const hh=spriteH(k,st), sc=hh>16?6:8, svg=svgEl(16,hh,''), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g); svg.setAttribute('width',16*sc); svg.setAttribute('height',hh*sc);
   const a={pet:{id:'dex-'+k,sp:k,wear:mine?mine.wear:{}},st,xp,svg,g,x:0,y:0,noLift:1,dir:1,fi:0,walk:0,fixed:acts[0],active:true,cur:''};
@@ -4735,13 +4740,13 @@ const ANIMAL_LINES={ // 동물마다 성격이 드러나는 말 (없는 상황�
     morning:[TR("…아침"),TR("언니 일어났어?")],day:[TR("…"),TR("산책 안 가?"),TR("(창밖을 멍하니)")],evening:[TR("언니 언제 와…"),TR("냠냠 시간 아니야?")],
     night:[TR("언니 옆에서 잘래"),TR("무서운 소리 났어… 언니")],focus:[TR("…(언니 옆에 웅크림)"),TR("조용히 있을게")],rest:[TR("산책?"),TR("냠냠?")]},
   yuni:{tap:[TR("유니 불렀어?"),TR("간식은 언제나 환영"),TR("꾹꾹이 해 줄게"),TR("골골골…")],done:[TR("골골! 최고야")],day:[TR("창가 자리 찜")],night:[TR("이불 속으로 쏙")]},
-  mikael:{tap:[TR("미카엘이야! 더 쓰다듬어 줘"),TR("킁킁… 너한테서 좋은 냄새 나"),TR("사람이 세상에서 제일 좋아"),TR("부비부비~"),TR("낑낑~ (애교 중)"),TR("인형이랑 같이 왔어"),TR("음냐… 자다 깼는데 너라서 좋아"),TR("배고파… 아까 먹긴 했지만"),TR("무릎 위에 올라가도 돼?"),TR("인형은 절대 안 놓을 거야")],
+  mikael:{tap:[TR("미카엘이야! 더 쓰다듬어 줘"),TR("킁킁… 너한테서 좋은 냄새 나"),TR("사람이 세상에서 제일 좋아"),TR("부비부비~"),TR("낑낑~ (애교 중)"),TR("인형 베고 자다 왔어"),TR("음냐… 자다 깼는데 너라서 좋아"),TR("배고파… 아까 먹긴 했지만"),TR("무릎 위에 올라가도 돼?"),TR("인형은 내 최고의 베개야")],
     done:[TR("잘했어! 상으로 간식 먹자"),TR("최고야! 부비부비 해 줄게"),TR("끝났어? 그럼 같이 낮잠 자자")],
     morning:[TR("아침밥! 아침밥!"),TR("5분만 더 잘래… zZ"),TR("일어났어? 쓰다듬어 줘")],
-    day:[TR("낮잠 자기 딱 좋은 날씨야"),TR("밥 시간 아직이야?"),TR("인형 물고 따라다니는 중"),TR("어디 가? 나도 갈래")],
+    day:[TR("낮잠 자기 딱 좋은 날씨야"),TR("밥 시간 아직이야?"),TR("어디든 졸졸 따라다니는 중"),TR("어디 가? 나도 갈래")],
     evening:[TR("저녁 뭐 먹어? 나도 줘"),TR("오늘 하루도 보고 싶었어"),TR("간식 냄새 나는데…?")],
     night:[TR("인형 꼭 안고 잘게"),TR("같이 자자… zZ"),TR("꿈에서도 간식 먹을 거야")],
-    focus:[TR("옆에서 자면서 응원할게 zZ"),TR("인형이랑 조용히 기다릴게"),TR("끝나면 쓰다듬어 줘야 해")],
+    focus:[TR("옆에서 자면서 응원할게 zZ"),TR("인형 베고 조용히 기다릴게"),TR("끝나면 쓰다듬어 줘야 해")],
     rest:[TR("쉬는 시간이다! 간식?"),TR("같이 낮잠 자자"),TR("이제 나랑 놀아 줘!")]},
   ttukbul:{tap:[TR("뚝불이야!"),TR("벽 타기 선수"),TR("속눈썹 예쁘지?"),TR("눈 핥는 중")],done:[TR("뚝! 해냈어")],day:[TR("귀뚜라미 먹고 싶다")],night:[TR("밤엔 활발해져")]},
   bormi:{tap:[TR("보르미 왔어요!"),TR("곱슬곱슬 귀엽지?"),TR("빗질해 주세요!"),TR("그거 먹는 거예요? 나도!"),TR("혀 쏙!"),TR("다른 강아지는 싫어요. 나만 봐요"),TR("킁킁… 간식 냄새!")],
@@ -4875,7 +4880,7 @@ function stepBuddy(){
         else if(r<.38){b.act='walk'; b.t=10+Math.random()*30; b.dir=Math.random()<.5?-1:1}
         else if(r<.46&&!sad){b.act='run'; b.t=6+Math.random()*10; b.dir=Math.random()<.5?-1:1}
         else if(r<.6){b.act='stand'; b.t=8+Math.random()*16}
-        else if(r<.7&&!sad){b.act='wag'; b.t=8+Math.random()*10}
+        else if(r<.7&&!sad){b.act=wagOr(p.sp,'cheer'); b.t=8+Math.random()*10}
         else if(r<.78){b.act='look'; b.t=8+Math.random()*8}
         else if(r<.86){b.act='read'; b.t=24+Math.random()*30}
         else if(r<.9&&!sad){b.act='jump'; b.t=4}
@@ -4943,7 +4948,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v80'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v82'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
