@@ -3828,6 +3828,20 @@ function actorPose(a){ // 지금 상황에 맞는 행동 고르기
   const hr=hourNow(); if(hr>=23.5||hr<6) return 'sleep';
   return a.walk>0?'walk':a.idle||'stand';
 }
+// 캐릭터마다 다른 움직임: 날아다니기(fly) · 깡충깡충(hop) · 느긋하게(잠꾸러기). 집중·휴식·잠·공부 중에는 땅에 내려와 얌전히
+const MOVE={ghost:'fly',cinnamoroll:'fly',lsp:'fly',ptera:'fly',dragon:'fly',dora:'fly',strange:'fly',marceline:'fly',keroppi:'hop',frog:'hop',bunny:'hop',usagi:'hop',seal:'hop'};
+const FLYPOSE={cinnamoroll:'flap',lsp:'float',ptera:'float',ghost:'float',dora:'copter',strange:'float',marceline:'float'};
+const CALM=['sleep','read','write','lecture','cram','bed','sad','eat','hang'];
+function airStep(o,spk,calm,moving){ // 위로 뜬 높이(음수, 그림 칸 단위)
+  const m=MOVE[spk];
+  if(m==='fly'){
+    if(calm){o.alt=Math.min(0,(o.alt||0)+1); return o.alt}
+    if(o.altT==null||--o.altT<=0){o.altGoal=-(4+Math.floor(Math.random()*14)); o.altT=24+Math.floor(Math.random()*40)}
+    o.alt=(o.alt||0)+(o.alt>o.altGoal?-1:o.alt<o.altGoal?1:0); o.bob=((o.bob||0)+1)%8; return o.alt+(o.alt<0&&o.bob>=4?-1:0)}
+  if(m==='hop'){if(calm||!moving){o.hop=0; return 0} o.hop=((o.hop||0)+1)%4; return [0,-2,-3,-2][o.hop]}
+  return 0;
+}
+const flySeq=(spk,pose,alt)=>alt<0&&MOVE[spk]==='fly'&&FLYPOSE[spk]&&['walk','stand','look','wag','cheer'].indexOf(pose)>=0?SEQ[FLYPOSE[spk]]:null; // 공중에 떠 있으면 날 때 동작으로
 function stepActor(a){
   const pose=actorPose(a), F=focusState(), act=a.active;
   if(a.st&&!a.fixed){ // 걷기: 목표 지점으로 한 칸씩
@@ -3835,13 +3849,14 @@ function stepActor(a){
     else if(F.focus&&act){a.walk=0; a.dir=1}
     else if(pose==='walk'||pose==='stand'||pose==='sad'){
       if(a.walk>0){a.x+=a.dir; a.walk--; if(a.x<a.min||a.x>a.max){a.x=Math.max(a.min,Math.min(a.max,a.x)); a.walk=0}}
-      else if(Math.random()<(a.sad?.02:.06)){const bear=SP[a.pet.sp].followBear&&ACTORS.find(o=>o.svg===a.svg&&o.st&&o.pet.sp==='bear'); a.dir=bear&&Math.abs(bear.x-a.x)>10?(bear.x>a.x?1:-1):Math.random()<.5?-1:1; a.walk=4+Math.floor(Math.random()*14); a.idle=''} // 티벳여우는 곰을 따라다녀요
-      else if(!a.idle&&Math.random()<.03) {const acts=(SP[a.pet.sp]||{}).acts; a.idle=acts?pick(acts):wagOr(a.pet.sp,'cheer'); a.idleT=(acts?16:8)+Math.floor(Math.random()*8)}
+      else if(Math.random()<(a.sad?.02:SP[a.pet.sp].sleepy?.015:.06)){const bear=SP[a.pet.sp].followBear&&ACTORS.find(o=>o.svg===a.svg&&o.st&&o.pet.sp==='bear'); a.dir=bear&&Math.abs(bear.x-a.x)>10?(bear.x>a.x?1:-1):Math.random()<.5?-1:1; a.walk=4+Math.floor(Math.random()*14); a.idle=''} // 티벳여우는 곰을 따라다녀요
+      else if(!a.idle&&Math.random()<.03) {const acts=(SP[a.pet.sp]||{}).acts; a.idle=SP[a.pet.sp].sleepy&&Math.random()<.5?'sleep':acts?pick(acts):wagOr(a.pet.sp,'cheer'); a.idleT=(acts?16:8)+Math.floor(Math.random()*8)}
     }
     if(a.idle&&--a.idleT<=0) a.idle='';
     PST[a.pet.id]={x:a.x,dir:a.dir};
   }
-  const seq=(pose==='walk'&&!a.sad&&SP[a.pet.sp].body&&a.st?['walk0','walk1']:SEQ[pose==='walk'?'walk':pose])||SEQ.stand; a.fi=(a.fi+1)%seq.length; let fr=seq[a.fi%seq.length];
+  a.air=a.st&&!a.fixed?airStep(a,a.pet.sp,F.focus||F.rest||CALM.indexOf(pose)>=0,a.walk>0):0;
+  const seq=flySeq(a.pet.sp,pose,a.air)||(pose==='walk'&&!a.sad&&SP[a.pet.sp].body&&a.st?['walk0','walk1']:SEQ[pose==='walk'?'walk':pose])||SEQ.stand; a.fi=(a.fi+1)%seq.length; let fr=seq[a.fi%seq.length];
   if(fr==='stand'&&Math.random()<.04) fr='blink';
   if(pose==='walk'&&a.sad) fr=a.fi%2?'sad1':'sad0';
   showFrame(a,fr);
@@ -3850,7 +3865,7 @@ function stepActor(a){
 function showFrame(a,fr){
   const flip=a.dir<0&&fr.indexOf('read')<0&&fr.indexOf('write')<0, key=fr+(flip?'f':'');
   if(a.cur!==key){a.cur=key; a.g.innerHTML=spriteSVG(a.pet.sp,a.st,a.pet.wear,fr,a.xp,flip)}
-  a.g.setAttribute('transform','translate('+a.x+','+(a.y-(a.noLift?0:spriteH(a.pet.sp,a.st)-16))+')');
+  a.g.setAttribute('transform','translate('+a.x+','+(a.y-(a.noLift?0:spriteH(a.pet.sp,a.st)-16)+(a.air||0))+')');
 }
 function engine(){
   actN++; for(let i=ACTORS.length-1;i>=0;i--){const a=ACTORS[i]; if(!a.svg.isConnected){ACTORS.splice(i,1); continue} if(document.visibilityState==='visible'&&a.svg.getBoundingClientRect().width) stepActor(a)}
@@ -4899,6 +4914,7 @@ function stepBuddy(){
         else if(r<.9&&!sad){b.act='jump'; b.t=4}
         else{b.act='sleep'; b.t=20+Math.random()*40}
         if(sad&&(b.act==='walk')) b.t/=2;
+        if(SP[p.sp].sleepy&&b.act!=='sleep'&&Math.random()<.4){b.act='sleep'; b.t=30+Math.random()*40} // 잠꾸러기는 자주 낮잠
         if(b.act==='sleep'&&SP[p.sp].sleepy) b.t*=3; // 잠꾸러기는 한번 자면 오래 자요
       }
       const a=b.act;
@@ -4910,11 +4926,12 @@ function stepBuddy(){
   }
   if(move){b.x+=b.dir*Math.round(move); if(b.x<8){b.x=8; b.dir=1} if(b.x>W-w-8){b.x=W-w-8; b.dir=-1}}
   b.x=Math.min(Math.max(8,b.x),Math.max(8,W-w-8));
-  const hum=st&&SP[p.sp].body, seq=(hum&&pose==='walk'?['walk0','walk1']:SEQ[pose])||[pose]; b.fi=(b.fi+1)%24; let fr=seq[b.fi%seq.length]; if(fr==='stand'&&Math.random()<.05) fr='blink';
+  b.air=st?airStep(b,p.sp,F.focus||F.rest||CALM.indexOf(pose)>=0,move>0):0;
+  const hum=st&&SP[p.sp].body, seq=flySeq(p.sp,pose,b.air)||(hum&&pose==='walk'?['walk0','walk1']:SEQ[pose])||[pose]; b.fi=(b.fi+1)%24; let fr=seq[b.fi%seq.length]; if(fr==='stand'&&Math.random()<.05) fr='blink';
   const flip=b.dir<0&&!/read|write/.test(fr), key=p.id+fr+(flip?'f':'')+JSON.stringify(p.wear||{})+st;
   if(b.cur!==key){b.cur=key; b.svg.innerHTML=spriteSVG(p.sp,st,p.wear,fr,xp,flip)}
   const hh=spriteH(p.sp,st); b.svg.setAttribute('viewBox','0 0 16 '+hh); b.svg.setAttribute('width',w); b.svg.setAttribute('height',hh*sc);
-  buddyEl.style.bottom=bottom+'px'; buddyEl.style.transform='translateX('+b.x+'px)';
+  buddyEl.style.bottom=bottom+'px'; buddyEl.style.transform='translate('+b.x+'px,'+(b.air||0)*sc+'px)';
   if(b.sayT&&now>b.sayT){b.sayT=0; buddyEl.querySelector('.bbub').hidden=true} else placeBubble();
 }
 
@@ -4961,7 +4978,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v85'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v86'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
