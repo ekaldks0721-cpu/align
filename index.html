@@ -3140,7 +3140,7 @@ SP.tibfox.tpl=T_TIBFOX; SP.hbadger.tpl=T_HBADGER;
 const EGG=['','','','','......oooo......','.....owwwwo.....','....owwwwwwo....','....owbbwwwo....','...owwbbwwwwo...','...owwwwwbbwo...','...owwwwwbbwo...','...owbwwwwwwo...','...owwwwwwwwo...','....owwwbwwo....','....owwwwwwo....','.....oooooo.....'];
 const newG=()=>Array.from({length:16},()=>Array(16).fill('.'));
 const fromRows=rows=>{const G=newG(); rows.forEach((r,y)=>[...r].forEach((c,x)=>{G[y][x]=c})); return G};
-const gset=(G,x,y,c)=>{if(x>=0&&y>=0&&x<16&&y<16) G[y][x]=c};
+const gset=(G,x,y,c)=>{if(x>=0&&y>=0&&x<16&&y<16) G[y][x]=c; else (G.ov||(G.ov=[])).push([x,y,c])}; // 틀 밖으로 나간 칸은 버리지 않고 모아 뒀다가 flushOv에서 칸을 넓혀 그려요
 const gget=(G,x,y)=>x>=0&&y>=0&&x<16&&y<16?G[y][x]:'.';
 const both=(G,x,y,c)=>{gset(G,x,y,c); gset(G,15-x,y,c)};
 const ink=(G,list,c,only)=>list.forEach(([x,y])=>{if(!only||gget(G,x,y)==='.') gset(G,x,y,c)});
@@ -3297,7 +3297,18 @@ function mouthG(G,st,kind){const m=tplA(st).my, beak=G[m][7]==='a'; if(beak||SP[
   if(kind==='open'){gset(G,7,m,'o'); gset(G,8,m,'o'); gset(G,7,m+1,'c'); gset(G,8,m+1,'c')}
   if(kind==='sad'){gset(G,7,m,'b'); gset(G,8,m,'b'); gset(G,7,m+1,'o'); gset(G,8,m+1,'o')}
 }
-function shiftG(G,dx,dy,keepFeet){const N=newG(); for(let y=0;y<16;y++)for(let x=0;x<16;x++){const sy=y-dy, sx=x-dx; if(keepFeet&&y===15){N[y][x]=G[y][x]; continue} if(sy>=0&&sy<16&&sx>=0&&sx<16) N[y][x]=G[sy][sx]} return N}
+function moveG(G,dx,dy,keepFeet){ // 통째로 옮기기. 틀 밖으로 밀려난 칸도 잃지 않아요 (16×16, 16×24 둘 다)
+  const R=G.length, N=Array.from({length:R},()=>Array(16).fill('.')); N.ov=(G.ov||[]).map(([x,y,c,o])=>[x+dx,y+dy,c,o]);
+  for(let y=0;y<R;y++)for(let x=0;x<16;x++){const c=G[y][x]; if(keepFeet&&y===R-1) N[y][x]=c; if(c==='.') continue; const tx=x+dx, ty=y+dy; if(keepFeet&&ty>=R-1) continue; if(tx>=0&&tx<16&&ty>=0&&ty<R) N[ty][tx]=c; else if(!keepFeet) N.ov.push([tx,ty,c])}
+  return N}
+function shiftG(G,dx,dy,keepFeet){return moveG(G,dx,dy,keepFeet)}
+function flushOv(G,ov){ // 모아 둔 틀 밖 칸을 붙이며 그만큼 칸을 넓혀요 (o 표시가 있으면 테두리도 둘러요)
+  if(!ov||!ov.length) return G; const px=G.px||0, py=G.py||0, cells=new Map(), at=(x,y)=>G[y]&&G[y][x]!==undefined?G[y][x]:'.';
+  ov.forEach(([x,y,c])=>cells.set((x+px)+','+(y+py),c));
+  ov.forEach(([x,y,c,o])=>{if(o) [[1,0],[-1,0],[0,1],[0,-1]].forEach(([a,b])=>{const X=x+px+a, Y=y+py+b, k=X+','+Y; if(!cells.has(k)&&at(X,Y)==='.') cells.set(k,'o')})});
+  let x0=0,y0=0,x1=G[0].length-1,y1=G.length-1; const L=[...cells].map(([k,c])=>{const [X,Y]=k.split(',').map(Number); x0=Math.min(x0,X); y0=Math.min(y0,Y); x1=Math.max(x1,X); y1=Math.max(y1,Y); return [X,Y,c]});
+  const N=padG(G,-x0,-y0,x1-(G[0].length-1),y1-(G.length-1)); N.px=px-x0; N.py=py-y0;
+  L.forEach(([X,Y,c])=>{if(c!=='o'||N[Y-y0][X-x0]==='.') N[Y-y0][X-x0]=c}); return N}
 const squashG=G=>shiftG(G,0,1,true);
 
 // 옷: k·K 옷 색, w 흰색, y 노랑, p 분홍, g 렌즈. 행 끝(bottom)을 머리 윗줄 바로 아래에 맞춰요
@@ -3384,7 +3395,10 @@ function propG(G,st,kind,f){
   if(kind==='weed'){const y=A.ny+1, g='#58B048', d='#3A8A30', r='#A07040'; [[6,y-1],[8,y-2],[9,y-1],[7,y],[8,y]].forEach(([x,yy])=>gset(G,x,yy,f&&yy<y?d:g)); gset(G,7,y+1,r); gset(G,8,y+1,r); if(f) gset(G,8,y+2,r); gset(G,5,y+1,'b'); gset(G,10,y+1,'b')} // 풀뽑기
   if(kind==='mic'){const y=A.my+1, k='#404048'; gset(G,10,y,k); gset(G,11,y,k); gset(G,11,y+1,'#909098'); gset(G,11,y+2,'#909098'); gset(G,10,y+2,'b'); if(f){gset(G,13,y-3,'#2A2030'); gset(G,13,y-4,'#2A2030'); gset(G,14,y-4,'#2A2030')} else {gset(G,2,y-3,'#2A2030'); gset(G,2,y-4,'#2A2030')}} // 노래방 마이크
   if(kind==='beer'){const y=f?A.my:A.ny+1, x=f?9:10, a='#F0A830', w='#FFFFFF'; gset(G,x,y,w); gset(G,x+1,y,w); gset(G,x,y+1,a); gset(G,x+1,y+1,a); gset(G,x,y+2,a); gset(G,x+1,y+2,a); gset(G,x+2,y+1,'#C8D0D8'); if(f){gset(G,3,A.my,'#E8F0F8'); gset(G,2,A.my-1,'#E8F0F8')}} // 시원한 한 잔, 하아~
-  if(kind==='stick'){const y=A.ny, c='#A07040'; (f?[[12,y],[13,y-1],[14,y-2],[15,y-3]]:[[12,y+1],[13,y],[14,y-1],[14,y-2]]).forEach(([x,yy])=>gset(G,x,yy,c)); gset(G,12,y+1,'b')} // 토벌 막대
+  if(kind==='stick'){const y=A.ny, c='#A07040', t='#C8CED8', k='#7A8290'; // 토벌창: 긴 자루 끝에 뾰족한 날 (틀 밖으로 뻗어도 잘리지 않아요)
+    if(f){for(let i=0;i<7;i++) gset(G,12+i,y-i,c); [[19,y-7],[20,y-8],[19,y-8],[18,y-7]].forEach(([x,yy],i)=>gset(G,x,yy,i<2?t:k))}
+    else{gset(G,13,y,c); for(let yy=y-1;yy>=y-8;yy--) gset(G,14,yy,c); gset(G,14,y-9,t); gset(G,14,y-10,t); gset(G,13,y-9,k); gset(G,15,y-9,k)}
+    gset(G,12,y+1,'b'); gset(G,13,y+1,'b')}
   if(kind==='sweat') gset(G,12,tplA(st).top+1,PROPC.d);
 }
 
@@ -3490,7 +3504,7 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='emo') [[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1],[9,1],[10,1],[3,2],[4,2],[5,2],[6,2],[7,2],[8,2],[3,3],[4,3],[5,3],[6,3],[3,4],[4,4],[5,4],[3,5],[4,5]].forEach(([x,y])=>gset(G,x,y,y>=4?'#1A1A1A':'#2A2A2A')); // 검은 앞머리 (3편의 그 춤)
   if(base==='glob'){mouthG(G,st,'open'); const A3=tplA(st); if(f) [[2,A3.top],[13,A3.top+1],[1,A3.top+3]].forEach(([x,y])=>gset(G,x,y,'#FFE070'))}
   if(base==='hang'||base==='grow'||base==='hammer'&&f) eyesG(G,st,'happy'); if(base==='float') eyesG(G,st,'blink'); if(base==='portal') eyesG(G,st,'down'); if(base==='smash'&&f) mouthG(G,st,'open');
-  if(sp.body){const H=humanG(spk,st,base,f,G); return {G:sp.ext?sp.ext(H,st,base,f)||H:H,pal:sp.pal}}
+  if(sp.body){const H=humanG(spk,st,base,f,G), ov=H.ov&&H.ov.slice(); return {G:flushOv(sp.ext?sp.ext(H,st,base,f)||H:H,ov),pal:sp.pal}}
   if(base==='float'){eyesG(G,st,'happy'); G=shiftG(G,0,f?-1:0)}
   if(base==='glob') G=shiftG(G,0,f?-1:0);
   if(base==='flap'){eyesG(G,st,'happy'); G=shiftG(G,0,f?-2:-1); const A3=tplA(st); [[5,15],[6,15],[9,15],[10,15],[f?4:11,14]].forEach(([x,y])=>{if(G[y][x]==='.') G[y][x]='#E8F0FF'}); } // 시나모롤: 귀를 펄럭여 날아요 (귀는 ext에서)
@@ -3508,9 +3522,10 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='zoom') G=shiftG(G,f?1:-1,f?-2:0);
   if(base==='dig'&&f) G=squashG(G);
   if(base==='sleep') propG(G,st,'z',f);
+  const ov=G.ov&&G.ov.slice();
   if(sp.doll&&(base==='sleep'||base==='dollhug')) G=dollG(G,spk,st,base==='sleep'?'pillow':''); // 미카엘은 인형을 좋아해서 껴안거나 베고 자요
   if(sp.ext) G=sp.ext(G,st,base,f)||G;
-  return {G,pal:sp.pal};
+  return {G:flushOv(G,ov),pal:sp.pal};
 }
 /* ---------- 사람 몸: 머리(16×16 틀의 목까지) 아래에 몸통·팔·다리를 그려 16×24 한 장으로 ---------- */
 const HUMAN_H=24, HSIT=['read','write','game','cram','sleep','lego','drive','ramen','bed','plush'], HHOLD=['read','write','game','cram','ramen','lego','drive','plush','bake','critter','meat','eat','coffee','donut','sax','dorayaki','guitar','snack','spatula','bubble','clarinet','money'];
@@ -3520,7 +3535,7 @@ const HB={3:{th:6,lh:3,x0:5,x1:10},2:{th:5,lh:2,x0:5,x1:10},1:{th:3,lh:1,x0:6,x1
 function humanG(spk,st,base,f,G0){
   if(SP[spk].body.blob) return blobG(spk,st,base,f,G0);
   const sp=SP[spk], B=sp.body, A=tplA(st), P=HB[B.size?Math.min(B.size,st):st]||HB[3], cut=humanCut(A), N=22-(P.th+P.lh+1), t0=N+1, t1=N+P.th, x0=B.slim?6:P.x0, x1=B.slim?9:P.x1;
-  const H=Array.from({length:HUMAN_H},()=>Array(16).fill('.')), set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) H[y][x]=c};
+  const H=Array.from({length:HUMAN_H},()=>Array(16).fill('.')), set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) H[y][x]=c; else H.ov.push([x,y,c,1])}; H.ov=[];
   const sit=HSIT.indexOf(base)>=0, skin='b', sl=B.sleeve||B.shirt, nSl=B.short?1:P.th-2;
   // 팔 모양: 왼팔 L, 오른팔 R
   let L='down', R='down', legs=sit?'sit':'stand';
@@ -3543,7 +3558,10 @@ function humanG(spk,st,base,f,G0){
   if(base==='sword'||base==='ice') R='up'; if(base==='ice'&&f) L='up'; if(base==='science'||base==='suck'||base==='bass') L=R='hold'; if(base==='scream') L=R='up';
   if(base==='web'||base==='repulsor'||base==='hammer') R='up'; if(base==='hang'||base==='grow') L=R='up'; if(base==='sting') R='out'; if(base==='shield') L='hold'; if(base==='throw') R=f?'out':'up';
   if(base==='smash'||base==='roar') L=R=base==='smash'&&f?'down':'up'; if(base==='portal'){R='up'; L='hold'} if(base==='float'){L=R='hold'; legs='sit'}
-  if(base==='door'){const dc='#F48CB8', dk='#C85A88'; for(let y=t0-6;y<=t1+P.lh+1;y++){set(13,y,dk); set(14,y,f&&y>t0-6?'#FFF4C0':dc); set(15,y,f?'#FFF4C0':dc)} set(14,t0,f?'#FFF4C0':'#F8C830')} // 어디로든 문 (열리면 저편이 환해요)
+  if(base==='door'){const dc='#F48CB8', dk='#C85A88', gx=x1+3, gb=t1+P.lh+1, gt=gb-13; // 어디로든 문: 도라에몽 옆에 제 크기로 서 있어요 (틀 밖으로 나가도 그대로)
+    for(let y=gt;y<=gb;y++) for(let x=gx;x<=gx+5;x++){const edge=x===gx||x===gx+5||y===gt; set(x,y,edge?dk:f?(y<gt+8?'#A8DCF8':'#78C850'):dc)}
+    if(f){set(gx+6,gt+1,dc); for(let y=gt+1;y<=gb;y++){set(gx+6,y,dc); set(gx+7,y,y<gb?dk:dc)} set(gx+2,gt+4,'#FFFFFF'); set(gx+3,gt+4,'#FFFFFF'); set(gx+3,gt+3,'#FFFFFF')} // 열리면 저편의 하늘과 들판
+    else set(gx+1,gt+7,'#F8C830')} // 어디로든 문 (열리면 저편이 환해요)
   if(B.cape){const fl=f&&['float','hammer','portal'].indexOf(base)>=0?1:0; for(let y=t0+1;y<=t1+P.lh;y++) for(let x=x0-2-fl;x<=x1+2+fl;x++) set(x,y,B.cape)} // 망토 (몸 뒤)
   // 몸통
   for(let y=t0;y<=t1;y++){const w=y===t0?0:1; for(let x=x0-w;x<=x1+w;x++) set(x,y,y>t1-(st===1?1:2)?B.pants:B.shirt)}
@@ -3569,7 +3587,7 @@ function humanG(spk,st,base,f,G0){
   arm(-1,L); arm(1,R);
   // 머리 붙이기 (목이 N줄에 오게). 앉으면 몸 전체가 내려가요
   const bob=base==='squash'||base==='sad'&&f||base==='sleep'&&!f?1:0, off=N-cut+bob;
-  for(let y=0;y<16;y++) for(let x=0;x<16;x++){const c=G0[y][x]; if(c==='.') continue; if(y>cut&&c==='o') continue; if(y>cut&&base==='bed') continue; set(x,y+off,c)}
+  for(let y=0;y<16;y++) for(let x=0;x<16;x++){const c=G0[y][x]; if(c==='.') continue; if(y>cut&&c==='o') continue; if(y>cut&&base==='bed') continue; set(x,y+off,c)} (G0.ov||[]).forEach(([x,y,c])=>set(x,y+off,c));
   // 위로 드는 팔은 머리 위에
   const upArm=(side,kind)=>{const ax=side<0?x0-2:x1+2, o=side<0?-1:1;
     if(kind==='up'){set(ax,t0,sl); set(ax+o,t0-1,sl); set(ax+2*o,t0-2,skin); set(ax+2*o,t0-3,skin)}
@@ -3604,13 +3622,13 @@ function humanG(spk,st,base,f,G0){
   // 앉으면 엉덩이가 바닥에, 만세 점프, 춤은 좌우로
   let dy=sit?ground-(t1+1):0, dx=0; if(base==='karate') dx=f?1:-1; if(base==='cheer'&&f) dy=-2; if(base==='mouse'&&f) dy=-2; if(base==='dance') dx=f?1:-1;
   if(base==='float') dy=ground-(t1+1)-(f?4:3); if(base==='scream'||base==='emo') dx=f?1:-1; if(base==='fly') dy=f?-3:-2; if(base==='smash'&&f) dx=1; if(base==='hang'&&f) dx=1;
-  let M=H; if(dx||dy){M=Array.from({length:HUMAN_H},()=>Array(16).fill('.')); for(let y=0;y<HUMAN_H;y++)for(let x=0;x<16;x++){const sy=y-dy, sx=x-dx; if(sy>=0&&sy<HUMAN_H&&sx>=0&&sx<16) M[y][x]=H[sy][sx]}}
+  let M=H; if(dx||dy) M=moveG(H,dx,dy);
   heroFx(M,base,f,x0+dx,x1+dx,t0+dy,ground+dy);
-  if(base==='ballet'&&f) M=M.map(r=>r.slice().reverse()); // 발레 회전
+  if(base==='ballet'&&f){const ov=M.ov; M=M.map(r=>r.slice().reverse()); M.ov=ov.map(([x,y,c,o])=>[15-x,y,c,o])} // 발레 회전
   return base==='hang'?hangFlip(M):M;
 }
 function heroFx(M,base,f,x0,x1,t0,ground){ // 테두리 없이 얇게 그리는 효과 (거미줄·빔·불꽃·번개·포털)
-  const set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) M[y][x]=c}, bg=(x,y,c)=>{if(M[y]&&M[y][x]==='.') set(x,y,c)}, hx=x1+4, W='#A8B0BC';
+  const set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) M[y][x]=c; else (M.ov||(M.ov=[])).push([x,y,c])}, bg=(x,y,c)=>{if(M[y]&&M[y][x]==='.') set(x,y,c)}, hx=x1+4, W='#A8B0BC';
   if(base==='web'){for(let y=0;y<=t0-4;y++) set(hx,y,W); if(f){[[hx-1,0],[hx+1,0],[hx-1,2],[hx+1,2],[hx,1]].forEach(([x,y])=>set(x,y,W)); set(hx-1,1,'#C8C8D0'); set(hx+1,1,'#C8C8D0')}}
   if(base==='repulsor'){if(f) for(let y=0;y<=t0-4;y++){set(hx,y,'#FFFFFF'); bg(hx-1,y,'#A8E8FF'); bg(hx+1,y,'#A8E8FF')} else [[hx-1,t0-4],[hx+1,t0-4],[hx,t0-5]].forEach(([x,y])=>bg(x,y,'#A8E8FF'))}
   if(base==='fly') [x0,x0+1,x1-1,x1].forEach(x=>{set(x,ground+1,'#F8E060'); set(x,ground+2,f?'#F8E060':'#F89830'); if(f) set(x,ground+3,'#F89830')});
@@ -3639,7 +3657,7 @@ function hangFlip(M){ // 거미줄에 거꾸로 매달리기: 위아래를 뒤�
 }
 function blobG(spk,st,base,f,G0){ // 얼굴과 몸통이 한 덩어리 (스폰지밥·뚱이·집게사장): 가는 팔다리만 붙여요
   const sp=SP[spk], B=sp.body, A=tplA(st), legs=B.legs||2, ground=22, bottom=ground-legs-1, off=bottom-A.cut, LC=B.legC||['b'];
-  const H=Array.from({length:HUMAN_H},()=>Array(16).fill('.')), set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) H[y][x]=c};
+  const H=Array.from({length:HUMAN_H},()=>Array(16).fill('.')), set=(x,y,c)=>{if(x>=0&&x<16&&y>=0&&y<HUMAN_H) H[y][x]=c; else H.ov.push([x,y,c,1])}; H.ov=[];
   const sit=HSIT.indexOf(base)>=0;
   let L='down', R='down', lg='stand';
   if(HHOLD.indexOf(base)>=0) L=R='hold';
@@ -3653,7 +3671,7 @@ function blobG(spk,st,base,f,G0){ // 얼굴과 몸통이 한 덩어리 (스폰�
     const lift=(lg==='stepL'&&!i)||(lg==='stepR'&&i)?1:0, kx=(lg==='kickL'&&!i)?-1:(lg==='kickR'&&i)?1:0;
     for(let j=0;j<legs-lift;j++) set(lx+kx,bottom+1+j,LC[Math.min(j,LC.length-1)]);
     if(B.pointy) set(lx+kx,ground-lift,'b'); else {set(lx+kx,ground-lift,B.shoes); set(lx+kx+o,ground-lift,B.shoes)}});
-  for(let y=0;y<16;y++) for(let x=0;x<16;x++){const c=G0[y][x]; if(c==='.') continue; if(y>A.cut&&c==='o') continue; set(x,y+off,c)}
+  for(let y=0;y<16;y++) for(let x=0;x<16;x++){const c=G0[y][x]; if(c==='.') continue; if(y>A.cut&&c==='o') continue; set(x,y+off,c)} (G0.ov||[]).forEach(([x,y,c])=>set(x,y+off,c));
   const ay=A.armY+off;
   const arm=(i,kind)=>{const ax=B.armX[i], o=i?1:-1, sl=B.sleeve||'b';
     const pts={down:[[ax,ay],[ax,ay+1],[ax,ay+2]],hold:[[ax,ay],[ax,ay+1],[ax-o,ay+2]],up:[[ax,ay],[ax+o,ay-1],[ax+o,ay-2]],swing:[[ax,ay],[ax+o,ay+1],[ax+o,ay+2]],wave0:[[ax,ay],[ax+o,ay-1],[ax+o,ay-2]],wave1:[[ax,ay],[ax+o,ay-1],[ax+2*o,ay-2]]}[kind]||[[ax,ay]];
@@ -3666,7 +3684,7 @@ function blobG(spk,st,base,f,G0){ // 얼굴과 몸통이 한 덩어리 (스폰�
   add.forEach(([x,y])=>H[y][x]='o');
   if(base==='scribble') (f?[[1,1],[2,0],[3,1],[4,2],[5,1],[6,0],[2,3],[3,4]]:[[1,2],[2,1],[3,2],[4,1],[1,4],[2,5]]).forEach(([x,y])=>{if(H[y][x]==='.') H[y][x]='#7A7A7A'}); // 끄적끄적
   let dy=sit?legs:0, dx=0; if((base==='cheer'||base==='yaha')&&f) dy=-2; if(base==='dance'||base==='karate') dx=f?1:-1;
-  if(dx||dy){const M=Array.from({length:HUMAN_H},()=>Array(16).fill('.')); for(let y=0;y<HUMAN_H;y++)for(let x=0;x<16;x++){const sy=y-dy, sx=x-dx; if(sy>=0&&sy<HUMAN_H&&sx>=0&&sx<16) M[y][x]=H[sy][sx]} return M}
+  if(dx||dy) return moveG(H,dx,dy);
   return H;
 }
 const PALI={o:0,e:0,m:0,b:1,l:2,a:3,c:4};
@@ -3837,11 +3855,12 @@ function airStep(o,spk,calm,moving){ // 위로 뜬 높이(음수, 그림 칸 단
   if(m==='fly'){
     if(calm){o.alt=Math.min(0,(o.alt||0)+1); return o.alt}
     if(o.altT==null||--o.altT<=0){o.altGoal=-(4+Math.floor(Math.random()*14)); o.altT=24+Math.floor(Math.random()*40)}
-    o.alt=(o.alt||0)+(o.alt>o.altGoal?-1:o.alt<o.altGoal?1:0); o.bob=((o.bob||0)+1)%8; return o.alt+(o.alt<0&&o.bob>=4?-1:0)}
+    o.alt=(o.alt||0)+(o.alt>o.altGoal?-1:o.alt<o.altGoal?1:0); return o.alt} // 위아래 흔들림은 나는 동작 그림이 맡아요 (겹치면 덜컹거려요)
   if(m==='hop'){if(calm||!moving){o.hop=0; return 0} o.hop=((o.hop||0)+1)%4; return [0,-2,-3,-2][o.hop]}
   return 0;
 }
-const flySeq=(spk,pose,alt)=>alt<0&&MOVE[spk]==='fly'&&FLYPOSE[spk]&&['walk','stand','look','wag','cheer'].indexOf(pose)>=0?SEQ[FLYPOSE[spk]]:null; // 공중에 떠 있으면 날 때 동작으로
+const flySeq=(spk,pose)=>MOVE[spk]==='fly'&&FLYPOSE[spk]&&['walk','stand','look','wag','cheer'].indexOf(pose)>=0?SEQ[FLYPOSE[spk]]:null; // 나는 친구는 돌아다닐 때 늘 날 때 동작 (땅↔공중에서 그림이 툭 바뀌지 않게)
+const glide=spk=>MOVE[spk]?'transform .25s linear':''; // 나는·뛰는 친구는 칸 사이를 부드럽게 미끄러져요
 function stepActor(a){
   const pose=actorPose(a), F=focusState(), act=a.active;
   if(a.st&&!a.fixed){ // 걷기: 목표 지점으로 한 칸씩
@@ -3856,7 +3875,7 @@ function stepActor(a){
     PST[a.pet.id]={x:a.x,dir:a.dir};
   }
   a.air=a.st&&!a.fixed?airStep(a,a.pet.sp,F.focus||F.rest||CALM.indexOf(pose)>=0,a.walk>0):0;
-  const seq=flySeq(a.pet.sp,pose,a.air)||(pose==='walk'&&!a.sad&&SP[a.pet.sp].body&&a.st?['walk0','walk1']:SEQ[pose==='walk'?'walk':pose])||SEQ.stand; a.fi=(a.fi+1)%seq.length; let fr=seq[a.fi%seq.length];
+  const seq=flySeq(a.pet.sp,pose)||(pose==='walk'&&!a.sad&&SP[a.pet.sp].body&&a.st?['walk0','walk1']:SEQ[pose==='walk'?'walk':pose])||SEQ.stand; a.fi=(a.fi+1)%seq.length; let fr=seq[a.fi%seq.length];
   if(fr==='stand'&&Math.random()<.04) fr='blink';
   if(pose==='walk'&&a.sad) fr=a.fi%2?'sad1':'sad0';
   showFrame(a,fr);
@@ -3865,7 +3884,9 @@ function stepActor(a){
 function showFrame(a,fr){
   const flip=a.dir<0&&fr.indexOf('read')<0&&fr.indexOf('write')<0, key=fr+(flip?'f':'');
   if(a.cur!==key){a.cur=key; a.g.innerHTML=spriteSVG(a.pet.sp,a.st,a.pet.wear,fr,a.xp,flip)}
-  a.g.setAttribute('transform','translate('+a.x+','+(a.y-(a.noLift?0:spriteH(a.pet.sp,a.st)-16)+(a.air||0))+')');
+  const ty=a.y-(a.noLift?0:spriteH(a.pet.sp,a.st)-16)+(a.air||0), gl=a.st&&!a.fixed?glide(a.pet.sp):'';
+  if(gl){a.g.removeAttribute('transform'); a.g.style.transform='translate('+a.x+'px,'+ty+'px)'; if(a.g.style.transition!==gl) requestAnimationFrame(()=>{a.g.style.transition=gl})} // 처음 자리 잡을 땐 미끄러지지 않게 한 박자 뒤에
+  else a.g.setAttribute('transform','translate('+a.x+','+ty+')');
 }
 function engine(){
   actN++; for(let i=ACTORS.length-1;i>=0;i--){const a=ACTORS[i]; if(!a.svg.isConnected){ACTORS.splice(i,1); continue} if(document.visibilityState==='visible'&&a.svg.getBoundingClientRect().width) stepActor(a)}
@@ -4927,11 +4948,11 @@ function stepBuddy(){
   if(move){b.x+=b.dir*Math.round(move); if(b.x<8){b.x=8; b.dir=1} if(b.x>W-w-8){b.x=W-w-8; b.dir=-1}}
   b.x=Math.min(Math.max(8,b.x),Math.max(8,W-w-8));
   b.air=st?airStep(b,p.sp,F.focus||F.rest||CALM.indexOf(pose)>=0,move>0):0;
-  const hum=st&&SP[p.sp].body, seq=flySeq(p.sp,pose,b.air)||(hum&&pose==='walk'?['walk0','walk1']:SEQ[pose])||[pose]; b.fi=(b.fi+1)%24; let fr=seq[b.fi%seq.length]; if(fr==='stand'&&Math.random()<.05) fr='blink';
+  const hum=st&&SP[p.sp].body, seq=flySeq(p.sp,pose)||(hum&&pose==='walk'?['walk0','walk1']:SEQ[pose])||[pose]; b.fi=(b.fi+1)%24; let fr=seq[b.fi%seq.length]; if(fr==='stand'&&Math.random()<.05) fr='blink';
   const flip=b.dir<0&&!/read|write/.test(fr), key=p.id+fr+(flip?'f':'')+JSON.stringify(p.wear||{})+st;
   if(b.cur!==key){b.cur=key; b.svg.innerHTML=spriteSVG(p.sp,st,p.wear,fr,xp,flip)}
   const hh=spriteH(p.sp,st); b.svg.setAttribute('viewBox','0 0 16 '+hh); b.svg.setAttribute('width',w); b.svg.setAttribute('height',hh*sc);
-  buddyEl.style.bottom=bottom+'px'; buddyEl.style.transform='translate('+b.x+'px,'+(b.air||0)*sc+'px)';
+  buddyEl.style.bottom=bottom+'px'; buddyEl.style.transition=st?glide(p.sp):''; buddyEl.style.transform='translate('+b.x+'px,'+(b.air||0)*sc+'px)';
   if(b.sayT&&now>b.sayT){b.sayT=0; buddyEl.querySelector('.bbub').hidden=true} else placeBubble();
 }
 
@@ -4978,7 +4999,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v86'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v87'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
