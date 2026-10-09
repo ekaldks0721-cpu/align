@@ -3085,6 +3085,9 @@ SP.brachio.ext=G=>{const t=topRow(G), k=G.findIndex((r,i)=>i>t+4&&r.join('')==='
   for(let y=0;y<N.length;y++) N[y]=(y<k?G[y]:y<k+n?G[k]:G[y-n]).slice(); N.py=n; return N};
 SP.dragon.ext=(G,st,base,f)=>{if(st<2) return G; const t=topRow(G), N=padG(G,3,0,3), W=N[0].length, y0=t+4-(f?1:0); // 아기 용: 등 뒤로 펼친 날개
   for(let i=0;i<4;i++){const y=y0+i; if(!N[y]) continue; for(let x=i;x<=4;x++){const c=i===0||x===i?'o':'a'; if(N[y][x]==='.') N[y][x]=c; if(N[y][W-1-x]==='.') N[y][W-1-x]=c}} return N};
+SP.mikael.tpl={3:Object.assign({g:["................", ".....oooooo.....", "....obbbbbbo....", "...obbbbbbbbo...", "...obbbbbbbbo...", "...obebbbbebo...", "...obebbbbebo...", "....obbllbbo....", ".....obmmbo.....", "......obbo......", ".....obllbo.....", ".....obllbo.....", ".....obbbbo.....", ".....oboobo.....", ".....oboobo.....", "....ooo..ooo...."]},{top:1,ey:5,my:8,ny:9,R:11})}; // 미카엘(이탈리안 그레이하운드) 어른: 좁고 긴 얼굴, 가는 목, 잘록한 허리, 길고 가는 다리
+SP.mikael.ext=(G,st)=>{if(st!==3) return G; const rs=G.map(r=>r.join('')), k=rs.findIndex((r,i)=>r.indexOf('oboobo')>=0&&rs[i+1]&&rs[i+1].indexOf('oboobo')>=0); if(k<0) return G; // 다리를 쭉: 틀 위로 키가 커져요
+  const n=3, N=Array.from({length:G.length+n},(_,y)=>(y<=k?G[y]:y<=k+n?G[k]:G[y-n]).slice()); N.px=G.px||0; N.py=(G.py||0)+n; return N};
 SP.seal.tpl=mtpl(['................','................','................','.....oooooo.....','...oobbbbbboo...','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..oallloolllao..','..oblllmmlllbo..','...obllllllbo...','..oobbbbbbbboo..','.oabbbllllbbbao.','oaabbllllllbbaao','oaobbllllllbboao','.o.oooooooooo.o.'],{},{top:3,ey:6,my:9,ny:11,R:13}); // 물개: 귀 없는 동그란 머리, 수염 난 주둥이, 양옆 지느러미
 SP.cinnamoroll.tpl=mtpl(["................", "................", ".....oooooo.....", "...oobbbbbboo...", "..obbbbbbbbbbo..", ".obbbbbbbbbbbbo.", ".obbbbbbbbbbbbo.", ".obbbebbbbebbbo.", ".obbbebbbbebbbo.", ".obbcbbbbbbcbbo.", "..obbbbmmbbbbo..", "...oobbbbbboo...", "....obbbbbbo....", "...obbbbbbbbo...", "...obbbbbbbbo...", "....obo..obo...."],{},{top:2,ey:7,my:10,ny:11,R:13});
 SP.cinnamoroll.ext=(G,st,base,f)=>{if(!st) return G; const t=topRow(G), N=padG(G,8,0,8), W=N[0].length, lift=base==='flap'?(f?1:-1):0; // 시나모롤: 양옆으로 활짝 펼친 큰 귀 (날 때 펄럭)
@@ -4939,7 +4942,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v78'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v79'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
