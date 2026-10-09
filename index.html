@@ -244,6 +244,20 @@ button.chip{border:0;min-height:0;cursor:pointer} button.chip:hover{background:v
 .fix.cal{border:1px solid var(--c);border-left-width:3px;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--ink)}
 @media (max-width:520px){.cc,.cc:hover{min-height:64px;padding:2px;border-radius:8px}.ce{font-size:.6rem;padding:0 2px}}
 @media (min-width:860px){.calwrap{grid-template-columns:1.7fr 1fr;align-items:start}}
+@media (max-width:520px){ /* 폰 캘린더: 칸을 넓게 쓰고 제목을 한 글자라도 더 보여줘요 */
+  .calcard{padding:.6rem .35rem}
+  .cal{gap:2px} .cal .wd{font-size:.72rem}
+  .cal .cc,.cal .cc:hover{padding:2px 1px 3px;border-radius:7px;gap:2px;min-height:74px}
+  .cc .dn{font-size:.76rem;width:1.55em;height:1.55em;margin-left:1px}
+  .cal .ce{font-size:.64rem;line-height:1.5;padding:0 1px 0 2px;border-radius:3px;letter-spacing:-.04em;text-overflow:clip}
+  .cal .ce.tk{border:0;border-left:2px solid var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+  .cc .more{font-size:.62rem;padding-left:2px}
+  .calhelp:not([open]){margin:.2rem 0 .6rem}
+  .week .ev{word-break:break-all;font-size:.68rem;padding:2px 3px;line-height:1.2}
+  .week .chipb,.week .chipb:hover{text-overflow:clip;font-size:.64rem;padding:0 2px;letter-spacing:-.03em}
+}
+.calhelp summary{cursor:pointer;width:max-content}
+
 
 /* 연동: 배정 블록, 캘린더 할 일, 주간 보기 */
 .planb{position:absolute;top:2px;bottom:2px;border:1.5px dashed var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border-radius:6px;padding:0 5px;font-size:.68rem;font-weight:500;line-height:22px;color:var(--ink);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:left;min-height:0}
@@ -2062,7 +2076,7 @@ function renderCalMonth(){
     h('div',{class:'dayhead'},h('span',{class:'date'},monthTitle(y,m)),h('span',{class:'row'},h('button',{class:'quiet','aria-label':TR('이전 달'),onclick:()=>go(-1)},'◀'),
       h('button',{class:'quiet',onclick:()=>{cSel=t0; cMonth=t0.slice(0,7); renderCal()}},TR('오늘')),h('button',{class:'quiet','aria-label':TR('다음 달'),onclick:()=>go(1)},'▶')),calSeg()),
     h('div',{class:'calwrap'},
-      h('section',{class:'card'},calEl,h('p',{class:'small muted',style:'margin:.7rem 0 0'},TR('색 띠는 일정, 테두리 칸은 할 일, ⏰는 마감이에요. 끌어서 다른 날짜로 옮길 수 있어요.'))),
+      h('section',{class:'card calcard'},calEl,h('p',{class:'small muted',style:'margin:.7rem 0 0'},TR('색 띠는 일정, 테두리 칸은 할 일, ⏰는 마감이에요. 끌어서 다른 날짜로 옮길 수 있어요.'))),
       h('section',{class:'card'},h('div',{class:'row'},h('h2',null,dayTitle(cSel)),h('button',{class:'primary sp',onclick:()=>calDlg(null,cSel)},TR('일정 추가'))),
         li.length?h('ul',{class:'list'},li):null,
         h('div',{class:'sub3'},TR('할 일')),h('ul',{class:'list'},dayT.length?dayT.map(t=>taskLi(t)):h('li',{class:'empty'},TR('이 날 계획한 할 일이 없어요.'))),
@@ -2120,7 +2134,7 @@ function renderCalWeek(){
     h('div',{class:'dayhead'},h('span',{class:'date'},rangeTitle(days[0],days[6])),h('span',{class:'row'},h('button',{class:'quiet','aria-label':TR('이전 주'),onclick:()=>{cWeek=addDays(cWeek,-7); renderCal()}},'◀'),
       h('button',{class:'quiet',onclick:()=>{cWeek=t0; cSel=t0; renderCal()}},TR('이번 주')),h('button',{class:'quiet','aria-label':TR('다음 주'),onclick:()=>{cWeek=addDays(cWeek,7); renderCal()}},'▶')),calSeg()),
     h('section',{class:'card'},h('div',{class:'row'},h('h2',null,TR('한 주 한눈에 보기')),h('button',{class:'primary sp',onclick:()=>calDlg(null,days.indexOf(t0)>=0?t0:days[0])},TR('일정 추가'))),
-      h('p',{class:'small muted',style:'margin:.3rem 0 .8rem'},TR('색 칸은 캘린더 일정, 점선 칸은 시간을 배정한 할 일, 옅게 칠한 칸은 매주 고정 일정이에요. ⏰는 마감, ☐는 시간을 정하지 않은 할 일이에요. 누르면 고칠 수 있고, 끌어서 시간과 요일을 바꾸거나 아래쪽 가장자리를 끌어 길이를 바꿀 수 있어요.')),
+      h('details',{class:'calhelp',open:innerWidth>520},h('summary',{class:'small muted'},TR('보는 법')),h('p',{class:'small muted',style:'margin:.3rem 0 .8rem'},TR('색 칸은 캘린더 일정, 점선 칸은 시간을 배정한 할 일, 옅게 칠한 칸은 매주 고정 일정이에요. ⏰는 마감, ☐는 시간을 정하지 않은 할 일이에요. 누르면 고칠 수 있고, 끌어서 시간과 요일을 바꾸거나 아래쪽 가장자리를 끌어 길이를 바꿀 수 있어요.'))),
       h('div',{class:'scroll'},grid)));
 }
 
@@ -4789,7 +4803,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v67'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v68'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;

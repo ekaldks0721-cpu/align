@@ -3516,5 +3516,6 @@ window.I18N_EN={
 "🗡 어드벤처 타임": "🗡 Adventure Time",
 "우우 대륙의 친구들": "Friends of Ooo",
 "어드벤처 타임 친구 8명과 모두 함께하기": "Live with all 8 Adventure Time friends",
-"핀과 제이크를 함께 키우기": "Raise Finn and Jake together"
+"핀과 제이크를 함께 키우기": "Raise Finn and Jake together",
+"보는 법": "How to read"
 };
