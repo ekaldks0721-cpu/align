@@ -2924,7 +2924,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   cinnamoroll:{n:TR("시나모롤"),pal:["#3A4A78", "#FFFFFF", "#DCE8FA", "#9AC8F0", "#F8B0C8"],acts:["flap", "flap", "snack", "wag", "sleep"],food:'bread',lines:'CINNA',traits:[TR("커다란 귀를 펄럭여 하늘을 날아요"),TR("꼬리가 시나몬롤처럼 돌돌 말려 있어요")],tail:'curl'},
   pompompurin:{n:TR("폼폼푸린"),pal:["#5A3A10", "#F8D870", "#FFF0B0", "#E8B840", "#F0A080"],acts:["sleep", "sleep", "snack", "wag"],food:'icecream',lines:'PURIN',traits:[TR("갈색 베레모가 트레이드마크인 골든 리트리버예요"),TR("푸딩과 낮잠을 제일 좋아해요")]},
   keroppi:{n:TR("케로피"),eyeX:[3,12],pal:["#1E4A20", "#78C850", "#FFFFFF", "#58A838", "#F8A0A0"],acts:["swim", "swim", "sing", "cheer"],food:'bread',lines:'KEROPPI',traits:[TR("도넛 연못에 사는 개구리예요"),TR("수영과 노래를 잘해요")]},
-  doodlebob:{n:TR("두들밥"),pal:["#1A1A1A", "#E2E2DC", "#FFFFFF", "#1A1A1A", "#7AC8B8"],body:{"blob": 1, "legs": 3, "legX": [5, 10], "legC": ["o"], "shoes": "#1A1A1A", "armX": [1, 14], "sleeve": "o"},acts:["scribble", "scribble", "karate", "dance"],food:'bread',lines:'DOODLE',traits:[TR("마법 연필로 그린 스폰지밥 낙서예요"),TR("\"미 호이 미노이!\"밖에 못 해요")],nomouth:1},
+  doodlebob:{n:TR("두들밥"),pal:["#1A1A1A", "#E2E2DC", "#FFFFFF", "#1A1A1A", "#7AC8B8"],body:{"blob": 1, "legs": 3, "legX": [5, 10], "legC": ["o"], "shoes": "#1A1A1A", "armX": [1, 14], "sleeve": "o"},acts:["scribble", "scribble", "karate", "dance"],food:'bread',lines:'DOODLE',traits:[TR("마법 연필로 그린 스폰지밥 낙서예요"),TR("\"미 호이 미노이!\"밖에 못 해요")],nomouth:1,fixedEyes:1},
   nanami:{n:TR("나나미 켄토"),pal:["#2A2018", "#F0D0B0", "#FFFFFF", "#E8D080", "#E8A890"],body:{"shirt": "#DCCFAA", "sleeve": "#DCCFAA", "pants": "#DCCFAA", "shoes": "#5A3A20", "deco": [[7, 0, "#4A70B0"], [8, 0, "#4A70B0"], [7, 1, "#C89040"], [8, 1, "#7A5020"], [7, 2, "#7A5020"], [8, 2, "#C89040"], [7, 3, "#C89040"]]},acts:["ratio", "ratio", "overtime", "coffee", "read"],food:'bread',lines:'NANAMI',traits:[TR("주술회전의 1급 주술사예요"),TR("상대를 7:3으로 나눈 지점을 노려요 (십획주법)"),TR("정시 퇴근을 지키고, 시간 외 근무가 되면 넥타이를 풀어 주먹에 감아요")]},
   // 스파이더맨 세대별 + 스파이더버스
   tobey:{n:TR("1세대 스파이더맨"),pal:["#200810", "#C0202C", "#FFFFFF", "#5A0A14", "#C0202C"],body:{"shirt": "#C0202C", "sleeve": "#C0202C", "pants": "#1E3C9A", "shoes": "#C0202C", "slim": 1, "deco": [[7, 1, "#1A0A0A"], [8, 1, "#1A0A0A"], [7, 2, "#1A0A0A"], [8, 2, "#1A0A0A"], [6, 2, "#1E3C9A"], [9, 2, "#1E3C9A"]]},acts:["pizza", "pizza", "emo", "web", "hang"],food:'bread',lines:'TOBEY',traits:[TR("1세대: 토비 맥과이어 (샘 레이미 3부작, 2002–2007). 은빛 작은 눈에 도드라진 거미줄 무늬 슈트"),TR("피자 배달 아르바이트를 해요"),TR("가끔 검은 앞머리를 하고 거리에서 춤을 춰요 (3편의 그 춤)")],lens:'#D8E0E8'},
@@ -3066,7 +3066,7 @@ SP.kuromi.tpl=mtpl(["................", "....oooooooo....", "..ooKKKKKKKKoo..", 
 SP.pompompurin.tpl=mtpl(["................", "................", "....oooooooo....", "..oobbbbbbbboo..", ".obbbbbbbbbbbbo.", ".obbbbbbbbbbbbo.", "oaobbbbbbbbbboao", "oaabbebbbbebbaao", "oaabbebbbbebbaao", "oaabbbbnnbbbbaao", ".oaabbbmmbbbaao.", "..oobbbbbbbboo..", "...oobbbbbboo...", "...obbllllbbo...", "..obbllllllbbo..", "...oobo..oboo..."],{"n": "#6A3A18"},{"top": 2, "ey": 7, "my": 10, "ny": 12, "R": 13});
 SP.keroppi.tpl=mtpl(["..ooo......ooo..", ".oWWWo....oWWWo.", "oWWeWWo..oWWeWWo", "oWWeWWo..oWWeWWo", ".oWWWooooooWWWo.", "obbbbbbbbbbbbbbo", "obbbbbbbbbbbbbbo", "obcbbbbbbbbbbcbo", "obbobbbbbbbbobbo", "obbboooooooobbbo", ".obbbbbbbbbbbbo.", "..oobbbbbbbboo..", "...obbbbbbbbo...", "..obbllllllbbo..", "...obbllllbbo...", "...oobo..oboo..."],{"W": "#FFFFFF"},{"top": 0, "ey": 2, "my": 9, "ny": 11, "R": 13});
 SP.capybara.tpl=mtpl(["................", "............G...", "...........oYYo.", "..........aoYYo.", "....oooooooooooo", "...obbbbbbbbbbbo", "..obbbbbbbbbbebo", ".obbbbbbbbbbbboo", ".obbbbbbbbbbbbbo", ".obbbbbbbbbbooo.", ".obbbbbbbbbbbo..", ".oblllllllllbo..", "..obbbbbbbbbbo..", "..obbo....obbo..", "..oooo....oooo..", "................"],{"Y": "#F89820", "G": "#58A040"},{"top": 4, "ey": 6, "my": 8, "ny": 9, "R": 1});
-SP.doodlebob.tpl=mtpl(["..oooooooooooo..", "..obooobbooobo..", "..ooTTTooTTToo..", "..ooTeTooTeToo..", "..ooTTTooTTToo..", "..obooobbooobo..", "..ocbbbbbbbbbo..", "..obbbboobbbbo..", "..obbbbbbbbbco..", "..obboooooobbo..", "..oboKTKKTKobo..", "..oboKKKKKKobo..", "..obboooooobbo..", "..obbbbbbbcbbo..", "..obbbbbbbbbbo..", "..oooooooooooo.."],{"K": "#1A1A1A", "T": "#FFFFFF"},{"top": 0, "ey": 3, "my": 10, "ny": 14, "cut": 15, "armY": 9, "R": 14}); // 두들밥: 큰 동그란 눈, 점 코, 이빨 두 개 보이는 까만 입, 초록 점
+SP.doodlebob.tpl=mtpl(["..oooooooooooo..", "..obbbbbbbbbco..", "..obooobbooobo..", "..ooTTTooTTToo..", "..ooTeTooTeToo..", "..ooTTTooTTToo..", "..obooobbooobo..", "..obbbboobbbbo..", "..ocbbbbbbbbbo..", "..obobbbbbbobo..", "..obboooooobbo..", "..obbbbbbbbbco..", "..obbbboobbbbo..", "..obbbobbobbbo..", "..obbbboobbbbo..", "..oooooooooooo.."],{"T": "#FFFFFF"},{"top": 0, "ey": 4, "my": 10, "ny": 14, "cut": 15, "armY": 9, "R": 14}); // 두들밥: 동그란 눈, 점 코, 웃는 입, 마름모 넥타이, 초록 점
 SP.nanami.tpl=mtpl([".....oooooo.....", "....oaaaaaao....", "...oaaaaaaaao...", "..oaaaaaaaaaao..", "..oabbbaaaaaao..", "..obbbbbbbbbbo..", "..oGGeGooGeGGo..", "..oGGeGooGeGGo..", "...obbbbbbbbo...", "...obbbmmbbbo...", "....obbbbbbo....", ".....obbbbo.....", "......oooo......"],{"G": "#D8ECEC"});
 const padG=(G,l,t,r,b=0)=>{const N=Array.from({length:G.length+t+b},()=>Array(G[0].length+l+r).fill('.')); G.forEach((row,y)=>row.forEach((c,x)=>{N[y+t][x+l]=c})); N.px=l; N.py=t; return N};
 const topRow=G=>G.findIndex(r=>r.some(c=>c!=='.'));
@@ -3076,7 +3076,6 @@ const partsExt=(spk,pad,parts)=>(G,st)=>{if(!st) return G; // 틀 밖 장식(귀
   parts.forEach(p=>p.r.forEach((row,j)=>[...row].forEach((c,i)=>{if(c==='.') return; const x=L+p.x+i+dx, y=Tp+p.y+j+dy; if(!N[y]||x<0||x>=N[y].length) return; if(p.soft&&N[y][x]!=='.') return; N[y][x]=(p.m&&p.m[c])||c})));
   return N};
 const mirror=rows=>rows.map(r=>[...r].reverse().join(''));
-SP.kitty.ext=partsExt('kitty',[5,0,5,0],(()=>{const w=['.oooo.','......','ooooo.','......','.oooo.']; return [{x:-5,y:6,soft:1,r:w},{x:15,y:6,soft:1,r:mirror(w)}]})()); // 헬로키티: 얼굴 밖으로 뻗은 수염
 SP.mymelody.ext=partsExt('mymelody',[1,9,1,0],(()=>{const top=['.oo.','oPPo','oPIo','oPIo'], bot=['oPIo','oPIo','oPPo','oPPo','oPPo'], m={P:'#F8A8C8',I:'#FCD6E4',F:'#F87898',Y:'#F8D030'};
   return [{x:2,y:-8,r:top,m,soft:1},{x:3,y:-4,r:bot,m,soft:1},{x:10,y:-8,r:top,m,soft:1},{x:9,y:-4,r:bot,m,soft:1},{x:12,y:-2,r:['.F.','FYF','.F.'],m}]})()); // 마이멜로디: 위로 길게 솟은 토끼 귀 두건과 꽃
 SP.kuromi.ext=partsExt('kuromi',[6,5,6,0],(()=>{const ear=['......ooo..','....ooKKKo.','..ooKKKKKo.','.oKKKKoooo.','oKKKoo.....','oKKo.......','oPPo.......','.oo........'], m={K:'#2A2A30',P:'#F8A8C8'};
@@ -3256,6 +3255,7 @@ function bodyG(spk,st,tailF){
 let CURSP='';
 function eyesG(G,st,kind){
   const A=tplA(st), y=A.ey, xs=SP[CURSP]&&SP[CURSP].eyeX||[5,10];
+  if(SP[CURSP]&&SP[CURSP].fixedEyes){if(kind==='sleep'||kind==='blink') [4,5,6,9,10,11].forEach(x=>{gset(G,x,y-1,'b'); gset(G,x,y,'o'); gset(G,x,y+1,'b')}); return} // 두들밥: 낙서 눈은 늘 동그랗게 (잘 때만 감아요)
   if(SP[CURSP]&&SP[CURSP].bigeye){[[5,6],[9,10]].forEach(([a,b])=>{ // 미카엘: 동글동글 까만 눈 (반짝임 한 칸)
     const row=(yy,c1,c2)=>{gset(G,a,yy,c1); gset(G,b,yy,c2==null?c1:c2)};
     if(!kind){row(y,'e','#FFFFFF'); row(y+1,'e')}
@@ -4961,7 +4961,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v83'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v84'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
