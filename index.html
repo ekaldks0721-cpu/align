@@ -3086,7 +3086,10 @@ SP.brachio.ext=G=>{const t=topRow(G), k=G.findIndex((r,i)=>i>t+4&&r.join('')==='
 SP.dragon.ext=(G,st,base,f)=>{if(st<2) return G; const t=topRow(G), N=padG(G,3,0,3), W=N[0].length, y0=t+4-(f?1:0); // 아기 용: 등 뒤로 펼친 날개
   for(let i=0;i<4;i++){const y=y0+i; if(!N[y]) continue; for(let x=i;x<=4;x++){const c=i===0||x===i?'o':'a'; if(N[y][x]==='.') N[y][x]=c; if(N[y][W-1-x]==='.') N[y][W-1-x]=c}} return N};
 SP.seal.tpl=mtpl(['................','................','................','.....oooooo.....','...oobbbbbboo...','..obbbbbbbbbbo..','..obbebbbbebbo..','..obbebbbbebbo..','..oallloolllao..','..oblllmmlllbo..','...obllllllbo...','..oobbbbbbbboo..','.oabbbllllbbbao.','oaabbllllllbbaao','oaobbllllllbboao','.o.oooooooooo.o.'],{},{top:3,ey:6,my:9,ny:11,R:13}); // 물개: 귀 없는 동그란 머리, 수염 난 주둥이, 양옆 지느러미
-SP.cinnamoroll.tpl=mtpl(['................','................','.....oooooo.....','...oobbbbbboo...','..obbbbbbbbbbo..','oooobbbbbbbboooo','ollobbbbbbbbollo','ollobebbbbebollo','ollobebbbbebollo','ollocbbbbbbcollo','.ollobbmmbbollo.','..oo.obbbbo.oo..','....obbbbbbo....','...obbbbbbbbo...','...obbbbbbbbo...','....obo..obo....'],{},{top:2,ey:7,my:10,ny:11,R:13}); // 시나모롤: 양옆으로 길게 늘어진 귀
+SP.cinnamoroll.tpl=mtpl(["................", "................", ".....oooooo.....", "...oobbbbbboo...", "..obbbbbbbbbbo..", ".obbbbbbbbbbbbo.", ".obbbbbbbbbbbbo.", ".obbbebbbbebbbo.", ".obbbebbbbebbbo.", ".obbcbbbbbbcbbo.", "..obbbbmmbbbbo..", "...oobbbbbboo...", "....obbbbbbo....", "...obbbbbbbbo...", "...obbbbbbbbo...", "....obo..obo...."],{},{top:2,ey:7,my:10,ny:11,R:13});
+SP.cinnamoroll.ext=(G,st,base,f)=>{if(!st) return G; const t=topRow(G), N=padG(G,8,0,8), W=N[0].length, lift=base==='flap'?(f?1:-1):0; // 시나모롤: 양옆으로 활짝 펼친 큰 귀 (날 때 펄럭)
+  const ear=['....oooooo','..oollllll','.ollllllll','olllllllll','.ooolllll','....oooo'];
+  ear.forEach((r,j)=>{const y=t+3+j+(j>=3?Math.max(0,lift):Math.min(0,lift)); if(!N[y]) return; [...r].forEach((c,x)=>{if(c==='.') return; if(N[y][x]==='.') N[y][x]=c; if(N[y][W-1-x]==='.') N[y][W-1-x]=c})}); return N};
 SP.tobey.tpl=mtpl([".....oooooo.....", "....obbabbbo....", "...obbbabbbbo...", "..obabbabbbabo..", "..obbbbabbbbbo..", "..obbbbabbbbbo..", "..oboWWoaWWobo..", "..obbooabooobo..", "...obbbabbbbo...", "...obbbabbbbo...", "....obbabbbo....", ".....obabbo.....", "......oooo......"],{"W": "#D8E0E8"});
 SP.andrew.tpl=mtpl([".....oooooo.....", "....obbabbbo....", "...obbbabbbbo...", "..obabbabbbabo..", "..obbbbabbbbbo..", "..ooobbabbooo...", "..oWWWoaboWWWo..", "..oWWWWaWWWWbo..", "...oooobaoooo...", "...obbbabbbbo...", "....obbabbbo....", ".....obabbo.....", "......oooo......"],{"W": "#F0B848"});
 SP.miles.tpl=mtpl([".....oooooo.....", "....obbabbbo....", "...obbbabbbbo...", "..obabbabbbabo..", "..obbbbabbbbbo..", "..oooobabboooo..", "..oWWWoaboWWWo..", "..obWWWooWWWbo..", "...ooooaboooo...", "...obbbabbbbo...", "....obbabbbo....", ".....obabbo.....", "......oooo......"],{"W": "#FFFFFF"});
@@ -3460,7 +3463,7 @@ function poseG(spk,st,wear,pose,xp){
   if(sp.body){const H=humanG(spk,st,base,f,G); return {G:sp.ext?sp.ext(H,st,base,f)||H:H,pal:sp.pal}}
   if(base==='float'){eyesG(G,st,'happy'); G=shiftG(G,0,f?-1:0)}
   if(base==='glob') G=shiftG(G,0,f?-1:0);
-  if(base==='flap'){eyesG(G,st,'happy'); G=shiftG(G,0,f?-2:-1); const A3=tplA(st); [[5,15],[6,15],[9,15],[10,15],[f?4:11,14]].forEach(([x,y])=>{if(G[y][x]==='.') G[y][x]='#E8F0FF'}); [[0,A3.ey-1+(f?0:2)],[15,A3.ey-1+(f?0:2)]].forEach(([x,y])=>gset(G,x,y,'b'))} // 시나모롤: 귀를 펄럭여 날아요
+  if(base==='flap'){eyesG(G,st,'happy'); G=shiftG(G,0,f?-2:-1); const A3=tplA(st); [[5,15],[6,15],[9,15],[10,15],[f?4:11,14]].forEach(([x,y])=>{if(G[y][x]==='.') G[y][x]='#E8F0FF'}); } // 시나모롤: 귀를 펄럭여 날아요 (귀는 ext에서)
   if(base==='stretch'&&f){const A3=tplA(st), k=A3.my+2, n=3, N=newG(); for(let y=0;y<16;y++) N[y]=(y<k-n?G[y+n]:y<k?G[k]:G[y]).slice(); G=N} // 제이크: 몸을 쭈욱
   if(base==='halo') G=shiftG(G,0,f?-1:0);
   if(base==='evil') G=shiftG(G,f?1:0,0);
@@ -4925,7 +4928,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v74'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v75'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
