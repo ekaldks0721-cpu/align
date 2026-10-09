@@ -3067,7 +3067,7 @@ SP.pompompurin.tpl=mtpl(["................", ".....oooo.......", "....oAAAAo....
 SP.keroppi.tpl=mtpl(["..oooo....oooo..", ".oWWWWo..oWWWWo.", ".oWWWeo..oeWWWo.", ".oWWWeo..oeWWWo.", "..oooobbbboooo..", ".obbbbbbbbbbbbo.", "obbbbbbbbbbbbbbo", "obcbbbbbbbbbbcbo", "obbbommmmmmobbbo", ".obbboooooobbbo.", "..obbbbbbbbbbo..", "...oobbbbbboo...", "...obbbbbbbbo...", "...obbbbbbbbo...", "....obo..obo....", "................"],{"W": "#FFFFFF"},{"top": 0, "ey": 2, "my": 8, "ny": 10, "R": 13});
 SP.nanami.tpl=mtpl([".....oooooo.....", "....oaaaaaao....", "...oaaaaaaaao...", "..oaaaaaaaaaao..", "..oabbbaaaaaao..", "..obbbbbbbbbbo..", "..oGGeGooGeGGo..", "..oGGeGooGeGGo..", "...obbbbbbbbo...", "...obbbmmbbbo...", "....obbbbbbo....", ".....obbbbo.....", "......oooo......"],{"G": "#D8ECEC"});
 SP.doodlebob.tpl=(()=>{const t=T_SPONGE[3], g=t.g.map(r=>r.map(c=>c[0]==='#'?(c.toUpperCase()==='#FFFFFF'?'#FFFFFF':'#C8C8C0'):c)), n=Object.assign({},t,{g}); return {1:n,2:n,3:n}})(); // 연필로 그린 스폰지밥
-const padG=(G,l,t,r)=>{const N=Array.from({length:G.length+t},()=>Array(G[0].length+l+r).fill('.')); G.forEach((row,y)=>row.forEach((c,x)=>{N[y+t][x+l]=c})); N.px=l; N.py=t; return N};
+const padG=(G,l,t,r,b=0)=>{const N=Array.from({length:G.length+t+b},()=>Array(G[0].length+l+r).fill('.')); G.forEach((row,y)=>row.forEach((c,x)=>{N[y+t][x+l]=c})); N.px=l; N.py=t; return N};
 const topRow=G=>G.findIndex(r=>r.some(c=>c!=='.'));
 SP.marge.ext=G=>{const t=topRow(G), N=padG(G,0,8,0); // 마지: 머리 위로 높이 솟은 파란 머리
   for(let y=0;y<10;y++){const l=y===0?6:y===1?5:4, r=y===0?9:y===1?10:11; for(let x=l;x<=r;x++) N[t+y][x]=(y===0||x===l||x===r)?'o':'a'}
@@ -3363,14 +3363,18 @@ function propG(G,st,kind,f){
 }
 
 // 자세 하나 그리기 → 색 칸 배열
-function dollG(G,st,mode){ // 미카엘이 늘 물고 다니는, 자기를 닮은 회색 인형 (입에 귀를 물고 옆으로 대롱대롱)
+function dollG(G,spk,st,mode){ // 미카엘이 늘 물고 다니는, 자기를 닮은 회색 인형 (입에 귀를 물고 대롱대롱). 몸이 움직인 뒤에 그려서 틀 밖으로 나가도 잘리지 않아요
   const A=tplA(st), C={K:'#4A5262',D:'#C2C9D4',E:'#2A3040',P:'#E0A8B0'}, R=['K...K','DDDDD','DEDED','DDPDD','.D.D.'];
-  const side=mode==='side', x0=side?0:1, y0=side?11:A.my+1, cells=[];
+  const box=g=>{let t=99,l=99; g.forEach((r,y)=>r.forEach((c,x)=>{if(c!=='.'){if(y<t) t=y; if(x<l) l=x}})); return [t,l]}, [t0,l0]=box(bodyG(spk,st,0)), [t1,l1]=box(G); // 앉기·점프로 몸이 옮겨 간 만큼 인형도 따라가요
+  const side=mode==='side', N=padG(G,2,0,1,4), dx=l1-l0+2, dy=t1-t0, x0=(side?0:1)+dx, y0=(side?11:A.my+1)+dy, W=N[0].length, cells=[];
+  const at=(x,y)=>y>=0&&y<N.length&&x>=0&&x<W?N[y][x]:'.', put=(x,y,c)=>{if(y>=0&&y<N.length&&x>=0&&x<W) N[y][x]=c};
   R.forEach((r,j)=>[...r].forEach((c,i)=>{if(c!=='.') cells.push([x0+i,y0+j,c])}));
   const has=new Set(cells.map(([x,y])=>x+','+y));
-  cells.forEach(([x,y])=>[[1,0],[-1,0],[0,1]].forEach(([dx,dy])=>{const nx=x+dx, ny=y+dy; if(!has.has(nx+','+ny)&&nx>=0&&nx<16&&ny<16&&gget(G,nx,ny)!=='.') gset(G,nx,ny,C.K)})); // 몸과 구분되게 테두리
-  cells.forEach(([x,y,c])=>{if(y<16) gset(G,x,y,C[c])});
-  if(!side){gset(G,6,A.my,C.K); gset(G,6,A.my+1,C.K)}} // 입에 문 귀
+  cells.forEach(([x,y])=>[[1,0],[-1,0],[0,1]].forEach(([ax,ay])=>{const nx=x+ax, ny=y+ay; if(!has.has(nx+','+ny)&&at(nx,ny)!=='.') put(nx,ny,C.K)})); // 몸과 구분되게 테두리
+  cells.forEach(([x,y,c])=>put(x,y,C[c]));
+  if(!side){put(6+dx,A.my+dy,C.K); put(6+dx,A.my+1+dy,C.K)} // 입에 문 귀
+  return N;
+}
 function poseG(spk,st,wear,pose,xp){
   CTPL=(SP[spk]||{}).tpl||null; CURSP=spk;
   const sp=SP[spk]||SP.cat;
@@ -3440,7 +3444,6 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='brush'){eyesG(G,st,'blink'); const t=A.top, c='#E8A040', d='#9A6020'; for(let x=4;x<=9;x++) gset(G,x+(f?2:0),t-1,c); for(let x=4;x<=9;x+=1) if(x%2===0) gset(G,x+(f?2:0),t,d); gset(G,f?12:3,t+2,'#FFF080'); gset(G,f?2:13,t+4,'#FFF080')} // 빗질 받는 중
   if(base==='aegyo'){eyesG(G,st,'happy'); propG(G,st,'heart',0); if(f) propG(G,st,'arms',1)}
   if(base==='dollhug'){eyesG(G,st,f?'blink':'happy'); propG(G,st,'arms',0); if(f) propG(G,st,'heart',0)}
-  if(sp.doll){if(['snack','eat','beg','food','meat'].indexOf(base)>=0) dollG(G,st,'side'); else if(['read','write','lecture'].indexOf(base)<0) dollG(G,st)}
   if(sp.idol){const y=tplA(st).ey, W='#FFFFFF'; if(G[y][5]==='e'&&G[y+1][5]==='e'&&G[y][10]==='e'&&G[y+1][10]==='e') // 눈을 뜨고 있으면 반짝이는 아몬드 눈으로
     [[4,y,'e'],[5,y,W],[6,y,'e'],[4,y+1,W],[5,y+1,'e'],[6,y+1,'e'],[11,y,'e'],[10,y,'e'],[9,y,W],[11,y+1,W],[10,y+1,'e'],[9,y+1,'e']].forEach(([x,yy,c])=>gset(G,x,yy,c))}
   if(sp.simp) for(const r of G) for(let x=0;x<16;x++) if(r[x]==='w') r[x]='#FFFFFF'; // 심슨 눈은 새하얗게
@@ -3478,6 +3481,7 @@ function poseG(spk,st,wear,pose,xp){
   if(base==='zoom') G=shiftG(G,f?1:-1,f?-2:0);
   if(base==='dig'&&f) G=squashG(G);
   if(base==='sleep') propG(G,st,'z',f);
+  if(sp.doll&&['read','write','lecture'].indexOf(base)<0) G=dollG(G,spk,st,['snack','eat','beg','food','meat'].indexOf(base)>=0?'side':'');
   if(sp.ext) G=sp.ext(G,st,base,f)||G;
   return {G,pal:sp.pal};
 }
@@ -4928,7 +4932,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v75'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v76'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
