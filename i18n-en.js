@@ -3765,10 +3765,10 @@ window.I18N_EN={
 "인형 베고 자다 왔어": "I was napping on my plush",
 "인형은 내 최고의 베개야": "My plush is the best pillow",
 "인형 베고 조용히 기다릴게": "I'll wait quietly, head on my plush",
-"100번째 업데이트 기념 선물": "Gift for the 100th update",
-"100번째 업데이트!": "Our 100th update!",
-"Align이 벌써 100번째 업데이트를 맞았어요. 늘 함께해 줘서 고마워요!": "Align just reached its 100th update. Thank you for always being here!",
+"{n}번째 업데이트 기념 선물": "Gift for the {n}th update",
+"{n}번째 업데이트!": "Our {n}th update!",
+"Align이 벌써 {n}번째 업데이트를 맞았어요. 늘 함께해 줘서 고마워요!": "Align just reached its {n}th update. Thank you for always being here!",
 "기념으로 100코인을 넣어 드렸어요": "To celebrate, we added 100 coins for you",
-"100번째 업데이트 기념": "100th update celebration",
+"{n}번째 업데이트 기념": "{n}th update celebration",
 "고마워요!": "Thank you!"
 };

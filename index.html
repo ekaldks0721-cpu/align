@@ -971,7 +971,7 @@ function onSnap(snap){
   if(!seen.settings&&S.settings.m) S.dirty.settings=1;
   saveLocal(); if(changed){agg=null; spanC=null; render()}
   const dirty=Object.keys(S.dirty).length>0; setCloud(dirty?'syncing':'synced'); if(dirty) schedulePush();
-  setTimeout(gift100,1500); // 동기화가 끝나면 100번째 업데이트 선물 확인
+  setTimeout(giftMilestone,1500); // 동기화가 끝나면 50번째 업데이트마다 주는 기념 선물 확인
 }
 function schedulePush(ms){if(!col) return; clearTimeout(pushT); pushT=setTimeout(push,ms||1200)}
 async function push(){
@@ -5006,19 +5006,25 @@ document.querySelector('.tabs').addEventListener('click',e=>{
   const v=b&&b.dataset.v; if(!v) return; showView(v)});
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
-function gift100(){ // 100번째 업데이트 기념: 모두에게 딱 한 번 100코인과 축하 창 (여러 기기여도 id로 한 번만)
-  if(findDoc('coins-','gift:v100')) return;
-  if(fbCfg&&!gateOK) return; if(fbUser&&cloud!=='synced') return; // 로그인했다면 동기화가 끝난 뒤에 (다른 기기에서 이미 받았는지 확인)
-  try{if(!localStorage.getItem(OB)) return}catch(e){} // 처음 시작 안내 중에는 미뤄요
-  if(dlg.open){setTimeout(gift100,5000); return}
-  if(!award('gift:v100',100,TR('100번째 업데이트 기념 선물'))) return;
-  const p=activePet();
-  openDlg('🎉 '+TR('100번째 업데이트!'),h('div',{style:'text-align:center'},p?h('div',{style:'margin:.5rem 0'},cheerSprite(p,6)):null,
-    h('p',null,TR('Align이 벌써 100번째 업데이트를 맞았어요. 늘 함께해 줘서 고마워요!')),h('p',null,h('b',null,TR('기념으로 100코인을 넣어 드렸어요')+' '+COIN))),
-    [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('100번째 업데이트 기념'),true)}},TR('고마워요!'))]);
+function firstVer(){ // 이 사람이 처음 Align을 쓴 버전 (기념 선물은 그때 이미 쓰던 사람에게만). 이 기능 전부터 쓰던 사람은 0
+  let v=S.settings.v.firstV; if(v!=null) return v;
+  const t0=Date.parse('2026-10-10T00:00:00+09:00'); v=allOf('coins-').some(c=>c.ts&&c.ts<t0)?0:parseInt(APP_V.replace(/\D/g,''),10);
+  S.settings.v.firstV=v; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); return v;
 }
-setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(gift100,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v102'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 시점에 이미 쓰던 사람에게 딱 한 번 100코인과 축하 창 (여러 기기여도 id로 한 번만)
+  const M=Math.floor(parseInt(APP_V.replace(/\D/g,''),10)/50)*50, id='gift:v'+M; if(M<100||findDoc('coins-',id)) return;
+  if(fbCfg&&!gateOK) return; if(fbUser&&cloud!=='synced') return; // 로그인했다면 동기화가 끝난 뒤에 (다른 기기 기록까지 보고 판단)
+  try{if(!localStorage.getItem(OB)) return}catch(e){} // 처음 시작 안내 중인 새 사용자는 아직
+  if(firstVer()>=M) return; // 이번 기념 버전 이후에 시작한 사람은 다음 기념 때부터
+  if(dlg.open){setTimeout(giftMilestone,5000); return}
+  if(!award(id,100,TR('{n}번째 업데이트 기념 선물').replace('{n}',M))) return;
+  const p=activePet();
+  openDlg('🎉 '+TR('{n}번째 업데이트!').replace('{n}',M),h('div',{style:'text-align:center'},p?h('div',{style:'margin:.5rem 0'},cheerSprite(p,6)):null,
+    h('p',null,TR('Align이 벌써 {n}번째 업데이트를 맞았어요. 늘 함께해 줘서 고마워요!').replace('{n}',M)),h('p',null,h('b',null,TR('기념으로 100코인을 넣어 드렸어요')+' '+COIN))),
+    [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
+}
+setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
+const APP_V='align-v103'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
