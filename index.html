@@ -3079,7 +3079,7 @@ const partsExt=(spk,pad,parts)=>(G,st)=>{if(!st) return G; // 틀 밖 장식(귀
 const mirror=rows=>rows.map(r=>[...r].reverse().join(''));
 SP.capybara.ext=(()=>{const H=[".......G........", "......oYYo......", "...o..oYYo..o...", "...oaooooooao...", "...obbbbbbbbo...", "...oEbbbbbbEo...", "...obbbbbbbbo...", "...obbDDDDbbo..."], C={E:'#1A1210',D:'#6E5E52',Y:'#F89820',G:'#58A040'}, SHUT=['sleep','blink','onsen','happy','eat','cheer','snack','wag','swim'], mk=shut=>partsExt('capybara',[0,8,0,0],[{x:0,y:-8,m:C,r:shut?H.map(r=>r.replace('oEbbbbbbEo','oaabbbbaao')):H}]), op=mk(0), sh=mk(1); return (G,st,base,f)=>(st&&SHUT.indexOf(base)>=0?sh:op)(G,st)})(); // 카피바라: 틀 위로 솟은 머리(귀·눈·이마). 잘 때·웃을 때는 눈을 감아요
 SP.duo.ext=(()=>{ // 듀오 날개: 평소엔 살짝 퍼진 세모, 신나면 위로 번쩍, 화나면 옆으로 쫙, 인사할 땐 한쪽만, 졸리거나 책 볼 땐 몸에 착
-  const W={rest:{x:-2,y:7,r:['..o.','.ob.','.ob.','obb.','obbb','.ooo']},up:{x:-5,y:2,r:['o.....','oo....','obo...','obbo..','obbbo.','obbbbb','.obbbb','..oobb','...oob']},gun:{x:-6,y:6,hard:1,m:{G:'#C8D0D8',g:'#7A828C'},r:['.ooooooooo', 'oGGGGGGGGo', 'oGgggggggo', '.ooogobbbo', '...o.obbbo', '.....obbbo', '......ooo.']},out:{x:-3,y:8,r:['.oo.','obbb','obbb','.oo.']}};
+  const W={rest:{x:-2,y:7,r:['..o.','.ob.','.ob.','obb.','obbb','.ooo']},up:{x:-5,y:3,r:['oo....','obo...','obbo..','obbbo.','obbbbb','.obbbb','..oobb','...oob']},gun:{x:-6,y:6,hard:1,m:{G:'#C8D0D8',g:'#7A828C'},r:['.ooooooooo', 'oGGGGGGGGo', 'oGgggggggo', '.ooogobbbo', '...o.obbbo', '.....obbbo', '......ooo.']},out:{x:-3,y:8,r:['.oo.','obbb','obbb','.oo.']}};
   const side=(w,right)=>{if(w.hard) return [right?{x:15-w.x-w.r[0].length+1,y:w.y,r:mirror(w.r),m:w.m}:w]; const r=w.r.map(row=>row+(row.endsWith('b')?'b':'.')), fill={x:w.x,y:w.y,r:r.map(row=>row.replace(/o/g,'.'))}, line={x:w.x,y:w.y,r:r.map(row=>row.replace(/b/g,'.')),soft:1}; // 날개 색이 어깨의 몸통 테두리를 덮어 한 덩어리로 이어져요 (테두리는 빈 칸에만)
     fill.m=line.m=w.m; return [fill,line].map(q=>right?{x:15-q.x-q.r[0].length+1,y:q.y,r:mirror(q.r),soft:q.soft,m:q.m}:q)}, mk=(l,r)=>partsExt('duo',[8,2,8,0],[...side(W[l],0),...side(W[r],1)]), E={};
   const FOLD=['sleep','sad','read','write','shy','aegyo','eat','snack','dollhug','beg'], UP=['cheer','streak','halo','happy','dance','yaha','flap','zoom'], OUT=['evil','roar','stare','bark'];
@@ -5030,7 +5030,7 @@ function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 �
     [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v113'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v114'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
