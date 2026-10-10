@@ -3770,5 +3770,6 @@ window.I18N_EN={
 "Align이 벌써 {n}번째 업데이트를 맞았어요. 늘 함께해 줘서 고마워요!": "Align just reached its {n}th update. Thank you for always being here!",
 "기념으로 100코인을 넣어 드렸어요": "To celebrate, we added 100 coins for you",
 "{n}번째 업데이트 기념": "{n}th update celebration",
-"고마워요!": "Thank you!"
+"고마워요!": "Thank you!",
+"오늘 레슨… 할 거지?": "You're doing your lesson today… right?"
 };
