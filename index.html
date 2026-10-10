@@ -3251,7 +3251,7 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('mgbow')>=0){const c='#80C8F0'; [[6,1],[7,2],[8,2],[9,1],[6,2],[9,2]].forEach(([x,y])=>gset(G,x,y,c))} // 하늘색 리본
   if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my; [[5,t],[10,t],[6,t+1],[9,t+1],[4,t+2],[11,t+2]].forEach(([x,y])=>{if(gget(G,x,y)==='a') gset(G,x,y,'#7EC4F8')}); [[6,e+2],[9,e+2]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,'#C88A68')});
     gset(G,7,m,'#B85860'); gset(G,8,m,'#B85860'); if(!s) for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4')} // 머리 결 · 주근깨 · 장밋빛 입 · 체인 목걸이
-  if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'o'); gset(G,9,m-1,'o'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080');
+  if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'#E0A080'); gset(G,9,m-1,'#E0A080'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080'); /* 보조개는 살짝 진한 살색으로 (까만 점이면 눈이 한 쌍 더 있는 것처럼 보여요) */
     if(!s){const c='#3050B0'; for(let x=5;x<=10;x++) if(x!==7) gset(G,x,A.ny+1,c); gset(G,7,A.ny+2,c); gset(G,8,A.ny+2,c)}} // 처진 눈썹 · 보조개 · 티셔츠 글씨
   if(mk.indexOf('profglasses')>=0){const g='#C89838'; [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x,A.ey-1],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey+2]].forEach(([a,b])=>gset(G,a,b,g))); gset(G,7,A.ey,g); gset(G,8,A.ey,g)}
   if(mk.indexOf('tie')>=0&&!s){const r='#C83838'; for(let y=A.ny;y<=A.ny+2;y++){gset(G,7,y,r); gset(G,8,y,r)} gset(G,7,A.ny+3,'#901818'); gset(G,8,A.ny+3,'#901818')}
@@ -3280,14 +3280,13 @@ function eyesG(G,st,kind){
     else if(kind==='happy'){for(let yy=y;yy<=b;yy++) row(yy,'b'); gset(G,cx,b-1,'o'); gset(G,xl,b,'o'); gset(G,xl+EY.w-1,b,'o')}
     else if(kind==='down'){gset(G,cx,b,'e')}
     else if(kind==='sad'){row(y,'b'); gset(G,cx,b,'e')}}); return}
-  if(SP[CURSP]&&SP[CURSP].dora){for(let yy=y-1;yy<=y+4;yy++) for(let x=4;x<=11;x++) if(gget(G,x,yy)==='#3A5878') gset(G,x,yy,'#9CB4CC'); // 눈 테두리는 연하게 (진하면 눈동자 옆에 눈동자가 하나 더 있는 것처럼 보여요)
-    [5,9].forEach(xl=>{ // 도라에몽 눈: 하얀 타원 위에 선이나 눈동자
+  if(SP[CURSP]&&SP[CURSP].dora){[5,9].forEach(xl=>{ // 도라에몽 눈: 하얀 타원 위에 선이나 눈동자
     for(let yy=y;yy<=y+3;yy++){gset(G,xl,yy,'b'); gset(G,xl+1,yy,'b')}
     const inn=xl===5?6:9;
     if(kind==='blink'||kind==='sleep'){gset(G,xl,y+2,'o'); gset(G,xl+1,y+2,'o')}
     else if(kind==='happy'){if(xl===5){gset(G,5,y+2,'o'); gset(G,6,y+1,'o')} else{gset(G,9,y+1,'o'); gset(G,10,y+2,'o')}} // 웃는 눈: 두 눈이 함께 ^ 모양
     else if(kind==='down'){gset(G,inn,y+3,'e')}
-    else if(kind==='sad'){gset(G,xl,y,'#9CB4CC'); gset(G,xl+1,y,'#9CB4CC'); gset(G,inn,y+3,'e')} // 놀람·시무룩: 눈꺼풀이 살짝 내려오고 눈동자는 아래로 (점을 따로 찍으면 눈동자가 둘로 보여요)
+    else if(kind==='sad'){gset(G,xl,y,'#3A5878'); gset(G,xl+1,y,'#3A5878'); gset(G,inn,y+3,'e')} // 놀람·시무룩: 눈꺼풀이 살짝 내려오고 눈동자는 아래로 (점을 따로 찍으면 눈동자가 둘로 보여요)
     else gset(G,inn,y+2,'e')}); return}
   if(SP[CURSP]&&SP[CURSP].simp){[4,8].forEach(xl=>{ // 심슨 눈: 눈꺼풀이 내려오거나 눈동자가 움직여요
     const row=(yy,c)=>{for(let x=xl;x<=xl+2;x++) gset(G,x,yy,c)};
@@ -5027,7 +5026,7 @@ function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 �
     [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v106'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v107'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
