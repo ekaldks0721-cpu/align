@@ -1,5 +1,5 @@
 // Align 오프라인 지원: 앱 파일은 미리 저장해 두고, 인터넷이 되면 새 버전을 받아 옴
-const CACHE = 'align-v103';
+const CACHE = 'align-v104';
 const APP = ['./', './index.html', './manifest.webmanifest', './i18n-en.js', './firebase-config.js', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon.svg', './fonts/Galmuri11.woff2', './fonts/Galmuri11-Bold.woff2'];
 
 self.addEventListener('install', e => {

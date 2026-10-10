@@ -3270,7 +3270,7 @@ function eyesG(G,st,kind){
     else if(kind==='blink'||kind==='sleep'){row(y,'b'); row(y+1,'o')}
     else if(kind==='happy'){row(y,'o'); row(y+1,'b'); gset(G,a===5?a-1:b+1,y+1,'o')}
     else if(kind==='down'){row(y,'b'); row(y+1,'e')}
-    else if(kind==='sad'){row(y,'b'); row(y+1,'e'); gset(G,a===5?b:a,y-1,'o')}}); return}
+    else if(kind==='sad'){row(y,'b'); row(y+1,'e'); gset(G,a===5?b:a,y,'o')}}); return}
   const LN=SP[CURSP]&&SP[CURSP].lens; if(LN){for(let x=0;x<16;x++){ // 가면의 렌즈 눈: 위아래 칸을 가려서 표정을 만들어요
     if((kind==='blink'||kind==='sleep')&&gget(G,x,y)===LN) gset(G,x,y,'o'); if(kind==='happy'&&gget(G,x,y+1)===LN) gset(G,x,y+1,'o'); if(kind==='sad'&&gget(G,x,y)===LN&&(x===6||x===9)) gset(G,x,y,'o')} return}
   const EY=SP[CURSP]&&SP[CURSP].eye; if(EY){EY.xs.forEach(xl=>{ // 커다란 눈 (스폰지밥)
@@ -3298,7 +3298,7 @@ function eyesG(G,st,kind){
     if(kind==='blink'||kind==='sleep'){gset(G,x,y,'b'); gset(G,x,y+1,'o'); gset(G,x+(x<8?-1:1),y+1,'o')}
     else if(kind==='happy'){gset(G,x,y,'o'); gset(G,x,y+1,'b'); gset(G,x-1,y+1,'o'); gset(G,x+1,y+1,'o')}
     else if(kind==='down'){gset(G,x,y,'b'); gset(G,x,y+1,'o')}
-    else if(kind==='sad'){gset(G,x,y,'b'); gset(G,x,y+1,'o'); gset(G,x+(x<8?1:-1),y-1,'o')}
+    else if(kind==='sad'){gset(G,x,y,'b'); gset(G,x,y+1,'o'); gset(G,x+(x<8?1:-1),y,'o')} // 처진 눈: 안쪽 끝이 바로 위로 이어져요 (한 줄 띄우면 눈이 하나 더 있는 것처럼 보여요)
   });
 }
 function mouthG(G,st,kind){const m=tplA(st).my, beak=G[m][7]==='a'; if(beak||SP[CURSP]&&SP[CURSP].nomouth) return; // 헬로키티는 입이 없어요
@@ -5024,7 +5024,7 @@ function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 �
     [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v103'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v104'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
