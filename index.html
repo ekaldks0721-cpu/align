@@ -3084,7 +3084,7 @@ SP.duo.ext=(()=>{ // 듀오 날개: 평소엔 살짝 퍼진 세모, 신나면 �
   return (G,st,base,f)=>{if(!st||FOLD.indexOf(base)>=0) return G; const k=UP.indexOf(base)>=0?'up':OUT.indexOf(base)>=0?'out':'rest', r=base==='wag'&&f?'up':k; return (E[k+r]||(E[k+r]=mk(k,r)))(G,st)}})();
 SP.mymelody.ext=partsExt('mymelody',[1,9,1,0],(()=>{const top=['.oo.','oPPo','oPIo','oPIo'], bot=['oPIo','oPIo','oPPo','oPPo','oPPo'], m={P:'#F8A8C8',I:'#FCD6E4',F:'#F87898',Y:'#F8D030'};
   return [{x:2,y:-8,r:top,m,soft:1},{x:3,y:-4,r:bot,m,soft:1},{x:10,y:-8,r:top,m,soft:1},{x:9,y:-4,r:bot,m,soft:1},{x:12,y:-2,r:['.F.','FYF','.F.'],m}]})()); // 마이멜로디: 위로 길게 솟은 토끼 귀 두건과 꽃
-SP.kuromi.ext=partsExt('kuromi',[4,7,4,0],(()=>{const ear=[".oo........", "oKHo.......", "oKKo.......", ".oKKo......", ".oKKKKo....", ".oKKKKKKo..", ".oKKKKKKKKo", ".oKKKKKKKKK", ".oKKKKKK...", "..oKKKo....", "...ooo....."], m={K:'#4A4A54',H:'#8A8A96'};
+SP.kuromi.ext=partsExt('kuromi',[4,7,4,0],(()=>{const ear=["..oo.......", ".oKHo......", ".oKKo......", "..oKo......", "..oKKKo....", "..oKKKKKo..", "..oKKKKKKKo", "..oKKKKKKKK", "..oKKKKK...", "...oKKo....", "....oo....."], m={K:'#4A4A54',H:'#8A8A96'};
   return [{x:-4,y:-7,r:ear,m,soft:1},{x:9,y:-7,r:mirror(ear),m,soft:1},{x:12,y:10,r:["....o.", "...oKo", "..oKo.", ".oKo..", "oKo..."],m,soft:1}]})()); // 쿠로미: 두건 양옆에 넓게 붙은 깃발 모양 귀(바깥 끝은 거의 수직으로 서고 위쪽 모서리는 가운데로 비스듬히, 꼭짓점에 동그란 방울), 가는 악마 꼬리
 SP.pompompurin.ext=partsExt('pompompurin',[0,4,1,0],[{x:4,y:-3,m:{A:'#7A4A20'},r:['......o...','..ooooAo..','.oAAAAAAo.','oAAAAAAAAo','oAAAAAAAAo','.oooooooo.']}]); // 폼폼푸린: 갈색 베레모
 SP.marge.ext=G=>{const t=topRow(G), N=padG(G,0,8,0); // 마지: 머리 위로 높이 솟은 파란 머리
@@ -5006,7 +5006,7 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('#coin').onclick=()=>{petTab='coin'; showView('pet')};
 $('#sync').onclick=()=>fState==='need'?reconnectFolder():toast(cloud==='local'&&fState==='on'?TR('기록이 "')+dirName+TR('" 폴더의 ')+DATA_FILE+TR('에 저장되고 있어요'):cloud==='synced'?TR('모든 기록이 클라우드에 저장돼 있어요'):cloud==='error'?TR('클라우드에 닿지 않아요. 연결되면 자동으로 다시 저장해요.'):cloud==='local'?(fbCfg&&!fbUser?TR('기록이 이 기기에만 저장되고 있어요. 설정 → 저장에서 로그인하면 다른 기기와 동기화돼요'):TR('기록이 이 기기에만 저장되고 있어요')):TR('클라우드와 맞추는 중이에요'));
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v100'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v101'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
