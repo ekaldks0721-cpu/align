@@ -2960,7 +2960,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   bart:{n:TR('바트 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#F0A0A0'],body:{shirt:'#F05030',short:1,shorts:1,pants:'#3A70D0',shoes:'#3A70D0'},acts:['skate','skate','wag','cheer'],lines:'BART'},
   lisa:{n:TR('리사 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#F0A0A0'],body:{shirt:'#F06030',sleeve:'b',dress:1,pants:'#F06030',shoes:'#E04030',deco:[[6,0,'#FFFFFF'],[7,0,'#E8E8F0'],[8,0,'#FFFFFF'],[9,0,'#E8E8F0']]},acts:['sax','sax','read','write'],lines:'LISA'},
   maggie:{n:TR('매기 심슨'),simp:1,pal:['#2A2018','#FFD83A','#FFFFFF','#2A2018','#F0A0A0'],mark:'mgpaci mgbow',body:{shirt:'#90D0F0',sleeve:'#90D0F0',dress:1,size:1,pants:'#90D0F0',shoes:'#90D0F0'},acts:['wag','cheer','sleep'],lines:'MAGGIE'},
-  homer:{n:TR('Homer K'),pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],body:{shirt:'l',sleeve:'l',short:1,pants:'#4A5A80',shoes:'#383848',hair:1},mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
+  homer:{n:TR('Homer K'),smile:1,pal:['#2A2028','#F2CCA8','#EEE6D8','#1E1A22','#F0A0A0'],body:{shirt:'l',sleeve:'l',short:1,pants:'#4A5A80',shoes:'#383848',hair:1},mark:'homerk',acts:['meat','game','lego','bed','drive','plush','doh'],lines:'HOMER'},
   prof:{n:TR('교수'),pal:['#2A2A3A','#F2C8A0','#FFFFFF','#3A4A78','#F0A0A0'],body:{shirt:'a',sleeve:'a',pants:'#2E3550',shoes:'#2A1A12',deco:[[6,0,'l'],[9,0,'l'],[6,1,'l'],[9,1,'l']]},mark:'profglasses tie',acts:['lecture','coffee','read','write'],lines:'PROF'},
   ghost:{n:TR('유령'),acts:["float", "float", "sparkle", "snack"],food:'candy',pal:['#5A5290','#F4F2FF','#FFFFFF','#C8C0F0','#F8B0D0'],mark:'wavy'},
   dino:{n:TR('공룡'),acts:["roar", "snack", "wag"],food:'leaf',pal:['#1E4A28','#68C058','#D8F0A8','#F8B830','#F89898'],tail:'thin',mark:'dinoback belly',lines:'DINO'},
@@ -3251,7 +3251,7 @@ function bodyG(spk,st,tailF){
   if(mk.indexOf('mgbow')>=0){const c='#80C8F0'; [[6,1],[7,2],[8,2],[9,1],[6,2],[9,2]].forEach(([x,y])=>gset(G,x,y,c))} // 하늘색 리본
   if(mk.indexOf('yongbok')>=0){const e=A.ey, m=A.my; [[5,t],[10,t],[6,t+1],[9,t+1],[4,t+2],[11,t+2]].forEach(([x,y])=>{if(gget(G,x,y)==='a') gset(G,x,y,'#7EC4F8')}); [[6,e+2],[9,e+2]].forEach(([x,y])=>{if(gget(G,x,y)==='b') gset(G,x,y,'#C88A68')});
     gset(G,7,m,'#B85860'); gset(G,8,m,'#B85860'); if(!s) for(let x=6;x<=9;x++) gset(G,x,A.ny+1,'#C8C8D4')} // 머리 결 · 주근깨 · 장밋빛 입 · 체인 목걸이
-  if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); gset(G,6,m-1,'#E0A080'); gset(G,9,m-1,'#E0A080'); gset(G,5,m,'#E0A080'); gset(G,10,m,'#E0A080'); /* 보조개는 살짝 진한 살색으로 (까만 점이면 눈이 한 쌍 더 있는 것처럼 보여요) */
+  if(mk.indexOf('homerk')>=0){const br='#4A3238', e=A.ey, m=A.my; [[4,e-2],[5,e-2],[6,e-3],[9,e-3],[10,e-2],[11,e-2]].forEach(([x,y])=>gset(G,x,y,br)); /* 보조개는 16칸에선 점이나 잡티로만 보여서 빼고, 웃을 때 입꼬리를 올려요 (poseG의 smile) */
     if(!s){const c='#3050B0'; for(let x=5;x<=10;x++) if(x!==7) gset(G,x,A.ny+1,c); gset(G,7,A.ny+2,c); gset(G,8,A.ny+2,c)}} // 처진 눈썹 · 보조개 · 티셔츠 글씨
   if(mk.indexOf('profglasses')>=0){const g='#C89838'; [5,10].forEach(x=>[[x-1,A.ey],[x+1,A.ey],[x,A.ey-1],[x-1,A.ey+1],[x+1,A.ey+1],[x,A.ey+2]].forEach(([a,b])=>gset(G,a,b,g))); gset(G,7,A.ey,g); gset(G,8,A.ey,g)}
   if(mk.indexOf('tie')>=0&&!s){const r='#C83838'; for(let y=A.ny;y<=A.ny+2;y++){gset(G,7,y,r); gset(G,8,y,r)} gset(G,7,A.ny+3,'#901818'); gset(G,8,A.ny+3,'#901818')}
@@ -3431,6 +3431,7 @@ function poseG(spk,st,wear,pose,xp){
   let G=bodyG(spk,st,base==='wag'?f:0);
   const ey={blink:'blink',sleep:'sleep',read:'down',write:'down',happy:'happy',wag:'happy',cheer:'happy',eat:'happy',sad:'sad'}[base];
   if(sp.bigeye||sp.dora) eyesG(G,st,''); if(ey) eyesG(G,st,ey);
+  if(sp.smile&&['happy','cheer','wag','dance'].indexOf(base)>=0){const m=tplA(st).my; gset(G,6,m-1,'m'); gset(G,9,m-1,'m')} // 웃을 때 입꼬리가 올라가요
   if(base==='eat') mouthG(G,st,f?'open':'');
   if(base==='sad') mouthG(G,st,'sad');
   G=wearG(G,st,wear);
@@ -5026,7 +5027,7 @@ function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 �
     [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v107'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v108'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
