@@ -2094,7 +2094,7 @@ function renderCalMonth(){
   ensureRepeats(cSel);
   const dd={}, tk={}, dueBy={}; items('ddays').forEach(x=>(dd[x.date]||(dd[x.date]=[])).push({title:x.title,color:'var(--warn)'}));
   allOf('tasks-').forEach(t=>{(tk[t.date]||(tk[t.date]=[])).push(t); if(t.due&&t.due!==t.date) (dueBy[t.due]||(dueBy[t.due]=[])).push(t)});
-  const reg=new Map(), ents=k=>{const out=(dd[k]||[]).slice(); calOf(k).forEach(e=>{if(!e.src) reg.set('ev:'+e.id,e); out.push({title:(e.cont?'⋯ ':'')+e.title,color:e.color,key:e.src?null:'ev:'+e.id})}); (tk[k]||[]).forEach(t=>{reg.set('tk:'+t.id,t); out.push({title:t.title,color:taskColor(t),task:1,done:t.done,key:'tk:'+t.id})}); (dueBy[k]||[]).forEach(t=>{reg.set('du:'+t.id,t); out.push({title:'⏰ '+t.title,color:'var(--warn)',task:1,due:1,done:t.done,key:'du:'+t.id})}); ltAll().filter(g=>g.status!=='done'&&g.due===k).forEach(g=>out.push({title:'⏰ '+g.title,color:'var(--warn)',task:1,due:1})); return out};
+  const reg=new Map(), ents=k=>{const out=(dd[k]||[]).slice(), evs=[]; calOf(k).forEach(e=>{if(!e.src) reg.set('ev:'+e.id,e); evs.push({t:e.s==null?-1:e.s,title:(e.cont?'⋯ ':'')+e.title,color:e.color,key:e.src?null:'ev:'+e.id})}); schedDay(k,true).filter(e=>!e.skipped).forEach(e=>evs.push({t:e.s,title:e.title,color:e.color,key:null})); evs.sort((x,y)=>x.t-y.t).forEach(e=>out.push(e)); /* 일정(캘린더 일정 + 매주 반복 일정)을 시간순으로 먼저, 할 일은 그 아래 */ (tk[k]||[]).forEach(t=>{reg.set('tk:'+t.id,t); out.push({title:t.title,color:taskColor(t),task:1,done:t.done,key:'tk:'+t.id})}); (dueBy[k]||[]).forEach(t=>{reg.set('du:'+t.id,t); out.push({title:'⏰ '+t.title,color:'var(--warn)',task:1,due:1,done:t.done,key:'du:'+t.id})}); ltAll().filter(g=>g.status!=='done'&&g.due===k).forEach(g=>out.push({title:'⏰ '+g.title,color:'var(--warn)',task:1,due:1})); return out};
   const go=d=>{cMonth=keyOf(new Date(y,m-1+d,1)).slice(0,7); renderCal()};
   const cells=[]; for(let i=0;i<n;i++){const k=addDays(start,i), list=ents(k), max=3;
     cells.push(h('button',{class:'cc'+(k.slice(0,7)!==cMonth?' out':'')+(k===t0?' tdy':'')+(k===cSel?' sel':''),'data-date':k,'aria-label':mdLong(k)+TR(', 일정과 할 일 ')+list.length+TR('개'),onclick:()=>{cSel=k; cMonth=k.slice(0,7); renderCal(); calToDay()}},
@@ -5105,7 +5105,7 @@ function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 �
     [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v120'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v121'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
