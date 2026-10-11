@@ -668,6 +668,13 @@ dialog h3{margin:.9rem 0 .4rem}
 body.kb #buddy{display:none!important}
 @media print{#buddy{display:none!important}}
 @media (max-width:520px){.shopgrid{grid-template-columns:repeat(2,minmax(0,1fr))} .pxui{font-size:15px}}
+.frnow{margin:.5rem 0 0;text-align:center;color:inherit;font-weight:600}
+.frroom{position:relative;padding-top:2.4rem} .frroom .frpet{background:none;border:0;padding:0;min-height:0;cursor:pointer;line-height:0}
+.frbub{position:absolute;top:.4rem;left:50%;transform:translateX(-50%);max-width:90%;background:var(--card,#fff);color:var(--ink,#202838);border:2px solid var(--px-line,#202838);padding:.2rem .6rem;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frcode{font-size:1.15rem;letter-spacing:.08em} .frit.on{outline:3px solid #F39B52} .frit .frst{text-align:center;min-height:2.4em}
+.chlist li{flex-wrap:wrap;align-items:center} .chrows{display:grid;grid-template-columns:auto 1fr;gap:.15rem .5rem;margin-top:.3rem} .chrows>div{display:contents}
+.chm{display:flex;flex-wrap:wrap;gap:3px;align-items:center} .chm i{width:12px;height:12px;border:2px solid var(--px-line,#202838);background:transparent} .chm i.ok{background:#6FCFAB} .chm i.no{background:#E9898C}
+.frnew{background:var(--soft)}
 </style>
 </head>
 <body>
@@ -724,6 +731,7 @@ body.kb #buddy{display:none!important}
           <button id="t-end">끝내고 기록</button>
           <button class="quiet" id="t-cancel">취소</button>
         </div>
+        <p class="small frnow" id="t-fr" hidden></p>
         <div class="last" id="t-last" hidden>
           <div class="row"><strong id="l-title"></strong><button class="quiet sp" id="l-close">닫기</button></div>
           <div class="row" style="margin:.5rem 0"><span class="small muted">집중도</span><span class="rate" id="l-rate"></span></div>
@@ -1306,7 +1314,7 @@ function sessionDlg(s,startTs,endTs){
 /* ---------- 타이머 ---------- */
 let T={mode:'pomo',phase:'focus',running:false,segStart:null,elapsed:0,segs:[],count:0,sub:'',task:''};
 try{const r=JSON.parse(localStorage.getItem(LST)||'null'); if(r&&r.mode) T=Object.assign(T,r)}catch(e){}
-const saveT=()=>{try{localStorage.setItem(LST,JSON.stringify(T))}catch(e){} try{syncPetState()}catch(e){}};
+const saveT=()=>{try{localStorage.setItem(LST,JSON.stringify(T))}catch(e){} try{syncPetState()}catch(e){} try{frTimer()}catch(e){}};
 const isFocus=()=>T.mode==='sw'||T.phase==='focus';
 const phaseMs=()=>(T.quick&&T.phase==='focus'?5:Math.max(1,cfg(T.phase)))*60e3;
 const elapsedMs=()=>T.elapsed+(T.running?Date.now()-T.segStart:0);
@@ -1339,7 +1347,7 @@ function finishFocus(endTs){
   if(T.running) T.segs.push([Math.round(T.segStart/1e3),Math.round(endTs/1e3)]);
   const segs=T.segs.filter(g=>g[1]>g[0]), total=segs.reduce((a,g)=>a+g[1]-g[0],0), quick=!!T.quick; T.quick=false;
   T.running=false; T.elapsed=0; T.segs=[]; T.segStart=null;
-  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick);
+  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){}
     if(T.mode==='pomo'&&!quick){T.count++; T.phase=T.count%Math.max(1,cfg('every'))===0?'long':'short';
       if(cfg('autoBreak')&&Date.now()-endTs<60e3){T.running=true; T.segStart=Date.now()}}
   } else toast(TR('1분이 안 되는 시간은 기록하지 않았어요'));
@@ -4672,7 +4680,7 @@ function renderPet(){
   const nOpen=Object.keys(SP).filter(k=>spOpen(k,lv)).length, nAch=ACH.filter(a=>hasAch(a[0])).length;
   const head=h('section',{class:'card pxcard'},h('div',{class:'pxhud'},h('span',{class:'lv'},TR('내 레벨')+' '+lv),pxBar((e-myLvCoins(lv))/(myLvCoins(lv+1)-myLvCoins(lv)),12),h('span',{class:'small hudi'},TR('다음 레벨까지 ')+(myLvCoins(lv+1)-e),pxi('coin')),
       h('span',{class:'sp'}),h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
-    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['quest',TR('📜 미션')],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['coin',TR('🪙 코인')]]
+    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['quest',TR('📜 미션')],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['friend',TR('👫 친구')+((n=>n?' '+n:'')(frBadge()))],['coin',TR('🪙 코인')]]
       .map(o=>h('button',{role:'tab','aria-selected':String(petTab===o[0]),onclick:()=>{petTab=o[0]; renderPet(); window.scrollTo(0,0)}},...pxText(o[1])))));
   let body=[];
   if(petTab==='home'){
@@ -4767,6 +4775,7 @@ function renderPet(){
     body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('상점')),h('span',{class:'sp hudi'},pxi('coin'),bal.toLocaleString(LOC))),
       h('div',{class:'seg wrap'},[['reward',TR('🎁 보상')],['wear',TR('👒 옷')]].map(o=>h('button',{'aria-pressed':String(shopTab===o[0]),onclick:()=>{shopTab=o[0]; renderPet()}},...pxText(o[1])))),...inner)];
   }
+  else if(petTab==='friend') body=renderFriends();
   else{
     const led=allOf('coins-').sort((a,b)=>b.ts-a.ts).slice(0,40);
     body=[h('div',{class:'two'},h('section',{class:'card pxcard'},h('h2',null,TR('코인 받는 법')),h('ul',{class:'list'},[[TR('집중 1분'),'+1'],[TR('그날 첫 집중'),'+5'],[TR('할 일 완료'),'+10'],[TR('마감 전에 끝내기'),'+10'],[TR('장기 할 일 완료'),'+30'],[TR('집중이 끝날 때 가끔 행운'),TR('2배')],[TR('연속 3·7·14·30일…'),TR('연속 일수 × 2')],[TR('오늘의 미션'),'+10~30'],[TR('오늘의 미션 모두 완료'),'+'+Q_ALL_DAY],[TR('이번 주 미션'),'+50~200'],[TR('이번 주 미션 모두 완료'),'+'+Q_ALL_WEEK],[TR('레벨 오를 때'),TR('레벨 × 20')],[TR('업적 달성'),'+15~2,000']].map(r=>h('li',null,h('span',{style:'flex:1'},r[0]),h('b',{class:'num'},r[1])))),
@@ -5080,7 +5089,7 @@ function showView(v){ // 탭이 없는 화면(코인·동물)도 같은 방식�
 let view='today', enterT=null;
 function enter(v){const sec=$('#v-'+v); sec.classList.remove('enter'); void sec.offsetWidth; sec.classList.add('enter'); clearTimeout(enterT); enterT=setTimeout(()=>sec.classList.remove('enter'),900)}
 const R={today:renderToday,dash:renderDash,stats:renderStats,plan:renderPlan,cal:renderCal,diary:renderDiary,set:renderSet,pet:renderPet}, VIEWS=Object.keys(R);
-function render(){applyLook(); R[view](); paintCoin(); paintBuddy(); queuePetSnap()}
+function render(){applyLook(); R[view](); paintCoin(); paintBuddy(); queuePetSnap(); frPush()}
 document.querySelector('.tabs').addEventListener('click',e=>{
   let b=e.target.closest('button[data-v]'); // 아이콘이나 글자를 눌러도 그 버튼으로 처리
   if(!b&&e.clientX){let best=1e9; document.querySelectorAll('.tabs button').forEach(x=>{const r=x.getBoundingClientRect(), dd=Math.abs(e.clientX-(r.left+r.width/2)); if(dd<best){best=dd; b=x}})} // 탭 사이 틈을 누르면 가장 가까운 탭으로
@@ -5104,8 +5113,276 @@ function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 �
     h('p',null,TR('Align이 벌써 {n}번째 업데이트를 맞았어요. 늘 함께해 줘서 고마워요!').replace('{n}',M)),h('p',null,h('b',null,TR('기념으로 100코인을 넣어 드렸어요')+' '+COIN))),
     [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
 }
+/* ---------- 친구: 친구 코드로 서로 추가 · 동물 보러 가기 · 응원 · 같이 하기 챌린지 · 같이 집중하기 ---------- */
+// 계정으로 로그인했을 때만 (Firestore): profiles/{uid} 공개 프로필(본인만 씀) · fcodes/{코드}→uid · friends/{uid}/list/{상대} s: out(보냄)·in(받음)·ok(친구)
+// inbox/{uid}/items 응원·간식(친구만 넣음) · challenges/{id} 둘이 하는 챌린지. 할 일·일정·일기 내용은 올리지 않아요
+const FR={on:false,uid:null,err:'',list:{},prof:{},ch:{},unsub:[],pu:{},sig:'',pushAt:0,pushT:null,tg:new Set(),wasF:false,sent:{},cyc:null};
+const frOK=()=>!!(fbCfg&&fbUser&&gateOK&&window.firebase&&firebase.firestore);
+const fdb=()=>firebase.firestore();
+const myNick=()=>S.settings.v.nick||'';
+function setSV(k,v){S.settings.v[k]=v; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush()}
+const frName=u=>(FR.prof[u]&&FR.prof[u].nick)||TR('친구');
+const frIds=s=>Object.keys(FR.list).filter(u=>FR.list[u].s===s);
+const frFocusing=p=>!!(p&&p.foc&&(p.foc.end?Date.now()<p.foc.end+60e3:Date.now()-(p.foc.hb||0)<15*60e3)); // 앱을 그냥 닫아도 오래 '집중 중'으로 남지 않게
+const frNowFocus=()=>frIds('ok').filter(u=>frFocusing(FR.prof[u]));
+const spLines=(spk,k)=>{const sp=SP[spk], L=sp&&(LINESETS[sp.lines]||ANIMAL_LINES[spk]); return (L&&L[k])||LINES[k]};
+const cleanWear=w=>{const o={}; for(const s in w||{}) if(OUT[w[s]]&&OUT[w[s]].slot===s) o[s]=w[s]; return o}; // 내 앱에 아직 없는 옷은 빼고
+function frErr(e){console.warn(e); if(e&&e.code==='permission-denied'){FR.err='rules'; frPaint()}}
+function frMaybe(){ // 로그인하고 클라우드와 맞춘 뒤에 시작 (다른 기기에서 받은 응원과 코인 기록을 먼저 보고)
+  if(FR.on&&(!frOK()||FR.uid!==fbUser.uid)) frStop();
+  if(!FR.on&&!FR.err&&frOK()&&cloud==='synced') frStart();
+}
+function frStart(){
+  const me=fbUser.uid, db=fdb(); FR.on=true; FR.uid=me;
+  FR.unsub.push(db.collection('friends').doc(me).collection('list').onSnapshot(sn=>{const was=FR.list; FR.list={}; sn.docs.forEach(d=>FR.list[d.id]=d.data());
+    Object.keys(FR.list).forEach(u=>{const s=FR.list[u].s, o=was[u]&&was[u].s; if(!FR.first&&s!==o){if(s==='in') frWhen(u,()=>toast('👋 '+TR('{n}이(가) 친구 신청을 보냈어요').replace('{n}',frName(u)))); else if(s==='ok'&&o==='out') frWhen(u,()=>toast('🎉 '+TR('{n}와(과) 친구가 됐어요!').replace('{n}',frName(u))))}});
+    FR.first=false; frWatch(); frPaint()},frErr));
+  FR.first=true;
+  FR.unsub.push(db.collection('inbox').doc(me).collection('items').onSnapshot(sn=>frInbox(sn.docs.map(d=>Object.assign({id:d.id},d.data()))),frErr));
+  FR.unsub.push(db.collection('challenges').where('uids','array-contains',me).onSnapshot(sn=>{FR.ch={}; sn.docs.forEach(d=>FR.ch[d.id]=Object.assign({id:d.id},d.data())); frWatch(); chEval(); frPaint()},frErr));
+  FR.sig=''; frPush(true);
+}
+function frStop(){FR.unsub.forEach(f=>f()); Object.values(FR.pu).forEach(f=>f()); Object.assign(FR,{on:false,uid:null,unsub:[],pu:{},list:{},prof:{},ch:{},sig:''}); frPaintTimer()}
+function frWatch(){ // 친구(와 신청을 주고받은 사람, 챌린지 상대)의 공개 프로필을 실시간으로
+  const want=new Set(Object.keys(FR.list)); Object.values(FR.ch).forEach(c=>(c.uids||[]).forEach(u=>{if(u!==FR.uid) want.add(u)}));
+  Object.keys(FR.pu).forEach(u=>{if(!want.has(u)){FR.pu[u](); delete FR.pu[u]; delete FR.prof[u]}});
+  want.forEach(u=>{if(!FR.pu[u]) FR.pu[u]=fdb().collection('profiles').doc(u).onSnapshot(d=>{const was=frFocusing(FR.prof[u]); FR.prof[u]=d.exists?d.data():null; frFocusNote(u,was); frPaint()},()=>{})});
+}
+const frWhen=(u,fn,n)=>FR.prof[u]!==undefined||(n|0)>10?fn():setTimeout(()=>frWhen(u,fn,(n|0)+1),400); // 친구 이름을 받아 온 뒤에 알려요
+function frPaint(){frPaintTimer(); if(FR.visit&&dlg.open&&FR.visit.empty&&FR.prof[FR.visit.u]&&dlg.querySelector('.frroom')) frVisit(FR.visit.u); if(view!=='pet'||petTab!=='friend') return; const ae=document.activeElement; if(ae&&ae.tagName==='INPUT'&&$('#v-pet').contains(ae)) return; renderPet()} // 글자를 넣는 중에는 다시 그리지 않아요
+function frPaintTimer(){const el=$('#t-fr'); if(!el) return; const n=FR.on?frNowFocus():[]; el.hidden=!n.length; if(n.length) el.textContent='🔥 '+TR('{n}도 지금 집중 중이에요').replace('{n}',n.map(frName).join(', '))}
+
+/* 공개 프로필: 닉네임 · 동물(다섯 마리까지) · 레벨 · 연속 기록 · 오늘 할 일 개수와 집중 시간 · 지금 집중 중인지 (설정에서 끌 수 있어요) */
+function frProfile(){
+  const ap=activePet(), ps=shownPets(), k=today(), tk=tasksOf(k), F=focusState(), v=S.settings.v;
+  const o={nick:myNick(),lv:myLv(),dex:pets().length,streak:softStreak().n,
+    pets:(ap?[ap].concat(ps.filter(p=>p.id!==ap.id)):ps).slice(0,5).map(p=>{const xp=petXP(p); return {id:p.id,n:p.name,sp:p.sp,st:stageOf(xp),xp,wear:p.wear||{},mood:petMood(p)}})};
+  if(v.frDay!==false) o.day={k,done:tk.filter(t=>t.done).length,tot:tk.length,foc:Math.round(dayTotal(k)/60)};
+  if(v.frFocus!==false&&F.focus) o.foc={since:T.segs.length?T.segs[0][0]*1e3:T.segStart,end:T.mode==='pomo'?T.segStart+(phaseMs()-T.elapsed):null};
+  return o;
+}
+function frPush(now){ // 바뀐 게 있을 때만 몇 초 모아서 올려요 (집중 중에는 10분마다 '아직 하는 중'이라고)
+  if(!FR.on) return; clearTimeout(FR.pushT);
+  FR.pushT=setTimeout(()=>{if(!FR.on) return; chEval(); if(!myNick()) return; const o=frProfile(), sig=JSON.stringify(o), t=Date.now();
+    if(sig===FR.sig&&!(o.foc&&t-FR.pushAt>10*60e3)) return;
+    FR.sig=sig; FR.pushAt=t; if(o.foc) o.foc.hb=t;
+    fdb().collection('profiles').doc(FR.uid).set(Object.assign(o,{t})).catch(e=>{FR.sig=''; frErr(e)})},now?50:3000);
+}
+async function frEnsureCode(){ // 친구 코드: 처음 한 번 만들고 계속 같은 코드
+  if(S.settings.v.fcode) return S.settings.v.fcode;
+  for(let i=0;i<5;i++){const c=genCode(); try{await fdb().collection('fcodes').doc(c).set({uid:fbUser.uid,t:Date.now()}); setSV('fcode',c); return c}catch(e){if(!e||e.code!=='permission-denied') throw e}} // 겹치면 다른 코드로
+  throw {code:'permission-denied'};
+}
+
+/* 같이 집중하기: 친구가 집중 중이면 타이머 아래에 보이고, 같이 집중하고 끝내면 하루 한 번 보너스 */
+function frTimer(){
+  const f=focusState().focus;
+  if(f&&!FR.wasF&&FR.on){const n=frNowFocus(); FR.tg=new Set(n); if(n.length) setTimeout(()=>buddySay('🔥 '+TR('{n}도 지금 집중하고 있어! 같이 힘내자').replace('{n}',n.map(frName).join(', ')),5000),1500)}
+  FR.wasF=f; frPush(true); frPaintTimer();
+}
+function frFocusNote(u,was){
+  if(!frFocusing(FR.prof[u])||!FR.list[u]||FR.list[u].s!=='ok') return;
+  if(focusState().focus){if(!FR.tg.has(u)){FR.tg.add(u); buddySay('🔥 '+TR('{n}도 지금 집중하고 있어! 같이 힘내자').replace('{n}',frName(u)),5000)}}
+  else if(!was&&S.settings.v.frPing!==false&&document.visibilityState==='visible') toast('🔥 '+TR('{n}이(가) 집중을 시작했어요. 같이 할까요?').replace('{n}',frName(u)));
+}
+function frSessionDone(it){
+  const tg=[...FR.tg].filter(u=>FR.list[u]&&FR.list[u].s==='ok'); FR.tg=new Set(); if(!tg.length||!countsLog(it)) return;
+  const k=dayKey(it.segs[0][0]*1e3), names=tg.map(frName).join(', '), got=award('tg:'+k,10,TR('친구와 같이 집중')+' · '+names);
+  if(got) celebrate('+'+got+' '+COIN,'🔥 '+TR('{n}와(과) 같이 집중했어요').replace('{n}',names));
+}
+
+/* 친구 맺기: 코드로 찾아서 신청 → 친구가 받으면 친구 */
+async function frFind(code){
+  const c=normCode(code); if(c.length!==8){toast(TR('친구 코드 8자리를 확인해 주세요')); return}
+  if(c===S.settings.v.fcode){toast(TR('내 친구 코드예요. 친구의 코드를 넣어 주세요')); return}
+  try{const sn=await fdb().collection('fcodes').doc(c).get(); if(!sn.exists){toast(TR('그런 친구 코드가 없어요. 다시 확인해 주세요')); return}
+    const u=sn.data().uid, cur=FR.list[u];
+    if(u===FR.uid){toast(TR('내 친구 코드예요. 친구의 코드를 넣어 주세요')); return}
+    if(cur&&cur.s==='ok'){toast(TR('{n}은(는) 이미 친구예요').replace('{n}',frName(u))); return}
+    if(cur&&cur.s==='out'){toast(TR('이미 친구 신청을 보냈어요. 친구가 받을 때까지 기다려 주세요')); return}
+    const ps=await fdb().collection('profiles').doc(u).get(), p=ps.exists?ps.data():{};
+    if(cur&&cur.s==='in'){frAccept(u); return}
+    openDlg(TR('친구 신청'),h('div',{class:'dexhero pxui'},frPetSVG((p.pets||[])[0],'happy',96),h('b',null,p.nick||TR('친구')),h('span',{class:'small'},'Lv '+(p.lv||1)+' · '+TR('동물 ')+(p.dex||0))),
+      [h('button',{onclick:closeDlg},TR('그만두기')),h('button',{class:'primary',onclick:()=>{closeDlg(); frRequest(u)}},TR('친구 신청 보내기'))]);
+  }catch(e){toast(fbErr(e))}
+}
+const frRef=(a,b)=>fdb().collection('friends').doc(a).collection('list').doc(b);
+async function frRequest(u){const b=fdb().batch(), t=Date.now(); b.set(frRef(FR.uid,u),{s:'out',t}); b.set(frRef(u,FR.uid),{s:'in',t});
+  try{await b.commit(); toast(TR('친구 신청을 보냈어요. 친구가 받으면 함께할 수 있어요'))}catch(e){toast(fbErr(e))}}
+async function frAccept(u){const b=fdb().batch(), t=Date.now(); b.set(frRef(FR.uid,u),{s:'ok',t}); b.update(frRef(u,FR.uid),{s:'ok',t});
+  try{await b.commit(); celebrate('🎉 '+TR('새 친구!'),TR('{n}와(과) 친구가 됐어요').replace('{n}',frName(u)),true)}catch(e){toast(fbErr(e))}}
+async function frDrop(u,confirm){ // 거절 · 신청 취소 · 친구 끊기 (양쪽 목록에서 지워요)
+  if(confirm&&!await ask(TR('친구를 끊을까요?'),TR('{n}와(과) 서로 친구 목록에서 빠져요. 다시 친구가 되려면 친구 코드로 신청하면 돼요.').replace('{n}',frName(u)),TR('친구 끊기'))) return;
+  const b=fdb().batch(); b.delete(frRef(FR.uid,u)); b.delete(frRef(u,FR.uid)); try{await b.commit(); if(confirm) toast(TR('친구를 끊었어요'))}catch(e){toast(fbErr(e))}}
+
+/* 응원·간식 보내기: 친구 앱에서 그 친구의 동물이 대신 전해 줘요 */
+const CHEERS=[['💪',TR('힘내! 오늘도 응원해')],['🔥',TR('같이 달리자!')],['🍀',TR('오늘 잘 될 거야')],['👏',TR('오늘 정말 잘하고 있어')],['☕',TR('물 한 잔 마시고 하자')],['🌙',TR('무리하지 말고 푹 자')]];
+async function frSend(u,o,id){
+  const now=Date.now(), k=u+':'+o.kind; if(o.kind==='cheer'&&FR.sent[k]&&now-FR.sent[k]<30e3){toast(TR('조금 있다가 다시 보내 주세요')); return false}
+  try{await fdb().collection('inbox').doc(u).collection('items').doc(id||uid()).set(Object.assign({from:FR.uid,nick:myNick(),t:now},o)); FR.sent[k]=now; return true}
+  catch(e){toast(o.kind==='snack'&&e&&e.code==='permission-denied'?TR('오늘은 이미 간식을 줬어요. 내일 또 와요'):fbErr(e)); return false}
+}
+function frCheerDlg(u){
+  const inp=h('input',{type:'text',maxlength:40,placeholder:TR('직접 쓰기 (40자까지)'),style:'flex:1;min-width:0'});
+  const send=async(emo,msg)=>{msg=String(msg||'').trim().slice(0,40); if(!msg){inp.focus(); return} closeDlg(); if(await frSend(u,{kind:'cheer',emo,msg})) toast('📣 '+TR('{n}에게 응원을 보냈어요').replace('{n}',frName(u)))};
+  openDlg('📣 '+TR('{n}에게 응원').replace('{n}',frName(u)),h('div',null,h('p',{class:'small',style:'margin:0 0 .5rem'},TR('친구의 동물이 대신 전해 줘요.')),
+    h('div',{class:'chips'},CHEERS.map(c=>h('button',{class:'chip',onclick:()=>send(c[0],c[1])},c[0]+' '+c[1]))),
+    h('div',{class:'row',style:'margin-top:.7rem'},inp,h('button',{class:'primary',onclick:()=>send('📣',inp.value)},TR('보내기')))),[h('button',{onclick:closeDlg},TR('닫기'))]);
+}
+const snackGiven=u=>!!findDoc('coins-','fg:'+u+':'+today());
+async function frSnack(u,q){ // 하루에 한 번, 친구마다
+  if(snackGiven(u)){toast(TR('오늘은 이미 간식을 줬어요. 내일 또 와요')); return false}
+  if(!await frSend(u,{kind:'snack',pid:q.id},'snack_'+FR.uid+'_'+today())) return false;
+  const got=award('fg:'+u+':'+today(),5,TR('친구 동물에게 간식')+' · '+q.n); if(got) toast('🍪 '+TR('{n}에게 간식을 줬어요').replace('{n}',q.n)+' (+'+got+' '+COIN+')'); paintCoin(); return true;
+}
+function frInbox(list){ // 받은 소식: 기록에 남기고(여러 기기에서 한 번만), 받은 상자에서는 지워요
+  const logs=items('frlog'), fresh=[];
+  list.sort((a,b)=>(a.t||0)-(b.t||0)).forEach(it=>{
+    if(!logs.some(x=>x.id===it.id)&&(it.kind==='cheer'||it.kind==='snack')){const nick=String(it.nick||TR('친구')).slice(0,20), ts=it.t||Date.now(), k=dayKey(ts);
+      const e={id:it.id,from:it.from,nick,kind:it.kind,msg:String(it.msg||'').slice(0,60),emo:String(it.emo||'').slice(0,8),ts,unread:1};
+      if(it.kind==='snack'){e.got=award('fs:'+it.from+':'+k,10,TR('친구가 준 간식')+' · '+nick); const p=pets().find(q=>q.id===it.pid)||activePet(); if(p&&stageOf(petXP(p))){put('pets',Object.assign(clone(p),{fed:Date.now()})); e.pet=p.name}}
+      put('frlog',e); fresh.push(e)}
+    fdb().collection('inbox').doc(FR.uid).collection('items').doc(it.id).delete().catch(()=>{})});
+  items('frlog').sort((a,b)=>b.ts-a.ts).slice(60).forEach(x=>del('frlog',x.id));
+  fresh.filter(e=>Date.now()-e.ts<2*864e5).slice(-3).forEach((e,i)=>setTimeout(()=>frShow(e),1000+i*4500));
+  if(fresh.length){paintCoin(); frPaint()}
+}
+function frShow(e){ // 내 동물이 친구 소식을 전해 줘요
+  const t=e.kind==='snack'?'🍪 '+TR('{n}이(가) {p}에게 간식을 줬어요').replace('{n}',e.nick).replace('{p}',e.pet||TR('내 동물'))+(e.got?' (+'+e.got+' '+COIN+')':''):(e.emo||'📣')+' '+e.nick+': '+e.msg;
+  toast(t); buddySay(t,6000); petReact('cheer',2400);
+}
+
+/* 같이 하기 챌린지: 둘이 같은 목표를 정하고, 둘 다 해내면 보너스 (서로 겨루지 않고 같은 편) */
+const CH_KIND={keep:[TR('매일 연속 기록 채우기'),TR('5분 집중하거나 할 일 하나 끝내기')],tasks:[TR('그날 할 일 다 끝내기'),TR('할 일이 하나 이상 있고, 모두 끝내기')],focus:[TR('매일 집중하기'),TR('정한 시간만큼 타이머로 집중하기')]};
+const CH_BONUS={3:50,7:150,14:350};
+const chText=c=>c.kind==='focus'?TR('매일 {n} 집중하기').replace('{n}',fmtDur((c.mins||30)*60)):(CH_KIND[c.kind]||CH_KIND.keep)[0];
+const chDays=c=>Array.from({length:c.days||0},(_,i)=>addDays(c.start,i));
+const chOk=(c,k)=>c.kind==='tasks'?(l=>l.length>0&&l.every(t=>t.done))(tasksOf(k)):c.kind==='focus'?dayTotal(k)>=(c.mins||30)*60:dayKept(k);
+const chMarks=(c,u)=>{const d=c['d_'+u]||[], last=c['c_'+u]||''; return chDays(c).map(k=>d.indexOf(k)>=0?1:k<=last?-1:0)}; // 1 해냄 · -1 못 함 · 0 아직
+function chState(c){if(c.st!=='on') return c.st; const m=c.uids.map(u=>chMarks(c,u)); return m.every(a=>a.every(x=>x===1))?'won':m.some(a=>a.some(x=>x===-1))?'lost':'on'}
+function chEval(){ // 내 기록으로 내 칸을 채워요 (지난날도 다시 확인해서, 앱을 며칠 안 열어도 괜찮게)
+  if(!FR.on) return; const me=FR.uid, t0=today();
+  Object.values(FR.ch).forEach(c=>{if(c.st!=='on'||!c.start) return; const ds=chDays(c), end=ds[ds.length-1];
+    const d=ds.filter(k=>k<=t0&&chOk(c,k)), last=t0>end?end:addDays(t0,-1), nc=Object.assign({},c,{['d_'+me]:d,['c_'+me]:last});
+    if(JSON.stringify(d)!==JSON.stringify(c['d_'+me]||[])||(c['c_'+me]||'')!==last){Object.assign(c,nc); fdb().collection('challenges').doc(c.id).update({['d_'+me]:d,['c_'+me]:last}).catch(frErr)}
+    if(chState(nc)==='won'){const got=award('ch:'+c.id,CH_BONUS[c.days]||50,TR('친구와 챌린지 성공')+' · '+chText(c));
+      if(got) celebrate('🏁 '+TR('챌린지 성공!'),TR('{n}와(과) 함께').replace('{n}',frName(c.uids.find(u=>u!==me)))+' · +'+got+' '+COIN,true)}});
+}
+function chDlg(u){
+  let kind='keep', days=7, mins=60; const box=h('div');
+  const seg=(opts,cur,fn)=>h('div',{class:'seg wrap'},opts.map(o=>h('button',{'aria-pressed':String(cur===o[0]),onclick:()=>{fn(o[0]); paint()}},o[1])));
+  const paint=()=>box.replaceChildren(...[
+    h('p',{class:'small',style:'margin:0 0 .4rem'},TR('둘이 같은 목표를 정해요. 둘 다 해내면 둘 다 보너스 코인을 받아요.')),
+    h('b',null,TR('목표')),seg(Object.keys(CH_KIND).map(k=>[k,CH_KIND[k][0]]),kind,v=>kind=v),h('p',{class:'small',style:'margin:.2rem 0 .6rem'},CH_KIND[kind][1]),
+    kind==='focus'?h('div',null,h('b',null,TR('하루 집중 시간')),seg([[30,fmtDur(1800)],[60,fmtDur(3600)],[120,fmtDur(7200)],[180,fmtDur(10800)]],mins,v=>mins=v)):null,
+    h('b',{style:'display:block;margin-top:.6rem'},TR('기간')),seg([[3,TR('3일')],[7,TR('7일')],[14,TR('14일')]],days,v=>days=v),
+    h('p',{class:'small',style:'margin:.5rem 0 0'},TR('친구가 받은 날부터 시작해요. 성공하면 ')+'+'+CH_BONUS[days]+' '+COIN)].filter(Boolean));
+  paint();
+  openDlg('🏁 '+TR('{n}와(과) 챌린지').replace('{n}',frName(u)),box,[h('button',{onclick:closeDlg},TR('그만두기')),h('button',{class:'primary',onclick:async()=>{closeDlg();
+    try{await fdb().collection('challenges').add({uids:[FR.uid,u],by:FR.uid,kind,days,mins,st:'wait',t:Date.now()}); toast(TR('챌린지를 보냈어요. 친구가 받으면 시작해요'))}catch(e){toast(fbErr(e))}}},TR('챌린지 보내기'))]);
+}
+const chSet=(c,o)=>fdb().collection('challenges').doc(c.id).update(Object.assign({at:Date.now()},o)).catch(e=>toast(fbErr(e)));
+
+/* 그림: 친구 동물 (내 앱에 아직 없는 동물이면 알로) */
+function frPetSVG(q,pose,px){
+  const sc=Math.max(1,Math.floor((px||64)/16)); if(!q||!SP[q.sp]) return petSVG('cat',0,{},'stand',px);
+  const st=q.st|0; let inner=''; try{inner=spriteSVG(q.sp,st,st?cleanWear(q.wear):{},st?pose:'egg',q.xp||0)}catch(e){return petSVG('cat',0,{},'stand',px)}
+  const s=svgEl(16,16,inner); if(spriteH(q.sp,st)>16) s.setAttribute('viewBox','-4 0 24 24'); s.setAttribute('width',16*sc); s.setAttribute('height',16*sc); return h('span',{class:'pix'},s);
+}
+const FR_MOOD={happy:TR('기분 최고'),ok:TR('괜찮아요'),sad:TR('배고프거나 목말라요'),egg:TR('따뜻하게 품는 중')};
+function frStatus(p){if(!p) return ''; const a=[];
+  if(frFocusing(p)) a.push('🔥 '+TR('지금 집중 중 · {t}째').replace('{t}',fmtDur(Math.max(60,(Date.now()-(p.foc.since||Date.now()))/1e3))));
+  if(p.day&&p.day.k===today()) a.push((p.day.tot?TR('오늘 할 일 ')+p.day.done+'/'+p.day.tot:TR('오늘 할 일 없음'))+(p.day.foc?' · '+TR('집중 ')+fmtDur(p.day.foc*60):''));
+  else if(p.day) a.push(TR('오늘은 아직 조용해요'));
+  if(p.streak) a.push('🔥'+p.streak+TR('일 연속'));
+  return a.join(' · ')}
+
+/* 놀러 가기: 친구 동물을 보고, 쓰다듬고, 간식 주기 */
+function frVisit(u,qi){
+  const p=FR.prof[u]||{}, ps=(p.pets||[]).filter(q=>SP[q.sp]); let cur=ps[qi|0]||ps[0], a=null;
+  const room=h('div',{class:'dexhero pxui frroom'}), bub=h('div',{class:'frbub',hidden:true});
+  const say=t=>{bub.textContent=t; bub.hidden=false; clearTimeout(FR.bubT); FR.bubT=setTimeout(()=>{bub.hidden=true},3500)};
+  const play=act=>{if(!a||!a.st) return; a.fixed=act; a.fi=0; a.cur=''; showFrame(a,(SEQ[act]||SEQ.stand)[0])};
+  const acts=q=>{const sp=SP[q.sp]; return [...new Set([...(sp.acts||[]),'cheer','wag','eat','sleep','read'])].filter(x=>SEQ[x]&&!(sp.body&&x==='wag'))};
+  if(cur){const st=cur.st|0, hh=spriteH(cur.sp,st), sc=hh>16?6:8, svg=svgEl(16,hh,''), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g); svg.setAttribute('width',16*sc); svg.setAttribute('height',hh*sc);
+    a={pet:{id:'fr-'+u+'-'+cur.id,sp:cur.sp,wear:st?cleanWear(cur.wear):{}},st,xp:cur.xp||0,svg,g,x:0,y:0,noLift:1,dir:1,fi:0,walk:0,fixed:st?'stand':'egg',active:true,cur:''};
+    ACTORS.push(a); startEngine(); showFrame(a,st?'stand':'egg'); if(st) play(frFocusing(p)?'read':pick(acts(cur)));
+    room.append(bub,h('button',{class:'frpet','aria-label':TR('쓰다듬기'),onclick:()=>{if(!st){say(TR('…따뜻해. 곧 나갈게!')); return} play(pick(['cheer','wag','happy'].filter(x=>SEQ[x]))); say(pick(spLines(cur.sp,'tap')))}},h('span',{class:'pix'},svg)),
+      h('b',null,cur.n+' · Lv '+petLv(cur.xp||0)),h('span',{class:'small'},SP[cur.sp].n+' · '+STAGES[st][1]+' · '+(FR_MOOD[cur.mood]||'')));
+    clearInterval(FR.cyc); FR.cyc=setInterval(()=>{if(!svg.isConnected){clearInterval(FR.cyc); return} if(st&&bub.hidden) play(pick(acts(cur)))},5000)}
+  else room.append(h('p',{class:'empty'},TR('아직 함께하는 동물이 없어요')));
+  const given=snackGiven(u), ok=FR.list[u]&&FR.list[u].s==='ok';
+  const body=h('div',null,room,
+    ps.length>1?h('div',{class:'petrow pxui'},ps.map((q,i)=>h('button',{class:'petsm','aria-pressed':String(q===cur),onclick:()=>frVisit(u,i)},frPetSVG(q,'stand',48),h('span',null,q.n)))):null,
+    h('p',{class:'small',style:'text-align:center;margin:.5rem 0'},frStatus(p)||TR('아직 소식이 없어요')),
+    ok?h('div',{class:'row',style:'justify-content:center;flex-wrap:wrap'},
+      h('button',{class:given?'':'primary',disabled:given||!cur||!(cur.st|0),onclick:async ev=>{ev.target.disabled=true; if(await frSnack(u,cur)){play('eat'); say(TR('냠냠! 고마워!')); ev.target.textContent='🍪 '+TR('오늘 간식 줬어요')} else ev.target.disabled=false}},'🍪 '+(given?TR('오늘 간식 줬어요'):TR('간식 주기')+' (+5 '+COIN+')')),
+      h('button',{onclick:()=>frCheerDlg(u)},'📣 '+TR('응원 보내기')),h('button',{onclick:()=>chDlg(u)},'🏁 '+TR('챌린지 하자'))):null,
+    ok?h('p',{class:'small muted',style:'text-align:center;margin:.5rem 0 0'},TR('간식은 친구마다 하루에 한 번 줄 수 있어요. 친구도 코인을 받아요.')):null);
+  FR.visit={u,empty:!FR.prof[u]}; // 프로필이 아직 안 왔으면 오는 대로 다시 그려요
+  openDlg(TR('{n}의 방').replace('{n}',p.nick||TR('친구')),body,[ok?h('button',{class:'danger',style:'margin-right:auto',onclick:()=>frDrop(u,true)},TR('친구 끊기')):null,h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide');
+}
+
+/* 화면: 동물 탭 → 친구 */
+const frBadge=()=>!FR.on?0:frIds('in').length+Object.values(FR.ch).filter(c=>c.st==='wait'&&c.by!==FR.uid).length+items('frlog').filter(x=>x.unread).length;
+function renderFriends(){
+  const card=(...k)=>h('section',{class:'card pxcard'},...k), title=h('h2',null,TR('내 친구'));
+  if(!fbCfg) return [card(title,h('p',{class:'small'},TR('친구 기능은 Align 계정으로 로그인했을 때 쓸 수 있어요.')))];
+  if(!fbUser) return [card(title,h('p',{class:'small'},TR('친구 기능은 Align 계정으로 로그인했을 때 쓸 수 있어요.')),h('button',{class:'primary',onclick:()=>showView('set')},TR('로그인하러 가기')))];
+  if(FR.err==='rules') return [card(title,h('p',{class:'small'},TR('친구 기능을 켜려면 관리자가 Firebase 콘솔에서 Firestore 규칙을 새 firestore.rules 내용으로 바꿔야 해요.')),h('button',{onclick:()=>{FR.err=''; frMaybe(); renderPet()}},TR('다시 시도')))];
+  if(!myNick()) return [card(h('h2',null,TR('친구와 함께하기')),h('p',null,TR('친구 코드를 주고받아 친구를 맺어요. 친구가 되면 이런 걸 할 수 있어요.')),
+    h('ul',{class:'dextr'},[TR('🐾 친구 동물 보러 가기: 쓰다듬고 하루 한 번 간식 주기'),TR('📣 응원 보내기: 친구의 동물이 대신 전해 줘요'),TR('🏁 같이 하기 챌린지: 둘 다 해내면 둘 다 보너스'),TR('🔥 같이 집중하기: 친구가 집중 중이면 보이고, 같이 하면 보너스')].map(t=>h('li',null,t))),
+    h('p',{class:'small'},TR('친구에게는 이름, 동물, 레벨, 연속 기록, 오늘 할 일 개수와 집중 시간, 지금 집중 중인지만 보여요. 할 일·일정·일기 내용은 보이지 않아요.')),
+    h('button',{class:'primary',onclick:()=>frNickDlg(true)},TR('시작하기')))];
+  if(!FR.on) return [card(title,h('p',{class:'small'},TR('친구 목록을 불러오는 중이에요…')))];
+  const code=S.settings.v.fcode, inp=h('input',{type:'text',placeholder:'ABCD-1234',maxlength:9,'aria-label':TR('친구 코드'),style:'flex:1;min-width:0;text-transform:uppercase'});
+  const go=()=>frFind(inp.value); inp.addEventListener('keydown',e=>{if(e.key==='Enter') go()});
+  const share=()=>{const t=TR('Align에서 친구 해요! 내 친구 코드: ')+showCode(code); if(navigator.share) navigator.share({text:t}).catch(()=>{}); else if(navigator.clipboard) navigator.clipboard.writeText(showCode(code)).then(()=>toast(TR('친구 코드를 복사했어요')))};
+  const me=card(h('div',{class:'row'},h('h2',null,TR('나')),h('span',{class:'sp'}),h('b',null,myNick()),h('button',{class:'quiet tiny',onclick:()=>frNickDlg(false),'aria-label':TR('이름 바꾸기')},'✎')),
+    h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('내 친구 코드')),code?h('b',{class:'num frcode'},showCode(code)):h('button',{onclick:async()=>{try{await frEnsureCode(); renderPet()}catch(e){toast(fbErr(e))}}},TR('코드 만들기')),code?h('button',{class:'tiny',onclick:share},navigator.share?TR('보내기'):TR('복사')):null),
+    h('div',{class:'pxrow'},inp,h('button',{class:'primary',onclick:go},TR('친구 추가'))),
+    h('p',{class:'small',style:'margin:.2rem 0 0'},TR('친구의 코드를 넣으면 신청이 가요. 친구가 받으면 친구가 돼요.')));
+  const ins=frIds('in'), outs=frIds('out'), oks=frIds('ok').sort((a,b)=>(frFocusing(FR.prof[b])-frFocusing(FR.prof[a]))||frName(a).localeCompare(frName(b)));
+  const req=ins.length||outs.length?card(h('h2',null,TR('친구 신청')),h('ul',{class:'list'},
+    ins.map(u=>h('li',null,frPetSVG(((FR.prof[u]||{}).pets||[])[0],'happy',32),h('span',{style:'flex:1'},h('b',null,frName(u)),' '+TR('님이 친구 신청을 보냈어요')),h('button',{onclick:()=>frDrop(u)},TR('거절')),h('button',{class:'primary',onclick:()=>frAccept(u)},TR('받기')))),
+    outs.map(u=>h('li',null,frPetSVG(((FR.prof[u]||{}).pets||[])[0],'stand',32),h('span',{style:'flex:1'},h('b',null,frName(u)),' · '+TR('받기를 기다리는 중')),h('button',{class:'quiet',onclick:()=>frDrop(u)},TR('취소')))))):null;
+  const list=card(h('div',{class:'row'},h('h2',null,TR('내 친구')),h('span',{class:'sp small'},oks.length+TR('명'))),
+    oks.length?h('div',{class:'shopgrid'},oks.map(u=>{const p=FR.prof[u]||{}, q=(p.pets||[])[0], fo=frFocusing(p);
+      return h('div',{class:'shopit frit'+(fo?' on':'')},h('button',{class:'dexmore',onclick:()=>frVisit(u),'aria-label':frName(u)+' '+TR('놀러 가기')},frPetSVG(q,fo?'read0':'happy',64),h('b',null,frName(u)),h('span',{class:'small'},'Lv '+(p.lv||1)+(q?' · '+q.n:''))),
+        h('span',{class:'small frst'},frStatus(p)||TR('아직 소식이 없어요')),
+        h('div',{class:'row',style:'justify-content:center'},h('button',{class:'primary',onclick:()=>frVisit(u)},TR('놀러 가기')),h('button',{onclick:()=>frCheerDlg(u),'aria-label':TR('응원 보내기'),title:TR('응원 보내기')},'📣')))})):
+      h('p',{class:'empty'},TR('아직 친구가 없어요. 친구에게 내 코드를 보내 보세요.')));
+  const chs=Object.values(FR.ch).filter(c=>c.st==='wait'||c.st==='on'||Date.now()-(c.at||c.t||0)<3*864e5).sort((a,b)=>(b.t||0)-(a.t||0));
+  const marks=(c,u)=>h('span',{class:'chm'},chMarks(c,u).map(x=>h('i',{class:x>0?'ok':x<0?'no':''})));
+  const chCard=card(h('div',{class:'row'},h('h2',null,TR('같이 하기 챌린지')),h('span',{class:'sp'}),oks.length?h('button',{class:'tiny',onclick:()=>{if(oks.length===1) chDlg(oks[0]); else openDlg(TR('누구와 할까요?'),h('div',{class:'chips'},oks.map(u=>h('button',{class:'chip',onclick:()=>chDlg(u)},frName(u)))),[h('button',{onclick:closeDlg},TR('닫기'))])}},TR('＋ 새 챌린지')):null),
+    chs.length?h('ul',{class:'list chlist'},chs.map(c=>{const o=c.uids.find(x=>x!==FR.uid), st=chState(c), mine=c.by===FR.uid;
+      return h('li',null,h('div',{style:'flex:1;min-width:0'},h('b',null,chText(c)+' · '+TR('{n}일').replace('{n}',c.days)),h('div',{class:'small'},TR('{n}와(과) 함께').replace('{n}',frName(o))+' · '+(st==='wait'?(mine?TR('친구가 받기를 기다리는 중'):TR('챌린지가 왔어요!')):st==='won'?'🎉 '+TR('성공! 둘 다 +')+(CH_BONUS[c.days]||50)+' '+COIN:st==='lost'?TR('아쉽게 끝났어요. 다시 도전해 봐요'):st==='no'?TR('거절됨'):st==='quit'?TR('그만둠'):TR('성공하면 +')+(CH_BONUS[c.days]||50)+' '+COIN)),
+        st==='on'||st==='won'||st==='lost'?h('div',{class:'chrows'},h('div',null,h('span',{class:'small'},TR('나')),marks(c,FR.uid)),h('div',null,h('span',{class:'small'},frName(o)),marks(c,o))):null),
+        st==='wait'&&!mine?h('span',{class:'row'},h('button',{onclick:()=>chSet(c,{st:'no'})},TR('거절')),h('button',{class:'primary',onclick:()=>chSet(c,{st:'on',start:today()})},TR('받기'))):
+        st==='wait'||st==='on'?h('button',{class:'quiet',onclick:async()=>{if(st==='on'&&!await ask(TR('챌린지를 그만둘까요?'),TR('친구 화면에서도 그만둔 것으로 보여요.'),TR('그만두기'))) return; chSet(c,{st:mine&&st==='wait'?'no':'quit'})}},st==='wait'?TR('취소'):TR('그만두기')):
+        st==='lost'&&FR.list[o]&&FR.list[o].s==='ok'?h('button',{onclick:()=>chDlg(o)},TR('다시 하기')):null)})):
+      h('p',{class:'empty'},oks.length?TR('둘이 같은 목표를 정하고 함께 해내 봐요.'):TR('친구가 생기면 같이 챌린지를 할 수 있어요.')));
+  const logs=items('frlog').sort((a,b)=>b.ts-a.ts).slice(0,20);
+  const inbox=logs.length?card(h('h2',null,TR('받은 응원·간식')),h('ul',{class:'list'},logs.map(e=>h('li',{class:e.unread?'frnew':''},h('span',{class:'when num'},mdOf(dayKey(e.ts))+' '+hm(new Date(e.ts).getHours()*60+new Date(e.ts).getMinutes())),
+    h('span',{style:'flex:1;min-width:0;overflow-wrap:anywhere'},e.kind==='snack'?'🍪 '+TR('{n}이(가) {p}에게 간식을 줬어요').replace('{n}',e.nick).replace('{p}',e.pet||TR('내 동물')):(e.emo||'📣')+' '+e.nick+': '+e.msg),e.got?h('b',{class:'num plus'},'+'+e.got):null)))):null;
+  if(logs.some(e=>e.unread)) setTimeout(()=>{items('frlog').filter(e=>e.unread).forEach(e=>{const n=clone(e); delete n.unread; put('frlog',n)})},1500); // 본 소식은 읽음으로
+  const chk=(k,label)=>h('label',{class:'pxchk'},h('input',{type:'checkbox',checked:S.settings.v[k]!==false,onchange:ev=>{setSV(k,ev.target.checked); FR.sig=''; frPush(true)}}),label);
+  const opts=card(h('h2',null,TR('친구에게 보여줄 것')),h('div',{class:'pxrow wrap'},chk('frDay',TR('오늘 할 일 개수와 집중 시간')),chk('frFocus',TR('지금 집중 중인지')),chk('frPing',TR('친구가 집중을 시작하면 알려 주기'))),
+    h('p',{class:'small',style:'margin:.3rem 0 0'},TR('이름, 동물, 레벨, 연속 기록은 늘 보여요. 할 일·일정·일기 내용은 보이지 않아요.')));
+  return [me,req,list,chCard,inbox,opts].filter(Boolean);
+}
+function frNickDlg(first){
+  const inp=h('input',{type:'text',maxlength:12,value:myNick(),placeholder:TR('예: 채연'),style:'width:100%'});
+  const save=async()=>{const v=inp.value.trim().slice(0,12); if(!v){inp.focus(); return} closeDlg(); setSV('nick',v);
+    try{await frEnsureCode(); FR.sig=''; frMaybe(); frPush(true); if(first) toast(TR('준비됐어요! 친구에게 내 코드를 보내 보세요'))}catch(e){toast(fbErr(e))} renderPet()};
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter') save()});
+  openDlg(first?TR('친구에게 보일 이름'):TR('이름 바꾸기'),h('div',null,h('p',{class:'small',style:'margin:0 0 .5rem'},TR('친구 목록에 이 이름으로 보여요. 이메일은 보이지 않아요.')),inp),
+    [h('button',{onclick:closeDlg},TR('그만두기')),h('button',{class:'primary',onclick:save},TR('저장'))]);
+  setTimeout(()=>inp.focus(),50);
+}
+setInterval(()=>{frMaybe(); if(FR.on){frPush(); frPaintTimer()}},15000); setTimeout(frMaybe,3000);
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v121'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v122'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;

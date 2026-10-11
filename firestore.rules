@@ -5,6 +5,11 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function isAdmin() { return signedIn() && request.auth.token.email == 'chaeyeonleeeee@gmail.com'; }
     function isMember(uid) { return exists(/databases/$(database)/documents/members/$(uid)); }
+    function member() { return signedIn() && (isMember(request.auth.uid) || isAdmin()); }
+    function friendOf(owner, other) { // owner의 친구 목록에 other가 '친구(ok)'로 있나요
+      return exists(/databases/$(database)/documents/friends/$(owner)/list/$(other))
+        && get(/databases/$(database)/documents/friends/$(owner)/list/$(other)).data.s == 'ok';
+    }
 
     // 초대코드: 관리자만 만들고 지우고 목록을 봐요. 가입하는 사람은 코드 하나를 '사용됨'으로만 바꿀 수 있어요.
     match /invites/{code} {
@@ -24,6 +29,47 @@ service cloud.firestore {
       allow create: if signedIn() && request.auth.uid == uid
         && get(/databases/$(database)/documents/invites/$(request.resource.data.code)).data.used == false
         && getAfter(/databases/$(database)/documents/invites/$(request.resource.data.code)).data.usedBy == uid;
+    }
+
+    // 친구: 공개 프로필(이름·동물·레벨·오늘 달성률·집중 중). 회원이면 하나씩 볼 수 있고(목록은 못 봐요), 본인만 써요
+    match /profiles/{uid} {
+      allow get: if member();
+      allow create, update, delete: if member() && request.auth.uid == uid;
+    }
+
+    // 친구 코드 → 사람. 처음 만든 사람 것이고 남이 덮어쓸 수 없어요
+    match /fcodes/{code} {
+      allow get: if member();
+      allow create: if member() && request.resource.data.uid == request.auth.uid;
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // 친구 목록. s: out(내가 신청) · in(신청 받음) · ok(친구). 내 목록은 내가 다 관리해요
+    // 상대 목록에는 내 칸 하나만 건드릴 수 있어요: 신청 넣기(in), 상대가 보낸 신청 받기(out → ok), 거절·취소·끊기(지우기)
+    match /friends/{uid}/list/{other} {
+      allow read, write: if member() && request.auth.uid == uid;
+      allow create: if member() && request.auth.uid == other && request.resource.data.s == 'in';
+      allow update: if member() && request.auth.uid == other && resource.data.s == 'out' && request.resource.data.s == 'ok';
+      allow delete: if signedIn() && request.auth.uid == other;
+    }
+
+    // 받은 응원·간식: 친구만 넣을 수 있고(고칠 수는 없어요), 받은 사람만 읽고 지워요
+    match /inbox/{uid}/items/{id} {
+      allow read, delete: if signedIn() && request.auth.uid == uid;
+      allow create: if member() && request.resource.data.from == request.auth.uid && friendOf(uid, request.auth.uid)
+        && request.resource.data.kind in ['cheer', 'snack']
+        && request.resource.data.keys().hasOnly(['from', 'nick', 't', 'kind', 'emo', 'msg', 'pid'])
+        && (!('msg' in request.resource.data) || (request.resource.data.msg is string && request.resource.data.msg.size() <= 60))
+        && (!('nick' in request.resource.data) || (request.resource.data.nick is string && request.resource.data.nick.size() <= 20));
+    }
+
+    // 같이 하기 챌린지: 두 사람만 보고, 친구에게만 보낼 수 있어요. 각자 자기 기록 칸(d_내uid, c_내uid)만 채워요
+    match /challenges/{cid} {
+      allow read, delete: if signedIn() && request.auth.uid in resource.data.uids;
+      allow create: if member() && request.resource.data.uids.size() == 2 && request.resource.data.uids[0] == request.auth.uid
+        && request.resource.data.st == 'wait' && friendOf(request.resource.data.uids[1], request.auth.uid);
+      allow update: if member() && request.auth.uid in resource.data.uids
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['st', 'start', 'at', 'd_' + request.auth.uid, 'c_' + request.auth.uid]);
     }
 
     // 각자의 기록: 본인이고, 초대코드로 가입한 회원(또는 관리자)일 때만 읽고 쓸 수 있어요.
