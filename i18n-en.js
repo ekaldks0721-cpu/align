@@ -3771,5 +3771,9 @@ window.I18N_EN={
 "기념으로 100코인을 넣어 드렸어요": "To celebrate, we added 100 coins for you",
 "{n}번째 업데이트 기념": "{n}th update celebration",
 "고마워요!": "Thank you!",
-"오늘 레슨… 할 거지?": "You're doing your lesson today… right?"
+"오늘 레슨… 할 거지?": "You're doing your lesson today… right?",
+"어제 못 끝낸 ": "Bring ",
+"개 오늘로 가져오기": " unfinished from yesterday to today",
+"개를 어제로": " back to yesterday",
+"개를 어제로 되돌렸어요": " moved back to yesterday"
 };

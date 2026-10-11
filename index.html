@@ -39,6 +39,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:var(--surface);border:1px solid var(--rule2);border-radius:10px;padding:.4em .95em;min-height:38px;font-weight:500;transition:background .15s,border-color .15s,color .15s}
 @media (hover:hover){button:hover{border-color:var(--accent);color:var(--accent)}}
 button.primary{background:var(--accent-bg);border-color:var(--accent-bg);color:var(--on-accent);font-weight:600}
+#k-yday{width:100%;margin:.35rem 0 .5rem;background:var(--soft);border-color:color-mix(in srgb,var(--accent) 35%,transparent);font-weight:600}
 button.primary:hover{color:var(--on-accent);filter:brightness(1.08)}
 button.quiet{background:none;border-color:transparent;color:var(--ink2);padding:.3em .55em}
 @media (hover:hover){button.quiet:hover{color:var(--accent);background:var(--soft);border-color:transparent}}
@@ -735,6 +736,7 @@ body.kb #buddy{display:none!important}
       </section>
       <section class="card" data-card="tasks">
         <div class="row"><h2>할 일</h2><span class="small muted sp" id="k-sum"></span></div>
+        <button id="k-yday" hidden></button>
         <ul class="tasks" id="k-list"></ul>
         <button class="quiet" id="k-carry" hidden></button>
         <button class="quiet" id="k-reps" hidden></button>
@@ -1519,6 +1521,7 @@ function renderTasks(){
       h('div',{class:'kch'},g.id?h('button',{class:'kgrip','aria-label':'"'+g.name+TR('" 카테고리를 끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)'),title:TR('끌어서 카테고리 순서 바꾸기'),onpointerdown:e=>kDrag(e,kSaveCatOrder),onkeydown:e=>kKey(e,kSaveCatOrder)},'⋮⋮'):null,g.name,h('span',{class:'n num'},g.done+' / '+g.n)),
       g.subs.map(sg=>[sg.showHead?h('div',{class:'ksh'},h('i',{class:'dot',style:'background:'+sg.color}),sg.name):null,
         h('ul',{class:'kgl',style:'--c:'+sg.color},sg.tasks.map(taskRow))]))):[h('li',{class:'empty art'},TR('아직 할 일이 없어요. 아래에 적고 예상 시간을 정해 추가한 뒤, ▶를 누르면 타이머가 그 할 일에 맞춰져요. 왼쪽 ⋮⋮를 끌면 순서를 바꿀 수 있어요.'))]));
+  paintYday();
   const od=viewDate===today()?pastTasks():[], carry=$('#k-carry');
   carry.hidden=!od.length; carry.textContent=TR('지난 미완료 ')+od.length+TR('개 옮기기·미루기'); carry.onclick=overdueDlg;
   const ks=$('#k-sub'), keep=ks.value; ks.replaceChildren(h('option',{value:''},TR('항목 없음')),...subOptions(null).filter(Boolean)); ks.value=keep;
@@ -1575,6 +1578,16 @@ function retask(t,patch){ // 할 일을 고치거나 다른 날로 옮김. 날�
   put('tasks-'+it.date.slice(0,7),it); return it;
 }
 const pastTasks=()=>allOf('tasks-').filter(t=>t.date<today()&&!t.done&&!t.rep).sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(a.o||0)-(b.o||0)); // 날짜가 지났는데 못 끝낸 할 일 (반복 할 일은 날마다 새로 생기므로 제외)
+let yUndo=null; // 방금 어제에서 가져온 할 일 (잠깐 되돌릴 수 있게 원래 모습을 기억)
+function paintYday(){ // 오늘 화면 맨 위: 어제 못 끝낸 할 일을 한 번에 오늘로 (반복 할 일은 오늘 것이 따로 있어서 빼요)
+  const b=$('#k-yday'); if(!b) return; const t0=today();
+  if(yUndo&&Date.now()<yUndo.until&&viewDate===t0){b.hidden=false; b.textContent='↩ '+TR('되돌리기')+' · '+yUndo.items.length+TR('개를 어제로'); b.onclick=()=>{
+    yUndo.items.forEach(o=>{if(o.date.slice(0,7)!==t0.slice(0,7)) del('tasks-'+t0.slice(0,7),o.id); put('tasks-'+o.date.slice(0,7),o)}); toast(yUndo.items.length+TR('개를 어제로 되돌렸어요')); yUndo=null; render()}; return}
+  const list=viewDate===t0?tasksOf(addDays(t0,-1)).filter(t=>!t.done&&!t.rep):[];
+  b.hidden=!list.length; if(!list.length) return;
+  b.textContent='⤵ '+TR('어제 못 끝낸 ')+list.length+TR('개 오늘로 가져오기');
+  b.onclick=()=>{yUndo={items:list.map(clone),until:Date.now()+8000}; moveTasks(list,t0); setTimeout(()=>{if(yUndo&&Date.now()>=yUndo.until){yUndo=null; render()}},8100)};
+}
 function moveTasks(list,date){list.forEach(t=>retask(t,{date})); render(); toast((list.length===1?'"'+list[0].title+TR('" 옮겼어요 → ')+mdOf(date):list.length+TR('개 옮겼어요 → ')+mdOf(date))+(list.some(t=>t.due&&date>t.due)?TR(' (마감일 이후예요)'):''))}
 function dateOptions(exclude){const t0=today(), seen=new Set(); return [[TR('오늘'),t0],[TR('내일'),addDays(t0,1)],[TR('다음 주 월요일'),addDays(t0,7-wdOf(t0))]].filter(o=>o[1]!==exclude&&!seen.has(o[1])&&seen.add(o[1]))}
 function moveDlg(t){
@@ -5030,7 +5043,7 @@ function giftMilestone(){ // 50번째 업데이트마다(100·150·200…) 그 �
     [h('button',{class:'primary',onclick:()=>{closeDlg(); celebrate('+100 '+COIN,TR('{n}번째 업데이트 기념').replace('{n}',M),true)}},TR('고마워요!'))]);
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v114'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v115'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
