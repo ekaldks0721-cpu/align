@@ -695,6 +695,7 @@ body.kb #buddy{display:none!important}
 .art{display:inline-flex;align-items:center;justify-content:center;line-height:1} .art.px svg{display:block;width:100%;height:100%;image-rendering:pixelated}
 .souvart{width:192px;height:192px;font-size:3.4rem;max-width:60vw;max-height:60vw}
 .pcscene{position:absolute;inset:0;width:100%;height:100%} .pcscene.px~.pclm{display:none} .pcpic:has(.pcscene.px){aspect-ratio:64/40;min-height:0;background:none}
+.pcard:has(.pcscene.px){grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:center} @media (max-width:520px){.pcard:has(.pcscene.px){grid-template-columns:1fr}}
 .pcpic .pcpet{left:9.4%;bottom:5%;transform:none;width:25%} .pcpic .pcpet svg{width:100%;height:auto;display:block}
 .stampart{font-size:1.5rem} .stampart.px{width:48px;height:30px}
 .tslot .art.px{width:100%;height:auto} .tslot.s .art.px{width:min(100%,40px);height:auto;aspect-ratio:1} .tslot.c .art.px{aspect-ratio:64/40}
@@ -5528,7 +5529,7 @@ function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·�
       TRIP_TIER.map((tr,t)=>h('div',{class:'anyrow'},h('b',{class:'small'},tr[1]),['s','c'].map(k=>h('div',{class:'anyset'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),h('div',{class:'anyslots'},TRIP_ANY[k][t].map((_,i)=>slot('any:'+k+t+'-'+i,''))))))))];
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v124'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v125'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;

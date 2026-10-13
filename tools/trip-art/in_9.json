@@ -1,0 +1,572 @@
+[
+ {
+  "id": "dragon:s0",
+  "pet": "dragon",
+  "petName": "Baby dragon",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪙",
+  "name": "반짝이는 동전 하나 / One Shiny Coin",
+  "desc": "길에서 주웠어! 내 보물 더미의 첫 번째야 / Found it on the street! First of my treasure hoard."
+ },
+ {
+  "id": "dragon:s1",
+  "pet": "dragon",
+  "petName": "Baby dragon",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🔥",
+  "name": "화산에서 구운 마시멜로 / Volcano-Roasted Marshmallow",
+  "desc": "내 작은 불꽃 말고 진짜 화산으로 구웠어 / Not my little flame—roasted on a real volcano."
+ },
+ {
+  "id": "dragon:s2",
+  "pet": "dragon",
+  "petName": "Baby dragon",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💎",
+  "name": "용왕의 여의주 / The Dragon King's Pearl",
+  "desc": "용이라면 누구나 꿈꾸는 구슬! 크게 날 거야 / Every dragon dreams of it! I'll fly big someday."
+ },
+ {
+  "id": "dragon:c0",
+  "pet": "dragon",
+  "petName": "Baby dragon",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏠",
+  "place": "옥상 날개 연습장 / Rooftop Flight School",
+  "message": "날개 연습 중! 오늘 세 걸음 날았어. 걸었나? / Wing practice! Flew three steps today. Or walked?",
+  "mood": "city"
+ },
+ {
+  "id": "dragon:c1",
+  "pet": "dragon",
+  "petName": "Baby dragon",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌋",
+  "place": "불꽃 화산 섬 / Fire Volcano Island",
+  "message": "화산이 나보다 불을 잘 뿜어. 으르릉… 연습해야지 / The volcano breathes fire better than me. Grr… must practice.",
+  "mood": "sunset"
+ },
+ {
+  "id": "dragon:c2",
+  "pet": "dragon",
+  "petName": "Baby dragon",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏰",
+  "place": "구름 위 용의 성 / Dragon Castle Above the Clouds",
+  "message": "용들의 성에 왔어! 보물 위에서 자는 게 꿈이었어 / Made it to the dragon castle! Sleeping on treasure—dream come true.",
+  "mood": "sunset"
+ },
+ {
+  "id": "tiger:s0",
+  "pet": "tiger",
+  "petName": "Tiger",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐾",
+  "name": "뒷산 발자국 석고본 / Backyard Paw Print Cast",
+  "desc": "사냥 연습하며 찍은 내 발자국이야. 크지? / From my hunting practice. Big, right?"
+ },
+ {
+  "id": "tiger:s1",
+  "pet": "tiger",
+  "petName": "Tiger",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧶",
+  "name": "고양이 친척의 털실 / Yarn From My Cat Cousin",
+  "desc": "사실 고양이랑 친척이야. 사촌한테 받았어 / We're actually related. My cat cousin gave it to me."
+ },
+ {
+  "id": "tiger:s2",
+  "pet": "tiger",
+  "petName": "Tiger",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🖼️",
+  "name": "까치 호랑이 민화 / Magpie & Tiger Folk Painting",
+  "desc": "옛날 그림 속 호랑이가 내 증조할아버지래, 어흥! / The tiger in it is my great-grandpa. Roar!"
+ },
+ {
+  "id": "tiger:c0",
+  "pet": "tiger",
+  "petName": "Tiger",
+  "tier": "nearby (동네)",
+  "emojiHint": "⛰️",
+  "place": "동네 뒷산 / The Hill Out Back",
+  "message": "어흥! 뒷산 꼭대기에서 크게 외쳤어. 메아리가 졌어 / Roar! Shouted from the top. The echo lost.",
+  "mood": "day"
+ },
+ {
+  "id": "tiger:c1",
+  "pet": "tiger",
+  "petName": "Tiger",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌴",
+  "place": "정글의 강가 / The Jungle Riverbank",
+  "message": "정글의 밤이야. 줄무늬 덕분에 숨바꼭질 완승! / Jungle night. My stripes won every hide-and-seek!",
+  "mood": "forest"
+ },
+ {
+  "id": "tiger:c2",
+  "pet": "tiger",
+  "petName": "Tiger",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏔️",
+  "place": "백두산 호랑이 고향 / Mt. Baekdu, Tiger Homeland",
+  "message": "할아버지들의 산에 왔어. 호랑이 기운이 솟아나요! / Made it to my ancestors' mountain. Tiger power rising!",
+  "mood": "snow"
+ },
+ {
+  "id": "cristina:s0",
+  "pet": "cristina",
+  "petName": "Cristina Yang",
+  "tier": "nearby (동네)",
+  "emojiHint": "📟",
+  "name": "당직실 호출기 / On-Call Pager",
+  "desc": "당직실에서 챙겨 왔어. 감정 얘긴 나중에 / Grabbed it from the on-call room. Feelings later."
+ },
+ {
+  "id": "cristina:s1",
+  "pet": "cristina",
+  "petName": "Cristina Yang",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📕",
+  "name": "내 논문 표지 학술지 / My Cover-Story Journal",
+  "desc": "내 논문이 표지야. 나 천재거든 / My paper made the cover. I'm a genius, obviously."
+ },
+ {
+  "id": "cristina:s2",
+  "pet": "cristina",
+  "petName": "Cristina Yang",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🫀",
+  "name": "3D 프린트 심장 / 3D-Printed Heart",
+  "desc": "취리히에서 내가 만든 심장이야. 완벽 그 자체 / The heart I built in Zurich. Perfection."
+ },
+ {
+  "id": "cristina:c0",
+  "pet": "cristina",
+  "petName": "Cristina Yang",
+  "tier": "nearby (동네)",
+  "emojiHint": "💃",
+  "place": "당직실 댄스 파티 / On-Call Room Dance Party",
+  "message": "춤으로 다 털어 버렸어. 너도 내 person이야. 아마도 / Danced it out. You're my person too. Probably.",
+  "mood": "indoor"
+ },
+ {
+  "id": "cristina:c1",
+  "pet": "cristina",
+  "petName": "Cristina Yang",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏥",
+  "place": "미네소타 메이요 클리닉 / Mayo Clinic, Minnesota",
+  "message": "여기 수술실 괜찮네. 그래도 내가 더 잘해 / Nice ORs here. I'm still better.",
+  "mood": "snow"
+ },
+ {
+  "id": "cristina:c2",
+  "pet": "cristina",
+  "petName": "Cristina Yang",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🗻",
+  "place": "스위스 취리히 / Zurich, Switzerland",
+  "message": "내 연구소가 생겼어. 메러디스, 수술하러 와 / Got my own institute. Meredith, come operate.",
+  "mood": "snow"
+ },
+ {
+  "id": "marceline:s0",
+  "pet": "marceline",
+  "petName": "Marceline",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍓",
+  "name": "하얘진 딸기 / Drained Strawberry",
+  "desc": "빨간색만 쏙 빨아 먹고 남긴 하얀 딸기예요 / She sucked out all the red. It's white now."
+ },
+ {
+  "id": "marceline:s1",
+  "pet": "marceline",
+  "petName": "Marceline",
+  "tier": "far (먼 곳)",
+  "emojiHint": "☔",
+  "name": "검은 양산 / Black Parasol",
+  "desc": "햇빛은 사양! 뱀파이어 여왕의 여행 필수품이에요 / No sunlight, thanks. A vampire queen's travel must-have."
+ },
+ {
+  "id": "marceline:s2",
+  "pet": "marceline",
+  "petName": "Marceline",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🪓",
+  "name": "도끼 베이스 / Axe Bass",
+  "desc": "집안 대대로 내려온 도끼를 개조한 베이스예요 / A family heirloom axe, turned into a bass guitar."
+ },
+ {
+  "id": "marceline:c0",
+  "pet": "marceline",
+  "petName": "Marceline",
+  "tier": "nearby (동네)",
+  "emojiHint": "🦇",
+  "place": "마셀린의 동굴 집 / Marceline's Cave House",
+  "message": "동굴 집 그늘이 최고야. 햇빛은 사양할게 / Nothing beats the shade of my cave. Sun, you can stay out.",
+  "mood": "night"
+ },
+ {
+  "id": "marceline:c1",
+  "pet": "marceline",
+  "petName": "Marceline",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎸",
+  "place": "한밤의 숲 공연 / Midnight Forest Gig",
+  "message": "밤새 베이스 쳤어. 록 앤 롤! 관객은 전부 유령 / Played bass all night. Rock and roll! Crowd was all ghosts.",
+  "mood": "forest"
+ },
+ {
+  "id": "marceline:c2",
+  "pet": "marceline",
+  "petName": "Marceline",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔥",
+  "place": "나이토스피어 / The Nightosphere",
+  "message": "아빠네 왔어. 감자튀김 얘기 또 꺼냈더니 싸웠지, 흐흐 / Visiting Dad. Brought up the fries again. We fought. Heh.",
+  "mood": "night"
+ },
+ {
+  "id": "doodlebob:s0",
+  "pet": "doodlebob",
+  "petName": "DoodleBob",
+  "tier": "nearby (동네)",
+  "emojiHint": "📝",
+  "name": "낙서 메모지 / Doodle notepad",
+  "desc": "미 호이! (자기 친구를 그렸대요) / Me hoy! (He drew himself a friend.)"
+ },
+ {
+  "id": "doodlebob:s1",
+  "pet": "doodlebob",
+  "petName": "DoodleBob",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📒",
+  "name": "봉인됐던 공책 / The notebook prison",
+  "desc": "미 호이 미노이! (탈출한 공책이래요) / Me hoy minoy! (The notebook he escaped from.)"
+ },
+ {
+  "id": "doodlebob:s2",
+  "pet": "doodlebob",
+  "petName": "DoodleBob",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🪄",
+  "name": "마법 연필 / Magic pencil",
+  "desc": "미 호이!! (그리면 진짜가 되는 연필이래요) / Me hoy!! (Whatever it draws comes to life.)"
+ },
+ {
+  "id": "doodlebob:c0",
+  "pet": "doodlebob",
+  "petName": "DoodleBob",
+  "tier": "nearby (동네)",
+  "emojiHint": "📄",
+  "place": "하얀 종이 위 / On a blank page",
+  "message": "미 호이 미노이! (선 밖으로 나왔대요) / Me hoy minoy! (He colored outside the lines.)",
+  "mood": "indoor"
+ },
+ {
+  "id": "doodlebob:c1",
+  "pet": "doodlebob",
+  "petName": "DoodleBob",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍍",
+  "place": "스폰지밥네 거실 / SpongeBob's living room",
+  "message": "미 호이! (진짜 스폰지밥 봤는데 도망갔대요) / Me hoy! (Found the real SpongeBob. He ran away.)",
+  "mood": "underwater"
+ },
+ {
+  "id": "doodlebob:c2",
+  "pet": "doodlebob",
+  "petName": "DoodleBob",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "✨",
+  "place": "끝없는 낙서 나라 / Endless Doodle Land",
+  "message": "미 호이 미노이~ (다들 납작해서 좋대요) / Me hoy minoy~ (Everyone's flat here. He loves it.)",
+  "mood": "candy"
+ },
+ {
+  "id": "ironman:s0",
+  "pet": "ironman",
+  "petName": "Iron Man",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍔",
+  "name": "치즈버거 / Cheeseburger",
+  "desc": "동굴 탈출하고 제일 먼저 찾은 그 버거야 / The first thing I wanted after escaping the cave."
+ },
+ {
+  "id": "ironman:s1",
+  "pet": "ironman",
+  "petName": "Iron Man",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍩",
+  "name": "랜디스 도넛 상자 / Randy's Donuts box",
+  "desc": "거대 도넛 위에 앉아 먹던 그 가게 거야 / From the place where I sat inside the giant donut."
+ },
+ {
+  "id": "ironman:s2",
+  "pet": "ironman",
+  "petName": "Iron Man",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💠",
+  "name": "첫 아크 원자로 / First arc reactor",
+  "desc": "'토니 스타크도 심장이 있다' 페퍼의 액자야 / Pepper's frame: 'Proof that Tony Stark has a heart.'"
+ },
+ {
+  "id": "ironman:c0",
+  "pet": "ironman",
+  "petName": "Iron Man",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔧",
+  "place": "말리부 저택 차고 / Malibu garage",
+  "message": "자비스랑 슈트 테스트. 천장은 또 뚫렸어 / Suit test with JARVIS. Went through the ceiling again.",
+  "mood": "indoor"
+ },
+ {
+  "id": "ironman:c1",
+  "pet": "ironman",
+  "petName": "Iron Man",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏢",
+  "place": "스타크 타워 꼭대기 / Top of Stark Tower",
+  "message": "꼭대기에서 쓰는 중. 뷰는 내가 봐도 최고야 / Writing from the penthouse. Best view in town, obviously.",
+  "mood": "city"
+ },
+ {
+  "id": "ironman:c2",
+  "pet": "ironman",
+  "petName": "Iron Man",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌠",
+  "place": "우주 웜홀 너머 / Through the wormhole",
+  "message": "미사일 들고 웜홀 통과 중. 페퍼한테 전화 좀… / Carrying a nuke through a wormhole. Someone call Pepper…",
+  "mood": "space"
+ },
+ {
+  "id": "sandy:s0",
+  "pet": "sandy",
+  "petName": "Sandy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌰",
+  "name": "텍사스 도토리 / Texas acorn",
+  "desc": "실험하다 배고플 때 먹는 고향 간식이야 / Hometown snack for hungry lab breaks."
+ },
+ {
+  "id": "sandy:s1",
+  "pet": "sandy",
+  "petName": "Sandy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🤠",
+  "name": "카우보이 모자 / Cowboy hat",
+  "desc": "고향 텍사스에서 사 왔어. 이햐! / Picked it up back home in Texas. Yee-haw!"
+ },
+ {
+  "id": "sandy:s2",
+  "pet": "sandy",
+  "petName": "Sandy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🥋",
+  "name": "가라테 챔피언 띠 / Karate champion belt",
+  "desc": "스폰지밥을 이기고 딴 띠야. 하이-야! / Won it beating SpongeBob. Hi-yah!"
+ },
+ {
+  "id": "sandy:c0",
+  "pet": "sandy",
+  "petName": "Sandy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "나무 집 돔 / Treedome",
+  "message": "헬멧 벗고 쉬는 중! 여긴 숨쉬기 편해 / Helmet off, breathing easy at home!",
+  "mood": "forest"
+ },
+ {
+  "id": "sandy:c1",
+  "pet": "sandy",
+  "petName": "Sandy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌵",
+  "place": "텍사스 고향 / Home in Texas",
+  "message": "엄마 보러 왔어! 바다보다 넓은 건 텍사스뿐 / Visiting Ma! Only Texas is bigger than the ocean.",
+  "mood": "desert"
+ },
+ {
+  "id": "sandy:c2",
+  "pet": "sandy",
+  "petName": "Sandy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌕",
+  "place": "달 / The Moon",
+  "message": "로켓 타고 달 왔어! 외계인은 스폰지밥뿐이야 / Rocketed to the moon! The only alien here is SpongeBob.",
+  "mood": "space"
+ },
+ {
+  "id": "duo:s0",
+  "pet": "duo",
+  "petName": "Duo",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔔",
+  "name": "새벽 알림용 종 / Dawn Reminder Bell",
+  "desc": "새벽에 울리게 맞춰 놨어. 레슨할 시간이니까 / Set to ring at dawn. Because it's lesson time."
+ },
+ {
+  "id": "duo:s1",
+  "pet": "duo",
+  "petName": "Duo",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🔥",
+  "name": "연속 기록 불씨 / Streak Ember",
+  "desc": "꺼뜨리면 안 돼. 꺼뜨리면… 알지? / Don't let it go out. If you do… you know."
+ },
+ {
+  "id": "duo:s2",
+  "pet": "duo",
+  "petName": "Duo",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💎",
+  "name": "다이아몬드 리그 트로피 / Diamond League Trophy",
+  "desc": "리그 1등 했어. 넌 이번 주 레슨 몇 개 했더라? / Won the league. How many lessons did you do this week?"
+ },
+ {
+  "id": "duo:c0",
+  "pet": "duo",
+  "petName": "Duo",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪟",
+  "place": "네 방 창밖 / Outside Your Window",
+  "message": "창밖을 봐… 농담이야. 근데 오늘 레슨은 했어? / Look outside… kidding. But did you do today's lesson?",
+  "mood": "night"
+ },
+ {
+  "id": "duo:c1",
+  "pet": "duo",
+  "petName": "Duo",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌮",
+  "place": "멕시코시티 / Mexico City",
+  "message": "Spanish or vanish. 여기 사람들은 다 레슨 했대 / Spanish or vanish. Everyone here did their lesson.",
+  "mood": "city"
+ },
+ {
+  "id": "duo:c2",
+  "pet": "duo",
+  "petName": "Duo",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌕",
+  "place": "달 위의 레슨실 / Lesson Room on the Moon",
+  "message": "달에서도 연속 기록 지켰어. 너는 지구에서 뭐 했어? / Kept my streak on the Moon. What did you do on Earth?",
+  "mood": "space"
+ },
+ {
+  "id": "dino:s0",
+  "pet": "dino",
+  "petName": "Dino",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥚",
+  "name": "따끈한 공룡알 / Warm Dino Egg",
+  "desc": "하나 더 품고 싶어서 데려왔대요. 아직 따뜻해요 / Wanted another to hatch. Still warm!"
+ },
+ {
+  "id": "dino:s1",
+  "pet": "dino",
+  "petName": "Dino",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌿",
+  "name": "쥬라기 고사리 / Jurassic Fern",
+  "desc": "공룡 시절부터 있던 고사리예요. 간식 겸 기념품 / Older than dinosaurs. Snack and souvenir."
+ },
+ {
+  "id": "dino:s2",
+  "pet": "dino",
+  "petName": "Dino",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☄",
+  "name": "운석 조각 / Meteor Fragment",
+  "desc": "운석 조심! 공룡을 위협했던 그 돌의 조각이에요 / Watch out! A piece of THE rock."
+ },
+ {
+  "id": "dino:c0",
+  "pet": "dino",
+  "petName": "Dino",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "동네 공원 / Neighborhood Park",
+  "message": "쿵쿵 산책했어! 비둘기가 내 먼 친척이래 / Stomp-stomp walk! Pigeons are my distant cousins.",
+  "mood": "day"
+ },
+ {
+  "id": "dino:c1",
+  "pet": "dino",
+  "petName": "Dino",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏛",
+  "place": "자연사 박물관 / Natural History Museum",
+  "message": "화석 친구들 만났어. 나 화석 아니야! 크앙! / Met my fossil friends. I'm NOT a fossil! Rawr!",
+  "mood": "indoor"
+ },
+ {
+  "id": "dino:c2",
+  "pet": "dino",
+  "petName": "Dino",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌋",
+  "place": "쥬라기 화산섬 / Jurassic Volcano Island",
+  "message": "6,600만 년 전 고향 다녀왔어! 크아앙! / Visited home, 66 million years ago! RAWR!",
+  "mood": "sunset"
+ },
+ {
+  "id": "seal:s0",
+  "pet": "seal",
+  "petName": "Seal",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏐",
+  "name": "코끝 균형 공 / Nose-Balance Ball",
+  "desc": "코 위에 올려도 안 떨어지는 연습용 공이에요 / A practice ball that stays put on a nose."
+ },
+ {
+  "id": "seal:s1",
+  "pet": "seal",
+  "petName": "Seal",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐟",
+  "name": "갓 잡은 고등어 / Fresh Mackerel",
+  "desc": "아우! 같이 먹으려고 한 마리 남겨 왔대요 / Arf! Saved one to share with you."
+ },
+ {
+  "id": "seal:s2",
+  "pet": "seal",
+  "petName": "Seal",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏆",
+  "name": "박수왕 트로피 / Clapping Champion Cup",
+  "desc": "바다에서 박수 제일 잘 친 물개에게 주는 상이에요 / Awarded to the ocean's best flipper-clapper."
+ },
+ {
+  "id": "seal:c0",
+  "pet": "seal",
+  "petName": "Seal",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪨",
+  "place": "선착장 바위 / Pier Rock",
+  "message": "바위 위에서 뒹굴뒹굴~ 햇볕 최고! 아우! / Rolling around on the rock~ Sun's great! Arf!",
+  "mood": "day"
+ },
+ {
+  "id": "seal:c1",
+  "pet": "seal",
+  "petName": "Seal",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌊",
+  "place": "먼 바다 파도 / Open-Sea Waves",
+  "message": "파도 타고 수영했어! 박수 짝짝 쳐 줘 / Swam with the waves! Give me a clap clap!",
+  "mood": "sea"
+ },
+ {
+  "id": "seal:c2",
+  "pet": "seal",
+  "petName": "Seal",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧊",
+  "place": "남극 빙산 / Antarctic Iceberg",
+  "message": "펭귄들 앞에서 공 묘기 했더니 기립박수! / Did ball tricks for penguins. Standing ovation!",
+  "mood": "snow"
+ }
+]

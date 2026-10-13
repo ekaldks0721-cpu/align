@@ -1,0 +1,629 @@
+[
+ {
+  "id": "frog:s0",
+  "pet": "frog",
+  "petName": "Frog",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌱",
+  "name": "동네 연못 연잎 / Pond Lily Pad",
+  "desc": "폴짝 뛰어 앉았던 연잎이야. 아직 축축해 / The pad I landed on. Still damp."
+ },
+ {
+  "id": "frog:s1",
+  "pet": "frog",
+  "petName": "Frog",
+  "tier": "far (먼 곳)",
+  "emojiHint": "☔",
+  "name": "장마철 개구리 우산 / Rainy Season Umbrella",
+  "desc": "비 오는 날이 좋지만 너는 젖으면 안 되니까 / I love rain, but you shouldn't get wet."
+ },
+ {
+  "id": "frog:s2",
+  "pet": "frog",
+  "petName": "Frog",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👑",
+  "name": "개구리 왕자의 왕관 / Frog Prince's Crown",
+  "desc": "뽀뽀하면 왕자가 된대. 나는 그냥 개구리할래 / A kiss turns you into a prince. I'll stay a frog."
+ },
+ {
+  "id": "frog:c0",
+  "pet": "frog",
+  "petName": "Frog",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌧️",
+  "place": "비 오는 놀이터 / Playground in the Rain",
+  "message": "개굴개굴! 웅덩이마다 다 뛰어 봤어. 완전 신나! / Ribbit! I jumped in every puddle. Best day ever!",
+  "mood": "day"
+ },
+ {
+  "id": "frog:c1",
+  "pet": "frog",
+  "petName": "Frog",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌿",
+  "place": "열대우림 늪 / Rainforest Swamp",
+  "message": "여기 파리가 엄청 커! 혀가 모자랄 지경이야 / The flies here are huge! My tongue isn't long enough.",
+  "mood": "forest"
+ },
+ {
+  "id": "frog:c2",
+  "pet": "frog",
+  "petName": "Frog",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎶",
+  "place": "달빛 개구리 대합창장 / Moonlit Frog Grand Chorus",
+  "message": "전 세계 개구리랑 밤 합창했어! 내가 솔로였어! / Sang the night chorus with every frog on Earth! I got the solo!",
+  "mood": "night"
+ },
+ {
+  "id": "squirrel:s0",
+  "pet": "squirrel",
+  "petName": "Squirrel",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌰",
+  "name": "반들반들 도토리 / Extra-Shiny Acorn",
+  "desc": "숨기려다 너무 예뻐서 너 주려고 가져왔어 / Too pretty to bury, so I brought it to you."
+ },
+ {
+  "id": "squirrel:s1",
+  "pet": "squirrel",
+  "petName": "Squirrel",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🗺️",
+  "name": "도토리 숨긴 곳 지도 / Acorn Hiding Spot Map",
+  "desc": "어디 숨겼더라? 그래서 지도를 샀어. 안 맞아 / Where'd I hide them? Bought a map. It's wrong."
+ },
+ {
+  "id": "squirrel:s2",
+  "pet": "squirrel",
+  "petName": "Squirrel",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌳",
+  "name": "세계수 황금 도토리 / World Tree Golden Acorn",
+  "desc": "세계에서 제일 큰 나무 꼭대기에서 땄어! / Picked from the top of the biggest tree in the world!"
+ },
+ {
+  "id": "squirrel:c0",
+  "pet": "squirrel",
+  "petName": "Squirrel",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌲",
+  "place": "아파트 단지 나무 / Apartment Complex Trees",
+  "message": "도토리 숨겨 놨어. 어디인지는… 어디 숨겼더라? / Hid some acorns. Where? …Where did I hide them?",
+  "mood": "day"
+ },
+ {
+  "id": "squirrel:c1",
+  "pet": "squirrel",
+  "petName": "Squirrel",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍁",
+  "place": "가을 단풍 산 / Autumn Maple Mountain",
+  "message": "도토리가 쏟아져! 볼이 빵빵해서 글씨가 삐뚤어 / Acorns raining down! Cheeks so full my writing's wobbly.",
+  "mood": "sunset"
+ },
+ {
+  "id": "squirrel:c2",
+  "pet": "squirrel",
+  "petName": "Squirrel",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌳",
+  "place": "하늘까지 닿은 세계수 / The Sky-High World Tree",
+  "message": "나무 타기 선수답게 꼭대기 찍었어! 구름이 발밑에 / Tree-climbing champ reached the top! Clouds at my feet.",
+  "mood": "day"
+ },
+ {
+  "id": "yongbok:s0",
+  "pet": "yongbok",
+  "petName": "Yongbok",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍫",
+  "name": "갓 구운 브라우니 / Fresh Brownies",
+  "desc": "방금 구웠어! 따끈할 때 맛있게 먹어~ / Just baked! Eat them while they're warm~"
+ },
+ {
+  "id": "yongbok:s1",
+  "pet": "yongbok",
+  "petName": "Yongbok",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐨",
+  "name": "코알라 인형 / Koala Plushie",
+  "desc": "호주에서 데려왔어! G'day mate~ 꼭 안아 줘 / Brought it from Australia! G'day mate~ give it a hug."
+ },
+ {
+  "id": "yongbok:s2",
+  "pet": "yongbok",
+  "petName": "Yongbok",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💌",
+  "name": "Stay에게 쓴 편지 / Letter to My Stay",
+  "desc": "세상에서 제일 소중한 Stay에게. 행복하자! / To the most precious Stay in the world. Be happy!"
+ },
+ {
+  "id": "yongbok:c0",
+  "pet": "yongbok",
+  "petName": "Yongbok",
+  "tier": "nearby (동네)",
+  "emojiHint": "🦆",
+  "place": "동네 공원 연못 / Park Pond",
+  "message": "Look! 오리 가족 봤어! 작은 동물 최고야~ / Look! A duck family! Little critters are the best~",
+  "mood": "day"
+ },
+ {
+  "id": "yongbok:c1",
+  "pet": "yongbok",
+  "petName": "Yongbok",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌊",
+  "place": "시드니 본다이 해변 / Bondi Beach, Sydney",
+  "message": "G'day mate! 고향 바다야. 물 꼭 마셔, 건강해야 돼! / G'day mate! Home sea. Drink water, stay healthy!",
+  "mood": "sea"
+ },
+ {
+  "id": "yongbok:c2",
+  "pet": "yongbok",
+  "petName": "Yongbok",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎆",
+  "place": "월드투어 마지막 무대 / World Tour Finale",
+  "message": "Stay 함성 다 들었어. 고마워, 행복하자! Yeah~ / I heard every Stay cheer. Thank you, be happy! Yeah~",
+  "mood": "night"
+ },
+ {
+  "id": "finn:s0",
+  "pet": "finn",
+  "petName": "Finn",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥞",
+  "name": "베이컨 팬케이크 / Bacon Pancake",
+  "desc": "제이크가 굽던 걸 한 장 몰래 챙겨 왔어요. 아직 따끈해요! / Swiped one off Jake's griddle. Still warm!"
+ },
+ {
+  "id": "finn:s1",
+  "pet": "finn",
+  "petName": "Finn",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎒",
+  "name": "초록 모험 가방 / Green Adventure Pack",
+  "desc": "던전에서 주운 보물이 잔뜩 든 핀의 가방이에요 / Finn's backpack, stuffed with dungeon loot."
+ },
+ {
+  "id": "finn:s2",
+  "pet": "finn",
+  "petName": "Finn",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌿",
+  "name": "풀의 검 / Grass Sword",
+  "desc": "저주받은 풀의 검! 손에서 안 떨어지는 게 함정이에요 / A cursed grass sword. Catch: it won't let go of your hand."
+ },
+ {
+  "id": "finn:c0",
+  "pet": "finn",
+  "petName": "Finn",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "트리하우스 / The Tree Fort",
+  "message": "제이크랑 트리하우스 지붕에서 별 봤어! 완전 수학적이야! / Stargazing on the Tree Fort roof with Jake. Mathematical!",
+  "mood": "forest"
+ },
+ {
+  "id": "finn:c1",
+  "pet": "finn",
+  "petName": "Finn",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍬",
+  "place": "캔디 왕국 / Candy Kingdom",
+  "message": "공주님 구해 드렸어! 이번 퀘스트는 진짜 대수적이었다고! / Rescued a princess! This quest was totally algebraic!",
+  "mood": "candy"
+ },
+ {
+  "id": "finn:c2",
+  "pet": "finn",
+  "petName": "Finn",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌌",
+  "place": "우주 감옥 시타델 / The Citadel",
+  "message": "멀티버스 끝까지 왔어. 모험의 시간은 끝이 없어! / Made it to the edge of the multiverse. Adventure time never ends!",
+  "mood": "space"
+ },
+ {
+  "id": "kuromi:s0",
+  "pet": "kuromi",
+  "petName": "Kuromi",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧅",
+  "name": "락교 한 병 / Jar of Rakkyo",
+  "desc": "쿠로미 님 최애 간식이다. 너한텐 안 줘!… 하나만 줄게 / Kuromi's favorite snack. Not sharing! …Okay, one."
+ },
+ {
+  "id": "kuromi:s1",
+  "pet": "kuromi",
+  "petName": "Kuromi",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📓",
+  "name": "자물쇠 일기장 / Locked Diary",
+  "desc": "여행 중 쓴 일기장. 마이멜로디 얘기가 반이야 / Trip diary. Half of it is about My Melody."
+ },
+ {
+  "id": "kuromi:s2",
+  "pet": "kuromi",
+  "petName": "Kuromi",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💀",
+  "name": "분홍 해골 두건 / Pink Skull Hood",
+  "desc": "쿠로미 님의 상징! 특별히 보여 주는 거니까 감사해 / Kuromi's trademark! Be grateful she's showing you."
+ },
+ {
+  "id": "kuromi:c0",
+  "pet": "kuromi",
+  "petName": "Kuromi",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏠",
+  "place": "쿠로미 아지트 / Kuromi's Hideout",
+  "message": "바쿠가 또 낮잠 잔다. 일기장에 적어 둘 거야 / Baku's napping again. Writing that in my diary.",
+  "mood": "indoor"
+ },
+ {
+  "id": "kuromi:c1",
+  "pet": "kuromi",
+  "petName": "Kuromi",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍓",
+  "place": "마이멜로디네 앞 / Outside My Melody's",
+  "message": "라이벌네 앞에서 장난 계획 중. 흥, 기대해! / Plotting a prank outside my rival's house. Hmph, just wait!",
+  "mood": "forest"
+ },
+ {
+  "id": "kuromi:c2",
+  "pet": "kuromi",
+  "petName": "Kuromi",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏯",
+  "place": "마리랜드 정복 성 / Conquered Mariland Castle",
+  "message": "드디어 마리랜드 정복! …근데 성을 핑크로 칠했어 / Mariland is MINE! …I painted the castle pink, though.",
+  "mood": "night"
+ },
+ {
+  "id": "andrew:s0",
+  "pet": "andrew",
+  "petName": "Spider-Man (2nd gen)",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛹",
+  "name": "낡은 스케이트보드 / Beat-up skateboard",
+  "desc": "옥상에서 옥상으로 갈 때 타던 거예요 / My ride for rooftop-to-rooftop commutes."
+ },
+ {
+  "id": "andrew:s1",
+  "pet": "andrew",
+  "petName": "Spider-Man (2nd gen)",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🔧",
+  "name": "수제 웹슈터 / Homemade web-shooter",
+  "desc": "제가 직접 만들었어요. 카트리지는 따로 챙겨요 / Built it myself. Cartridges sold separately."
+ },
+ {
+  "id": "andrew:s2",
+  "pet": "andrew",
+  "petName": "Spider-Man (2nd gen)",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎓",
+  "name": "졸업식 학사모 / Graduation cap",
+  "desc": "희망을 잃지 말자던 졸업 연설이 생각나요 / Reminds me of that speech about never losing hope."
+ },
+ {
+  "id": "andrew:c0",
+  "pet": "andrew",
+  "petName": "Spider-Man (2nd gen)",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏫",
+  "place": "미드타운 과학고 복도 / School hallway",
+  "message": "사물함 위에 거꾸로 붙어서 쓰는 중. 농담 아님 / Writing this stuck upside down on a locker. Not a joke.",
+  "mood": "indoor"
+ },
+ {
+  "id": "andrew:c1",
+  "pet": "andrew",
+  "petName": "Spider-Man (2nd gen)",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌉",
+  "place": "브루클린 다리 / Brooklyn Bridge",
+  "message": "다리 위로 해가 져. 셀카 찍다 거미줄에 엉켰어 / Sunset on the bridge. Tried a selfie, got tangled in web.",
+  "mood": "sunset"
+ },
+ {
+  "id": "andrew:c2",
+  "pet": "andrew",
+  "petName": "Spider-Man (2nd gen)",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🗽",
+  "place": "자유의 여신상 꼭대기 / Top of Lady Liberty",
+  "message": "떨어지는 MJ를 잡았어. 이번엔 해냈어! / Caught MJ as she fell. This time, I made it!",
+  "mood": "night"
+ },
+ {
+  "id": "strange:s0",
+  "pet": "strange",
+  "petName": "Doctor Strange",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍵",
+  "name": "카마르 타지 차 / Kamar-Taj tea",
+  "desc": "웡이 끓여 준 차야. 와이파이 비번도 받았지 / Wong brewed it. Also got the Wi-Fi password."
+ },
+ {
+  "id": "strange:s1",
+  "pet": "strange",
+  "petName": "Doctor Strange",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📖",
+  "name": "금지된 마법서 / Forbidden spellbook",
+  "desc": "웡 몰래 빌린 책이야. 연체는 비밀로 해 줘 / Borrowed without Wong knowing. Don't mention late fees."
+ },
+ {
+  "id": "strange:s2",
+  "pet": "strange",
+  "petName": "Doctor Strange",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💚",
+  "name": "아가모토의 눈 / Eye of Agamotto",
+  "desc": "1,400만 605개의 미래를 본 그 눈이야 / The eye that saw 14,000,605 futures."
+ },
+ {
+  "id": "strange:c0",
+  "pet": "strange",
+  "petName": "Doctor Strange",
+  "tier": "nearby (동네)",
+  "emojiHint": "🚪",
+  "place": "블리커가 177A / 177A Bleecker Street",
+  "message": "망토가 또 혼자 문을 열어 줬어. 손님인 줄 / The cloak opened the door by itself again. Thought it was a guest.",
+  "mood": "indoor"
+ },
+ {
+  "id": "strange:c1",
+  "pet": "strange",
+  "petName": "Doctor Strange",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🗻",
+  "place": "카트만두 수련터 / Kathmandu training grounds",
+  "message": "손이 떨려도 포털은 열려. 오늘 수련 끝 / Hands may shake, portals still open. Training done.",
+  "mood": "snow"
+ },
+ {
+  "id": "strange:c2",
+  "pet": "strange",
+  "petName": "Doctor Strange",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌀",
+  "place": "어둠의 차원 / Dark Dimension",
+  "message": "도르마무, 거래하러 왔다. 지금 열 번째야 / Dormammu, I've come to bargain. Attempt number ten.",
+  "mood": "space"
+ },
+ {
+  "id": "momonga:s0",
+  "pet": "momonga",
+  "petName": "Momonga",
+  "tier": "nearby (동네)",
+  "emojiHint": "💖",
+  "name": "칭찬 스티커 / Praise Sticker",
+  "desc": "칭찬 스티커야! 나한테 더 붙여 줘! / A gold star sticker! Put more on ME!"
+ },
+ {
+  "id": "momonga:s1",
+  "pet": "momonga",
+  "petName": "Momonga",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍰",
+  "name": "남의 케이크 / Someone's Cake",
+  "desc": "이거 내 거야! 원래부터 내 거였어! 진짜야! / It's MINE! It was always mine! Really!"
+ },
+ {
+  "id": "momonga:s2",
+  "pet": "momonga",
+  "petName": "Momonga",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👑",
+  "name": "귀여움 대상 왕관 / Cutest-Ever Crown",
+  "desc": "제일 귀엽다고 받은 왕관! 얼른 칭찬해 줘! / Won for being the cutest! Praise me, quick!"
+ },
+ {
+  "id": "momonga:c0",
+  "pet": "momonga",
+  "petName": "Momonga",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "나무 위 활공장 / Treetop Glide Spot",
+  "message": "나무에서 날아 봤어! 봤어? 봤지? 칭찬해 줘! / I glided from a tree! Did you see? Did you? Praise me!",
+  "mood": "forest"
+ },
+ {
+  "id": "momonga:c1",
+  "pet": "momonga",
+  "petName": "Momonga",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📸",
+  "place": "포토존 거리 / Photo Spot Street",
+  "message": "사진 백 장 찍었어. 전부 나만 나왔어. 귀엽지? / Took 100 photos. All of me. Cute, right?",
+  "mood": "city"
+ },
+ {
+  "id": "momonga:c2",
+  "pet": "momonga",
+  "petName": "Momonga",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌟",
+  "place": "무대 한가운데 / Center Stage",
+  "message": "모두가 나만 봐! 이게 바로 관심이야! 더 봐 줘! / Everyone's looking at me! THIS is attention! Look more!",
+  "mood": "night"
+ },
+ {
+  "id": "maggie:s0",
+  "pet": "maggie",
+  "petName": "Maggie Simpson",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍼",
+  "name": "예비용 쪽쪽이 / Spare Pacifier",
+  "desc": "*쪽쪽* …엄마 몰래 챙긴 예비용이에요 / *suck suck* …a backup, snuck past Mom."
+ },
+ {
+  "id": "maggie:s1",
+  "pet": "maggie",
+  "petName": "Maggie Simpson",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎀",
+  "name": "새 파란 리본 / New Blue Bow",
+  "desc": "…! 놀이공원에서 받은 새 리본. 까르르 / …! A new bow from the amusement park. Giggle."
+ },
+ {
+  "id": "maggie:s2",
+  "pet": "maggie",
+  "petName": "Maggie Simpson",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📼",
+  "name": "첫마디 녹음 테이프 / My First Word, on Tape",
+  "desc": "아무도 못 들은 내 첫마디가 담겼어요. *쪽* / The first word nobody heard. *suck*"
+ },
+ {
+  "id": "maggie:c0",
+  "pet": "maggie",
+  "petName": "Maggie Simpson",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧸",
+  "place": "에인 랜드 어린이집 / Ayn Rand School for Tots",
+  "message": "*쪽쪽* 아기들 다 내 편이에요. …! / *suck suck* All the babies are on my side. …!",
+  "mood": "indoor"
+ },
+ {
+  "id": "maggie:c1",
+  "pet": "maggie",
+  "petName": "Maggie Simpson",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐻",
+  "place": "스프링필드 동물원 / Springfield Zoo",
+  "message": "곰이랑 눈싸움 이김. *쪽쪽쪽* 까르르 / Won a staring contest with a bear. *suck suck* Giggle.",
+  "mood": "forest"
+ },
+ {
+  "id": "maggie:c2",
+  "pet": "maggie",
+  "petName": "Maggie Simpson",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌙",
+  "place": "달님 침대 / Moon Crib",
+  "message": "zZ… 달에서 낮잠. 쪽쪽이는 지구에 두고 옴. …! / zZ… napping on the Moon. Left the pacifier on Earth. …!",
+  "mood": "space"
+ },
+ {
+  "id": "ankylo:s0",
+  "pet": "ankylo",
+  "petName": "Ankylosaurus",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔨",
+  "name": "꼬리 곤봉 커버 / Tail-Club Cozy",
+  "desc": "꼬리 곤봉에 씌우는 폭신한 커버예요. 실내용이래요 / A soft cover for its tail club. For indoor use."
+ },
+ {
+  "id": "ankylo:s1",
+  "pet": "ankylo",
+  "petName": "Ankylosaurus",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐢",
+  "name": "거북이 명예 회원증 / Honorary Turtle Card",
+  "desc": "등껍질이 멋지다고 거북이들이 만들어 줬대요 / Turtles gave it one for its great armor."
+ },
+ {
+  "id": "ankylo:s2",
+  "pet": "ankylo",
+  "petName": "Ankylosaurus",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🛡",
+  "name": "백악기 철갑 훈장 / Cretaceous Armor Medal",
+  "desc": "티라노도 못 깨문 전설의 갑옷 공룡 훈장이에요 / For the armor even T. rex couldn't bite."
+ },
+ {
+  "id": "ankylo:c0",
+  "pet": "ankylo",
+  "petName": "Ankylosaurus",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛣",
+  "place": "골목길 / Little Side Street",
+  "message": "천천히 걸었어. 갑옷이 무거워서. 그래도 튼튼해 / Walked slowly. Heavy armor. But sturdy!",
+  "mood": "day"
+ },
+ {
+  "id": "ankylo:c1",
+  "pet": "ankylo",
+  "petName": "Ankylosaurus",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏰",
+  "place": "중세 갑옷 박물관 / Medieval Armor Museum",
+  "message": "기사 갑옷 봤는데 내 게 더 멋있어. 크앙! / Saw knight armor. Mine's cooler. Rawr!",
+  "mood": "indoor"
+ },
+ {
+  "id": "ankylo:c2",
+  "pet": "ankylo",
+  "petName": "Ankylosaurus",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☄",
+  "place": "운석 낙하 지점 / Meteor Impact Site",
+  "message": "운석 맞았는데 갑옷 덕에 멀쩡해! 쿵! / Got hit by a meteor. Armor held! Stomp!",
+  "mood": "desert"
+ },
+ {
+  "id": "bokgil:s0",
+  "pet": "bokgil",
+  "petName": "Bokgil",
+  "tier": "nearby (동네)",
+  "emojiHint": "👅",
+  "name": "오른쪽 혀 사진 / Tongue-Right Portrait",
+  "desc": "혀는 원래 이래요. 오른쪽으로 쏙 나온 증명사진 / Tongue's always like this. Out to the right."
+ },
+ {
+  "id": "bokgil:s1",
+  "pet": "bokgil",
+  "petName": "Bokgil",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧊",
+  "name": "시원한 대리석 타일 / Cool Marble Tile",
+  "desc": "다리 쫙 펴고 납작 엎드리기 딱 좋은 바닥이래요 / Perfect for a full flat splooting session."
+ },
+ {
+  "id": "bokgil:s2",
+  "pet": "bokgil",
+  "petName": "Bokgil",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👻",
+  "name": "짖었던 그 무언가 / The Thing It Barked At",
+  "desc": "멍! 드디어 잡았대요. 빈 병이에요. 아무것도 없어요 / Woof! Finally caught it. It's an empty jar."
+ },
+ {
+  "id": "bokgil:c0",
+  "pet": "bokgil",
+  "petName": "Bokgil",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛤",
+  "place": "조용한 산책길 / Quiet Path",
+  "message": "조용한 길로 걸었어. 멍! …바람 소리였어 / Took the quiet path. Woof! …Just the wind.",
+  "mood": "day"
+ },
+ {
+  "id": "bokgil:c1",
+  "pet": "bokgil",
+  "petName": "Bokgil",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏖",
+  "place": "한적한 해변 / Empty Beach",
+  "message": "시원한 모래에 다리 쫙 펴고 엎드렸어. (혀 쏙) / Splooted on cool sand, legs out. (tongue out)",
+  "mood": "sea"
+ },
+ {
+  "id": "bokgil:c2",
+  "pet": "bokgil",
+  "petName": "Bokgil",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏔",
+  "place": "강아지 없는 설산 / Dogless Snowy Peak",
+  "message": "아무도 없어서 좋아. 그래도 멍멍! (허공에) / No one here. Perfect. Still: woof! (at nothing)",
+  "mood": "snow"
+ }
+]

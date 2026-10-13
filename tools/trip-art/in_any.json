@@ -1,0 +1,362 @@
+[
+ {
+  "id": "any:s0-0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍂",
+  "name": "바스락 낙엽 / Crunchy Leaf",
+  "desc": "제일 바스락거리는 걸로 골라 왔대요 / Picked the crunchiest one"
+ },
+ {
+  "id": "any:s0-1",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎫",
+  "name": "버스 정류장 표 / Bus Ticket",
+  "desc": "버스는 안 탔지만 기념으로 챙겼대요 / Didn't ride the bus, kept the ticket anyway"
+ },
+ {
+  "id": "any:s0-2",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍬",
+  "name": "편의점 사탕 / Corner Store Candy",
+  "desc": "계산대 옆에서 손 흔들어서 받았대요 / Waved at the counter and got one"
+ },
+ {
+  "id": "any:s0-3",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪨",
+  "name": "세상에서 제일 동그란 돌 / Roundest Pebble Ever",
+  "desc": "동네에서 제일 동그란 돌이래요 / The roundest stone in the neighborhood"
+ },
+ {
+  "id": "any:s0-4",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎈",
+  "name": "누가 놓친 풍선 / Runaway Balloon",
+  "desc": "하늘로 가기 직전에 잡아 왔어요 / Caught it just before it floated away"
+ },
+ {
+  "id": "any:s0-5",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌼",
+  "name": "민들레 홀씨 / Dandelion Puff",
+  "desc": "소원 빌고 후 불면 돼요 / Make a wish and blow"
+ },
+ {
+  "id": "any:s0-6",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧦",
+  "name": "짝 잃은 양말 / Lonely Sock",
+  "desc": "어디서 왔는지는 아무도 몰라요 / Nobody knows where it came from"
+ },
+ {
+  "id": "any:s0-7",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍞",
+  "name": "빵집 시식빵 / Bakery Sample",
+  "desc": "한 조각만 먹고 나머지는 너 주려고 / Ate one bite, saved the rest for you"
+ },
+ {
+  "id": "any:s1-0",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐚",
+  "name": "소라 껍데기 / Conch Shell",
+  "desc": "귀에 대면 파도 소리가 나요 / Hold it to your ear to hear the waves"
+ },
+ {
+  "id": "any:s1-1",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🗝️",
+  "name": "낡은 열쇠 / Old Key",
+  "desc": "뭘 여는 열쇠인지 몰라서 더 좋대요 / Nobody knows what it opens, which makes it better"
+ },
+ {
+  "id": "any:s1-2",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧲",
+  "name": "여행지 자석 / Travel Magnet",
+  "desc": "냉장고에 붙이면 여행 온 기분 / Stick it on the fridge and feel like traveling"
+ },
+ {
+  "id": "any:s1-3",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍯",
+  "name": "시골 꿀 한 병 / Jar of Country Honey",
+  "desc": "시장 할머니가 덤으로 주셨대요 / A gift from a grandma at the market"
+ },
+ {
+  "id": "any:s1-4",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📷",
+  "name": "흔들린 즉석 사진 / Blurry Instant Photo",
+  "desc": "흔들렸지만 표정은 최고예요 / Blurry, but the face is perfect"
+ },
+ {
+  "id": "any:s1-5",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧭",
+  "name": "작은 나침반 / Tiny Compass",
+  "desc": "늘 네 쪽을 가리킨대요 / It always points to you"
+ },
+ {
+  "id": "any:s1-6",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎐",
+  "name": "바람 풍경 / Wind Chime",
+  "desc": "바람이 불면 딸랑, 생각나라고 / Ding when the wind blows, so you remember"
+ },
+ {
+  "id": "any:s1-7",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍡",
+  "name": "휴게소 경단 / Rest Stop Dumplings",
+  "desc": "휴게소는 여행의 꽃이래요 / Rest stops are the best part of a trip"
+ },
+ {
+  "id": "any:s2-0",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌠",
+  "name": "별똥별 조각 / Shooting Star Shard",
+  "desc": "떨어지는 걸 주웠대요. 아직 따뜻해요 / Caught it falling. Still warm"
+ },
+ {
+  "id": "any:s2-1",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌈",
+  "name": "무지개 끝 동전 / Coin from the Rainbow's End",
+  "desc": "무지개 끝에 진짜 있었대요 / It really was at the end of the rainbow"
+ },
+ {
+  "id": "any:s2-2",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦶",
+  "name": "공룡 발자국 화석 / Dinosaur Footprint Fossil",
+  "desc": "1억 년 전 누군가의 산책 흔적 / Someone's walk, 100 million years ago"
+ },
+ {
+  "id": "any:s2-3",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧊",
+  "name": "남극 얼음 한 조각 / Antarctic Ice Chip",
+  "desc": "녹기 전에 빨리 보세요 / Look quick before it melts"
+ },
+ {
+  "id": "any:s2-4",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🪐",
+  "name": "토성 고리 조각 / Piece of Saturn's Ring",
+  "desc": "반지로 끼면 딱 맞대요 / Fits perfectly as a ring"
+ },
+ {
+  "id": "any:s2-5",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐉",
+  "name": "용의 비늘 / Dragon Scale",
+  "desc": "용이 허물 벗다 떨어뜨린 거래요 / A dragon shed it"
+ },
+ {
+  "id": "any:s2-6",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏺",
+  "name": "사막의 유물 / Desert Relic",
+  "desc": "피라미드 옆에서 반짝여서 주웠대요 / It sparkled next to a pyramid"
+ },
+ {
+  "id": "any:s2-7",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔮",
+  "name": "수정 구슬 / Crystal Ball",
+  "desc": "들여다보면 네가 해내는 게 보인대요 / Look inside: it shows you succeeding"
+ },
+ {
+  "id": "any:c0-0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏪",
+  "place": "편의점 앞 / Outside the Corner Store",
+  "message": "편의점 앞에서 고양이랑 눈 마주쳤어. 인사함 / Locked eyes with a cat outside the store. We said hi",
+  "mood": "city"
+ },
+ {
+  "id": "any:c0-1",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "놀이터 그네 / Playground Swings",
+  "message": "그네 타다가 하늘까지 갈 뻔했어 / Swung so high I almost touched the sky",
+  "mood": "day"
+ },
+ {
+  "id": "any:c0-2",
+  "tier": "nearby (동네)",
+  "emojiHint": "☔",
+  "place": "비 오는 골목 / Rainy Alley",
+  "message": "웅덩이 다 밟고 왔어. 시원해! / Stomped every puddle. So refreshing!",
+  "mood": "city"
+ },
+ {
+  "id": "any:c0-3",
+  "tier": "nearby (동네)",
+  "emojiHint": "📚",
+  "place": "동네 도서관 / Local Library",
+  "message": "조용히 하랬는데 책 넘기는 소리가 좋았어 / Had to be quiet, but I loved the page-turning sounds",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c0-4",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌇",
+  "place": "노을 지는 옥상 / Rooftop at Sunset",
+  "message": "노을이 네 볼처럼 발그레해 / The sunset is as rosy as your cheeks",
+  "mood": "sunset"
+ },
+ {
+  "id": "any:c0-5",
+  "tier": "nearby (동네)",
+  "emojiHint": "🚌",
+  "place": "마을버스 종점 / End of the Bus Line",
+  "message": "종점까지 갔다가 돌아왔어. 일주 성공 / Rode to the last stop and back. Grand tour complete",
+  "mood": "day"
+ },
+ {
+  "id": "any:c0-6",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍦",
+  "place": "아이스크림 가게 / Ice Cream Shop",
+  "message": "맛 고르다가 탐험 시간 다 썼어 / Spent the whole trip picking a flavor",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c0-7",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌙",
+  "place": "밤 산책길 / Night Walk",
+  "message": "가로등 세 개 지나니까 별이 보였어 / Three streetlights later, I saw the stars",
+  "mood": "night"
+ },
+ {
+  "id": "any:c1-0",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏖️",
+  "place": "여름 바닷가 / Summer Beach",
+  "message": "모래성 지었는데 파도가 가져갔어. 괜찮아 / Built a sandcastle, the waves took it. It's okay",
+  "mood": "sea"
+ },
+ {
+  "id": "any:c1-1",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏔️",
+  "place": "구름 위 산 / Mountain Above the Clouds",
+  "message": "구름 위라서 발밑이 폭신해 보여 / Above the clouds, the ground looks fluffy",
+  "mood": "snow"
+ },
+ {
+  "id": "any:c1-2",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🚂",
+  "place": "기차 창가 / Train Window Seat",
+  "message": "창밖이 계속 바뀌어. 너도 같이 봤으면 / The view keeps changing. Wish you could see it",
+  "mood": "day"
+ },
+ {
+  "id": "any:c1-3",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏯",
+  "place": "오래된 성 / Old Castle",
+  "message": "성 꼭대기에서 손 흔들었어. 보였어? / Waved from the top of the castle. Did you see?",
+  "mood": "sunset"
+ },
+ {
+  "id": "any:c1-4",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌻",
+  "place": "해바라기 밭 / Sunflower Field",
+  "message": "해바라기들이 다 나를 쳐다봐. 인기 많아 / All the sunflowers are looking at me. I'm popular",
+  "mood": "day"
+ },
+ {
+  "id": "any:c1-5",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎡",
+  "place": "바닷가 관람차 / Seaside Ferris Wheel",
+  "message": "꼭대기에서 소원 빌었어. 네 거로 / Made a wish at the top. For you",
+  "mood": "sunset"
+ },
+ {
+  "id": "any:c1-6",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍢",
+  "place": "야시장 / Night Market",
+  "message": "냄새만 맡아도 배불러… 아니 배고파 / Just the smell fills me up… no, makes me hungry",
+  "mood": "night"
+ },
+ {
+  "id": "any:c1-7",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🔥",
+  "place": "깊은 숲 캠핑 / Camping Deep in the Woods",
+  "message": "마시멜로 구웠어. 반은 태웠어 / Roasted marshmallows. Burned half",
+  "mood": "forest"
+ },
+ {
+  "id": "any:c2-0",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌌",
+  "place": "오로라 마을 / Aurora Village",
+  "message": "하늘이 춤춰. 사진으로는 안 담겨 / The sky is dancing. Photos can't capture it",
+  "mood": "night"
+ },
+ {
+  "id": "any:c2-1",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐋",
+  "place": "고래가 지나는 바다 / Where the Whales Pass",
+  "message": "고래가 노래를 불러 줬어. 엄청 커! / A whale sang to me. It's huge!",
+  "mood": "underwater"
+ },
+ {
+  "id": "any:c2-2",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌋",
+  "place": "불의 섬 / Island of Fire",
+  "message": "화산 옆이라 따뜻해. 너무 따뜻해 / Warm next to the volcano. Too warm",
+  "mood": "sunset"
+ },
+ {
+  "id": "any:c2-3",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏜️",
+  "place": "별이 쏟아지는 사막 / Desert of Falling Stars",
+  "message": "모래에 누워서 별을 셌어. 다 못 셌어 / Lay on the sand counting stars. Couldn't finish",
+  "mood": "desert"
+ },
+ {
+  "id": "any:c2-4",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🚀",
+  "place": "달 기지 / Moon Base",
+  "message": "달에서 보니까 지구가 동글동글 귀여워 / From the moon, Earth looks round and cute",
+  "mood": "space"
+ },
+ {
+  "id": "any:c2-5",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🍭",
+  "place": "구름 과자 나라 / Cotton Candy Cloudland",
+  "message": "구름이 솜사탕 맛이야. 진짜야 / The clouds taste like cotton candy. For real",
+  "mood": "candy"
+ },
+ {
+  "id": "any:c2-6",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🗼",
+  "place": "반짝이는 대도시 / Glittering Metropolis",
+  "message": "건물이 하늘까지 닿아. 길 잃을 뻔 / The buildings touch the sky. Almost got lost",
+  "mood": "city"
+ },
+ {
+  "id": "any:c2-7",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐧",
+  "place": "남극 펭귄 마을 / Antarctic Penguin Town",
+  "message": "펭귄들이랑 줄 서서 걸었어. 뒤뚱뒤뚱 / Walked in line with the penguins. Waddle waddle",
+  "mood": "snow"
+ }
+]

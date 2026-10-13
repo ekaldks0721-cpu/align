@@ -1,0 +1,629 @@
+[
+ {
+  "id": "bear:s0",
+  "pet": "bear",
+  "petName": "Bear",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍯",
+  "name": "편의점 꿀 스틱 / Convenience Store Honey Stick",
+  "desc": "꿀 냄새 따라가다 보니 편의점이었어, 곰곰… / Followed the honey smell. It was a corner store."
+ },
+ {
+  "id": "bear:s1",
+  "pet": "bear",
+  "petName": "Bear",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐟",
+  "name": "강에서 잡은 연어 / River-Caught Salmon",
+  "desc": "폭포에서 입 벌리고 있었더니 들어왔어 / Just held my mouth open at the falls. It jumped in."
+ },
+ {
+  "id": "bear:s2",
+  "pet": "bear",
+  "petName": "Bear",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏺",
+  "name": "끝없는 꿀단지 / The Bottomless Honey Pot",
+  "desc": "아무리 먹어도 줄지 않는 전설의 꿀단지야 / A legendary pot that never runs out."
+ },
+ {
+  "id": "bear:c0",
+  "pet": "bear",
+  "petName": "Bear",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐝",
+  "place": "뒷산 벌집 나무 / The Beehive Tree Up the Hill",
+  "message": "꿀 냄새 난다… 벌한테 쫓겼지만 맛은 봤어 / Smelled honey… got chased by bees, but I got a taste.",
+  "mood": "forest"
+ },
+ {
+  "id": "bear:c1",
+  "pet": "bear",
+  "petName": "Bear",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏞️",
+  "place": "연어 폭포 계곡 / Salmon Falls Valley",
+  "message": "연어 잡으러 왔어! 너 줄 것도 한 마리 잡을게 / Came to catch salmon! I'll grab one for you too.",
+  "mood": "forest"
+ },
+ {
+  "id": "bear:c2",
+  "pet": "bear",
+  "petName": "Bear",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "❄️",
+  "place": "전설의 겨울잠 동굴 / Legendary Hibernation Cave",
+  "message": "여기서 겨울잠 자면 꿀 꿈만 꾼대… 쿨쿨… 꼭 안아 줄게 / Sleep here and you only dream of honey… zzz… hugs.",
+  "mood": "snow"
+ },
+ {
+  "id": "owl:s0",
+  "pet": "owl",
+  "petName": "Owl",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔖",
+  "name": "도서관 책갈피 / Library Bookmark",
+  "desc": "밤샘 공부할 때 쓰라고 가져왔어, 부엉 / For your all-nighters. Hoo."
+ },
+ {
+  "id": "owl:s1",
+  "pet": "owl",
+  "petName": "Owl",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📜",
+  "name": "고대 도서관 두루마리 / Ancient Library Scroll",
+  "desc": "지혜는 책에서 나와. 아직 반만 읽었어 / Wisdom comes from books. I've read half."
+ },
+ {
+  "id": "owl:s2",
+  "pet": "owl",
+  "petName": "Owl",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦉",
+  "name": "지혜의 여신의 깃펜 / Quill of the Wisdom Goddess",
+  "desc": "모든 시험 답을 아는 깃펜이래. 쓰는 건 너의 몫! / It knows every exam answer. The writing's on you!"
+ },
+ {
+  "id": "owl:c0",
+  "pet": "owl",
+  "petName": "Owl",
+  "tier": "nearby (동네)",
+  "emojiHint": "📚",
+  "place": "밤의 동네 도서관 / Library After Hours",
+  "message": "부엉부엉. 밤에 몰래 들어와서 책 세 권 읽었어 / Hoo hoo. Snuck in at night and read three books.",
+  "mood": "night"
+ },
+ {
+  "id": "owl:c1",
+  "pet": "owl",
+  "petName": "Owl",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏛️",
+  "place": "오래된 대학 시계탑 / Old University Clock Tower",
+  "message": "시계탑 위에서 목을 270도 돌려 캠퍼스를 봤어 / Turned my head 270° to see the whole campus.",
+  "mood": "night"
+ },
+ {
+  "id": "owl:c2",
+  "pet": "owl",
+  "petName": "Owl",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌌",
+  "place": "별자리 천문대 / The Constellation Observatory",
+  "message": "모든 별 이름을 외웠어. 낮엔 졸려서 다 까먹을 거야 / Memorized every star's name. Will forget by morning nap.",
+  "mood": "space"
+ },
+ {
+  "id": "derek:s0",
+  "pet": "derek",
+  "petName": "Derek Shepherd",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎣",
+  "name": "트레일러 낚싯대 / Trailer Fishing Rod",
+  "desc": "트레일러 앞 강에서 쓰던 거야. 머리 비법은 비밀 / Used it by the river near my trailer. Hair secrets stay secret."
+ },
+ {
+  "id": "derek:s1",
+  "pet": "derek",
+  "petName": "Derek Shepherd",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧢",
+  "name": "페리보트 모자 / Ferry Boat Cap",
+  "desc": "페리에서 샀어. 이 머리는 지켜 줘야 하니까 / Bought it on the ferry. This hair needs protecting."
+ },
+ {
+  "id": "derek:s2",
+  "pet": "derek",
+  "petName": "Derek Shepherd",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧠",
+  "name": "황금 뇌 모형 / Golden Brain Model",
+  "desc": "뇌 수술 천 번 기념이야. Beautiful day! / For my thousandth brain surgery. A beautiful day!"
+ },
+ {
+  "id": "derek:c0",
+  "pet": "derek",
+  "petName": "Derek Shepherd",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌲",
+  "place": "숲속 트레일러 / Trailer in the Woods",
+  "message": "트레일러에서 쉬는 중. 오늘도 사슴이랑 눈 맞춤 / Resting at the trailer. Locked eyes with a deer again.",
+  "mood": "forest"
+ },
+ {
+  "id": "derek:c1",
+  "pet": "derek",
+  "petName": "Derek Shepherd",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🦅",
+  "place": "워싱턴 D.C. / Washington, D.C.",
+  "message": "뇌 지도 프로젝트 하러 왔어. 맥드리미라고 부르지 마 / Here for the brain-mapping project. Don't call me McDreamy.",
+  "mood": "city"
+ },
+ {
+  "id": "derek:c2",
+  "pet": "derek",
+  "petName": "Derek Shepherd",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏡",
+  "place": "언덕 위 꿈의 집 / Dream House on the Hill",
+  "message": "촛불로 그렸던 그 집, 드디어 지었어. 뷰가 최고야 / The house I drew in candles? Finally built it. What a view.",
+  "mood": "sunset"
+ },
+ {
+  "id": "pb:s0",
+  "pet": "pb",
+  "petName": "Princess Bubblegum",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧪",
+  "name": "버블검 시약 비커 / Bubblegum Beaker",
+  "desc": "연구실 시약이 든 비커예요. 흔들면 안 돼요! / Fresh from the lab. Do not shake!"
+ },
+ {
+  "id": "pb:s1",
+  "pet": "pb",
+  "petName": "Princess Bubblegum",
+  "tier": "far (먼 곳)",
+  "emojiHint": "👑",
+  "name": "예비 왕관 / Travel Crown",
+  "desc": "공주님 여행용 왕관이에요. 과학적으로 반짝여요 / The princess's spare crown. Scientifically sparkly."
+ },
+ {
+  "id": "pb:s2",
+  "pet": "pb",
+  "petName": "Princess Bubblegum",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💗",
+  "name": "마더 검 조각 / Mother Gum Shard",
+  "desc": "캔디 왕국을 만든 태초의 껌 조각이에요. 소중히! / A piece of the primordial gum that made the Candy Kingdom."
+ },
+ {
+  "id": "pb:c0",
+  "pet": "pb",
+  "petName": "Princess Bubblegum",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔬",
+  "place": "버블검 연구실 / Bubblegum's Lab",
+  "message": "실험 중이니 방해 금지! 오늘 가설 세 개 검증했어 / Experiment in progress, do not disturb! Tested three hypotheses today.",
+  "mood": "indoor"
+ },
+ {
+  "id": "pb:c1",
+  "pet": "pb",
+  "petName": "Princess Bubblegum",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏰",
+  "place": "캔디 왕국 성 / Candy Castle",
+  "message": "왕국 회의 끝! 캔디 시민들 오늘도 무사해. 계획대로야 / Royal meeting done. Candy citizens all safe. As planned.",
+  "mood": "candy"
+ },
+ {
+  "id": "pb:c2",
+  "pet": "pb",
+  "petName": "Princess Bubblegum",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🚀",
+  "place": "우주 실험 정거장 / Orbital Science Lab",
+  "message": "무중력 실험 대성공! 과학이야! 데이터 보내 줄게 / Zero-G experiment: success! SCIENCE! Sending you the data.",
+  "mood": "space"
+ },
+ {
+  "id": "keroppi:s0",
+  "pet": "keroppi",
+  "petName": "Keroppi",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍃",
+  "name": "도넛 연못 연잎 / Donut Pond Lily Pad",
+  "desc": "도넛 연못에서 따 온 연잎이에요. 우산으로도 써요 / From Donut Pond. Doubles as an umbrella."
+ },
+ {
+  "id": "keroppi:s1",
+  "pet": "keroppi",
+  "petName": "Keroppi",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎤",
+  "name": "노래자랑 마이크 / Sing-Off Microphone",
+  "desc": "개구리 노래자랑 우승 상품이에요. 케로케로! / First prize at the frog sing-off. Kero kero!"
+ },
+ {
+  "id": "keroppi:s2",
+  "pet": "keroppi",
+  "petName": "Keroppi",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐚",
+  "name": "바다 끝 노래 소라 / Singing Seashell",
+  "desc": "바다 끝까지 헤엄쳐서 찾은 소라예요. 노래가 들려요 / Swam to the end of the sea for it. It hums songs."
+ },
+ {
+  "id": "keroppi:c0",
+  "pet": "keroppi",
+  "petName": "Keroppi",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍩",
+  "place": "도넛 연못 / Donut Pond",
+  "message": "연못 수영 열 바퀴 완주! 개굴, 하나도 안 힘들어 / Ten laps of the pond! Ribbit, not even tired.",
+  "mood": "day"
+ },
+ {
+  "id": "keroppi:c1",
+  "pet": "keroppi",
+  "petName": "Keroppi",
+  "tier": "far (먼 곳)",
+  "emojiHint": "☔",
+  "place": "장마 합창 대회 / Rainy Season Chorus",
+  "message": "비 오는 날 합창 대회! 내 목소리가 제일 컸어 케로케로 / Rainy-day choir contest! I was the loudest, kero kero!",
+  "mood": "forest"
+ },
+ {
+  "id": "keroppi:c2",
+  "pet": "keroppi",
+  "petName": "Keroppi",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐳",
+  "place": "고래 타고 대양 횡단 / Ocean by Whale",
+  "message": "고래 등에 타고 바다를 건넜어! 개구리 최초래! / Crossed the ocean on a whale! First frog ever!",
+  "mood": "sea"
+ },
+ {
+  "id": "spidey:s0",
+  "pet": "spidey",
+  "petName": "Spider-Man (3rd gen)",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥪",
+  "name": "델마 가게 샌드위치 / Delmar's sandwich",
+  "desc": "델마 아저씨네 거예요. 고양이 머피도 인사해요 / Straight from Mr. Delmar's. Murph the cat says hi."
+ },
+ {
+  "id": "spidey:s1",
+  "pet": "spidey",
+  "petName": "Spider-Man (3rd gen)",
+  "tier": "far (먼 곳)",
+  "emojiHint": "👓",
+  "name": "이디스 안경 / E.D.I.T.H. glasses",
+  "desc": "스타크 씨 선물이에요. 드론 버튼은 절대 안 눌러요 / A gift from Mr. Stark. I will NOT press the drone button."
+ },
+ {
+  "id": "spidey:s2",
+  "pet": "spidey",
+  "petName": "Spider-Man (3rd gen)",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦾",
+  "name": "아이언 스파이더 다리 / Iron Spider leg",
+  "desc": "등에서 나오는 거미 다리예요. 스타크 씨 최고! / The spider legs from my back. Mr. Stark is the best!"
+ },
+ {
+  "id": "spidey:c0",
+  "pet": "spidey",
+  "petName": "Spider-Man (3rd gen)",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏫",
+  "place": "미드타운 과학고 / Midtown School of Science",
+  "message": "네드랑 레고 데스 스타 조립 중. 숙제는… 곧! / Building the Lego Death Star with Ned. Homework… soon!",
+  "mood": "indoor"
+ },
+ {
+  "id": "spidey:c1",
+  "pet": "spidey",
+  "petName": "Spider-Man (3rd gen)",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🚤",
+  "place": "베네치아 운하 / Venice canals",
+  "message": "수학여행 왔는데 물 괴물이 나타났어. 왜 나만! / School trip, and a water monster shows up. Why me?!",
+  "mood": "sea"
+ },
+ {
+  "id": "spidey:c2",
+  "pet": "spidey",
+  "petName": "Spider-Man (3rd gen)",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🪐",
+  "place": "타이탄 행성 / Planet Titan",
+  "message": "스타크 씨, 저 우주 왔어요! 영화랑 똑같아요 / Mr. Stark, I'm in space! Just like the movies!",
+  "mood": "space"
+ },
+ {
+  "id": "patrick:s0",
+  "pet": "patrick",
+  "petName": "Patrick",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍦",
+  "name": "녹은 아이스크림 / Melted ice cream",
+  "desc": "먹으려다 까먹었어. 그래서 녹았어 / Forgot to eat it. So it melted."
+ },
+ {
+  "id": "patrick:s1",
+  "pet": "patrick",
+  "petName": "Patrick",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🥫",
+  "name": "악기용 마요네즈 / Mayonnaise (instrument)",
+  "desc": "이거 불면 소리 나? 아직 실험 중이야 / Does it make a sound if I blow? Still testing."
+ },
+ {
+  "id": "patrick:s2",
+  "pet": "patrick",
+  "petName": "Patrick",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏆",
+  "name": "아무것도 안 하기 상 / Doing-Nothing Award",
+  "desc": "제일 오래 아무것도 안 해서 받았어! / Won for doing nothing longer than anyone!"
+ },
+ {
+  "id": "patrick:c0",
+  "pet": "patrick",
+  "petName": "Patrick",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪨",
+  "place": "우리 집 바위 밑 / Under my rock",
+  "message": "바위 들었다 놨어. 엄청 멀리 온 기분이야 / Lifted my rock and put it back. Feels like a big trip.",
+  "mood": "underwater"
+ },
+ {
+  "id": "patrick:c1",
+  "pet": "patrick",
+  "petName": "Patrick",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎣",
+  "place": "해파리 동산 / Jellyfish Fields",
+  "message": "해파리 잡았어! 아니, 해파리가 날 잡았어 / Caught a jellyfish! No wait, it caught me.",
+  "mood": "day"
+ },
+ {
+  "id": "patrick:c2",
+  "pet": "patrick",
+  "petName": "Patrick",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "⭐",
+  "place": "하늘의 진짜 별들 / The real stars",
+  "message": "여기 친척 엄청 많아! 다들 반짝거려 / So many relatives up here! They all sparkle.",
+  "mood": "space"
+ },
+ {
+  "id": "shisa:s0",
+  "pet": "shisa",
+  "petName": "Shisa",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍜",
+  "name": "직접 만든 라멘 / Homemade Ramen",
+  "desc": "가게에서 배운 대로 만든 라멘이에요! 드셔 보세요 / Made just like they taught at the shop! Try it!"
+ },
+ {
+  "id": "shisa:s1",
+  "pet": "shisa",
+  "petName": "Shisa",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌺",
+  "name": "남쪽 섬 히비스커스 / Island Hibiscus",
+  "desc": "하이사이~ 고향 섬에서 따 온 꽃이에요! / Haisai~ A flower from my home island!"
+ },
+ {
+  "id": "shisa:s2",
+  "pet": "shisa",
+  "petName": "Shisa",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📒",
+  "name": "사장님 비법 노트 / The Boss's Secret Notes",
+  "desc": "사장님 육수 비법을 받아 적은 노트예요! 아직 비밀! / The boss's broth secrets, copied down! Top secret!"
+ },
+ {
+  "id": "shisa:c0",
+  "pet": "shisa",
+  "petName": "Shisa",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍥",
+  "place": "라멘 가게 주방 / Ramen Shop Kitchen",
+  "message": "오늘도 육수 끓였어요! 열심히 배우는 중이에요! / Simmered the broth again! Learning hard!",
+  "mood": "indoor"
+ },
+ {
+  "id": "shisa:c1",
+  "pet": "shisa",
+  "petName": "Shisa",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐠",
+  "place": "고향 섬 바다 / Home Island Sea",
+  "message": "하이사이~ 고향 바다 왔어요! 수영하고 갈게요 / Haisai~ Back at my home sea! Going for a swim!",
+  "mood": "sea"
+ },
+ {
+  "id": "shisa:c2",
+  "pet": "shisa",
+  "petName": "Shisa",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌅",
+  "place": "라멘 순례 마지막 집 / Last Stop, Ramen Pilgrimage",
+  "message": "전국 라멘 가게 다 돌았어요! 언젠가 제 가게도 낼래요! / Visited every ramen shop in the land! Someday, my own!",
+  "mood": "sunset"
+ },
+ {
+  "id": "ghost:s0",
+  "pet": "ghost",
+  "petName": "Ghost",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛏",
+  "name": "구멍 뚫린 하얀 이불 / Holey White Sheet",
+  "desc": "변장용 새 이불이에요. 눈구멍은 직접 뚫었대요 / A fresh disguise. It cut the eyeholes itself."
+ },
+ {
+  "id": "ghost:s1",
+  "pet": "ghost",
+  "petName": "Ghost",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍬",
+  "name": "유령 마을 사탕 / Ghost Town Candy",
+  "desc": "먹으면 혀가 잠깐 투명해지는 사탕이에요 / Turns your tongue see-through for a minute."
+ },
+ {
+  "id": "ghost:s2",
+  "pet": "ghost",
+  "petName": "Ghost",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🕯",
+  "name": "꺼지지 않는 촛불 / Never-Out Candle",
+  "desc": "겁 많은 유령이 밤마다 켜 두는 용기의 촛불이에요 / A scaredy ghost's courage candle. It never goes out."
+ },
+ {
+  "id": "ghost:c0",
+  "pet": "ghost",
+  "petName": "Ghost",
+  "tier": "nearby (동네)",
+  "emojiHint": "🚪",
+  "place": "옆집 벽 속 / Inside the Neighbor's Wall",
+  "message": "부우~ 벽 통과해서 옆집 구경했어! 아무도 못 봤지? / Boo~ Slipped through the wall next door. Nobody saw me!",
+  "mood": "indoor"
+ },
+ {
+  "id": "ghost:c1",
+  "pet": "ghost",
+  "petName": "Ghost",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏚",
+  "place": "오래된 저택 / Old Haunted Manor",
+  "message": "놀래키러 갔다가 내가 더 놀랐어… 히히 / Went to scare them. Got scared myself… hehe",
+  "mood": "night"
+ },
+ {
+  "id": "ghost:c2",
+  "pet": "ghost",
+  "petName": "Ghost",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌕",
+  "place": "보름달 유령 무도회 / Full Moon Ghost Ball",
+  "message": "달빛 아래 유령들이랑 춤췄어. 밤이 내 무대야! / Danced with ghosts under the moon. Night is my stage!",
+  "mood": "night"
+ },
+ {
+  "id": "rakun:s0",
+  "pet": "rakun",
+  "petName": "Raccoon",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔑",
+  "name": "반짝이는 열쇠 / Shiny Mystery Key",
+  "desc": "길에서 주운 반짝이예요. 어디 열쇠인지는 몰라요 / A sparkly find. Opens who knows what."
+ },
+ {
+  "id": "rakun:s1",
+  "pet": "rakun",
+  "petName": "Raccoon",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧼",
+  "name": "냇가 조약돌 비누 / Creek Pebble Soap",
+  "desc": "먹기 전에 씻는 라쿤의 필수품, 여행용 비누예요 / A neat raccoon's must-have: wash before you eat."
+ },
+ {
+  "id": "rakun:s2",
+  "pet": "rakun",
+  "petName": "Raccoon",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👑",
+  "name": "쓰레기통 왕의 왕관 / Trash King's Crown",
+  "desc": "전설의 탐험가에게만 주어지는 병뚜껑 왕관이에요 / A bottle-cap crown for legendary explorers only."
+ },
+ {
+  "id": "rakun:c0",
+  "pet": "rakun",
+  "petName": "Raccoon",
+  "tier": "nearby (동네)",
+  "emojiHint": "🗑",
+  "place": "동네 뒷골목 / Back Alley",
+  "message": "쓰레기통 아니야, 탐험이야. 오늘 수확 좋았어! / Not a trash can, an expedition. Great haul today!",
+  "mood": "city"
+ },
+ {
+  "id": "rakun:c1",
+  "pet": "rakun",
+  "petName": "Raccoon",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏞",
+  "place": "숲속 냇가 / Forest Creek",
+  "message": "사과 열 번 씻어 먹었어. 깔끔한 신사니까 / Washed my apple ten times. I'm a gentleman.",
+  "mood": "forest"
+ },
+ {
+  "id": "rakun:c2",
+  "pet": "rakun",
+  "petName": "Raccoon",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌃",
+  "place": "잠들지 않는 도시 / The City That Never Sleeps",
+  "message": "가면 쓰고 밤새 도시 탐험! 반짝이 천국이야 / Masked up, explored all night. Sparkle heaven!",
+  "mood": "city"
+ },
+ {
+  "id": "mikael:s0",
+  "pet": "mikael",
+  "petName": "Mikael",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧸",
+  "name": "꼭 닮은 회색 인형 / Grey Look-Alike Doll",
+  "desc": "자기랑 똑같이 생긴 인형 친구예요. 최고의 베개래요 / A doll that looks just like it. Best pillow ever."
+ },
+ {
+  "id": "mikael:s1",
+  "pet": "mikael",
+  "petName": "Mikael",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍚",
+  "name": "한 그릇 더 / One More Bowl",
+  "desc": "배부른 거 아니래요. 다른 배에 넣을 밥이에요 / Not full. This goes in the other stomach."
+ },
+ {
+  "id": "mikael:s2",
+  "pet": "mikael",
+  "petName": "Mikael",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☁",
+  "name": "구름 방석 / Cloud Cushion",
+  "desc": "하늘에서 떼어 온 폭신한 방석이에요. 인형이랑 같이 자요 / A fluffy cloud to nap on with the doll."
+ },
+ {
+  "id": "mikael:c0",
+  "pet": "mikael",
+  "petName": "Mikael",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛋",
+  "place": "햇살 소파 / Sunny Sofa",
+  "message": "인형 베고 낮잠 자다 왔어. 쓰다듬어 줘~ / Napped on my doll. Pet me now~",
+  "mood": "indoor"
+ },
+ {
+  "id": "mikael:c1",
+  "pet": "mikael",
+  "petName": "Mikael",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍖",
+  "place": "간식 시장 / Snack Market",
+  "message": "킁킁 냄새 따라갔어! 한 입씩 다 얻어먹었어 / Followed my nose! Got a bite of everything.",
+  "mood": "city"
+ },
+ {
+  "id": "mikael:c2",
+  "pet": "mikael",
+  "petName": "Mikael",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌙",
+  "place": "인형 친구 꿈나라 / Doll Dreamland",
+  "message": "꿈에서 인형이랑 간식 산 먹었어. 음냐… zZ / Ate a mountain of snacks with my doll in a dream. Zz",
+  "mood": "night"
+ }
+]

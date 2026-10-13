@@ -1,0 +1,629 @@
+[
+ {
+  "id": "dog:s0",
+  "pet": "dog",
+  "petName": "Puppy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🦴",
+  "name": "공원에서 주운 막대기 / Best Stick From the Park",
+  "desc": "세상에서 제일 좋은 막대기야! 너 줄게! / It's the best stick in the world! For you!"
+ },
+ {
+  "id": "dog:s1",
+  "pet": "dog",
+  "petName": "Puppy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎾",
+  "name": "해변의 침 묻은 공 / Slobbery Beach Ball",
+  "desc": "바다까지 굴러간 공을 끝까지 쫓아왔어 / Chased it all the way into the sea."
+ },
+ {
+  "id": "dog:s2",
+  "pet": "dog",
+  "petName": "Puppy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏆",
+  "name": "우주 최고 산책 트로피 / Galaxy Best Walk Trophy",
+  "desc": "꼬리 흔들기 대회 은하 1등 상이야, 멍! / First place in the intergalactic tail-wag contest. Woof!"
+ },
+ {
+  "id": "dog:c0",
+  "pet": "dog",
+  "petName": "Puppy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "동네 산책로 / The Neighborhood Walk",
+  "message": "멍멍! 전봇대마다 냄새 맡았어! 다음엔 같이 가자! / Woof! I sniffed every lamppost! Come with me next time!",
+  "mood": "day"
+ },
+ {
+  "id": "dog:c1",
+  "pet": "dog",
+  "petName": "Puppy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏖️",
+  "place": "넓은 모래사장 / The Big Sandy Beach",
+  "message": "파도한테 짖었더니 도망갔다가 또 왔어! 최고야! / I barked at a wave, it ran off, then came back! Best day!",
+  "mood": "sea"
+ },
+ {
+  "id": "dog:c2",
+  "pet": "dog",
+  "petName": "Puppy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌌",
+  "place": "끝없는 간식 은하 / The Endless Treat Galaxy",
+  "message": "별이 다 간식 모양이야! 꼬리가 멈추질 않아! / Every star is shaped like a treat! My tail won't stop!",
+  "mood": "space"
+ },
+ {
+  "id": "sheep:s0",
+  "pet": "sheep",
+  "petName": "Sheep",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌿",
+  "name": "공원 잔디 한 줌 / A Tuft of Park Grass",
+  "desc": "풀이 맛있어서 너도 맛보라고 가져왔어, 메에~ / So tasty I brought you some. Baa~"
+ },
+ {
+  "id": "sheep:s1",
+  "pet": "sheep",
+  "petName": "Sheep",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧣",
+  "name": "내 털로 짠 목도리 / Scarf Knit From My Wool",
+  "desc": "털 깎는 날 기념으로 짰어. 폭신폭신하지? / Knit on shearing day. Super fluffy, right?"
+ },
+ {
+  "id": "sheep:s2",
+  "pet": "sheep",
+  "petName": "Sheep",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☁️",
+  "name": "구름 양떼의 솜뭉치 / Cloud Flock Fluff",
+  "desc": "하늘의 구름 양들이 털을 한 줌 나눠 줬어 / The cloud sheep in the sky shared some fluff."
+ },
+ {
+  "id": "sheep:c0",
+  "pet": "sheep",
+  "petName": "Sheep",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "동네 잔디 공원 / The Grassy Neighborhood Park",
+  "message": "메에~ 잔디 먹다가 낮잠 잤어. 털에 풀 붙었어 / Baa~ Napped while grazing. Grass stuck in my wool.",
+  "mood": "day"
+ },
+ {
+  "id": "sheep:c1",
+  "pet": "sheep",
+  "petName": "Sheep",
+  "tier": "far (먼 곳)",
+  "emojiHint": "⛰️",
+  "place": "알프스 초원 / Alpine Meadows",
+  "message": "들판에서 실컷 뛰었어! 양 친구 백 마리 생겼어 / Ran all over the fields! Made 100 sheep friends.",
+  "mood": "day"
+ },
+ {
+  "id": "sheep:c2",
+  "pet": "sheep",
+  "petName": "Sheep",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌙",
+  "place": "양 세는 꿈나라 / Counting-Sheep Dreamland",
+  "message": "사람들이 세는 양이 나였어! 한 마리, 쿨… / Turns out I'm the sheep people count! One sheep… zzz",
+  "mood": "night"
+ },
+ {
+  "id": "capybara:s0",
+  "pet": "capybara",
+  "petName": "Capybara",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍊",
+  "name": "머리에 올렸던 귤 / Tangerine From My Head",
+  "desc": "…평화롭게 머리에 얹고 왔어. 안 떨어졌어 / …carried it calmly on my head. Didn't drop."
+ },
+ {
+  "id": "capybara:s1",
+  "pet": "capybara",
+  "petName": "Capybara",
+  "tier": "far (먼 곳)",
+  "emojiHint": "♨️",
+  "name": "유자 온천 입욕제 / Yuzu Hot Spring Bath Salts",
+  "desc": "온천에서 유자 띄워 줬어. 집에서도 해 봐 / They floated yuzu in the spring. Try it at home."
+ },
+ {
+  "id": "capybara:s2",
+  "pet": "capybara",
+  "petName": "Capybara",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🕊️",
+  "name": "모두의 친구 증표 / Friend-of-Everyone Badge",
+  "desc": "악어도 새도 다 친구가 됐어. 서두르지 마 / Even crocs and birds befriended me. No rush."
+ },
+ {
+  "id": "capybara:c0",
+  "pet": "capybara",
+  "petName": "Capybara",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛁",
+  "place": "동네 목욕탕 / The Local Bathhouse",
+  "message": "…평화롭다. 탕에 들어가 있었어. 서두르지 마 / …peaceful. Just soaking. Don't rush.",
+  "mood": "indoor"
+ },
+ {
+  "id": "capybara:c1",
+  "pet": "capybara",
+  "petName": "Capybara",
+  "tier": "far (먼 곳)",
+  "emojiHint": "♨️",
+  "place": "눈 오는 유자 온천 / Snowy Yuzu Hot Spring",
+  "message": "머리에 유자 올리고 눈 맞았어. …따뜻하다 / Yuzu on my head, snow falling. …so warm.",
+  "mood": "snow"
+ },
+ {
+  "id": "capybara:c2",
+  "pet": "capybara",
+  "petName": "Capybara",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌿",
+  "place": "아마존 동물 친구 강 / Amazon Friendship River",
+  "message": "악어, 새, 원숭이랑 다 같이 온천 했어 …잘했네 (느긋) / Hot-tubbed with a croc, bird and monkey. …nice (chill)",
+  "mood": "forest"
+ },
+ {
+  "id": "webber:s0",
+  "pet": "webber",
+  "petName": "Richard Webber",
+  "tier": "nearby (동네)",
+  "emojiHint": "☕",
+  "name": "원장실 머그컵 / Chief's Office Mug",
+  "desc": "원장실에서 쓰던 컵이네. 커피 한 잔 하겠나? / My old office mug. Care for a coffee?"
+ },
+ {
+  "id": "webber:s1",
+  "pet": "webber",
+  "petName": "Richard Webber",
+  "tier": "far (먼 곳)",
+  "emojiHint": "👔",
+  "name": "행운의 넥타이 / Lucky Tie",
+  "desc": "중요한 회의마다 맸다네. 자네도 하나 매 보게 / Wore it to every big meeting. You should try one."
+ },
+ {
+  "id": "webber:s2",
+  "pet": "webber",
+  "petName": "Richard Webber",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📗",
+  "name": "웨버 수술 교본 / The Webber Method",
+  "desc": "평생 쌓은 수술 노하우일세. 기본에 충실하게 / A lifetime of surgical know-how. Master the basics."
+ },
+ {
+  "id": "webber:c0",
+  "pet": "webber",
+  "petName": "Richard Webber",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥤",
+  "place": "조의 바 / Joe's Bar",
+  "message": "조의 바에서 탄산수 한 잔. 의사들이 다 여기 모였군 / Club soda at Joe's. Looks like the whole hospital's here.",
+  "mood": "night"
+ },
+ {
+  "id": "webber:c1",
+  "pet": "webber",
+  "petName": "Richard Webber",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎓",
+  "place": "보스턴 의학 학회 / Boston Medical Conference",
+  "message": "자네들 얘기를 했네. 내 병원 자랑 좀 했지 / I talked about you all. Bragged about my hospital a bit.",
+  "mood": "city"
+ },
+ {
+  "id": "webber:c2",
+  "pet": "webber",
+  "petName": "Richard Webber",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌅",
+  "place": "퓨젓사운드 노을 / Puget Sound Sunset",
+  "message": "수술은 예술이고, 이 노을도 예술이네. 고생 많았네 / Surgery is art, and so is this sunset. Good work today.",
+  "mood": "sunset"
+ },
+ {
+  "id": "iceking:s0",
+  "pet": "iceking",
+  "petName": "Ice King",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐧",
+  "name": "건터 인형 / Gunter Plushie",
+  "desc": "건터를 꼭 닮은 인형이에요. 진짜 건터는 집에 있어요 / Looks just like Gunter. The real one stayed home."
+ },
+ {
+  "id": "iceking:s1",
+  "pet": "iceking",
+  "petName": "Ice King",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🥁",
+  "name": "얼음 드럼 스틱 / Ice Drumsticks",
+  "desc": "드럼 솔로용 얼음 스틱이에요. 손이 좀 시려요 / For drum solos. A little cold on the hands."
+ },
+ {
+  "id": "iceking:s2",
+  "pet": "iceking",
+  "petName": "Ice King",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👑",
+  "name": "마법 얼음 왕관 / Magic Ice Crown",
+  "desc": "이게 없으면 마법을 못 써요! 절대 잃어버리면 안 돼요 / No crown, no magic! Never, ever lose it."
+ },
+ {
+  "id": "iceking:c0",
+  "pet": "iceking",
+  "petName": "Ice King",
+  "tier": "nearby (동네)",
+  "emojiHint": "⛄",
+  "place": "얼음 왕국 성 / Ice Kingdom Castle",
+  "message": "건터랑 펭귄들이랑 파티했어! 공주님은 안 왔어… / Party with Gunter and the penguins! No princesses came…",
+  "mood": "snow"
+ },
+ {
+  "id": "iceking:c1",
+  "pet": "iceking",
+  "petName": "Ice King",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌙",
+  "place": "공주님 창문 아래 / Under a Princess's Window",
+  "message": "창문 밑에서 세레나데 불렀어. 답장 좀 줘! / Sang a serenade under her window. Please write back!",
+  "mood": "night"
+ },
+ {
+  "id": "iceking:c2",
+  "pet": "iceking",
+  "petName": "Ice King",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📖",
+  "place": "피오나와 케이크 세계 / Fionna & Cake's World",
+  "message": "내가 쓴 소설 속에 들어왔어! 여기선 내가 주인공이다! / I'm inside my own fan fiction! Here, I'm the hero!",
+  "mood": "candy"
+ },
+ {
+  "id": "gekko:s0",
+  "pet": "gekko",
+  "petName": "Gekko",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌮",
+  "name": "LA 타코 트럭 타코 / LA taco truck taco",
+  "desc": "동네 타코야! 지원봇이랑 반씩 나눠 먹었어 / Neighborhood tacos! Split one with Wingman."
+ },
+ {
+  "id": "gekko:s1",
+  "pet": "gekko",
+  "petName": "Gekko",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🟢",
+  "name": "모쉬 글로뷸 / Mosh globule",
+  "desc": "다시 주워 온 친구야. 곧 깨어날 거야! / Picked my buddy back up. He'll wake up soon!"
+ },
+ {
+  "id": "gekko:s2",
+  "pet": "gekko",
+  "petName": "Gekko",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💎",
+  "name": "라디아나이트 결정 / Radianite crystal",
+  "desc": "애들이 태어난 고향 같은 거야. 반짝반짝! / Kinda where my crew comes from. So shiny!"
+ },
+ {
+  "id": "gekko:c0",
+  "pet": "gekko",
+  "petName": "Gekko",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌇",
+  "place": "LA 벽화 골목 / LA mural alley",
+  "message": "지원봇이 벽화에 반했어! 우리 동네 최고! / Wingman fell in love with a mural. Best neighborhood!",
+  "mood": "sunset"
+ },
+ {
+  "id": "gekko:c1",
+  "pet": "gekko",
+  "petName": "Gekko",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌀",
+  "place": "바인드 텔레포터 / Bind teleporter",
+  "message": "기절봇이 순간이동하고 어지러워해. 귀여워! / Dizzy got dizzy from teleporting. So cute!",
+  "mood": "desert"
+ },
+ {
+  "id": "gekko:c2",
+  "pet": "gekko",
+  "petName": "Gekko",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏂",
+  "place": "아이스박스 기지 / Icebox base",
+  "message": "애들이랑 눈싸움 중! 쓰래시가 제일 잘 던져 / Snowball fight with the crew! Thrash has the best arm.",
+  "mood": "snow"
+ },
+ {
+  "id": "thor:s0",
+  "pet": "thor",
+  "petName": "Thor",
+  "tier": "nearby (동네)",
+  "emojiHint": "☕",
+  "name": "깨진 머그잔 / Smashed mug",
+  "desc": "'또 하나!' 하고 던졌다가 깨진 머그다! / I yelled 'Another!' and threw it. It broke!"
+ },
+ {
+  "id": "thor:s1",
+  "pet": "thor",
+  "petName": "Thor",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌈",
+  "name": "비프로스트 조각 / Bifrost shard",
+  "desc": "무지개다리 한 조각이다. 밟으면 반짝인다! / A piece of the rainbow bridge. It sparkles underfoot!"
+ },
+ {
+  "id": "thor:s2",
+  "pet": "thor",
+  "petName": "Thor",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔨",
+  "name": "미니 묠니르 / Mini Mjolnir",
+  "desc": "자격 있는 자만 든다. 너라면 들 수 있겠지! / Only the worthy may lift it. You surely can!"
+ },
+ {
+  "id": "thor:c0",
+  "pet": "thor",
+  "petName": "Thor",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌵",
+  "place": "뉴멕시코 사막 / New Mexico desert",
+  "message": "망치 떨어졌던 동네다! 구덩이가 아직 있군 / Where my hammer landed! The crater is still here.",
+  "mood": "desert"
+ },
+ {
+  "id": "thor:c1",
+  "pet": "thor",
+  "petName": "Thor",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏰",
+  "place": "아스가르드 연회장 / Asgard feast hall",
+  "message": "연회다! 고기는 산더미, 로키는 또 변신 중 / A feast! Mountains of meat. Loki is shapeshifting again.",
+  "mood": "indoor"
+ },
+ {
+  "id": "thor:c2",
+  "pet": "thor",
+  "petName": "Thor",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "⚡",
+  "place": "니다벨리르 대장간 / Nidavellir forge",
+  "message": "별의 심장으로 도끼를 만들었다. 뜨거웠다! / Forged an axe in the heart of a star. It was hot!",
+  "mood": "space"
+ },
+ {
+  "id": "krabs:s0",
+  "pet": "krabs",
+  "petName": "Mr. Krabs",
+  "tier": "nearby (동네)",
+  "emojiHint": "💵",
+  "name": "첫 번째로 번 1달러 / My first dollar",
+  "desc": "액자에 넣어 둔 내 첫 돈이다! 손대지 마! / Framed! The first dollar I ever made. Hands off!"
+ },
+ {
+  "id": "krabs:s1",
+  "pet": "krabs",
+  "petName": "Mr. Krabs",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🪙",
+  "name": "길에서 주운 동전 / Coin found on the road",
+  "desc": "바닥에서 주웠다! 공짜가 제일 좋아 / Picked it up off the ground! Free is the best price."
+ },
+ {
+  "id": "krabs:s2",
+  "pet": "krabs",
+  "petName": "Mr. Krabs",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📜",
+  "name": "비밀 레시피 쪽지 / Secret formula note",
+  "desc": "…는 아니고 빈 종이야! 플랑크톤 속았지? / …Just kidding, it's blank! Fooled ya, Plankton!"
+ },
+ {
+  "id": "krabs:c0",
+  "pet": "krabs",
+  "petName": "Mr. Krabs",
+  "tier": "nearby (동네)",
+  "emojiHint": "💰",
+  "place": "집게리아 금고 앞 / Krusty Krab safe",
+  "message": "금고 세 번 확인했다. 돈! 돈! 돈! / Checked the safe three times. Money! Money! Money!",
+  "mood": "indoor"
+ },
+ {
+  "id": "krabs:c1",
+  "pet": "krabs",
+  "petName": "Mr. Krabs",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎢",
+  "place": "글러브 월드 / Glove World",
+  "message": "입장료가 이렇게 비싸다니! 구경만 하련다 / The ticket price is criminal! I'm just watching.",
+  "mood": "day"
+ },
+ {
+  "id": "krabs:c2",
+  "pet": "krabs",
+  "petName": "Mr. Krabs",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦜",
+  "place": "해적 보물섬 / Pirate treasure island",
+  "message": "보물 상자 찾았다! 진주야, 이건 금고 행이다 / Found treasure! Sorry Pearl, this goes in the safe.",
+  "mood": "sea"
+ },
+ {
+  "id": "simhomer:s0",
+  "pet": "simhomer",
+  "petName": "Homer Simpson",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍩",
+  "name": "라드 라드 도넛 / Lard Lad Donut",
+  "desc": "라드 라드 가게에서 득템. 음… 도넛… / Fresh from Lard Lad. Mmm… donut…"
+ },
+ {
+  "id": "simhomer:s1",
+  "pet": "simhomer",
+  "petName": "Homer Simpson",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎳",
+  "name": "핀 팰스 볼링공 / Pin Pals Bowling Ball",
+  "desc": "우리 팀 볼링공 들고 원정 다녀왔어. 나 천재인가? / Took the team ball on an away game. Am I a genius?"
+ },
+ {
+  "id": "simhomer:s2",
+  "pet": "simhomer",
+  "petName": "Homer Simpson",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🚀",
+  "name": "무생물 탄소 막대 / Inanimate Carbon Rod",
+  "desc": "우주에서 날 이기고 영웅 된 그 녀석. D'oh! / The rod that beat me for hero in space. D'oh!"
+ },
+ {
+  "id": "simhomer:c0",
+  "pet": "simhomer",
+  "petName": "Homer Simpson",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍻",
+  "place": "모의 술집 / Moe's Tavern",
+  "message": "모네 바에서 한 잔. …자는 거 아님, 생각하는 중 / A Duff at Moe's. …Not sleeping. Thinking.",
+  "mood": "night"
+ },
+ {
+  "id": "simhomer:c1",
+  "pet": "simhomer",
+  "petName": "Homer Simpson",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎢",
+  "place": "더프 가든 / Duff Gardens",
+  "message": "더프 맥주 강에서 수영함. Woo-hoo! 발전소는 안 감 / Swam in the Duff river. Woo-hoo! Skipping the plant.",
+  "mood": "day"
+ },
+ {
+  "id": "simhomer:c2",
+  "pet": "simhomer",
+  "petName": "Homer Simpson",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌌",
+  "place": "심우주 비행 / Deep Space Homer",
+  "message": "우주에서 감자칩 둥둥. 막대한테 또 영웅 뺏김 / Potato chips floating in zero-G. The rod stole hero again.",
+  "mood": "space"
+ },
+ {
+  "id": "trike:s0",
+  "pet": "trike",
+  "petName": "Triceratops",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛡",
+  "name": "프릴 광택제 / Frill Polish",
+  "desc": "목 프릴 반짝반짝 닦는 전용 광택제예요 / Keeps that neck frill shiny."
+ },
+ {
+  "id": "trike:s1",
+  "pet": "trike",
+  "petName": "Triceratops",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌿",
+  "name": "백악기 소철잎 / Cretaceous Cycad Leaf",
+  "desc": "부리로 똑똑 끊어 온 질긴 잎이에요. 꿀맛이래요 / Snipped off with its beak. Tough but tasty."
+ },
+ {
+  "id": "trike:s2",
+  "pet": "trike",
+  "petName": "Triceratops",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦏",
+  "name": "세 뿔 트로피 / Three-Horn Trophy",
+  "desc": "뿔 셋 다 무사히 지켜낸 공룡에게 주는 트로피예요 / For keeping all three horns intact."
+ },
+ {
+  "id": "trike:c0",
+  "pet": "trike",
+  "petName": "Triceratops",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌾",
+  "place": "동네 풀밭 / Local Meadow",
+  "message": "풀 냠냠 먹고 왔어. 뿔에 풀이 걸렸어. 크앙 / Munched grass. Got some stuck on my horns. Rawr.",
+  "mood": "day"
+ },
+ {
+  "id": "trike:c1",
+  "pet": "trike",
+  "petName": "Triceratops",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🦏",
+  "place": "사바나 코뿔소 마을 / Savanna Rhino Village",
+  "message": "코뿔소가 나 보고 사촌이래! 뿔 개수로 이겼어 / Rhinos called me cousin. I won on horn count!",
+  "mood": "desert"
+ },
+ {
+  "id": "trike:c2",
+  "pet": "trike",
+  "petName": "Triceratops",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌿",
+  "place": "백악기 대평원 / Great Cretaceous Plains",
+  "message": "수천 마리 친구랑 쿵쿵 행진했어! 크아앙! / Marched with thousands of friends! RAWR!",
+  "mood": "sunset"
+ },
+ {
+  "id": "sawol:s0",
+  "pet": "sawol",
+  "petName": "Sawol",
+  "tier": "nearby (동네)",
+  "emojiHint": "🦮",
+  "name": "언니랑 맞춘 목줄 / Matching Leash",
+  "desc": "산책?! 언니 거랑 색 맞춘 분홍 목줄이에요 / Walk?! A pink leash to match sis's."
+ },
+ {
+  "id": "sawol:s1",
+  "pet": "sawol",
+  "petName": "Sawol",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🦴",
+  "name": "냠냠 뼈다귀 껌 / Yum-Yum Chew",
+  "desc": "냠냠?! 소리에 번쩍 달려가 받아 온 껌이에요 / Heard \"yum-yum?\" and sprinted for it."
+ },
+ {
+  "id": "sawol:s2",
+  "pet": "sawol",
+  "petName": "Sawol",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧸",
+  "name": "언니 냄새 담요 / Smells-Like-Sis Blanket",
+  "desc": "무서울 때 숨는 담요예요. 언니 냄새가 나서 좋대요 / For hiding when scared. It smells like sis."
+ },
+ {
+  "id": "sawol:c0",
+  "pet": "sawol",
+  "petName": "Sawol",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "place": "동네 산책길 / Neighborhood Walk",
+  "message": "산책!! …강아지 지나가서 언니 뒤에 숨었어 / Walk!! …A dog passed. Hid behind sis.",
+  "mood": "day"
+ },
+ {
+  "id": "sawol:c1",
+  "pet": "sawol",
+  "petName": "Sawol",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌾",
+  "place": "넓은 들판 / Wide Open Field",
+  "message": "…넓어서 무서웠어. 그래도 언니 따라 걸었어 / …So big, so scary. Still followed sis.",
+  "mood": "sunset"
+ },
+ {
+  "id": "sawol:c2",
+  "pet": "sawol",
+  "petName": "Sawol",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌙",
+  "place": "언니 옆 꿈나라 / Dreamland Beside Sis",
+  "message": "…제일 먼 곳은 언니 옆 꿈속이야. 좋아 / …The farthest place is a dream next to sis. Nice.",
+  "mood": "night"
+ }
+]

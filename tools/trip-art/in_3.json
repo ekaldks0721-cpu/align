@@ -1,0 +1,629 @@
+[
+ {
+  "id": "chick:s0",
+  "pet": "chick",
+  "petName": "Chick",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌾",
+  "name": "마당의 모이 한 줌 / Handful of Yard Seeds",
+  "desc": "졸졸 따라가다 주웠어. 반 나눠 줄게, 삐약 / Picked them up while tagging along. Half for you, peep."
+ },
+ {
+  "id": "chick:s1",
+  "pet": "chick",
+  "petName": "Chick",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🪶",
+  "name": "멋진 수탉 깃털 / Fancy Rooster Feather",
+  "desc": "닭 아저씨한테 받았어. 나도 언젠가 이렇게! / A rooster gave it to me. I'll have one someday!"
+ },
+ {
+  "id": "chick:s2",
+  "pet": "chick",
+  "petName": "Chick",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🥚",
+  "name": "첫 번째 황금 알 껍질 / The First Golden Eggshell",
+  "desc": "세상 모든 병아리가 처음 깨고 나온 알이래 / They say every chick in the world hatched from this one."
+ },
+ {
+  "id": "chick:c0",
+  "pet": "chick",
+  "petName": "Chick",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐔",
+  "place": "할머니네 닭장 / Grandma's Henhouse",
+  "message": "삐약! 닭들 사이에 섞여 봤는데 아무도 몰랐어 / Peep! I blended in with the hens and nobody noticed.",
+  "mood": "day"
+ },
+ {
+  "id": "chick:c1",
+  "pet": "chick",
+  "petName": "Chick",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌻",
+  "place": "해바라기 들판 / Sunflower Fields",
+  "message": "해바라기가 나보다 백 배 커! 햇살이 따뜻해 / The sunflowers are 100x taller than me! So warm here.",
+  "mood": "day"
+ },
+ {
+  "id": "chick:c2",
+  "pet": "chick",
+  "petName": "Chick",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌅",
+  "place": "새벽을 여는 언덕 / The Hill Where Dawn Begins",
+  "message": "첫 꼬끼오 연습했어! 아직 삐약이었지만… / Practiced my first cock-a-doodle! Still came out a peep…",
+  "mood": "sunset"
+ },
+ {
+  "id": "panda:s0",
+  "pet": "panda",
+  "petName": "Panda",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎋",
+  "name": "화분 속 대나무 / Potted Bamboo",
+  "desc": "동네 꽃집에서 샀어. 먹으려다 참았어 / From the flower shop. Resisted eating it."
+ },
+ {
+  "id": "panda:s1",
+  "pet": "panda",
+  "petName": "Panda",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🥟",
+  "name": "쓰촨 찐빵 / Sichuan Steamed Bun",
+  "desc": "하루 종일 먹고 자다 하나 남겨 왔어 / Ate and slept all day, but saved you one."
+ },
+ {
+  "id": "panda:s2",
+  "pet": "panda",
+  "petName": "Panda",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🖤",
+  "name": "흑백 유행의 원조 증서 / Original Black & White Certificate",
+  "desc": "흑백을 처음 유행시킨 판다라는 공식 증명서야 / Official proof I started the black-and-white trend."
+ },
+ {
+  "id": "panda:c0",
+  "pet": "panda",
+  "petName": "Panda",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎠",
+  "place": "동네 놀이터 / Neighborhood Slide",
+  "message": "데굴데굴 구르다 미끄럼틀로 내려왔어. 판다스틱! / Rolled down the slide. Pandastic!",
+  "mood": "day"
+ },
+ {
+  "id": "panda:c1",
+  "pet": "panda",
+  "petName": "Panda",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎍",
+  "place": "대나무 숲 계곡 / Bamboo Forest Valley",
+  "message": "대나무 숲 왔어! 먹고 자고 먹고 자고… 행복해 / Bamboo forest! Eat, sleep, eat, sleep… bliss.",
+  "mood": "forest"
+ },
+ {
+  "id": "panda:c2",
+  "pet": "panda",
+  "petName": "Panda",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "⛰️",
+  "place": "구름 위 대나무 산 / Bamboo Peak Above the Clouds",
+  "message": "구름 위 대나무는 꿈 맛이야. 대나무 꿈 꾸는 중 / Cloud bamboo tastes like dreams. Dreaming of bamboo.",
+  "mood": "sunset"
+ },
+ {
+  "id": "rock:s0",
+  "pet": "rock",
+  "petName": "Pet rock",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪨",
+  "name": "옆집 돌멩이 친구 / Rock Friend Next Door",
+  "desc": "(굴러가서 만났다. 아무 말도 하지 않았다) / (Rolled over to meet it. Neither said a word.)"
+ },
+ {
+  "id": "rock:s1",
+  "pet": "rock",
+  "petName": "Pet rock",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐚",
+  "name": "파도에 닳은 조약돌 / Wave-Smoothed Pebble",
+  "desc": "(바다에서 천 년 굴렀다. 매끈해졌다) / (Tumbled in the sea for a millennium. Now smooth.)"
+ },
+ {
+  "id": "rock:s2",
+  "pet": "rock",
+  "petName": "Pet rock",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☄️",
+  "name": "운석 할아버지의 조각 / Grandpa Meteorite Chip",
+  "desc": "(우주에서 온 조상님. …반짝였다) / (An ancestor from space. …It sparkled.)"
+ },
+ {
+  "id": "rock:c0",
+  "pet": "rock",
+  "petName": "Pet rock",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪴",
+  "place": "화분 옆자리 / Next to the Flowerpot",
+  "message": "…(오늘은 3cm 굴러갔다. 대모험이었다) / …(Rolled 3cm today. A grand adventure.)",
+  "mood": "indoor"
+ },
+ {
+  "id": "rock:c1",
+  "pet": "rock",
+  "petName": "Pet rock",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏜️",
+  "place": "사막의 거대 바위 / The Giant Desert Boulder",
+  "message": "…(사촌을 만났다. 천 년째 거기 있대. 나도) / …(Met a cousin. Been there a thousand years. Same.)",
+  "mood": "desert"
+ },
+ {
+  "id": "rock:c2",
+  "pet": "rock",
+  "petName": "Pet rock",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌑",
+  "place": "달의 크레이터 / A Crater on the Moon",
+  "message": "…(달도 돌이었다. 고향 같았다) / …(The moon is a rock too. Felt like home.)",
+  "mood": "space"
+ },
+ {
+  "id": "mark:s0",
+  "pet": "mark",
+  "petName": "Mark Sloan",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪞",
+  "name": "수술복 핏 손거울 / Scrub-Check Mirror",
+  "desc": "수술복 핏 확인용. 역시 잘 어울리지? / For checking the scrubs fit. Looking good, right?"
+ },
+ {
+  "id": "mark:s1",
+  "pet": "mark",
+  "petName": "Mark Sloan",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🗽",
+  "name": "자유의 여신상 미니어처 / Mini Lady Liberty",
+  "desc": "데릭이랑 놀던 뉴욕 기념품. 얼굴선이 완벽해 / From my New York days with Derek. Flawless jawline."
+ },
+ {
+  "id": "mark:s2",
+  "pet": "mark",
+  "petName": "Mark Sloan",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧵",
+  "name": "황금 봉합사 / Golden Sutures",
+  "desc": "완벽한 봉합 전용. 역시 내가 잘 가르쳤지 / For perfect stitches only. I taught well, didn't I?"
+ },
+ {
+  "id": "mark:c0",
+  "pet": "mark",
+  "petName": "Mark Sloan",
+  "tier": "nearby (동네)",
+  "emojiHint": "☕",
+  "place": "병원 앞 커피 트럭 / Hospital Coffee Cart",
+  "message": "커피 사러 왔다가 간호사 세 명한테 인사받았어 / Went for coffee, got waved at by three nurses.",
+  "mood": "day"
+ },
+ {
+  "id": "mark:c1",
+  "pet": "mark",
+  "petName": "Mark Sloan",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌃",
+  "place": "뉴욕 맨해튼 야경 / Manhattan at Night",
+  "message": "옛날 단골 바 들렀어. 도시도 나도 여전히 멋지네 / Hit my old bar. The city and I still look great.",
+  "mood": "city"
+ },
+ {
+  "id": "mark:c2",
+  "pet": "mark",
+  "petName": "Mark Sloan",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎬",
+  "place": "할리우드 레드카펫 / Hollywood Red Carpet",
+  "message": "스타들 얼굴 다 내 작품이야. 맥스티미라고 불러도 돼 / Half these famous faces are my work. Call me McSteamy.",
+  "mood": "night"
+ },
+ {
+  "id": "kitty:s0",
+  "pet": "kitty",
+  "petName": "Hello Kitty",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍎",
+  "name": "키 재는 사과 / Measuring Apple",
+  "desc": "다섯 개 쌓으면 딱 키티 키! 하나 챙겨 왔어요 / Stack five and that's Kitty's height! Brought you one."
+ },
+ {
+  "id": "kitty:s1",
+  "pet": "kitty",
+  "petName": "Hello Kitty",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🫖",
+  "name": "런던 찻주전자 / London Teapot",
+  "desc": "런던에서 사 온 찻주전자예요. 홍차 같이 마셔요! / Picked up in London. Let's have tea together!"
+ },
+ {
+  "id": "kitty:s2",
+  "pet": "kitty",
+  "petName": "Hello Kitty",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎀",
+  "name": "처음 단 빨간 리본 / The Original Red Bow",
+  "desc": "1974년부터 왼쪽 귀에 단 바로 그 리본이에요 / The very bow on her left ear since 1974."
+ },
+ {
+  "id": "kitty:c0",
+  "pet": "kitty",
+  "petName": "Hello Kitty",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥧",
+  "place": "엄마의 부엌 / Mama's Kitchen",
+  "message": "엄마랑 애플파이 구웠어! 미미 몫도 남겨 둘게 / Baked apple pie with Mama! Saving a slice for Mimmy.",
+  "mood": "indoor"
+ },
+ {
+  "id": "kitty:c1",
+  "pet": "kitty",
+  "petName": "Hello Kitty",
+  "tier": "far (먼 곳)",
+  "emojiHint": "💂",
+  "place": "런던 시계탑 앞 / Big Ben, London",
+  "message": "런던 친구들 만났어! 근위병 아저씨는 안 웃더라 / Met friends in London! The guard wouldn't smile, though.",
+  "mood": "city"
+ },
+ {
+  "id": "kitty:c2",
+  "pet": "kitty",
+  "petName": "Hello Kitty",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏰",
+  "place": "산리오 퓨로랜드 / Sanrio Puroland",
+  "message": "꿈의 성에 친구들이 다 모였어. 친구는 많을수록 좋아! / All my friends in one dream castle. The more friends the better!",
+  "mood": "candy"
+ },
+ {
+  "id": "nanami:s0",
+  "pet": "nanami",
+  "petName": "Kento Nanami",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥪",
+  "name": "단골 빵집 샌드위치 / Bakery Sandwich",
+  "desc": "단골 빵집의 카스크루트. 점심은 빵으로 하지 / A casse-croûte from my usual bakery. Lunch is bread."
+ },
+ {
+  "id": "nanami:s1",
+  "pet": "nanami",
+  "petName": "Kento Nanami",
+  "tier": "far (먼 곳)",
+  "emojiHint": "👔",
+  "name": "7:3 무늬 넥타이 / 7:3 Pattern Tie",
+  "desc": "비율이 정확해서 샀다. 시간 외 근무엔 주먹에 감지 / Bought it for the exact ratio. Wraps nicely for overtime."
+ },
+ {
+  "id": "nanami:s2",
+  "pet": "nanami",
+  "petName": "Kento Nanami",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📋",
+  "name": "조기 은퇴 계획서 / Early Retirement Plan",
+  "desc": "충분한 자금, 바다 앞 집. 서명만 남았다 / Enough savings, a house by the sea. Only the signature left."
+ },
+ {
+  "id": "nanami:c0",
+  "pet": "nanami",
+  "petName": "Kento Nanami",
+  "tier": "nearby (동네)",
+  "emojiHint": "☕",
+  "place": "출근길 카페 / Commute Cafe",
+  "message": "커피 한 잔. 휴식도 업무다. 9시 정각에 출근한다 / One coffee. Rest is part of the job. In at 9 sharp.",
+  "mood": "day"
+ },
+ {
+  "id": "nanami:c1",
+  "pet": "nanami",
+  "petName": "Kento Nanami",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🥐",
+  "place": "도쿄 빵집 투어 / Tokyo Bakery Tour",
+  "message": "효율적으로 다섯 곳 돌았다. 빵에 시간 외 근무는 없다 / Five bakeries, efficiently. Bread involves no overtime.",
+  "mood": "city"
+ },
+ {
+  "id": "nanami:c2",
+  "pet": "nanami",
+  "petName": "Kento Nanami",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌴",
+  "place": "말레이시아 콴탄 / Kuantan, Malaysia",
+  "message": "바다 앞에서 책을 읽는다. 여기선 퇴근할 필요도 없군 / Reading by the sea. Here, there's nothing to clock out of.",
+  "mood": "sea"
+ },
+ {
+  "id": "widow:s0",
+  "pet": "widow",
+  "petName": "Black Widow",
+  "tier": "nearby (동네)",
+  "emojiHint": "🦺",
+  "name": "옐레나의 조끼 / Yelena's vest",
+  "desc": "주머니 많다고 자랑하던 동생 조끼야 / My sister's favorite. She won't stop bragging about the pockets."
+ },
+ {
+  "id": "widow:s1",
+  "pet": "widow",
+  "petName": "Black Widow",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🪆",
+  "name": "마트료시카 인형 / Matryoshka doll",
+  "desc": "열면 또 나와. 나처럼 비밀이 겹겹이야 / Open one, there's another. Layers of secrets, like me."
+ },
+ {
+  "id": "widow:s2",
+  "pet": "widow",
+  "petName": "Black Widow",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📕",
+  "name": "빨간 장부 / The red ledger",
+  "desc": "빨간 줄을 하나씩 지운 장부야. 이제 가벼워 / Every red line, wiped clean. Lighter now."
+ },
+ {
+  "id": "widow:c0",
+  "pet": "widow",
+  "petName": "Black Widow",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥋",
+  "place": "어벤져스 훈련장 / Avengers training room",
+  "message": "새벽 훈련 끝. 오늘도 클린트한테 이겼어 / Dawn training done. Beat Clint again.",
+  "mood": "indoor"
+ },
+ {
+  "id": "widow:c1",
+  "pet": "widow",
+  "petName": "Black Widow",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌉",
+  "place": "부다페스트 / Budapest",
+  "message": "클린트랑 왔어. 기억이 서로 완전 다르네 / Back here with Clint. We remember it very differently.",
+  "mood": "night"
+ },
+ {
+  "id": "widow:c2",
+  "pet": "widow",
+  "petName": "Black Widow",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "⛄",
+  "place": "러시아 설원 은신처 / Russian snow safehouse",
+  "message": "가족이 다시 모였어. 아빠는 여전히 자랑 중 / Family reunion. Dad is still bragging.",
+  "mood": "snow"
+ },
+ {
+  "id": "hachiware:s0",
+  "pet": "hachiware",
+  "petName": "Hachiware",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎸",
+  "name": "행운의 기타 피크 / Lucky Guitar Pick",
+  "desc": "길거리 노래할 때 쓰는 피크야. 행운의 부적이야! / Used for street singing. My lucky charm!"
+ },
+ {
+  "id": "hachiware:s1",
+  "pet": "hachiware",
+  "petName": "Hachiware",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎫",
+  "name": "오디션 번호표 / Audition Number Tag",
+  "desc": "노래 오디션 번호표야. 떨렸지만 어떻게든 됐어! / From a singing audition. Nervous, but it worked out!"
+ },
+ {
+  "id": "hachiware:s2",
+  "pet": "hachiware",
+  "petName": "Hachiware",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💿",
+  "name": "첫 데뷔 음반 / Debut Album",
+  "desc": "언젠가 낼 첫 음반! 미리 만들어 봤어. 1번 트랙 들어 봐 / The album I'll release someday. Made it early. Hear track one!"
+ },
+ {
+  "id": "hachiware:c0",
+  "pet": "hachiware",
+  "petName": "Hachiware",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏠",
+  "place": "치이카와네 집 / Chiikawa's House",
+  "message": "치이카와네서 같이 낮잠 잤어! 괜찮아, 괜찮아~ / Napped over at Chiikawa's! It's okay, it's okay~",
+  "mood": "indoor"
+ },
+ {
+  "id": "hachiware:c1",
+  "pet": "hachiware",
+  "petName": "Hachiware",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌃",
+  "place": "밤거리 버스킹 / Night Street Busking",
+  "message": "밤거리에서 노래했어! 박수도 받았어. 해냈어! / Sang on the street tonight and got applause! Did it!",
+  "mood": "city"
+ },
+ {
+  "id": "hachiware:c2",
+  "pet": "hachiware",
+  "petName": "Hachiware",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌊",
+  "place": "바다 끝 등대 / Lighthouse at Sea's End",
+  "message": "엄청 멀리 왔어. 무서웠지만 어떻게든 됐어! / Came so far. Scary, but it all worked out!",
+  "mood": "sea"
+ },
+ {
+  "id": "bart:s0",
+  "pet": "bart",
+  "petName": "Bart Simpson",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎯",
+  "name": "바트표 새총 / Bart's Slingshot",
+  "desc": "장난칠 거리 장전 완료. Eat my shorts! / Locked and loaded for pranks. Eat my shorts!"
+ },
+ {
+  "id": "bart:s1",
+  "pet": "bart",
+  "petName": "Bart Simpson",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🤡",
+  "name": "크러스티 사인 / Krusty's Autograph",
+  "desc": "크러스티 랜드에서 받았어. Ay caramba! / Got it at Krustyland. Ay caramba!"
+ },
+ {
+  "id": "bart:s2",
+  "pet": "bart",
+  "petName": "Bart Simpson",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🛹",
+  "name": "협곡 점프 스케이트보드 / Gorge-Jump Skateboard",
+  "desc": "협곡 점프는 망했지만 보드는 멀쩡해. Cowabunga! / The jump failed, the board survived. Cowabunga!"
+ },
+ {
+  "id": "bart:c0",
+  "pet": "bart",
+  "petName": "Bart Simpson",
+  "tier": "nearby (동네)",
+  "emojiHint": "📞",
+  "place": "모의 술집 전화 / Moe's Payphone",
+  "message": "모한테 장난 전화함. '휴 재스 있어요?' 히히 / Prank-called Moe. 'Is Hugh Jass there?' Heh.",
+  "mood": "city"
+ },
+ {
+  "id": "bart:c1",
+  "pet": "bart",
+  "petName": "Bart Simpson",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎡",
+  "place": "이치 앤 스크래치 랜드 / Itchy & Scratchy Land",
+  "message": "로봇들이 반란 일으킴. 최고의 여행! Cowabunga! / The robots rebelled. Best trip ever! Cowabunga!",
+  "mood": "candy"
+ },
+ {
+  "id": "bart:c2",
+  "pet": "bart",
+  "petName": "Bart Simpson",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦘",
+  "place": "호주 오지 / Australian Outback",
+  "message": "부츠로 엉덩이 차이는 벌 받을 뻔. Don't have a cow! / Almost got the booting. Don't have a cow, man!",
+  "mood": "desert"
+ },
+ {
+  "id": "brachio:s0",
+  "pet": "brachio",
+  "petName": "Brachiosaurus",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍎",
+  "name": "제일 높은 가지 사과 / Top-Branch Apple",
+  "desc": "목이 길어서 딴 맨 꼭대기 사과예요 / Only a long neck could reach this one."
+ },
+ {
+  "id": "brachio:s1",
+  "pet": "brachio",
+  "petName": "Brachiosaurus",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧣",
+  "name": "10미터 목도리 / 10-Meter Scarf",
+  "desc": "긴 목에 딱 맞는 목도리예요. 뜨는 데 오래 걸렸대요 / Fits a long neck perfectly. Took forever to knit."
+ },
+ {
+  "id": "brachio:s2",
+  "pet": "brachio",
+  "petName": "Brachiosaurus",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☁",
+  "name": "구름 한 조각 / Piece of Cloud",
+  "desc": "고개를 쭉 뻗어 하늘에서 떼어 온 구름이에요 / Stretched up and plucked it from the sky."
+ },
+ {
+  "id": "brachio:c0",
+  "pet": "brachio",
+  "petName": "Brachiosaurus",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏢",
+  "place": "아파트 옥상 / Apartment Rooftop",
+  "message": "고개만 쭉 내밀어서 옥상 구경했어. 크앙~ / Just stuck my neck up for a rooftop view. Rawr~",
+  "mood": "city"
+ },
+ {
+  "id": "brachio:c1",
+  "pet": "brachio",
+  "petName": "Brachiosaurus",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌳",
+  "place": "거대 나무 숲 / Giant Tree Forest",
+  "message": "맨 꼭대기 잎만 골라 먹었어. 배불러서 졸려… / Ate only the top leaves. So full… so sleepy.",
+  "mood": "forest"
+ },
+ {
+  "id": "brachio:c2",
+  "pet": "brachio",
+  "petName": "Brachiosaurus",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌙",
+  "place": "달 바로 아래 / Right Below the Moon",
+  "message": "목을 끝까지 뻗었더니 달에 코가 닿았어! / Stretched all the way and booped the moon!",
+  "mood": "night"
+ },
+ {
+  "id": "ttukbul:s0",
+  "pet": "ttukbul",
+  "petName": "Ttukbul",
+  "tier": "nearby (동네)",
+  "emojiHint": "🦗",
+  "name": "통통한 귀뚜라미 / Chubby Cricket",
+  "desc": "먹고 싶던 귀뚜라미예요. 같이 먹자고 가져왔대요 / The one it's been craving. Brought to share!"
+ },
+ {
+  "id": "ttukbul:s1",
+  "pet": "ttukbul",
+  "petName": "Ttukbul",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍌",
+  "name": "열대 과일 퓨레 / Tropical Fruit Mash",
+  "desc": "크레스티드 게코의 최애 간식, 바나나 망고 맛이에요 / A crested gecko favorite: banana mango."
+ },
+ {
+  "id": "ttukbul:s2",
+  "pet": "ttukbul",
+  "petName": "Ttukbul",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💧",
+  "name": "속눈썹 반짝 이슬 / Lash-Shine Dewdrop",
+  "desc": "뚝! 속눈썹이 더 예뻐지는 전설의 아침 이슬이에요 / Legendary dew that makes lashes extra pretty."
+ },
+ {
+  "id": "ttukbul:c0",
+  "pet": "ttukbul",
+  "petName": "Ttukbul",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪟",
+  "place": "유리창 벽 / Glass Window Wall",
+  "message": "뚝! 유리창 끝까지 탔어. 벽 타기 선수니까 / Ttuk! Climbed the whole window. Wall pro.",
+  "mood": "indoor"
+ },
+ {
+  "id": "ttukbul:c1",
+  "pet": "ttukbul",
+  "petName": "Ttukbul",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌴",
+  "place": "열대 우림 나무 / Rainforest Treetop",
+  "message": "밤에 나무 꼭대기까지 점프했어! 눈 핥는 중 / Jumped to the treetop at night! Licking my eyes.",
+  "mood": "forest"
+ },
+ {
+  "id": "ttukbul:c2",
+  "pet": "ttukbul",
+  "petName": "Ttukbul",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏝",
+  "place": "뉴칼레도니아 숲 / New Caledonia Forest",
+  "message": "고향 숲 다녀왔어! 친척들 속눈썹도 예뻐. 뚝! / Visited my ancestral forest! Cousins' lashes are cute. Ttuk!",
+  "mood": "night"
+ }
+]
