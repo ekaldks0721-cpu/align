@@ -692,6 +692,12 @@ body.kb #buddy{display:none!important}
 .tslot.on{opacity:1;border-style:solid;background:var(--px-bg,#FFF8E8);cursor:pointer} .tslot .temo{font-size:1.5rem;line-height:1.1} .tslot small{font-size:.65rem}
 .anyrow{margin-top:.7rem} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
 @media (max-width:520px){.anyslots{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.art{display:inline-flex;align-items:center;justify-content:center;line-height:1} .art.px svg{display:block;width:100%;height:100%;image-rendering:pixelated}
+.souvart{width:192px;height:192px;font-size:3.4rem;max-width:60vw;max-height:60vw}
+.pcscene{position:absolute;inset:0;width:100%;height:100%} .pcscene.px~.pclm{display:none} .pcpic:has(.pcscene.px){aspect-ratio:64/40;min-height:0;background:none}
+.pcpic .pcpet{left:9.4%;bottom:5%;transform:none;width:25%} .pcpic .pcpet svg{width:100%;height:auto;display:block}
+.stampart{font-size:1.5rem} .stampart.px{width:48px;height:30px}
+.tslot .art.px{width:100%;height:auto} .tslot.s .art.px{width:min(100%,40px);height:auto;aspect-ratio:1} .tslot.c .art.px{aspect-ratio:64/40}
 </style>
 </head>
 <body>
@@ -5455,15 +5461,26 @@ const TRIP_ANY={s:[
 const TRIP_ANY_N=TRIP_ANY.s.flat().length+TRIP_ANY.c.flat().length;
 const anyIds=t=>['s','c'].flatMap(k=>TRIP_ANY[k][t].map((_,i)=>'any:'+k+t+'-'+i));
 const tripRec=id=>{const [sp,x]=id.split(':'), k=x[0], t=+x[1]; return sp==='any'?{k,t,r:TRIP_ANY[k][t][+x.slice(3)],any:1}:{k,t,r:TRIP[sp]&&TRIP[sp][k][t]}};
+/* 도트 그림: trip-art.js (기념품 32×32, 엽서 풍경 64×40). 처음 필요할 때 불러오고, 그 전에는 이모지로 보여 줘요 */
+const ART_AL='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-/:;<=>?@[]^_{}~', ARTS={}; let ARTP=null;
+function needArt(){if(window.TRIP_ART) return Promise.resolve(); return ARTP||(ARTP=loadScript('trip-art.js').then(()=>document.querySelectorAll('[data-art]').forEach(fillArt)).catch(()=>{ARTP=null}))}
+function artSVG(id){ // 같은 색이 옆으로 이어지면 사각형 하나로 (그림이 가벼워요)
+  if(ARTS[id]) return ARTS[id]; const raw=window.TRIP_ART&&TRIP_ART[id]; if(!raw) return null;
+  const [wh,pal,data]=raw.split('|'), [W,H]=wh.split(',').map(Number), P=pal.split(','), cells=[]; let m;
+  const re=/([^0-9])(\d*)/g; while((m=re.exec(data))) for(let k=+(m[2]||1);k>0;k--) cells.push(m[1]);
+  let r=''; for(let y=0;y<H;y++) for(let x=0;x<W;){const c=cells[y*W+x]; let e=x+1; while(e<W&&cells[y*W+e]===c) e++; if(c!=='.') r+='<rect x="'+x+'" y="'+y+'" width="'+(e-x)+'" height="1" fill="#'+P[ART_AL.indexOf(c)]+'"/>'; x=e}
+  return ARTS[id]={W,H,svg:'<svg viewBox="0 0 '+W+' '+H+'" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid meet">'+r+'</svg>'}}
+function fillArt(el){const a=artSVG(el.dataset.art); if(!a) return; el.innerHTML=a.svg; el.classList.add('px'); el.removeAttribute('data-art')}
+function artEl(id,emo,cls){const el=h('span',{class:'art '+(cls||''),'data-art':id},emo||''); if(window.TRIP_ART) fillArt(el); else needArt(); return el}
 function tripPetSVG(sp,p,px){const xp=p?petXP(p):1200, st=p?Math.max(1,stageOf(xp)):3; return petSVG(sp,st,p?p.wear||{}:{},'happy',px||64,xp)}
-function souvEl(r){return h('div',{class:'souv pxui'},h('span',{class:'souvemo'},r[0]),h('b',null,TR(r[1])),h('p',null,TR(r[2])))}
-function postEl(r,t,sp,p,name){ // 엽서: 왼쪽은 그곳 풍경과 동물, 오른쪽은 동물이 쓴 말과 우표
+function souvEl(r,id){return h('div',{class:'souv pxui'},id?artEl(id,r[0],'souvart'):h('span',{class:'souvemo'},r[0]),h('b',null,TR(r[1])),h('p',null,TR(r[2])))}
+function postEl(r,t,sp,p,name,id){ // 엽서: 왼쪽은 그곳 도트 풍경과 동물, 오른쪽은 동물이 쓴 말과 우표
   const c=PC_BG[r[3]]||PC_BG.day;
   return h('div',{class:'pcard','data-bg':r[3]},
-    h('div',{class:'pcpic',style:'--s1:'+c[0]+';--s2:'+c[1]+';--g:'+c[2]},h('span',{class:'pclm'},r[0]),SP[sp]?h('span',{class:'pcpet'},tripPetSVG(sp,p,64)):null),
-    h('div',{class:'pctx'},h('span',{class:'pcstamp'},r[0],h('small',null,TRIP_TIER[t][1])),h('b',null,TR(r[1])),h('p',null,TR(r[2])),h('span',{class:'pcfrom'},'— '+(name||(p?p.name:SP[sp]?SP[sp].n:'')))));
+    h('div',{class:'pcpic',style:'--s1:'+c[0]+';--s2:'+c[1]+';--g:'+c[2]},id?artEl(id,'','pcscene'):null,h('span',{class:'pclm'},r[0]),SP[sp]?h('span',{class:'pcpet'},tripPetSVG(sp,p,64)):null),
+    h('div',{class:'pctx'},h('span',{class:'pcstamp'},id?artEl(id,r[0],'stampart'):r[0],h('small',null,TRIP_TIER[t][1])),h('b',null,TR(r[1])),h('p',null,TR(r[2])),h('span',{class:'pcfrom'},'— '+(name||(p?p.name:SP[sp]?SP[sp].n:'')))));
 }
-const tripView=(id,p,d)=>{const R=tripRec(id), sp=R.any?(d&&d.from)||(p&&p.sp):id.split(':')[0]; return R.k==='s'?souvEl(R.r):postEl(R.r,R.t,sp,p,d&&d.name)};
+const tripView=(id,p,d)=>{const R=tripRec(id), sp=R.any?(d&&d.from)||(p&&p.sp):id.split(':')[0]; return R.k==='s'?souvEl(R.r,id):postEl(R.r,R.t,sp,p,d&&d.name,id)};
 function tripReturn(it){ // 집중이 끝나면: 거리에 맞는 것 중 아직 없는 걸 가져와요 (대개 그 동물만의 것, 가끔 공통). 다 있으면 코인으로
   const p=pets().find(q=>q.id===it.pet); if(!p||!TRIP[p.sp]||!stageOf(petXP(p))||!countsLog(it)) return;
   const t=tripTier(Math.round(sessDur(it)/60)); if(t<0) return;
@@ -5478,7 +5495,7 @@ function tripShow(p,id,dup,got,tries){ // 축하가 끝나고 다른 창이 없�
   if(dlg.open){toast(jo('🧭 '+TR('{p}이(가) 탐험에서 돌아왔어요! 동물 → 탐험에서 볼 수 있어요').replace('{p}',p.name))); return}
   const R=tripRec(id), any=R.any, head=jo((R.k==='s'?TR('{p}이(가) {w}에서 기념품을 가져왔어요!'):TR('{p}이(가) {w}에서 엽서를 보냈어요!')).replace('{p}',p.name).replace('{w}',EN?TRIP_TIER[R.t][1].toLowerCase():TRIP_TIER[R.t][1]));
   const note=dup?TR('이미 가진 거라서 대신 코인을 받았어요')+(got?' (+'+got+' '+COIN+')':''):any?TR('어디서나 만날 수 있는 선물이에요! 공통 {n} / {m}').replace('{n}',anyIds(0).concat(anyIds(1),anyIds(2)).filter(tripGot).length).replace('{m}',TRIP_ANY_N):TR('새로 모았어요! {n} / 6').replace('{n}',tripN(p.sp));
-  openDlg('🧭 '+TR('탐험에서 돌아왔어요'),h('div',null,h('p',{style:'margin:0 0 .6rem;text-align:center'},head),R.k==='s'?h('div',{class:'souvwrap'},h('span',{class:'souvpet'},cheerSprite(p,4)),souvEl(R.r)):tripView(id,p,tripGot(id)),
+  openDlg('🧭 '+TR('탐험에서 돌아왔어요'),h('div',null,h('p',{style:'margin:0 0 .6rem;text-align:center'},head),R.k==='s'?h('div',{class:'souvwrap'},h('span',{class:'souvpet'},cheerSprite(p,4)),souvEl(R.r,id)):tripView(id,p,tripGot(id)),
     h('p',{class:'small'+(dup?'':' muted'),style:'text-align:center;margin:.6rem 0 0'},note)),
     [h('button',{onclick:()=>{closeDlg(); petTab='trip'; showView('pet')}},TR('모은 것 보기')),h('button',{class:'primary',onclick:closeDlg},TR('좋아요!'))],'wide');
   if(cfg('sound')) coinSound(R.t===2);
@@ -5495,7 +5512,7 @@ function tripDetail(id){const d=tripGot(id); if(!d) return; const R=tripRec(id),
 function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·엽서 3칸, 그리고 공통 기념품·엽서
   const own=[...new Map(pets().map(p=>[p.sp,p])).values()].filter(p=>TRIP[p.sp]), allAny=anyIds(0).concat(anyIds(1),anyIds(2)), anyHave=allAny.filter(tripGot).length;
   const total=own.length*6+TRIP_ANY_N, have=own.reduce((a,p)=>a+tripN(p.sp),0)+anyHave;
-  const slot=(id,lab)=>{const g=tripGot(id), R=tripRec(id); return g?h('button',{class:'tslot on',onclick:()=>tripDetail(id),title:TR(R.r[1])},h('span',{class:'temo'},R.r[0]),lab?h('small',null,lab):null):h('span',{class:'tslot'},h('span',{class:'temo'},'?'),lab?h('small',null,lab):null)};
+  const slot=(id,lab)=>{const g=tripGot(id), R=tripRec(id); return g?h('button',{class:'tslot on '+R.k,onclick:()=>tripDetail(id),title:TR(R.r[1])},artEl(id,R.r[0],'temo'),lab?h('small',null,lab):null):h('span',{class:'tslot'},h('span',{class:'temo'},'?'),lab?h('small',null,lab):null)};
   const ap=activePet();
   return [h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('펫 탐험')),h('span',{class:'sp small'},have+' / '+total)),
       h('p',{class:'small'},TR('타이머로 10분 넘게 집중하면 함께 다니는 동물이 탐험을 떠나요. 집중이 끝나면 기념품이나 엽서를 가져와요.')),
