@@ -285,9 +285,9 @@ function sceneImage(S, sc) {
   const P = S.P, ctx = new DrawContext(); ctx.size = new Size(96 * sc, 72 * sc); ctx.opaque = false; ctx.respectScreenScale = false;
   drawGrid(ctx, P.bg[S.tod] || P.bg.day, P.pal, 0, 0, sc);
   if (P.wx === 'rain' || P.wx === 'snow') { // 비·눈 한 장면
-    const area = P.theme === 'room' ? [12, 18, 22, 18] : [4, 10, 88, 58]; let seed = S.slot * 7 + 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const WIN = { room: [12, 18, 22, 18], cafe: [10, 16, 24, 18], library: [36, 17, 20, 19] }, win = WIN[P.theme], area = win || [4, 10, 88, 58]; let seed = S.slot * 7 + 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
     ctx.setFillColor(new Color(P.wx === 'snow' ? '#FFFFFF' : S.tod === 'night' ? '#6070A0' : '#D8F0FF'));
-    for (let i = 0; i < (P.theme === 'room' ? 10 : 34); i++) { const x = area[0] + Math.floor(rnd() * area[2]), y = area[1] + Math.floor(rnd() * area[3]); if (P.theme !== 'room' && !inJar(x, y)) continue; ctx.fillRect(new Rect(x * sc, y * sc, sc, (P.wx === 'snow' ? 1 : 2) * sc)); }
+    for (let i = 0; i < (win ? 10 : 34); i++) { const x = area[0] + Math.floor(rnd() * area[2]), y = area[1] + Math.floor(rnd() * area[3]); if (!win && !inJar(x, y)) continue; ctx.fillRect(new Rect(x * sc, y * sc, sc, (P.wx === 'snow' ? 1 : 2) * sc)); }
   }
   let egg = 0, k = 0; const order = P.pets.map((p, i) => i).sort((a, b) => P.pets[a].me - P.pets[b].me);
   order.forEach((i, j) => { const p = P.pets[i], pose = S.poses[i], f = p.frames[pose] || p.frames.stand || p.frames.egg; if (!f) return;

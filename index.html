@@ -623,7 +623,7 @@ section[data-card=pet] h2,.pxui h2{font-family:inherit;font-weight:700;font-size
 .shopit{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.7rem .4rem;border:2px solid var(--px-line);background:var(--px-bg);text-align:center;min-width:0}
 .shopit b{font-size:14px;overflow-wrap:anywhere} .shopit.on{background:var(--px-soft)}
 .shopit .emo{font-size:2rem;line-height:1.2} .shopit .price{display:inline-flex;align-items:center;gap:.2rem;font-size:13px} .shopit .row{justify-content:center;gap:.3rem}
-.shopit button{padding:.2em .8em}
+.shopit button{padding:.2em .8em} .jarpv svg{max-width:100%;height:auto}
 .shopit .dexmore{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.2rem;border:0;background:none;color:inherit;width:100%;cursor:pointer}
 .shopit .dexmore .small{opacity:.75}
 .dexhero{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:.6rem;background:var(--px-bg,#FFF8E8);border:2px solid var(--px-line,#202838)}
@@ -3897,7 +3897,115 @@ function autoWeather(){ // 날마다 정해지는 날씨 (같은 날은 모든 �
   const winter=m===12||m<=2; return winter?(x<.35?'snow':x<.5?'cloud':'clear'):(x<.22?'rain':x<.42?'cloud':'clear');
 }
 function rng(seed){let s=seed>>>0||1; return ()=>{s^=s<<13; s^=s>>>17; s^=s<<5; return (s>>>0)/4294967296}}
+// 상점에서 사는 유리병 배경들. K: 그리기 도구 (R 네모, P 점, rows 그림, drawSky 하늘), tod 시간대, lamp 불 켜짐
+const TERRA_X={
+  beach:K=>{const {R,P,rows,drawSky,tod}=K, N=tod==='night', D=tod==='dusk'; // 🏖 바닷가: 야자수, 파라솔, 모래성
+    drawSky(0,0,TW,38);
+    const sea=N?['#1E3A70','#2A4C88','#3A62A0']:D?['#3A78B8','#5A98D0','#F0B088']:['#2E8ED8','#48B0E8','#A8E8F8'];
+    R(0,36,TW,14,sea[0]); R(0,36,TW,2,sea[1]); for(let y=39;y<50;y+=3) for(let x=(y*7)%11;x<TW;x+=14) R(x,y,5,1,sea[1]);
+    if(!N) for(let x=60;x<84;x+=3) P(x,37+(x%2),'#F8F8E0');
+    for(let x=0;x<TW;x++){const y=48+Math.round(Math.sin(x/6)); R(x,y,1,2,'#F8FCFF'); R(x,y+2,1,1,sea[2])}
+    const sand=N?['#B8A070','#A08860']:['#F8E0A0','#E8C880'];
+    R(0,51,TW,TH-51,sand[0]); for(let y=53;y<TH;y+=3) for(let x=(y*5)%9;x<TW;x+=9) P(x,y,sand[1]);
+    const tr='#9A6A38', tk='#7A5028'; for(let j=0;j<34;j++){const x=78+Math.round(4*Math.sin(j/14)); R(x,58-j,3,1,j%3?tr:tk)} // 야자수: 휜 줄기, 큰 잎, 코코넛
+    const leaf=(x0,y0,dx,c)=>{for(let i=0;i<14;i++){const x=x0+dx*i, y=y0+Math.round(i*i/22)-Math.round(i/3); P(x,y,c); P(x,y+1,c); if(i%2&&i<12) P(x,y+2,c)}};
+    const g1=N?'#2A6A3C':'#3EA050', g2=N?'#3C8050':'#78D070'; leaf(80,24,1,g1); leaf(79,24,-1,g1); leaf(80,22,1,g2); leaf(79,22,-1,g2); for(let j=0;j<7;j++){P(80-Math.floor(j/2),23-j,g1); P(81+Math.floor(j/2),23-j,g2)}
+    rows(77,25,['.cc.cc','cccccc','.cc...'],{c:'#6A4018'});
+    rows(22,34,['.......rr.......','....rrwwrrww....','..rrwwrrwwrrww..','.rwwrrwwrrwwrrw.','rrwwrrwwrrwwrrww','........p.......'],{r:'#F05858',w:'#FFFFFF',p:'#806040'});
+    R(30,40,1,18,'#806040'); R(18,58,22,4,'#58B8F0'); R(18,58,22,1,'#88D8F8'); for(let x=20;x<40;x+=4) R(x,59,2,3,'#F8F8F8');
+    rows(48,55,['...t.t...','..ttttt..','..tdtdt..','.ttttttt.','.tdttdtt.','ttttttttt'],{t:'#E8C070',d:'#B08848'});
+    rows(6,62,['..o..','.ooo.','ooooo','.o.o.'],{o:'#F88848'}); rows(64,63,['.ss.','swws','ssss'],{s:'#F8A0B0',w:'#FFFFFF'}); rows(80,57,['.b.','bbb'],{b:'#F8F0E0'});
+  },
+  snowtown:K=>{const {R,P,rows,drawSky,tod}=K, N=tod==='night', D=tod==='dusk', lit=N||D; // ⛄ 눈 마을: 불 켜진 집, 눈사람, 전나무
+    drawSky(0,0,TW,44);
+    for(let x=0;x<TW;x++){const y=34+Math.round(3*Math.sin(x/11)+Math.sin(x/4)); R(x,y,1,12,N?'#9AA8C8':'#E0ECF8')}
+    const house=(x,y,wall,roofC,door)=>{rows(x,y,['....ssssssss....','..ssssssssssss..','.ssrrrrrrrrrrss.','ssrrrrrrrrrrrrss','.wwwwwwwwwwwwww.','.wwwwwwwwwwwwww.','.wwyyw.wwwwyyww.','.wwyyw.wwwwyyww.','.wwwwwddwwwwwww.','.wwwwwddwwwwwww.','.wwwwwddwwwwwww.'],{s:'#FFFFFF',r:roofC,w:wall,y:lit?'#F8D860':'#88B0D8',d:door})};
+    house(30,36,'#E8B888','#B84848','#7A4A28'); house(52,33,'#C8D8F0','#4870B8','#5A3A28');
+    R(41,32,3,5,'#8A5A48'); R(41,31,3,1,'#FFFFFF'); R(62,29,3,5,'#7A7A88'); R(62,28,3,1,'#FFFFFF'); if(lit) [[42,29],[43,27],[42,25],[63,26],[64,24],[63,22]].forEach(([x,y])=>P(x,y,'#C0C8D8'));
+    rows(72,40,['..ssss..','.ssssss.','sslllsss','.wwwwww.','.wywwdw.','.wwwwdw.'],{s:'#FFFFFF',l:'#6A9A58',w:'#F0D8B8',y:lit?'#F8D860':'#88B0D8',d:'#7A4A28'});
+    const pine=(x,y)=>rows(x,y,['....s....','...sgs...','..sgggs..','...ggg...','..sgggs..','.sgggggs.','..ggggg..','.sgggggs.','sgggggggs','....t....','....t....'],{s:'#FFFFFF',g:N?'#1E5034':'#2E7A48',t:'#7A5030'});
+    pine(6,36); pine(14,40); pine(82,38);
+    R(0,47,TW,TH-47,N?'#C8D4F0':'#F4F8FF'); for(let y=50;y<TH;y+=4) for(let x=(y*3)%13;x<TW;x+=13) R(x,y,4,1,N?'#A8B8E0':'#D8E4F4');
+    if(lit) [[35,48],[38,48],[57,45],[60,45]].forEach(([x,y])=>R(x-1,y,4,2,'#F8E8A0'));
+    rows(66,46,['..ooo..','.owwwo.','.wkwkw.','.wwnww.','..www..','.wwwww.','wwwbwwm','wwwwwwm','wwwbwww','.wwwww.'],{o:'#303040',w:'#FFFFFF',k:'#303040',n:'#F88828',b:'#303040',m:'#8A5A30'});
+    R(66,51,7,1,'#E84848'); R(71,52,1,2,'#E84848');
+    for(let x=4;x<TW;x+=7) P(x,60+(x%3),'#FFFFFF');
+  },
+  space:K=>{const {R,P,rows}=K; // 🚀 우주: 고리 행성, 달 표면, 로켓과 깃발
+    R(0,0,TW,TH,'#0E0E30'); R(0,24,TW,14,'#16143C'); R(0,38,TW,14,'#201A4C');
+    const r=rng(41); for(let i=0;i<70;i++){const x=Math.floor(r()*TW), y=Math.floor(r()*50); P(x,y,r()<.2?'#F8F0C0':r()<.5?'#A8B0E0':'#6870B0')}
+    [[20,16],[60,12],[84,30]].forEach(([x,y])=>rows(x-1,y-1,['.s.','sSs','.s.'],{s:'#A8B8F8',S:'#FFFFFF'}));
+    rows(52,14,['........oooo........','......oppppPPo......','.....opppppppPo.....','....oppqqppppppo....','rrrrrrrrrrrrrrrrrrrr','.rrooppppqqpppporr..','.....opppppppppo....','......opppppppo.....','........oooo........'],{o:'#6A3A88',p:'#B070D8',P:'#D8A8F0',q:'#8A50B0',r:'#F8C870'});
+    rows(10,18,['.bbb.','bgbbb','bbbgb','.bbb.'],{b:'#58A8F0',g:'#58C058'});
+    for(let x=0;x<TW;x++){const y=50+Math.round(2*Math.sin(x/9)); R(x,y,1,TH-y,'#9898A8'); P(x,y,'#C8C8D8')}
+    [[14,58,4],[44,62,3],[58,55,2],[78,61,4]].forEach(([x,y,w])=>{R(x,y,w*2,2,'#787890'); R(x+1,y+2,w*2-2,1,'#B0B0C0')});
+    rows(66,30,['....r....','...rwr...','..rwwwr..','..wwwww..','..wbbbw..','..wbcbw..','..wbbbw..','..wwwww..','..wwwww..','.rwwwwwr.','rrwwwwwrr','rr.fff.rr','....f....'],{r:'#E84848',w:'#F0F0F8',b:'#4878C8',c:'#A8D8F8',f:'#F8B040'});
+    R(36,40,1,12,'#D0D0D0'); rows(37,40,['yyyyy','yyryy','yyyyy'],{y:'#F8E048',r:'#E84848'});
+  },
+  sakura:K=>{const {R,P,rows,drawSky,tod}=K, N=tod==='night'; // 🌸 벚꽃길: 분홍 나무, 돌길, 벤치, 떨어진 꽃잎
+    drawSky(0,0,TW,46);
+    for(let x=0;x<TW;x++){const y=38+Math.round(2*Math.sin(x/8)); R(x,y,1,10,N?'#3A6A48':'#8ACB78')}
+    const pk=N?['#A86890','#C888A8','#E0A8C0']:['#F4A8C8','#F8C8DC','#FFE4EE'];
+    const blob=(cx,cy,rx,ry,c)=>{for(let j=-ry;j<=ry;j++)for(let i=-rx;i<=rx;i++) if((i*i)/(rx*rx)+(j*j)/(ry*ry)<=1) P(cx+i,cy+j,c)};
+    const tree=(x,base,sz)=>{const t=N?'#4A3030':'#6A4038', q=v=>Math.round(v); R(x-1,q(base-14*sz),3,q(14*sz),t); R(x-3,base-1,7,1,t); for(let j=0;j<5*sz;j++){P(x+2+Math.floor(j/1.5),q(base-8*sz-j),t); P(x-2-Math.floor(j/1.5),q(base-9*sz-j),t)}
+      const cy=q(base-17*sz); [[-7,2,7,5],[7,2,7,5],[0,-2,10,7],[-4,-5,6,4],[5,-4,6,4]].forEach(([dx,dy,rx,ry])=>blob(x+Math.round(dx*sz),cy+Math.round(dy*sz),Math.round(rx*sz),Math.round(ry*sz),pk[0]));
+      [[-6,0,5,3],[5,-1,6,4],[0,-4,7,4]].forEach(([dx,dy,rx,ry])=>blob(x+Math.round(dx*sz),cy+Math.round(dy*sz),Math.round(rx*sz),Math.round(ry*sz),pk[1]));
+      const r2=rng(x*7+3); for(let i=0;i<14*sz;i++) P(x+Math.round((r2()-.5)*18*sz),cy+Math.round((r2()-.6)*10*sz),pk[2])};
+    tree(16,49,1); tree(84,48,1); tree(50,42,.7);
+    R(0,48,TW,TH-48,N?'#4A7A50':'#90D070'); for(let x=3;x<TW;x+=5) R(x,47+(x%2),1,1+(x%2),N?'#3A6A40':'#70B050');
+    for(let x=0;x<TW;x++){const w=10+Math.round((x/TW)*6); R(x,58-(w>>2),1,w,N?'#9890A0':'#E0D4C0')} for(let x=2;x<TW;x+=8) R(x,56+(x%3),5,2,N?'#B0A8B8':'#F0E8D8');
+    rows(70,46,['bbbbbbbbbbbb','oooooooooooo','bbbbbbbbbbbb','.l........l.','.l........l.'],{b:'#B87848',o:'#8A5428',l:'#5A3418'});
+    const r=rng(17); for(let i=0;i<24;i++) P(Math.floor(r()*TW),49+Math.floor(r()*20),pk[r()<.5?0:1]);
+    if(N) rows(50,34,['.oo.','oyyo','oyyo','.oo.','..o.','..o.','..o.','..o.','..o.','..o.','..o.','..o.','..o.','..o.','..o.','..o.','..o.','.ooo'],{o:'#3A3A48',y:'#F8E080'});
+  },
+  undersea:K=>{const {R,P,rows,tod}=K, N=tod==='night'; // 🐠 바닷속: 빛줄기, 산호, 미역, 보물 상자
+    const w=N?['#0A1E48','#0E2A5C','#123670']:['#1E78C0','#2A90D0','#3AA8E0'];
+    R(0,0,TW,TH,w[2]); R(0,0,TW,30,w[0]); R(0,30,TW,16,w[1]); for(let x=0;x<TW;x+=2){P(x,29,w[1]); P(x+1,45,w[2])}
+    for(let x=0;x<TW;x++) if(x%14<1) for(let y=10;y<12;y++) P(x,y,N?'#3050A0':'#A8E0F8');
+    if(!N) [[14,8],[42,4],[72,10]].forEach(([x0,len])=>{for(let y=10;y<48;y++){const x=x0+Math.floor((y-10)/3); if((x+y)%2===0) {P(x,y,'#68C0F0'); P(x+1,y,'#58B8E8')}}});
+    for(let x=0;x<TW;x++){const y=54+Math.round(1.5*Math.sin(x/7)); R(x,y,1,TH-y,N?'#8A7A58':'#E8D49A'); P(x,y,N?'#A09068':'#F8E8B8')}
+    for(let y=58;y<TH;y+=3) for(let x=(y*7)%10;x<TW;x+=10) P(x,y,N?'#6A5A40':'#C8B07A');
+    const weed=(x,h,c)=>{for(let j=0;j<h;j++){const xx=x+Math.round(Math.sin(j/2.2)); R(xx,55-j,2,1,c)}};
+    weed(8,22,'#2E9E58'); weed(12,16,'#48B868'); weed(86,20,'#2E9E58'); weed(60,14,'#48B868');
+    rows(18,42,['o.o..o.o','oo.o.oo.','.ooooo..','..ooo.oo','...oooo.','...oo...','...oo...','..oooo..','.oooooo.'],{o:N?'#B04868':'#F86888'});
+    rows(74,44,['.y..y.y.','yy.yyyy.','.yyyy.yy','..yyyy..','...yy...','..yyyy..','.yyyyyy.'],{y:N?'#B07838':'#F8A848'});
+    rows(40,47,['..oooooooo..','.okkkkkkkko.','okkkkkkkkkko','oyyyyyyyyyyo','okkkkykkkkko','okkkkkkkkkko','okkkkkkkkkko','oooooooooooo'],{o:'#5A3418',k:'#A86838',y:'#F8D040'}); rows(43,46,['g.g...g'],{g:'#F8E878'});
+    rows(30,20,['..o...','.ooo..','ooeoo.','ooooooo','.ooo..','..o...'],{o:'#F8A030',e:'#202020'}); rows(32,21,['w','.','w'],{w:'#FFFFFF'});
+    rows(58,30,['...b..','.bbbb.b','bbebbbb','.bbbb.b','...b..'],{b:'#58C8F8',e:'#202020'});
+    [[26,40],[28,34],[64,24],[66,18]].forEach(([x,y])=>rows(x,y,['.c.','c.c','.c.'],{c:'#C8F0FF'}));
+    rows(70,58,['.o.o.','ooooo','.ooo.','o.o.o'],{o:'#E85870'});
+  },
+  cafe:K=>{const {R,P,rows,drawSky,tod,lamp}=K, N=tod==='night'; // ☕ 카페: 창가, 칠판 메뉴, 커피 머신, 매달린 전등
+    const wall=N?'#7A5A50':'#E8C8A0', wd=N?'#5A3E30':'#A87048';
+    R(0,0,TW,TH,wall); for(let x=0;x<TW;x+=6) R(x,10,1,34,N?'#705048':'#E0BC90');
+    R(0,40,TW,12,wd); R(0,40,TW,1,'#C89060'); for(let x=3;x<TW;x+=8) R(x,42,1,10,N?'#4A3226':'#8A5A38');
+    R(8,14,28,22,'#6A4428'); drawSky(10,16,24,18); R(21,16,2,18,'#6A4428'); R(7,36,30,2,'#8A5A38');
+    rows(10,12,['rwrwrwrwrwrwrwrwrwrwrwrw','.rwrwrwrwrwrwrwrwrwrwrw.'],{r:'#D84848',w:'#F8F0E0'});
+    R(42,14,22,16,'#8A5A38'); R(43,15,20,14,'#2E3A34'); [[45,17,8],[45,20,12],[45,23,9],[45,26,11]].forEach(([x,y,w])=>R(x,y,w,1,'#E8E8D8')); P(60,17,'#F8C848'); P(60,20,'#F8C848'); rows(56,23,['.ww.','wccw','wccw','.ww.'],{w:'#E8E8D8',c:'#2E3A34'});
+    [[22,10],[76,10]].forEach(([x,y])=>{R(x,y,1,6,'#303030'); rows(x-3,y+6,['.lllll.','lllllll'],{l:'#304030'}); R(x-2,y+8,5,1,lamp||N?'#F8E080':'#A8A890');
+      if(lamp||N) for(let yy=y+9;yy<y+20;yy++) for(let xx=x-2-(yy-y-9)/2;xx<x+3+(yy-y-9)/2;xx++) if((Math.floor(xx)+yy)%2===0&&K.B[yy][Math.floor(xx)]===wall) P(Math.floor(xx),yy,'#F8E8B8')});
+    R(66,32,26,3,'#5A3418'); R(66,35,26,17,'#8A5A38'); for(let x=68;x<92;x+=6) R(x,37,4,13,'#7A4A28');
+    rows(70,20,['.ooooooo.','ommmmmmmo','omwwwwwmo','omwrrwwmo','ommmmmmmo','omm.o.mmo','omm.o.mmo','omm...mmo','ooooooooo','.........','.........','.........'],{o:'#303438',m:'#B8C0C8',w:'#E8F0F8',r:'#E84848'});
+    rows(82,26,['.ww.','wccw.','wccww','wccw.','.ww.'],{w:'#FFFFFF',c:'#7A4A28'}); P(83,24,'#D0D0D0'); P(84,23,'#D0D0D0');
+    R(0,52,TW,TH-52,N?'#4A3A30':'#8A6A50'); for(let y=52;y<TH;y+=4) for(let x=(y/4%2)*4;x<TW;x+=8) R(x,y,4,4,N?'#5A4A3E':'#C8A888');
+    rows(38,50,['oooooooooo','.ooooooooo.','....oo....','....oo....','....oo....','...oooo...'],{o:'#5A3418'}); rows(40,46,['.ss..','wccw.','wccww','.ww..'],{s:'#C8C8C8',w:'#FFFFFF',c:'#7A4A28'}); rows(46,47,['.yy.','yyyy','.oo.'],{y:'#F8D070',o:'#C88838'});
+  },
+  library:K=>{const {R,P,rows,drawSky,tod,lamp}=K, N=tod==='night'; // 📚 도서관: 키 큰 책장, 둥근 창, 초록 스탠드
+    const wall=N?'#5A5070':'#D8C8A8';
+    R(0,0,TW,TH,wall); for(let x=0;x<TW;x+=12) R(x,10,1,46,N?'#4E4664':'#C8B898');
+    const shelf=(x,y,w,h2,seed)=>{R(x,y,w,h2,'#6A3E20'); R(x+1,y+1,w-2,h2-2,'#4A2810'); const r=rng(seed), cols=['#C84848','#4878C8','#58A858','#E8B040','#8858B8','#E87838','#D8D0C0','#307878'];
+      for(let sy=y+1;sy<y+h2-2;sy+=8){let bx=x+1; while(bx<x+w-2){const bw=1+Math.floor(r()*2), bh=4+Math.floor(r()*3), c=cols[Math.floor(r()*cols.length)]; if(bx+bw>x+w-1) break; R(bx,sy+7-bh,bw,bh,c); if(bh>5) P(bx,sy+8-bh,'#F8F0D8'); bx+=bw+(r()<.15?1:0)} R(x,sy+7,w,1,'#7A4A28')}};
+    shelf(4,12,22,45,3); shelf(66,12,26,45,9);
+    R(34,14,24,24,'#6A3E20'); for(let y=14;y<20;y++){const c=6-(y-14); R(34,y,c,1,wall); R(58-c,y,c,1,wall)} drawSky(36,17,20,19); R(45,15,2,22,'#6A3E20'); R(36,26,20,1,'#6A3E20'); for(let y=17;y<22;y++){const c=Math.max(0,5-(y-16)); R(36,y,c,1,'#6A3E20'); R(56-c,y,c,1,'#6A3E20')} R(33,38,26,2,'#8A5A38');
+    R(0,56,TW,TH-56,N?'#5A4030':'#A87850'); for(let y=58;y<TH;y+=4) R(0,y,TW,1,N?'#4A3424':'#8A6038'); R(20,60,56,8,'#A83838'); R(22,61,52,6,'#C84848'); for(let x=24;x<74;x+=4) P(x,63,'#E8B040');
+    R(30,46,30,3,'#7A4A28'); R(30,46,30,1,'#9A6A40'); R(32,49,2,8,'#5A3418'); R(56,49,2,8,'#5A3418');
+    rows(48,37,['.gggg.','gGGGGg','..y...','..y...','..y...','.yyy.'],{g:'#2E8A50',G:'#58B878',y:'#C8A040'}); if(lamp||N) {R(47,43,8,1,'#F8F0B0'); R(46,44,10,2,'#F8E8A0')}
+    rows(36,42,['rrrrr','wwwww','bbbbbb'],{r:'#C84848',w:'#F8F0D8',b:'#4878C8'}); rows(40,39,['..ww','wwww','wwww'],{w:'#F8F8E8'});
+    for(let y=14;y<56;y++){P(60,y,'#9A6A40'); P(64,y,'#9A6A40')} for(let y=16;y<56;y+=5) R(60,y,5,1,'#9A6A40');
+  },
+};
 function terraBG(theme,tod,wx,lamp){
+  if(wx==='stars'||wx==='aurora') tod='night'; // 별똥별·오로라는 밤하늘에만 보여요
   const B=Array.from({length:TH},()=>Array(TW).fill(null));
   const R=(x,y,w,h2,c,only)=>{for(let j=0;j<h2;j++)for(let i=0;i<w;i++){const X=x+i, Y=y+j; if(X>=0&&Y>=0&&X<TW&&Y<TH&&(!only||only(X,Y))) B[Y][X]=c}};
   const P=(x,y,c)=>R(x,y,1,1,c);
@@ -3910,11 +4018,16 @@ function terraBG(theme,tod,wx,lamp){
     if(!gray&&tod==='day') rows(x+w-11,y+2,['.yyy.','yyyyy','yyyyy','yyyyy','.yyy.'],{y:'#F8D838'});
     if(!gray&&tod==='night') rows(x+w-10,y+2,['.mmm','mm..','mm..','.mmm'],{m:'#F8F0B0'});
     if(!gray&&tod==='dusk') rows(x+w-12,y+h2-6,['..yyy..','.yyyyy.','yyyyyyy'],{y:'#F8E070'});
+    if(wx==='rainbow'){const cx=x+w/2, cy=y+h2+1, ro=Math.min(w*.42,h2*.9), bw=Math.max(1,Math.round(ro/13)), RB=['#F05858','#F8A040','#F8E048','#68C858','#58A8F0','#9868D8'];
+      for(let j=y;j<y+h2;j++)for(let i=x;i<x+w;i++){const d=Math.hypot(i+.5-cx,j+.5-cy), k=Math.floor((ro-d)/bw); if(k>=0&&k<6) P(i,j,RB[k])}}
+    if(wx==='aurora') for(let i=0;i<w;i++){const yb=y+Math.round(h2*.62+h2*.09*Math.sin(i/9)+h2*.03*Math.sin(i/4.1)), L=Math.round(h2*.3+h2*.1*Math.sin(i/5.3));
+      for(let j=0;j<L;j++){const Y=yb-j; if(Y<y) break; const t=j/L; if(t>.6&&(i+Y)%2) continue; P(x+i,Y,t<.12?'#C0F8D8':t<.45?'#48D8A0':t<.75?'#3AA8A0':'#7858C0')}}
     const cl=gray?(tod==='night'?'#383C50':'#D0D8E0'):'#FFFFFF';
     [[4,3],[w-26,6]].forEach(([cx,cy])=>rows(x+cx,y+cy,['..ccc....','.ccccc.cc','ccccccccc'],{c:cl}));
     if(gray) rows(x+Math.floor(w/2)-6,y+1,['...cccc....','.cccccccc..','ccccccccccc'],{c:cl});
   };
-  if(theme==='pumpkin'){ // 🎃 밤 호박밭: 보름달, 박쥐, 빛나는 잭오랜턴 (늘 밤)
+  if(TERRA_X[theme]) TERRA_X[theme]({B,R,P,rows,drawSky,tod,lamp});
+  else if(theme==='pumpkin'){ // 🎃 밤 호박밭: 보름달, 박쥐, 빛나는 잭오랜턴 (늘 밤)
     R(0,0,TW,52,'#241A48'); R(0,20,TW,16,'#2E2258'); R(0,36,TW,16,'#3A2A68'); const r=rng(13); for(let i=0;i<40;i++) P(Math.floor(r()*TW),Math.floor(r()*34),r()<.3?'#F8F0C0':'#9890D0');
     rows(66,12,['...mmmm...','.mmmmmmmm.','mmmmmmmmmm','mmmMmmmmmm','mmmmmmMmmm','mmmmmmmmmm','.mmmmmmmm.','...mmmm...'],{m:'#F8E8A0',M:'#E8D080'});
     [[20,16],[34,10],[52,20]].forEach(([x,y])=>rows(x,y,['b.....b','bb.b.bb','.bbbbb.','..b.b..'],{b:'#120C24'}));
@@ -3968,21 +4081,40 @@ function terraBG(theme,tod,wx,lamp){
   return B;
 }
 function bufRects(B){let out=''; for(let y=0;y<TH;y++){let x=0; while(x<TW){const c=B[y][x]; if(!c){x++; continue} let n=1; while(x+n<TW&&B[y][x+n]===c) n++; out+='<rect x="'+x+'" y="'+y+'" width="'+n+'" height="1" fill="'+c+'"/>'; x+=n}} return out}
-function weatherFrames(theme,wx,tod){ // 비·눈은 3~4장을 돌려 가며 보여 줘요
-  const r=rng(5), area=theme==='room'?[12,18,22,18]:[4,10,88,58], n=wx==='snow'?4:3, out=[];
-  if(wx!=='rain'&&wx!=='snow'){ if(theme==='forest'&&tod==='night'){for(let f=0;f<2;f++){let s=''; const q=rng(31+f); for(let i=0;i<5;i++){const x=10+Math.floor(q()*76), y=18+Math.floor(q()*28); s+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="#F8F070"/>'} out.push(s)} } return out}
-  const pts=Array.from({length:wx==='snow'?(theme==='room'?10:34):(theme==='room'?12:40)},()=>[Math.floor(r()*area[2]),Math.floor(r()*area[3])]);
-  for(let f=0;f<n;f++){let s=''; pts.forEach(([x,y],i)=>{
-    const dy=wx==='snow'?f*2:f*5, X=area[0]+(wx==='snow'?(x+((f+i)%4<2?0:1))%area[2]:(x-f*1+area[2])%area[2]), Y=area[1]+(y+dy)%area[3];
-    if(theme!=='room'&&!inJar(X,Y)) return;
-    s+=wx==='snow'?'<rect x="'+X+'" y="'+Y+'" width="1" height="1" fill="#FFFFFF"/>':'<rect x="'+X+'" y="'+Y+'" width="1" height="2" fill="'+(tod==='night'?'#6070A0':'#D8F0FF')+'"/>'});
-    out.push(s)}
+const TERRA_WIN={room:[12,18,22,18],cafe:[10,16,24,18],library:[36,17,20,19]}; // 실내 배경은 창문 안에만 비·눈이 와요
+function weatherFrames(theme,wx,tod){ // 날씨는 몇 장을 돌려 가며 보여 줘요
+  const r=rng(5), win=TERRA_WIN[theme], area=win||[4,10,88,58], out=[], ok=(X,Y)=>win?X>=area[0]&&X<area[0]+area[2]&&Y>=area[1]&&Y<area[1]+area[3]:inJar(X,Y);
+  const rect=(X,Y,w,h2,c)=>ok(X,Y)?'<rect x="'+X+'" y="'+Y+'" width="'+w+'" height="'+h2+'" fill="'+c+'"/>':'';
+  const drift=(cnt,n,fn)=>{const pts=Array.from({length:cnt},()=>[r()*area[2],r()*area[3],r()]); for(let f=0;f<n;f++) out.push(pts.map((p,i)=>fn(p,f,i)).join(''))}; // 알갱이가 프레임마다 조금씩 움직여요
+  const wrap=(v,lo,len)=>lo+(((Math.floor(v)%len)+len)%len);
+  const big=win?.3:1;
+  if(wx==='petal') drift(Math.round(26*big)+3,6,([x,y,k],f,i)=>{const X=wrap(x+f*1+Math.round(Math.sin((f+i)*1.1)),area[0],area[2]), Y=wrap(y+f*2,area[1],area[3]), c=k<.5?'#F8B8D0':'#FFD8E8'; return rect(X,Y,2,1,c)+rect(X+(k<.5?0:1),Y+1,1,1,'#F090B8')});
+  else if(wx==='leaf') drift(Math.round(18*big)+3,6,([x,y,k],f,i)=>{const X=wrap(x+[0,1,1,0,-1,-1][(f+i)%6],area[0],area[2]), Y=wrap(y+f*2,area[1],area[3]), c=k<.33?'#E86030':k<.66?'#F8A830':'#C84828'; return (f+i)%2?rect(X,Y,2,1,c)+rect(X+1,Y+1,1,1,'#8A5020'):rect(X,Y,1,2,c)+rect(X+1,Y,1,1,c)});
+  else if(wx==='firefly') drift(win?4:12,4,([x,y,k],f,i)=>{const X=wrap(x+[0,1,1,0][(f+i)%4],area[0],area[2]), Y=wrap(y*.7+area[3]*.3+[0,0,-1,-1][(f+i)%4],area[1],area[3]); if((i+f)%4===3) return rect(X,Y,1,1,'#88A040'); return rect(X,Y,1,1,'#FFFF90')+((i+f)%4===1?rect(X-1,Y,1,1,'#D8F060')+rect(X+1,Y,1,1,'#D8F060')+rect(X,Y-1,1,1,'#D8F060')+rect(X,Y+1,1,1,'#D8F060'):'')});
+  else if(wx==='bubble') drift(win?5:14,4,([x,y,k],f,i)=>{const X=wrap(x+((f+i)%4<2?0:1),area[0],area[2]), Y=wrap(y-f*2,area[1],area[3]), e='#6AB0E0', c='#E8F8FF'; return k<.4&&!win?rect(X,Y,2,2,c)+rect(X+1,Y+1,1,1,e):rect(X+1,Y,2,1,e)+rect(X,Y+1,1,2,e)+rect(X+3,Y+1,1,2,e)+rect(X+1,Y+3,2,1,e)+rect(X+1,Y+1,1,1,'#FFFFFF')+rect(X+2,Y+2,1,1,'#B8E0F8')});
+  else if(wx==='stars'){const tw=Array.from({length:win?3:9},()=>[area[0]+Math.floor(r()*area[2]),area[1]+Math.floor(r()*area[3]*.55)]), n=8, sx=win?area[0]+area[2]-2:76, sy=win?area[1]+1:14, len=win?area[2]-4:52;
+    for(let f=0;f<n;f++){let s=tw.map(([X,Y],i)=>(i+f)%3===0?rect(X,Y,1,1,'#FFFFFF')+rect(X-1,Y,1,1,'#A8B8F8')+rect(X+1,Y,1,1,'#A8B8F8')+rect(X,Y-1,1,1,'#A8B8F8')+rect(X,Y+1,1,1,'#A8B8F8'):rect(X,Y,1,1,'#C8D0F8')).join('');
+      if(f<4){const t=f/4, X=Math.round(sx-len*t), Y=Math.round(sy+len*t*.4); s+=rect(X,Y,1,1,'#FFFFFF')+rect(X+1,Y,1,1,'#F8F0A0'); for(let j=1;j<(win?4:9);j++) s+=rect(X+j,Y-Math.round(j*.4),1,1,j<3?'#F8E880':j<6?'#C8B870':'#787888')}
+      out.push(s)}}
+  else if(wx==='rainbow'||wx==='aurora'){const tw=Array.from({length:win?2:7},()=>[area[0]+Math.floor(r()*area[2]),area[1]+Math.floor(r()*area[3]*.5)]);
+    for(let f=0;f<2;f++) out.push(tw.map(([X,Y],i)=>(i+f)%2?rect(X,Y,1,1,'#FFFFFF')+rect(X-1,Y,1,1,'#F8F8C8')+rect(X+1,Y,1,1,'#F8F8C8')+rect(X,Y-1,1,1,'#F8F8C8')+rect(X,Y+1,1,1,'#F8F8C8'):rect(X,Y,1,1,'#F8F8E0')).join(''))}
+  else if(wx==='rain'||wx==='snow'){const n=wx==='snow'?4:3, pts=Array.from({length:wx==='snow'?(win?10:34):(win?12:40)},()=>[Math.floor(r()*area[2]),Math.floor(r()*area[3])]);
+    for(let f=0;f<n;f++){let s=''; pts.forEach(([x,y],i)=>{
+      const dy=wx==='snow'?f*2:f*5, X=area[0]+(wx==='snow'?(x+((f+i)%4<2?0:1))%area[2]:(x-f*1+area[2])%area[2]), Y=area[1]+(y+dy)%area[3];
+      s+=wx==='snow'?rect(X,Y,1,1,'#FFFFFF'):rect(X,Y,1,2,tod==='night'?'#6070A0':'#D8F0FF')});
+      out.push(s)}}
+  else if(theme==='forest'&&tod==='night'){for(let f=0;f<2;f++){let s=''; const q=rng(31+f); for(let i=0;i<5;i++){const x=10+Math.floor(q()*76), y=18+Math.floor(q()*28); s+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="#F8F070"/>'} out.push(s)}}
   return out;
 }
-const TERRA_THEMES=[['room',TR('공부방')],['forest',TR('숲')],['garden',TR('정원')]], TERRA_ALL=TERRA_THEMES.concat([['pumpkin',TR('밤 호박밭')]]);
+// 상점에서 코인으로 사는 배경과 날씨: [키, 이모지, 이름, 값]. 산 건 옷장('wardrobe')에 theme:키 · wx:키로 남아요
+const JAR_THEMES=[['beach','🏖',TR('바닷가'),300],['sakura','🌸',TR('벚꽃길'),300],['cafe','☕',TR('카페'),350],['library','📚',TR('도서관'),350],['snowtown','⛄',TR('눈 마을'),400],['undersea','🐠',TR('바닷속'),500],['space','🚀',TR('우주'),600]];
+const JAR_WX=[['petal','🌸',TR('꽃잎'),200],['leaf','🍂',TR('낙엽'),200],['bubble','🧼',TR('비눗방울'),200],['firefly','✨',TR('반딧불'),250],['rainbow','🌈',TR('무지개'),300],['stars','🌠',TR('별똥별'),350],['aurora','🌌',TR('오로라'),400]];
+const TERRA_THEMES=[['room',TR('공부방')],['forest',TR('숲')],['garden',TR('정원')]], TERRA_ALL=TERRA_THEMES.concat([['pumpkin',TR('밤 호박밭')]],JAR_THEMES.map(t=>[t[0],t[2]]));
+const ownsJar=id=>items('wardrobe').some(x=>x.id===id);
 const terraThemes=()=>TERRA_ALL.filter(t=>TERRA_THEMES.includes(t)||items('wardrobe').some(x=>x.id==='theme:'+t[0])||(evActive()&&evActive().theme===t[0])); // 이벤트 배경은 이벤트 중이거나 바꿔 둔 사람만
 const WX_OPTS=[['auto',TR('자동')],['clear',TR('맑음')],['cloud',TR('흐림')],['rain',TR('비')],['snow',TR('눈')]];
-const terraCfg=()=>{const c=Object.assign({theme:'room',wx:'auto'},S.settings.v.terra||{}); if(!TERRA_THEMES.some(t=>t[0]===c.theme)&&!terraThemes().some(t=>t[0]===c.theme)) c.theme='room'; return c}; // 이벤트가 끝났는데 안 바꿔 둔 배경이면 공부방으로
+const wxOpts=()=>WX_OPTS.concat(JAR_WX.filter(w=>ownsJar('wx:'+w[0])).map(w=>[w[0],w[2]]));
+const terraCfg=()=>{const c=Object.assign({theme:'room',wx:'auto'},S.settings.v.terra||{}); if(!TERRA_THEMES.some(t=>t[0]===c.theme)&&!terraThemes().some(t=>t[0]===c.theme)) c.theme='room'; if(!wxOpts().some(w=>w[0]===c.wx)) c.wx='auto'; return c}; // 이벤트가 끝났는데 안 바꿔 둔 배경이면 공부방으로
 function setTerra(k,v){if(k==='theme'&&terraCfg().theme!==v) funInc('jarTheme');S.settings.v.terra=Object.assign(terraCfg(),{[k]:v}); S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); render()}
 
 /* 움직임: 한 타이머가 0.25초마다 모든 유리병 속 동물의 그림을 한 장씩 넘겨요 */
@@ -4061,7 +4193,7 @@ function engine(){
 const WXL=[];
 function startEngine(){if(!actTimer&&!reduceMotion()) actTimer=setInterval(engine,250)}
 function mountTerra(maxScale){ // 유리병 하나 만들기. 들어가는 상자 너비에 맞춰 정수배로 키워요 (픽셀이 흐려지지 않게)
-  const c=terraCfg(), tod=timeOfDay(), wx=c.wx==='auto'?autoWeather():c.wx, F=focusState(), lamp=c.theme==='room'&&(F.focus||tod==='night');
+  const c=terraCfg(), tod=timeOfDay(), wx=c.wx==='auto'?autoWeather():c.wx, F=focusState(), lamp=!!TERRA_WIN[c.theme]&&(F.focus||tod==='night');
   const svg=svgEl(TW,TH,bufRects(terraBG(c.theme,tod,wx,lamp)),'terra');
   const wrap=h('div',{class:'terrawrap'},svg);
   const ps=shownPets().slice(0,5), ap=activePet()||{}; let eggN=0;
@@ -4423,6 +4555,9 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['search10',TR('탐정 놀이'),TR('검색창을 10번 열기'),10,'search',30],
   ['dark',TR('어둠의 자식'),TR('어두운 화면으로 쓰기 (설정의 "어둡게", 또는 기기가 다크 모드일 때 "기기 설정 따름")'),1,'darkMode',20],
   ['jar5',TR('인테리어 장인'),TR('유리병 배경을 5번 바꾸기'),5,'jarTheme',30],
+  ['jarbuy1',TR('새 풍경'),TR('상점에서 유리병 배경이나 날씨 사기'),1,'jarBuy',20],
+  ['jarbuy5',TR('풍경 수집가'),TR('유리병 배경·날씨 5개 모으기'),5,'jarBuy',150],
+  ['jarbuyAll',TR('세상을 담은 유리병'),TR('상점의 배경·날씨를 모두 모으기'),JAR_THEMES.length+JAR_WX.length,'jarBuy',600],
   ['rename5',TR('정체성 혼란'),TR('친구 이름을 5번 바꾸기'),5,'rename',30],
   ['rapid',TR('광클 금지'),TR('10초 안에 친구를 20번 쓰다듬기'),1,'rapid',40],
   ['sleeppat',TR('깨우지 마세요'),TR('자고 있는 친구를 10번 쓰다듬기'),10,'sleepPat',30],
@@ -4632,7 +4767,7 @@ function achStats(){
     cram:allOf('tasks-').filter(t=>t.done&&t.due&&t.doneAt&&dayKey(t.doneAt)===t.due).length,
     ontime:coins.filter(c=>String(c.id).indexOf('td:')===0).length,lucky:coins.filter(c=>String(c.id).indexOf('l:')===0).length,care:coins.filter(c=>c.kind==='care').length,
     spent:coins.reduce((a,c)=>a+(c.amt<0?-c.amt:0),0),petLv:Math.max(0,...ps.map(p=>petLv(petXP(p)))),subjWeek:Math.max(0,...Object.values(sw).map(x=>x.size)),
-    diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,pikmin:['pkred','pkyellow','pkblue','pkpurple','pkwhite','pkrock','pkwing','pkice','pkglow'].filter(k=>ps.some(p=>p.sp===k)).length,trips:items('trips').length,tripFar:items('trips').filter(x=>x.t===2).length,tripSet:[...new Set(items('trips').map(x=>x.sp))].filter(sp=>tripN(sp)===6).length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins(),...achMore(logs,day,dk,ps,coins)};
+    diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,pikmin:['pkred','pkyellow','pkblue','pkpurple','pkwhite','pkrock','pkwing','pkice','pkglow'].filter(k=>ps.some(p=>p.sp===k)).length,trips:items('trips').length,tripFar:items('trips').filter(x=>x.t===2).length,tripSet:[...new Set(items('trips').map(x=>x.sp))].filter(sp=>tripN(sp)===6).length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').filter(x=>OUT[x.id]).length,jarBuy:items('wardrobe').filter(x=>/^(theme|wx):/.test(x.id)&&x.id!=='theme:pumpkin').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins(),...achMore(logs,day,dk,ps,coins)};
 }
 function achMore(logs,day,dk,ps,coins){ // 친구·꾸준함·할 일·일기 업적 더 보기
   const run=(keys,step)=>{let best=0, n=0, prev=null; keys.sort().forEach(k=>{n=prev&&addDays(prev,step)===k?n+1:1; prev=k; best=Math.max(best,n)}); return best};
@@ -4747,7 +4882,7 @@ function dexCatOf(k){const sp=SP[k]||{}; for(const c in DEX_SERIES) if(DEX_SERIE
 // 업적 종류: 통계 키로 나누고, 재미 업적은 따로 모아요
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
 const ACH_FUN=['help1','search10','dark','jar5','rename5','rapid','sleeppat','foxpat','ignored','pause10','leap','fri13','nye','cinder','oldtask','plan20','longtitle','onechar','kkk','emoji10','mikael10','pi314','hangul','halloween','valentine','pepero','wish1111','seq1234','exact60','tiny1','split10','ghost3','wkhard','tomato4','toss10','diary1','patday','coin1004','coin1234','brush50','walk30','yum30','glut10','dogs4','foxbear','fearless','duowatch','lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1','notodo','tomorrowme','emojitask','hatestudy','tears','secret','petdiary','ghost444','samename','studyname'];
-const ACH_KEYCAT={pikmin:'pet',trips:'pet',tripFar:'pet',tripSet:'pet',streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
+const ACH_KEYCAT={jarBuy:'pet',pikmin:'pet',trips:'pet',tripFar:'pet',tripSet:'pet',streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
   pets:'pet',dinos:'pet',greys:'pet',marvel:'pet',ooo:'pet',spiderverse:'pet',nwh:'pet',sanrio:'pet',meloKuro:'pet',doodle:'pet',nanamiPet:'pet',finnJake:'pet',spideyPet:'pet',bikini:'pet',chii:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin',
   careFood:'pet',careWater:'pet',careDay:'pet',allHappy:'pet',rescue:'pet',petAge:'pet',pats:'pet',fullMonths:'habit',comeback:'habit',
   bestTaskWeek:'task',taskAM:'task',repDone:'task',ahead:'task',perfectDay:'task',movedDone:'task',diaryStreak:'note',diaryPhotos:'note',diaryFav:'note',diaryChars:'note',reviewStreak:'note',thanks:'note'};
@@ -4766,7 +4901,7 @@ function renderPet(){
     ACTORS.filter(a=>a.svg===jar.firstChild&&a.active).forEach(a=>{a.label=status; status.textContent=POSE_TXT[actorPose(a)]||''});
     const chk=(k,label)=>h('label',{class:'pxchk'},h('input',{type:'checkbox',checked:S.settings.v[k]!==false,onchange:ev=>setBuddy(k,ev.target.checked)}),label);
     const opts=h('div',null,h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('배경')),segOf(terraThemes(),tc.theme,v=>setTerra('theme',v),TR('배경'))),
-      h('div',{class:'pxrow'},h('span',{class:'small lab'},TR('날씨')),segOf(WX_OPTS,tc.wx,v=>setTerra('wx',v),TR('날씨'))),
+      h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('날씨')),segOf(wxOpts(),tc.wx,v=>setTerra('wx',v),TR('날씨'))),
       h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('보상 기준')),(()=>{const cs=cats().filter(c=>!c.arch), rc=rewardCats()||[], all=!rewardCats()||cs.every(c=>rc.indexOf(c.id)>=0);
         return h('div',{class:'seg wrap',role:'group','aria-label':TR('보상에 넣을 카테고리')},h('button',{'aria-pressed':String(all),onclick:()=>setRewardCats(cs.map(c=>c.id))},TR('전체')),
           cs.map(c=>h('button',{'aria-pressed':String(!all&&rc.indexOf(c.id)>=0),onclick:()=>{let n=all?[]:rc.slice(); const i=n.indexOf(c.id); if(i>=0) n.splice(i,1); else n.push(c.id); if(!n.length){toast(TR('카테고리를 하나 이상 골라 주세요')); return} setRewardCats(n)}},c.name)))})()),
@@ -4845,6 +4980,7 @@ function renderPet(){
           h('div',null,h('p',{class:'small',style:'margin:.2rem 0 .4rem'},TR('예시를 눌러 바로 넣을 수 있어요:')),h('div',{class:'chips'},SHOP_IDEAS.map(x=>h('button',{class:'chip',onclick:()=>{put('shop',{id:uid(),emoji:x[0],name:x[1],cost:x[2]}); render()}},x[0]+' '+x[1]+' · '+x[2])))),
         h('button',{style:'margin-top:.8rem',onclick:()=>shopDlg(null)},TR('＋ 보상 추가'))]}
     else if(shopTab==='event') inner=evShop(p,bal);
+    else if(shopTab==='jar') inner=jarShop(bal);
     else{const own=new Set(items('wardrobe').map(x=>x.id)), pw=p?p.wear||{}:{};
       inner=[h('p',{class:'small'},p?TR('산 옷은 모든 동물이 같이 입을 수 있어요. 누르면 입히거나 벗겨요.'):TR('먼저 동물 친구를 데려오세요.')),h('div',{class:'shopgrid'},Object.keys(OUT).filter(k=>!OUT[k].ev||own.has(k)).map(k=>{const o=OUT[k], has=own.has(k), on=pw[o.slot]===k;
         if(!has&&!needOpen(o.need)) return h('div',{class:'shopit lock'},p?h('span',{class:'pix dimx'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'stand',64).firstChild):null,h('b',null,o.n),h('span',{class:'small'},...pxText('🔒 '+needText(o.need))));
@@ -4852,7 +4988,7 @@ function renderPet(){
           !p?null:has?h('button',{onclick:()=>{const wear=Object.assign({},pw); if(on) delete wear[o.slot]; else wear[o.slot]=k; put('pets',Object.assign(clone(p),{wear})); render()}},on?TR('벗기기'):TR('입히기')):
             h('button',{class:bal>=o.price?'primary':'',disabled:bal<o.price,onclick:()=>{if(!spend(o.price,TR('옷')+' · '+o.n,'wear')) return; put('wardrobe',{id:k}); const wear=Object.assign({},pw,{[o.slot]:k}); put('pets',Object.assign(clone(p),{wear})); celebrate('👒 '+o.n,p.name+TR('에게 입혔어요'),false); checkProgress(); render()}},TR('사기')))}))]}
     body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('상점')),h('span',{class:'sp hudi'},pxi('coin'),bal.toLocaleString(LOC))),
-      h('div',{class:'seg wrap'},[['reward',TR('🎁 보상')],['wear',TR('👒 옷')]].concat(evActive()?[['event',evActive().emo+' '+evActive().n]]:[]).map(o=>h('button',{'aria-pressed':String(shopTab===o[0]),onclick:()=>{shopTab=o[0]; renderPet()}},...pxText(o[1])))),...inner)];
+      h('div',{class:'seg wrap'},[['reward',TR('🎁 보상')],['wear',TR('👒 옷')],['jar',TR('🖼 배경·날씨')]].concat(evActive()?[['event',evActive().emo+' '+evActive().n]]:[]).map(o=>h('button',{'aria-pressed':String(shopTab===o[0]),onclick:()=>{shopTab=o[0]; renderPet()}},...pxText(o[1])))),...inner)];
   }
   else if(petTab==='friend') body=renderFriends();
   else if(petTab==='trip') body=renderTrip();
@@ -5649,6 +5785,20 @@ function evIntro(){ // 이벤트가 시작되면 한 번 알려 주고, 유리�
   openDlg(e.emo+' '+TR('{e} 이벤트가 시작됐어요!').replace('{e}',e.n),h('div',{style:'text-align:center'},p?h('div',{style:'margin:.5rem 0'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{head:evOutfits(e)[0]},'happy',96)):null,h('p',null,e.intro),h('p',{class:'small'},TR('유리병은 이벤트 배경으로 바꿔 뒀어요. 동물 → 내 동물에서 언제든 바꿀 수 있어요.'))),
     [h('button',{onclick:closeDlg},TR('닫기')),h('button',{class:'primary',onclick:()=>{closeDlg(); petTab='shop'; shopTab='event'; showView('pet')}},e.curEmo+' '+TR('이벤트 상점 보기'))]);
 }
+function jarPreview(theme,wx){ // 상점 미리보기: 작은 유리병 (날씨는 움직여요)
+  const tod=wx==='firefly'?'night':'day', svg=svgEl(TW,TH,bufRects(terraBG(theme,tod,wx,false)),'terra'); svg.setAttribute('width',TW*2); svg.setAttribute('height',TH*2);
+  const wf=weatherFrames(theme,wx,tod); if(wf.length){const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.innerHTML=wf[0]; svg.appendChild(g); WXL.push({svg,g,frames:wf}); startEngine()}
+  return h('span',{class:'pix jarpv'},svg)}
+function jarShop(bal){ // 상점 → 배경·날씨 칸
+  const c=terraCfg(), price=n=>h('span',{class:'num price'},pxi('coin'),String(n));
+  const card=(kind,r)=>{const [k,emo,n,pr]=r, id=(kind==='theme'?'theme:':'wx:')+k, has=ownsJar(id), on=kind==='theme'?c.theme===k:c.wx===k;
+    return h('div',{class:'shopit'+(on?' on':'')},jarPreview(kind==='theme'?k:'garden',kind==='theme'?'clear':k),h('b',null,emo+' '+n),has?h('span',{class:'price'},on?TR('쓰는 중'):TR('가지고 있어요')):price(pr),
+      has?(on?null:h('button',{onclick:()=>setTerra(kind,k)},TR('쓰기'))):
+        h('button',{class:bal>=pr?'primary':'',disabled:bal<pr,onclick:()=>{if(!spend(pr,(kind==='theme'?TR('배경'):TR('날씨'))+' · '+n,'jar')) return; put('wardrobe',{id}); setTerra(kind,k); celebrate(emo+' '+n,TR('유리병에 바로 적용했어요'),false); checkProgress()}},bal>=pr?TR('사기'):TR('부족')+' '+(pr-bal)))};
+  return [h('p',{class:'small'},TR('유리병 속 세상을 바꿔요. 한 번 사면 계속 쓸 수 있고, 동물 → 내 동물의 유리병 아래에서 언제든 바꿀 수 있어요.')),
+    h('h3',null,TR('배경')),h('div',{class:'shopgrid'},JAR_THEMES.map(r=>card('theme',r))),
+    h('h3',null,TR('날씨')),h('p',{class:'small muted'},TR('미리보기는 정원이에요. 별똥별·오로라를 고르면 하늘이 밤으로 바뀌어요.')),h('div',{class:'shopgrid'},JAR_WX.map(r=>card('wx',r)))];
+}
 function evShop(p,bal){ // 상점 → 이벤트 칸
   const e=evActive(); if(!e) return [h('p',{class:'empty'},TR('지금은 열린 이벤트가 없어요. 다음 이벤트를 기다려 주세요!'))];
   const key=evKey(e), cb=evBal(key), own=new Set(items('wardrobe').map(x=>x.id)), pw=p?p.wear||{}:{}, end=e.to.replace('-','/');
@@ -5666,7 +5816,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v129'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v130'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
