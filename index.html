@@ -700,6 +700,8 @@ body.kb #buddy{display:none!important}
 .pcpic .pcpet{left:9.4%;bottom:5%;transform:none;width:25%} .pcpic .pcpet svg{width:100%;height:auto;display:block}
 .stampart{font-size:1.5rem} .stampart.px{width:48px;height:30px}
 .tslot .art.px{width:100%;height:auto} .tslot.s .art.px{width:min(100%,40px);height:auto;aspect-ratio:1} .tslot.c .art.px{aspect-ratio:64/40}
+.evbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.5rem .7rem;margin:.6rem 0;background:#2E2258;color:#FFE8B0;border:2px solid #120C24} .evbar .small{color:#D8C8F8}
+.evchip{background:#2E2258;color:#FFE8B0;border-color:#120C24} .evtrip{background:linear-gradient(#FFF6E8,#FBE8D0)} .evslots{grid-template-columns:repeat(6,minmax(0,1fr))} @media (max-width:520px){.evslots{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -1373,7 +1375,7 @@ function finishFocus(endTs){
   if(T.running) T.segs.push([Math.round(T.segStart/1e3),Math.round(endTs/1e3)]);
   const segs=T.segs.filter(g=>g[1]>g[0]), total=segs.reduce((a,g)=>a+g[1]-g[0],0), quick=!!T.quick; T.quick=false;
   T.running=false; T.elapsed=0; T.segs=[]; T.segStart=null;
-  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){}
+  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){} try{evReward(it)}catch(e){}
     if(T.mode==='pomo'&&!quick){T.count++; T.phase=T.count%Math.max(1,cfg('every'))===0?'long':'short';
       if(cfg('autoBreak')&&Date.now()-endTs<60e3){T.running=true; T.segStart=Date.now()}}
   } else toast(TR('1분이 안 되는 시간은 기록하지 않았어요'));
@@ -3053,7 +3055,8 @@ const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면
   headphones:{n:TR('헤드폰'),slot:'head',price:600},wizard:{n:TR('마법사 모자'),slot:'head',price:800,need:{lv:6}},gradcap:{n:TR('학사모'),slot:'head',price:1200,need:{lv:10}},crown:{n:TR('왕관'),slot:'head',price:1500,need:{ach:'s30'}},
   glasses:{n:TR('동그란 안경'),slot:'face',price:250},mustache:{n:TR('콧수염'),slot:'face',price:300},shades:{n:TR('선글라스'),slot:'face',price:400},heartglass:{n:TR('하트 안경'),slot:'face',price:450},monocle:{n:TR('외눈 안경'),slot:'face',price:500,need:{lv:8}},
   bowtie:{n:TR('나비넥타이'),slot:'neck',price:250},bell:{n:TR('방울 목걸이'),slot:'neck',price:300},bandana:{n:TR('손수건'),slot:'neck',price:300},scarf:{n:TR('목도리'),slot:'neck',price:350},tie:{n:TR('넥타이'),slot:'neck',price:350},medal:{n:TR('금메달'),slot:'neck',price:2000,need:{ach:'h100'}},
-  backpack:{n:TR('책가방'),slot:'back',price:700},cape:{n:TR('망토'),slot:'back',price:1000,need:{lv:12}},wings:{n:TR('천사 날개'),slot:'back',price:2500,need:{ach:'s100'}}};
+  backpack:{n:TR('책가방'),slot:'back',price:700},cape:{n:TR('망토'),slot:'back',price:1000,need:{lv:12}},wings:{n:TR('천사 날개'),slot:'back',price:2500,need:{ach:'s100'}},
+  pumpkinhat:{n:TR('호박 모자'),slot:'head',price:0,ev:'hw',candy:15},witchhat:{n:TR('마녀 모자'),slot:'head',price:0,ev:'hw',candy:20},ghostcape:{n:TR('유령 망토'),slot:'back',price:0,ev:'hw',candy:25},batwings:{n:TR('박쥐 날개'),slot:'back',price:0,ev:'hw',candy:30}}; // ev: 시즌 이벤트 한정 (화폐로만 바꿔요)
 const STAGES=[[0,TR('알')],[30,TR('아기')],[300,TR('어린이')],[1200,TR('어른')]]; // 자라는 데 필요한 집중 시간(분)
 const stageOf=xp=>xp>=1200?3:xp>=300?2:xp>=30?1:0;
 const petLv=xp=>Math.floor(Math.sqrt(Math.max(0,xp)/8))+1, lvXP=n=>8*(n-1)*(n-1); // 레벨 n이 되는 데 필요한 분
@@ -3425,6 +3428,9 @@ const WEAR={
   straw:{c:{y:'#F0D070',Y:'#C8A040',r:'#E84848'},r:['...oooooo...','..oyyyyyyo..','..orrrrrro..','oyyyyyyyyyyo','.oYYYYYYYYo.']},
   santa:{c:{r:'#E83838',w:'#FFFFFF'},r:['.........ww','.....oooorw','....orrrro.','...orrrrro.','..orrrrrrro','.owwwwwwwwo.'.slice(0,11)]},
   gradcap:{c:{k:'#303848',K:'#485068',y:'#F8C838'},r:['...oooooo...','.ookkkkkkoo.','okkkkkkkkkko','.ookkkkkkooy','...oKKKKo..y','...oKKKKo..y']}};
+Object.assign(WEAR,{
+  pumpkinhat:{c:{k:'#F08020',K:'#C05810',y:'#FFE060',g:'#58A030'},r:['.....g.....','...ooooo...','..okkkkko..','.okykkkyko.','.okkyyykko.','oKKKKKKKKKo']}, // 잭오랜턴 호박 모자
+  witchhat:{c:{k:'#4A2A6A',K:'#2A1840',b:'#F08020'},r:['........o..','.......oko.','......okko.','.....okko..','....okkko..','...okkkkko.','...obbbbbo.','ooooooooooo','oKKKKKKKKKo']}});
 const WEARC={G:'#384068',S:'#202028',W:'#F8F8F8',R:'#E83838',D:'#901818',Y:'#F8D030'};
 function wearG(G,st,wear){
   const A=tplA(st), t=A.top, P=[];
@@ -3447,6 +3453,8 @@ function wearG(G,st,wear){
   if(w.neck==='bandana'){for(let x=3;x<=12;x++) if(gget(G,x,ny)!=='.') gset(G,x,ny,'#E84848'); for(let x=5;x<=10;x++) gset(G,x,ny+1,'#E84848'); for(let x=6;x<=9;x++) gset(G,x,ny+2,'#E84848'); gset(G,7,ny+3,'#E84848'); gset(G,8,ny+3,'#E84848'); gset(G,6,ny+1,'#FFFFFF'); gset(G,9,ny+1,'#FFFFFF'); gset(G,8,ny+2,'#FFFFFF')}
   if(w.back){const em=(x,y,c)=>{if(gget(G,x,y)==='.') gset(G,x,y,c)};
     if(w.back==='wings'){const rows=['oo..','owwo','owww','owww','.oww'], cols={o:'#8890B8',w:'#FFFFFF'}; rows.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!=='.'){const f=i<3?(x,y,c)=>gset(G,x,y,c):em; f(i,ny-4+j,cols[ch]); f(15-i,ny-4+j,cols[ch])}}))}
+    if(w.back==='ghostcape') for(let y=ny-1;y<=15;y++){let l=-1,r=-1; for(let x=0;x<16;x++) if(G[y][x]!=='.'){if(l<0) l=x; r=x} if(l<0) continue; const c=y===15?'#9890B8':'#D8D4F0'; em(l-1,y,c); em(r+1,y,c); if(y>ny+1&&(y%2||y<15)){em(l-2,y,y===15?'#9890B8':'#C4BEE8'); em(r+2,y,y===15?'#9890B8':'#C4BEE8')}} // 하얀 천 유령 망토 (아래가 물결)
+    if(w.back==='batwings'){const rows=['o...','oo..','oko.','okko','okkk','o.ok'], cols={o:'#2A1E38',k:'#5A3E78'}; rows.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!=='.'){const f=i<3?(x,y,c)=>gset(G,x,y,c):em; f(i,ny-5+j,cols[ch]); f(15-i,ny-5+j,cols[ch])}}))} // 뾰족한 박쥐 날개
     if(w.back==='cape') for(let y=ny-1;y<=15;y++){let l=-1,r=-1; for(let x=0;x<16;x++) if(G[y][x]!=='.'){if(l<0) l=x; r=x} if(l<0) continue; const c=y===15?'#901828':'#D83040'; em(l-1,y,c); em(r+1,y,c); if(y>ny+1){em(l-2,y,'#901828'); em(r+2,y,'#901828')}}
     if(w.back==='backpack'){for(let y=ny+1;y<=ny+3;y++){em(2,y,'#E8A040'); em(1,y,'#8A5020'); em(13,y,'#E8A040'); em(14,y,'#8A5020')} em(2,ny,'#8A5020'); em(13,ny,'#8A5020'); for(let y=ny;y<=ny+3;y++){gset(G,4,y,'#A06030'); gset(G,11,y,'#A06030')}}
   }
@@ -3906,7 +3914,17 @@ function terraBG(theme,tod,wx,lamp){
     [[4,3],[w-26,6]].forEach(([cx,cy])=>rows(x+cx,y+cy,['..ccc....','.ccccc.cc','ccccccccc'],{c:cl}));
     if(gray) rows(x+Math.floor(w/2)-6,y+1,['...cccc....','.cccccccc..','ccccccccccc'],{c:cl});
   };
-  if(theme==='room'){
+  if(theme==='pumpkin'){ // 🎃 밤 호박밭: 보름달, 박쥐, 빛나는 잭오랜턴 (늘 밤)
+    R(0,0,TW,52,'#241A48'); R(0,20,TW,16,'#2E2258'); R(0,36,TW,16,'#3A2A68'); const r=rng(13); for(let i=0;i<40;i++) P(Math.floor(r()*TW),Math.floor(r()*34),r()<.3?'#F8F0C0':'#9890D0');
+    rows(66,12,['...mmmm...','.mmmmmmmm.','mmmmmmmmmm','mmmMmmmmmm','mmmmmmMmmm','mmmmmmmmmm','.mmmmmmmm.','...mmmm...'],{m:'#F8E8A0',M:'#E8D080'});
+    [[20,16],[34,10],[52,20]].forEach(([x,y])=>rows(x,y,['b.....b','bb.b.bb','.bbbbb.','..b.b..'],{b:'#120C24'}));
+    for(let x=0;x<TW;x++){const hh=40+Math.round(2*Math.sin(x/7)); R(x,hh,1,TH-hh,'#1E3A24')}
+    for(let x=4;x<TW;x+=10){R(x,34,2,10,'#4A3A2A'); R(x-1,33,4,1,'#4A3A2A')} R(0,36,TW,1,'#4A3A2A'); R(0,40,TW,1,'#4A3A2A');
+    R(0,52,TW,TH-52,'#3A2A1E'); for(let y=54;y<TH;y+=4) for(let x=(y%8?2:8);x<TW;x+=12) R(x,y,4,1,'#4A3626');
+    const jack=(x,y,lit)=>rows(x,y,['....g....','..ooooo..','.okkkkko.','okyykyyko','okkkkkkko','okyyyyyko','.okkkkko.','..ooooo..'],{o:'#8A3A08',k:'#F08020',y:lit?'#FFE060':'#C05810',g:'#3E8E40'});
+    jack(10,45,1); jack(30,47,0); jack(64,46,1); jack(80,48,0);
+    for(let x=6;x<TW;x+=3) P(x,52+(x%5===0?-1:0),'#2E6A30'); rows(46,49,['.v.v.','vvvvv','.v.v.'],{v:'#2E6A30'});
+  } else if(theme==='room'){
     const night=tod==='night', wall=night?'#8E86A8':'#F8E0B0', dot=night?'#7E7698':'#F0C890', floor=night?'#8A6040':'#D09058', fl2=night?'#704C30':'#B07040';
     R(0,0,TW,TH,wall); for(let y=12;y<52;y+=6)for(let x=(y/6%2)*4;x<TW;x+=8) P(x,y,dot);
     R(10,16,26,22,'#8A5028'); drawSky(12,18,22,18); R(22,18,2,18,'#8A5028'); R(12,26,22,1,'#8A5028'); R(9,38,28,2,'#B06838'); // 창문
@@ -3961,9 +3979,10 @@ function weatherFrames(theme,wx,tod){ // 비·눈은 3~4장을 돌려 가며 보
     out.push(s)}
   return out;
 }
-const TERRA_THEMES=[['room',TR('공부방')],['forest',TR('숲')],['garden',TR('정원')]];
+const TERRA_THEMES=[['room',TR('공부방')],['forest',TR('숲')],['garden',TR('정원')]], TERRA_ALL=TERRA_THEMES.concat([['pumpkin',TR('밤 호박밭')]]);
+const terraThemes=()=>TERRA_ALL.filter(t=>TERRA_THEMES.includes(t)||items('wardrobe').some(x=>x.id==='theme:'+t[0])||(evActive()&&evActive().theme===t[0])); // 이벤트 배경은 이벤트 중이거나 바꿔 둔 사람만
 const WX_OPTS=[['auto',TR('자동')],['clear',TR('맑음')],['cloud',TR('흐림')],['rain',TR('비')],['snow',TR('눈')]];
-const terraCfg=()=>Object.assign({theme:'room',wx:'auto'},S.settings.v.terra||{});
+const terraCfg=()=>{const c=Object.assign({theme:'room',wx:'auto'},S.settings.v.terra||{}); if(!TERRA_THEMES.some(t=>t[0]===c.theme)&&!terraThemes().some(t=>t[0]===c.theme)) c.theme='room'; return c}; // 이벤트가 끝났는데 안 바꿔 둔 배경이면 공부방으로
 function setTerra(k,v){if(k==='theme'&&terraCfg().theme!==v) funInc('jarTheme');S.settings.v.terra=Object.assign(terraCfg(),{[k]:v}); S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); render()}
 
 /* 움직임: 한 타이머가 0.25초마다 모든 유리병 속 동물의 그림을 한 장씩 넘겨요 */
@@ -4738,7 +4757,7 @@ function renderPet(){
   const segOf=(opts,cur,fn,label)=>h('div',{class:'seg wrap',role:'group','aria-label':label},opts.map(o=>h('button',{'aria-pressed':String(cur===o[0]),onclick:()=>fn(o[0])},...pxText(o[1]))));
   const nOpen=Object.keys(SP).filter(k=>spOpen(k,lv)).length, nAch=ACH.filter(a=>hasAch(a[0])).length;
   const head=h('section',{class:'card pxcard'},h('div',{class:'pxhud'},h('span',{class:'lv'},TR('내 레벨')+' '+lv),pxBar((e-myLvCoins(lv))/(myLvCoins(lv+1)-myLvCoins(lv)),12),h('span',{class:'small hudi'},TR('다음 레벨까지 ')+(myLvCoins(lv+1)-e),pxi('coin')),
-      h('span',{class:'sp'}),h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
+      h('span',{class:'sp'}),(e=>e?h('button',{class:'tiny evchip',onclick:()=>{petTab='shop'; shopTab='event'; renderPet()},title:TR('이벤트 상점')},e.curEmo+' '+evBal(evKey(e))):null)(evActive()),h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
     h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['quest',TR('📜 미션')],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['trip',TR('🧭 탐험')],['friend',TR('👫 친구')+((n=>n?' '+n:'')(frBadge()))],['coin',TR('🪙 코인')]]
       .map(o=>h('button',{role:'tab','aria-selected':String(petTab===o[0]),onclick:()=>{petTab=o[0]; renderPet(); window.scrollTo(0,0)}},...pxText(o[1])))));
   let body=[];
@@ -4746,7 +4765,7 @@ function renderPet(){
     const tc=terraCfg(), jar=mountTerra(6), status=h('span',{class:'pstat'});
     ACTORS.filter(a=>a.svg===jar.firstChild&&a.active).forEach(a=>{a.label=status; status.textContent=POSE_TXT[actorPose(a)]||''});
     const chk=(k,label)=>h('label',{class:'pxchk'},h('input',{type:'checkbox',checked:S.settings.v[k]!==false,onchange:ev=>setBuddy(k,ev.target.checked)}),label);
-    const opts=h('div',null,h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('배경')),segOf(TERRA_THEMES,tc.theme,v=>setTerra('theme',v),TR('배경'))),
+    const opts=h('div',null,h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('배경')),segOf(terraThemes(),tc.theme,v=>setTerra('theme',v),TR('배경'))),
       h('div',{class:'pxrow'},h('span',{class:'small lab'},TR('날씨')),segOf(WX_OPTS,tc.wx,v=>setTerra('wx',v),TR('날씨'))),
       h('div',{class:'pxrow wrap'},h('span',{class:'small lab'},TR('보상 기준')),(()=>{const cs=cats().filter(c=>!c.arch), rc=rewardCats()||[], all=!rewardCats()||cs.every(c=>rc.indexOf(c.id)>=0);
         return h('div',{class:'seg wrap',role:'group','aria-label':TR('보상에 넣을 카테고리')},h('button',{'aria-pressed':String(all),onclick:()=>setRewardCats(cs.map(c=>c.id))},TR('전체')),
@@ -4825,14 +4844,15 @@ function renderPet(){
           h('div',{class:'row'},h('button',{class:bal>=it.cost?'primary':'',disabled:bal<it.cost,onclick:()=>buyReward(it)},bal>=it.cost?TR('사기'):TR('부족')+' '+(it.cost-bal)),h('button',{class:'quiet tiny',onclick:()=>shopDlg(it),'aria-label':TR('고치기')},'✎'))))):
           h('div',null,h('p',{class:'small',style:'margin:.2rem 0 .4rem'},TR('예시를 눌러 바로 넣을 수 있어요:')),h('div',{class:'chips'},SHOP_IDEAS.map(x=>h('button',{class:'chip',onclick:()=>{put('shop',{id:uid(),emoji:x[0],name:x[1],cost:x[2]}); render()}},x[0]+' '+x[1]+' · '+x[2])))),
         h('button',{style:'margin-top:.8rem',onclick:()=>shopDlg(null)},TR('＋ 보상 추가'))]}
+    else if(shopTab==='event') inner=evShop(p,bal);
     else{const own=new Set(items('wardrobe').map(x=>x.id)), pw=p?p.wear||{}:{};
-      inner=[h('p',{class:'small'},p?TR('산 옷은 모든 동물이 같이 입을 수 있어요. 누르면 입히거나 벗겨요.'):TR('먼저 동물 친구를 데려오세요.')),h('div',{class:'shopgrid'},Object.keys(OUT).map(k=>{const o=OUT[k], has=own.has(k), on=pw[o.slot]===k;
+      inner=[h('p',{class:'small'},p?TR('산 옷은 모든 동물이 같이 입을 수 있어요. 누르면 입히거나 벗겨요.'):TR('먼저 동물 친구를 데려오세요.')),h('div',{class:'shopgrid'},Object.keys(OUT).filter(k=>!OUT[k].ev||own.has(k)).map(k=>{const o=OUT[k], has=own.has(k), on=pw[o.slot]===k;
         if(!has&&!needOpen(o.need)) return h('div',{class:'shopit lock'},p?h('span',{class:'pix dimx'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'stand',64).firstChild):null,h('b',null,o.n),h('span',{class:'small'},...pxText('🔒 '+needText(o.need))));
         return h('div',{class:'shopit'+(on?' on':'')},p?petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'happy',64):null,h('b',null,o.n),has?h('span',{class:'price'},on?TR('입는 중'):TR('가지고 있어요')):price(o.price),
           !p?null:has?h('button',{onclick:()=>{const wear=Object.assign({},pw); if(on) delete wear[o.slot]; else wear[o.slot]=k; put('pets',Object.assign(clone(p),{wear})); render()}},on?TR('벗기기'):TR('입히기')):
             h('button',{class:bal>=o.price?'primary':'',disabled:bal<o.price,onclick:()=>{if(!spend(o.price,TR('옷')+' · '+o.n,'wear')) return; put('wardrobe',{id:k}); const wear=Object.assign({},pw,{[o.slot]:k}); put('pets',Object.assign(clone(p),{wear})); celebrate('👒 '+o.n,p.name+TR('에게 입혔어요'),false); checkProgress(); render()}},TR('사기')))}))]}
     body=[h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,TR('상점')),h('span',{class:'sp hudi'},pxi('coin'),bal.toLocaleString(LOC))),
-      h('div',{class:'seg wrap'},[['reward',TR('🎁 보상')],['wear',TR('👒 옷')]].map(o=>h('button',{'aria-pressed':String(shopTab===o[0]),onclick:()=>{shopTab=o[0]; renderPet()}},...pxText(o[1])))),...inner)];
+      h('div',{class:'seg wrap'},[['reward',TR('🎁 보상')],['wear',TR('👒 옷')]].concat(evActive()?[['event',evActive().emo+' '+evActive().n]]:[]).map(o=>h('button',{'aria-pressed':String(shopTab===o[0]),onclick:()=>{shopTab=o[0]; renderPet()}},...pxText(o[1])))),...inner)];
   }
   else if(petTab==='friend') body=renderFriends();
   else if(petTab==='trip') body=renderTrip();
@@ -5529,7 +5549,7 @@ const TRIP_ANY={s:[
   [['🌌','오로라 마을','하늘이 춤춰. 사진으로는 안 담겨','night'],['🐋','고래가 지나는 바다','고래가 노래를 불러 줬어. 엄청 커!','underwater'],['🌋','불의 섬','화산 옆이라 따뜻해. 너무 따뜻해','sunset'],['🏜️','별이 쏟아지는 사막','모래에 누워서 별을 셌어. 다 못 셌어','desert'],['🚀','달 기지','달에서 보니까 지구가 동글동글 귀여워','space'],['🍭','구름 과자 나라','구름이 솜사탕 맛이야. 진짜야','candy'],['🗼','반짝이는 대도시','건물이 하늘까지 닿아. 길 잃을 뻔','city'],['🐧','남극 펭귄 마을','펭귄들이랑 줄 서서 걸었어. 뒤뚱뒤뚱','snow']]]};
 const TRIP_ANY_N=TRIP_ANY.s.flat().length+TRIP_ANY.c.flat().length;
 const anyIds=t=>['s','c'].flatMap(k=>TRIP_ANY[k][t].map((_,i)=>'any:'+k+t+'-'+i));
-const tripRec=id=>{const [sp,x]=id.split(':'), k=x[0], t=+x[1]; return sp==='any'?{k,t,r:TRIP_ANY[k][t][+x.slice(3)],any:1}:{k,t,r:TRIP[sp]&&TRIP[sp][k][t]}};
+const tripRec=id=>{const [sp,x]=id.split(':'), k=x[0], t=+x[1]; if(TRIP_EV[sp]){const i=+x.slice(1); return {k,t:Math.floor(i/2),r:TRIP_EV[sp][k][i],any:1,ev:sp}} return sp==='any'?{k,t,r:TRIP_ANY[k][t][+x.slice(3)],any:1}:{k,t,r:TRIP[sp]&&TRIP[sp][k][t]}};
 /* 도트 그림: trip-art.js (기념품 32×32, 엽서 풍경 64×40). 처음 필요할 때 불러오고, 그 전에는 이모지로 보여 줘요 */
 const ART_AL='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-/:;<=>?@[]^_{}~', ARTS={}; let ARTP=null;
 function needArt(){if(window.TRIP_ART) return Promise.resolve(); return ARTP||(ARTP=loadScript('trip-art.js').then(()=>document.querySelectorAll('[data-art]').forEach(fillArt)).catch(()=>{ARTP=null}))}
@@ -5547,12 +5567,14 @@ function postEl(r,t,sp,p,name,id){ // 엽서: 왼쪽은 그곳 도트 풍경과 
   const c=PC_BG[r[3]]||PC_BG.day;
   return h('div',{class:'pcard','data-bg':r[3]},
     h('div',{class:'pcpic',style:'--s1:'+c[0]+';--s2:'+c[1]+';--g:'+c[2]},id?artEl(id,'','pcscene'):null,h('span',{class:'pclm'},r[0]),SP[sp]?h('span',{class:'pcpet'},tripPetSVG(sp,p,64)):null),
-    h('div',{class:'pctx'},h('span',{class:'pcstamp'},id?artEl(id,r[0],'stampart'):r[0],h('small',null,TRIP_TIER[t][1])),h('b',null,TR(r[1])),h('p',null,TR(r[2])),h('span',{class:'pcfrom'},'— '+(name||(p?p.name:SP[sp]?SP[sp].n:'')))));
+    h('div',{class:'pctx'},h('span',{class:'pcstamp'},id?artEl(id,r[0],'stampart'):r[0],h('small',null,TRIP_TIER[t][1])),h('b',null,TR(r[1])),h('p',null,SP[sp]&&SP[sp].babble?babble(TR(r[2])):TR(r[2])),h('span',{class:'pcfrom'},'— '+(name||(p?p.name:SP[sp]?SP[sp].n:'')))));
 }
 const tripView=(id,p,d)=>{const R=tripRec(id), sp=R.any?(d&&d.from)||(p&&p.sp):id.split(':')[0]; return R.k==='s'?souvEl(R.r,id):postEl(R.r,R.t,sp,p,d&&d.name,id)};
 function tripReturn(it){ // 집중이 끝나면: 거리에 맞는 것 중 아직 없는 걸 가져와요 (대개 그 동물만의 것, 가끔 공통). 다 있으면 코인으로
   const p=pets().find(q=>q.id===it.pet); if(!p||!TRIP[p.sp]||!stageOf(petXP(p))||!countsLog(it)) return;
   const t=tripTier(Math.round(sessDur(it)/60)); if(t<0) return;
+  {const e=evActive(), E=e&&TRIP_EV[e.id]; if(E&&Math.random()<.4){const pool=['s','c'].flatMap(k=>E[k].map((_,i)=>e.id+':'+k+i)).filter(i=>!tripGot(i)&&tripRec(i).t<=t); // 이벤트 중에는 가끔 한정 선물
+    if(pool.length){const id=pick(pool); put('trips',{id,sp:'ev',ev:e.id,k:id.split(':')[1][0],t:tripRec(id).t,ts:Date.now(),pet:p.id,n:1,from:p.sp,name:p.name}); tripShow(p,id,false,0,0); setTimeout(checkProgress,100); return}}}
   const own=['s','c'].map(k=>p.sp+':'+k+t), uniq=own.filter(i=>!tripGot(i)), comm=anyIds(t).filter(i=>!tripGot(i));
   const id=uniq.length&&comm.length?(Math.random()<.6?pick(uniq):pick(comm)):uniq.length?pick(uniq):comm.length?pick(comm):pick(Math.random()<.5?own:anyIds(t)), cur=tripGot(id), any=id.indexOf('any:')===0; let got=0;
   if(cur){put('trips',Object.assign(clone(cur),{n:(cur.n||1)+1})); got=award('tp:'+it.id,5*(t+1),TR('탐험 선물 (이미 있어서 코인으로)')+' · '+p.name)}
@@ -5562,7 +5584,7 @@ function tripReturn(it){ // 집중이 끝나면: 거리에 맞는 것 중 아직
 function tripShow(p,id,dup,got,tries){ // 축하가 끝나고 다른 창이 없을 때 보여 줘요
   if((celebOn||dlg.open)&&tries<20){setTimeout(()=>tripShow(p,id,dup,got,tries+1),1500); return}
   if(dlg.open){toast(jo('🧭 '+TR('{p}이(가) 탐험에서 돌아왔어요! 동물 → 탐험에서 볼 수 있어요').replace('{p}',p.name))); return}
-  const R=tripRec(id), any=R.any, head=jo((R.k==='s'?TR('{p}이(가) {w}에서 기념품을 가져왔어요!'):TR('{p}이(가) {w}에서 엽서를 보냈어요!')).replace('{p}',p.name).replace('{w}',EN?TRIP_TIER[R.t][1].toLowerCase():TRIP_TIER[R.t][1]));
+  const R=tripRec(id), any=R.any&&!R.ev, head=jo((R.k==='s'?TR('{p}이(가) {w}에서 기념품을 가져왔어요!'):TR('{p}이(가) {w}에서 엽서를 보냈어요!')).replace('{p}',p.name).replace('{w}',EN?TRIP_TIER[R.t][1].toLowerCase():TRIP_TIER[R.t][1]));
   const note=dup?TR('이미 가진 거라서 대신 코인을 받았어요')+(got?' (+'+got+' '+COIN+')':''):any?TR('어디서나 만날 수 있는 선물이에요! 공통 {n} / {m}').replace('{n}',anyIds(0).concat(anyIds(1),anyIds(2)).filter(tripGot).length).replace('{m}',TRIP_ANY_N):TR('새로 모았어요! {n} / 6').replace('{n}',tripN(p.sp));
   openDlg('🧭 '+TR('탐험에서 돌아왔어요'),h('div',null,h('p',{style:'margin:0 0 .6rem;text-align:center'},head),R.k==='s'?h('div',{class:'souvwrap'},h('span',{class:'souvpet'},cheerSprite(p,4)),souvEl(R.r,id)):tripView(id,p,tripGot(id)),
     h('p',{class:'small'+(dup?'':' muted'),style:'text-align:center;margin:.6rem 0 0'},note)),
@@ -5592,11 +5614,58 @@ function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·�
       h('div',{class:'row'},tripPetSVG(p.sp,p,48),h('b',null,p.name),h('span',{class:'sp small'},tripN(p.sp)+' / 6')),
       ['s','c'].map(k=>h('div',{class:'trow'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),[0,1,2].map(t=>slot(p.sp+':'+k+t,TRIP_TIER[t][1]))))))):
       h('section',{class:'card pxcard'},h('p',{class:'empty'},TR('먼저 동물 친구를 데려오세요.'))),
+    ...SEASONS.filter(e=>TRIP_EV[e.id]&&(evActive()===e||['s','c'].some(k=>TRIP_EV[e.id][k].some((_,i)=>tripGot(e.id+':'+k+i))))).map(e=>{const E=TRIP_EV[e.id], ids=['s','c'].flatMap(k=>E[k].map((_,i)=>e.id+':'+k+i)), n=ids.filter(tripGot).length;
+      return h('section',{class:'card pxcard evtrip'},h('div',{class:'row'},h('h2',null,e.emo+' '+TR('{e} 한정').replace('{e}',e.n)),h('span',{class:'sp small'},n+' / '+ids.length)),
+        h('p',{class:'small'},evActive()===e?TR('이벤트 기간에만 탐험에서 가끔 가져와요. {d}까지예요.').replace('{d}',e.to.replace('-','/')):TR('지난 이벤트에서 모은 것들이에요. 다음 이벤트 때 또 모을 수 있어요.')),
+        ['s','c'].map(k=>h('div',{class:'anyset'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),h('div',{class:'anyslots evslots'},E[k].map((_,i)=>slot(e.id+':'+k+i,TRIP_TIER[Math.floor(i/2)][1]))))))}),
     h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'🌍 '+TR('공통 기념품·엽서')),h('span',{class:'sp small'},anyHave+' / '+TRIP_ANY_N)),
       h('p',{class:'small'},TR('어느 동물이든 탐험에서 가끔 가져와요. 멀리 갈수록 더 귀한 게 나와요.')),
       TRIP_TIER.map((tr,t)=>h('div',{class:'anyrow'},h('b',{class:'small'},tr[1]),['s','c'].map(k=>h('div',{class:'anyset'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),h('div',{class:'anyslots'},TRIP_ANY[k][t].map((_,i)=>slot('any:'+k+t+'-'+i,''))))))))];
 }
-setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
+/* ---------- 시즌 이벤트: 기간 한정 화폐(핼러윈은 사탕)를 모아 한정 옷·배경과 바꾸고, 탐험에서 한정 엽서·기념품이 나와요 ---------- */
+// 새 이벤트(크리스마스·설날)는 SEASONS에 한 줄, 옷은 OUT·WEAR에, 탐험 선물은 TRIP_EV에 넣으면 돼요. 받은 화폐는 'evc'에 이벤트-연도별로 남아요
+const SEASONS=[{id:'hw',n:TR('핼러윈'),emo:'🎃',from:'10-10',to:'10-31',cur:TR('사탕'),curEmo:'🍬',theme:'pumpkin',themePrice:40,
+  intro:TR('10월 31일까지 집중하면 사탕을 받아요. 사탕을 모아 호박 모자, 마녀 모자, 유령 망토 같은 한정 옷과 밤 호박밭 배경으로 바꿔요. 탐험에서는 핼러윈 한정 엽서와 기념품도 나와요!')}];
+const TRIP_EV={hw:{s:[['🍬','호박 사탕 바구니','동네 집집마다 "트릭 오어 트릿!" 하고 받아 온 사탕이에요'],['🕯️','잭오랜턴 촛불','호박 속 촛불이 깜빡깜빡. 무섭지 않고 귀여워요'],['🧹','마녀의 빗자루','먼 숲 마녀가 잠깐 빌려줬대요. 아직 조금 떠요'],['🦇','박쥐 머리핀','동굴 박쥐들과 친구가 되어 받은 선물이에요'],['🔮','마녀의 수정 구슬','들여다보면 내일 할 일이 다 끝나 있는 게 보인대요'],['👻','유령 파티 초대장','보름달 밤 유령 파티 초대장. 열면 "부우~" 소리가 나요']],
+  c:[['🎃','밤 호박밭','호박이 나보다 커! 제일 동그란 걸로 골라 줄게','night'],['🏚️','트릭 오어 트릿 골목','"트릭 오어 트릿!" 사탕 주머니가 가득 찼어','night'],['🌕','보름달 언덕','보름달이 엄청 커. 늑대 소리는… 못 들은 걸로','night'],['🕸️','거미줄 숲','거미줄에 이슬이 반짝. 거미는 하나도 안 무서웠어 (조금 무서웠어)','forest'],['🏰','유령의 성','유령들이랑 숨바꼭질 했어. 내가 이겼어!','night'],['🧙','마녀의 오두막','마녀가 수프를 끓여 줬어. 맛은… 신기했어','night']]}};
+const md=k=>k.slice(5); // 'YYYY-MM-DD' → 'MM-DD'
+function evActive(k){k=k||today(); return SEASONS.find(e=>md(k)>=e.from&&md(k)<=e.to)||null}
+const evKey=(e,k)=>e.id+'-'+(k||today()).slice(0,4); // 해마다 새로 모아요
+const evBal=key=>items('evc').filter(x=>x.ev===key).reduce((a,x)=>a+(x.amt||0),0);
+const evOwn=id=>items('wardrobe').some(x=>x.id===id);
+function evAward(e,id,amt,why){if(!amt||S.docs.evc&&S.docs.evc[id]&&!S.docs.evc[id].x) return 0; put('evc',{id,ev:evKey(e),amt,ts:Date.now(),why}); return amt}
+function evSpend(e,amt,why){const key=evKey(e); if(evBal(key)<amt){toast(TR('{c}이 모자라요').replace('{c}',e.cur)+' ('+evBal(key)+' / '+amt+')'); return false} put('evc',{id:uid(),ev:key,amt:-amt,ts:Date.now(),why}); return true}
+function evReward(it){ // 집중 10분마다 1개 (한 번에 최대 6개)
+  const e=evActive(dayKey(it.segs[0][0]*1e3)); if(!e||!countsLog(it)) return; const n=Math.min(6,Math.floor(Math.round(sessDur(it)/60)/10)); if(!n) return;
+  if(evAward(e,'e:'+it.id,n,TR('집중')+' '+fmtDur(sessDur(it)))) setTimeout(()=>toast(e.curEmo+' '+TR('{c} {n}개를 받았어요! 지금 {b}개').replace('{c}',e.cur).replace('{n}',n).replace('{b}',evBal(evKey(e)))),2200);
+}
+const evOutfits=e=>Object.keys(OUT).filter(k=>OUT[k].ev===e.id);
+function evIntro(){ // 이벤트가 시작되면 한 번 알려 주고, 유리병도 이벤트 배경으로 바꿔요 (다시 바꿀 수 있어요)
+  const e=evActive(); if(!e||(fbCfg&&!gateOK)) return; const key=evKey(e); if(S.settings.v.evSeen===key) return;
+  try{if(!localStorage.getItem(OB)) return}catch(er){}
+  if(dlg.open){setTimeout(evIntro,5000); return}
+  S.settings.v.evSeen=key; S.settings.v.terra=Object.assign(terraCfg(),{theme:e.theme}); S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush();
+  const p=activePet();
+  openDlg(e.emo+' '+TR('{e} 이벤트가 시작됐어요!').replace('{e}',e.n),h('div',{style:'text-align:center'},p?h('div',{style:'margin:.5rem 0'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{head:evOutfits(e)[0]},'happy',96)):null,h('p',null,e.intro),h('p',{class:'small'},TR('유리병은 이벤트 배경으로 바꿔 뒀어요. 동물 → 내 동물에서 언제든 바꿀 수 있어요.'))),
+    [h('button',{onclick:closeDlg},TR('닫기')),h('button',{class:'primary',onclick:()=>{closeDlg(); petTab='shop'; shopTab='event'; showView('pet')}},e.curEmo+' '+TR('이벤트 상점 보기'))]);
+}
+function evShop(p,bal){ // 상점 → 이벤트 칸
+  const e=evActive(); if(!e) return [h('p',{class:'empty'},TR('지금은 열린 이벤트가 없어요. 다음 이벤트를 기다려 주세요!'))];
+  const key=evKey(e), cb=evBal(key), own=new Set(items('wardrobe').map(x=>x.id)), pw=p?p.wear||{}:{}, end=e.to.replace('-','/');
+  const cprice=n=>h('span',{class:'num price'},e.curEmo+' '+n);
+  const outfit=k=>{const o=OUT[k], has=own.has(k), on=pw[o.slot]===k;
+    return h('div',{class:'shopit'+(on?' on':'')},p?petSVG(p.sp,Math.max(1,stageOf(petXP(p))),{[o.slot]:k},'happy',64):null,h('b',null,o.n),has?h('span',{class:'price'},on?TR('입는 중'):TR('가지고 있어요')):cprice(o.candy),
+      !p?null:has?h('button',{onclick:()=>{const wear=Object.assign({},pw); if(on) delete wear[o.slot]; else wear[o.slot]=k; put('pets',Object.assign(clone(p),{wear})); render()}},on?TR('벗기기'):TR('입히기')):
+        h('button',{class:cb>=o.candy?'primary':'',disabled:cb<o.candy,onclick:()=>{if(!evSpend(e,o.candy,TR('옷')+' · '+o.n)) return; put('wardrobe',{id:k}); put('pets',Object.assign(clone(p),{wear:Object.assign({},pw,{[o.slot]:k})})); celebrate(e.emo+' '+o.n,p.name+TR('에게 입혔어요'),true); render()}},TR('바꾸기')))};
+  const th='theme:'+e.theme, hasTh=own.has(th), tn=(TERRA_ALL.find(x=>x[0]===e.theme)||['',''])[1];
+  return [h('div',{class:'evbar'},h('b',null,e.emo+' '+TR('{e} 이벤트').replace('{e}',e.n)),h('span',{class:'small'},TR('{d}까지').replace('{d}',end)),h('span',{class:'sp hudi'},e.curEmo+' '+cb.toLocaleString(LOC))),
+    h('p',{class:'small'},TR('타이머로 집중하면 10분마다 {c} 1개 (한 번에 최대 6개). 모은 {c}으로 한정 옷과 배경을 바꿀 수 있어요. 이벤트가 끝나도 바꾼 건 계속 쓸 수 있어요.').replaceAll('{c}',e.cur)),
+    h('div',{class:'shopgrid'},evOutfits(e).map(outfit),
+      h('div',{class:'shopit'+(hasTh?' on':'')},h('span',{class:'emo'},'🌙'),h('b',null,tn),hasTh?h('span',{class:'price'},TR('가지고 있어요')):cprice(e.themePrice),
+        hasTh?h('button',{onclick:()=>setTerra('theme',e.theme)},TR('배경으로 쓰기')):h('button',{class:cb>=e.themePrice?'primary':'',disabled:cb<e.themePrice,onclick:()=>{if(!evSpend(e,e.themePrice,TR('배경')+' · '+tn)) return; put('wardrobe',{id:th}); setTerra('theme',e.theme); celebrate('🌙 '+tn,TR('이벤트가 끝나도 계속 쓸 수 있어요'),true)}},TR('바꾸기')))),
+    h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
+}
+setCloud('local'); render(); decorate(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
 const APP_V='align-v128'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
