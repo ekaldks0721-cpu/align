@@ -5718,5 +5718,10 @@ window.I18N_EN={
 "밤에 은은하게 빛나기": "Softly glowing at night",
 "🌱 피크민": "🌱 Pikmin",
 "피크민 군단": "Pikmin Squad",
-"피크민 9종 모두와 함께하기": "Have all 9 kinds of Pikmin"
+"피크민 9종 모두와 함께하기": "Have all 9 kinds of Pikmin",
+"회색 브라키오사우루스 인형을 좋아해서 자주 베고 자요. 길쭉하고 머리가 작은 게 자기를 닮았대요": "Loves its grey brachiosaurus plush and often sleeps on it. Long and small-headed, just like Mikael",
+"브라키오 인형 꼭 껴안는 중": "Hugging its brachiosaurus plush",
+"내 브라키오 인형 봤어? 목이 길쭉한 게 나랑 닮았대": "Seen my brachio plush? They say its long neck looks just like me",
+"꼭 닮은 브라키오 인형": "Look-Alike Brachio Plush",
+"길쭉하고 머리가 작아서 자기를 닮았대요. 최고의 베개예요": "Long and small-headed, just like Mikael. The best pillow"
 };
