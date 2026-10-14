@@ -1,0 +1,230 @@
+[
+ {
+  "id": "pkrock:s0",
+  "pet": "pkrock",
+  "petName": "Rock Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "💠",
+  "name": "크리스털 조각 / Crystal Fragment",
+  "desc": "바위 피크민이 와장창 깨뜨린 크리스털 벽 조각 / A piece of a crystal wall a Rock Pikmin smashed"
+ },
+ {
+  "id": "pkrock:s1",
+  "pet": "pkrock",
+  "petName": "Rock Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🪨",
+  "name": "조약돌 친구 / Pebble Pal",
+  "desc": "자기랑 닮아서 데려왔대요 / Looked just like itself, so it came along"
+ },
+ {
+  "id": "pkrock:s2",
+  "pet": "pkrock",
+  "petName": "Rock Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🗿",
+  "name": "돌 거인 얼굴 / Stone Giant Face",
+  "desc": "아주 먼 곳의 돌 얼굴. 피크민은 친척이라고 믿어요 / A faraway stone face. The Pikmin thinks they're related"
+ },
+ {
+  "id": "pkrock:c0",
+  "pet": "pkrock",
+  "petName": "Rock Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧱",
+  "place": "돌담 골목 / Stone Wall Alley",
+  "message": "옹!옹!옹! (Pikmin babble)",
+  "mood": "city"
+ },
+ {
+  "id": "pkrock:c1",
+  "pet": "pkrock",
+  "petName": "Rock Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "💎",
+  "place": "크리스털 동굴 / Crystal Cave",
+  "message": "씌? 옹씌! (Pikmin babble)",
+  "mood": "night"
+ },
+ {
+  "id": "pkrock:c2",
+  "pet": "pkrock",
+  "petName": "Rock Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏔️",
+  "place": "바위산 꼭대기 / Rocky Summit",
+  "message": "옹… 옹! (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkwing:s0",
+  "pet": "pkwing",
+  "petName": "Winged Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪶",
+  "name": "분홍 깃털 / Pink Feather",
+  "desc": "날다가 바람에 실려 온 깃털을 잡았대요 / Caught it drifting on the wind mid-flight"
+ },
+ {
+  "id": "pkwing:s1",
+  "pet": "pkwing",
+  "petName": "Winged Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎈",
+  "name": "높이 걸린 풍선 / Stuck Balloon",
+  "desc": "나무에 걸린 걸 날아가서 가져왔어요 / Flew up to free it from a tree"
+ },
+ {
+  "id": "pkwing:s2",
+  "pet": "pkwing",
+  "petName": "Winged Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌈",
+  "name": "무지개 조각 / Rainbow Piece",
+  "desc": "구름 위에서 떼어 온 무지개 한 조각 / A slice of rainbow from above the clouds"
+ },
+ {
+  "id": "pkwing:c0",
+  "pet": "pkwing",
+  "petName": "Winged Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌷",
+  "place": "튤립 꽃밭 / Tulip Field",
+  "message": "씌~ 옹~ (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkwing:c1",
+  "pet": "pkwing",
+  "petName": "Winged Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏝️",
+  "place": "물 건너 섬 / Island Across the Water",
+  "message": "옹! 씌! (Pikmin babble)",
+  "mood": "sea"
+ },
+ {
+  "id": "pkwing:c2",
+  "pet": "pkwing",
+  "petName": "Winged Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☁️",
+  "place": "구름 위 하늘 / Sky Above the Clouds",
+  "message": "옹~~ 씌~~ (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkice:s0",
+  "pet": "pkice",
+  "petName": "Ice Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧊",
+  "name": "네모 얼음 / Ice Cube",
+  "desc": "한 번 만지면 꽁꽁. 냉동실에 넣어 주세요 / One touch and it's frozen. Keep in the freezer"
+ },
+ {
+  "id": "pkice:s1",
+  "pet": "pkice",
+  "petName": "Ice Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "❄️",
+  "name": "눈 결정 브로치 / Snowflake Brooch",
+  "desc": "똑같은 모양이 하나도 없는 눈 결정 / No two are alike"
+ },
+ {
+  "id": "pkice:s2",
+  "pet": "pkice",
+  "petName": "Ice Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🍧",
+  "name": "빙하 빙수 / Glacier Shaved Ice",
+  "desc": "아주 먼 설원에서 퍼 온 만년 얼음 빙수 / Scooped from ancient ice in a distant tundra"
+ },
+ {
+  "id": "pkice:c0",
+  "pet": "pkice",
+  "petName": "Ice Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "⛲",
+  "place": "얼어붙은 분수 / Frozen Fountain",
+  "message": "옹! 씌! (Pikmin babble)",
+  "mood": "snow"
+ },
+ {
+  "id": "pkice:c1",
+  "pet": "pkice",
+  "petName": "Ice Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏔️",
+  "place": "하얀 설원 / Snowfield",
+  "message": "…씌. 옹? (Pikmin babble)",
+  "mood": "snow"
+ },
+ {
+  "id": "pkice:c2",
+  "pet": "pkice",
+  "petName": "Ice Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐧",
+  "place": "머나먼 툰드라 / Distant Tundra",
+  "message": "옹옹옹! 씌! (Pikmin babble)",
+  "mood": "snow"
+ },
+ {
+  "id": "pkglow:s0",
+  "pet": "pkglow",
+  "petName": "Glow Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌟",
+  "name": "빛나는 씨앗 / Glowing Seed",
+  "desc": "밤에만 반짝이는 작은 씨앗 / A tiny seed that only shines at night"
+ },
+ {
+  "id": "pkglow:s1",
+  "pet": "pkglow",
+  "petName": "Glow Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏮",
+  "name": "반딧불 초롱 / Firefly Lantern",
+  "desc": "반딧불이 친구들이 빌려준 초롱 / Lent by firefly friends"
+ },
+ {
+  "id": "pkglow:s2",
+  "pet": "pkglow",
+  "petName": "Glow Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌙",
+  "name": "달빛 조각 / Shard of Moonlight",
+  "desc": "아주 먼 밤하늘에서 떼어 온 달빛 / Moonlight broken off a faraway night sky"
+ },
+ {
+  "id": "pkglow:c0",
+  "pet": "pkglow",
+  "petName": "Glow Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌌",
+  "place": "밤의 공원 / Park at Night",
+  "message": "…옹. 옹~ (Pikmin babble)",
+  "mood": "night"
+ },
+ {
+  "id": "pkglow:c1",
+  "pet": "pkglow",
+  "petName": "Glow Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍄",
+  "place": "빛나는 버섯 숲 / Glowing Mushroom Woods",
+  "message": "씌… 씌~ (Pikmin babble)",
+  "mood": "night"
+ },
+ {
+  "id": "pkglow:c2",
+  "pet": "pkglow",
+  "petName": "Glow Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌠",
+  "place": "별똥별 떨어진 곳 / Where the Star Fell",
+  "message": "옹!! 씌옹!! (Pikmin babble)",
+  "mood": "night"
+ }
+]

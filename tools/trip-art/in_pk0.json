@@ -1,0 +1,287 @@
+[
+ {
+  "id": "pkred:s0",
+  "pet": "pkred",
+  "petName": "Red Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔴",
+  "name": "빨간 펠릿 / Red Pellet",
+  "desc": "숫자 1이 적힌 펠릿. 오니온에 넣으면 친구가 생겨요 / A pellet marked 1. Feed it to the Onion for new friends"
+ },
+ {
+  "id": "pkred:s1",
+  "pet": "pkred",
+  "petName": "Red Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🕯️",
+  "name": "꺼지지 않는 촛불 / Undying Candle",
+  "desc": "불에 강해서 맨손으로 들고 왔대요 / Fire-proof, so it carried this barehanded"
+ },
+ {
+  "id": "pkred:s2",
+  "pet": "pkred",
+  "petName": "Red Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔥",
+  "name": "용암 마을 화로 / Lava Brazier",
+  "desc": "아주 먼 용암 지대에서 가져온 작은 화로. 아직 따뜻해요 / A tiny brazier from far-off lava fields. Still warm"
+ },
+ {
+  "id": "pkred:c0",
+  "pet": "pkred",
+  "petName": "Red Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌿",
+  "place": "햇살 비치는 정원 / Sunny Garden",
+  "message": "옹! 씌옹! (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkred:c1",
+  "pet": "pkred",
+  "petName": "Red Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌋",
+  "place": "용암 동굴 / Lava Cave",
+  "message": "옹옹! 씌! 옹!씌옹!씌! (Pikmin babble)",
+  "mood": "sunset"
+ },
+ {
+  "id": "pkred:c2",
+  "pet": "pkred",
+  "petName": "Red Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🚀",
+  "place": "머나먼 별 / A Faraway Planet",
+  "message": "옹…? 씌? 옹씌! (Pikmin babble)",
+  "mood": "space"
+ },
+ {
+  "id": "pkyellow:s0",
+  "pet": "pkyellow",
+  "petName": "Yellow Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔋",
+  "name": "건전지 하나 / Single Battery",
+  "desc": "찌릿! 전기에 강한 노랑 피크민만 맨손으로 들어요 / Zap! Only shock-proof Yellows can hold it barehanded"
+ },
+ {
+  "id": "pkyellow:s1",
+  "pet": "pkyellow",
+  "petName": "Yellow Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "💣",
+  "name": "폭탄 바위 / Bomb Rock",
+  "desc": "노랑 피크민만 나르는 위험한 돌. 심지는 꺼 뒀어요 / Only Yellows haul these. The fuse is out, promise"
+ },
+ {
+  "id": "pkyellow:s2",
+  "pet": "pkyellow",
+  "petName": "Yellow Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💡",
+  "name": "반짝 전구 / Bright Bulb",
+  "desc": "전기 울타리 너머에서 받아 온 전구. 아직 반짝여요 / From beyond an electric fence. Still glowing"
+ },
+ {
+  "id": "pkyellow:c0",
+  "pet": "pkyellow",
+  "petName": "Yellow Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌼",
+  "place": "꽃밭 언덕 / Flower Hill",
+  "message": "옹! 옹! 씌~ (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkyellow:c1",
+  "pet": "pkyellow",
+  "petName": "Yellow Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "⚡",
+  "place": "번개 치는 협곡 / Thunder Canyon",
+  "message": "씌씌씌! 옹! (Pikmin babble)",
+  "mood": "night"
+ },
+ {
+  "id": "pkyellow:c2",
+  "pet": "pkyellow",
+  "petName": "Yellow Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☁️",
+  "place": "구름보다 높은 곳 / Above the Clouds",
+  "message": "옹~~~! (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkblue:s0",
+  "pet": "pkblue",
+  "petName": "Blue Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐚",
+  "name": "반짝 조개 / Shiny Shell",
+  "desc": "물속에서 주워 왔어요. 아가미가 있어서 문제없대요 / Picked up underwater. Gills make it easy"
+ },
+ {
+  "id": "pkblue:s1",
+  "pet": "pkblue",
+  "petName": "Blue Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "💧",
+  "name": "이슬 구슬 / Dewdrop Marble",
+  "desc": "연못 바닥에서 건진 동그란 유리구슬 / A round glass bead fished from a pond floor"
+ },
+ {
+  "id": "pkblue:s2",
+  "pet": "pkblue",
+  "petName": "Blue Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔱",
+  "name": "바다 왕관 조각 / Sea Crown Shard",
+  "desc": "깊은 물 끝에서 찾은 보물. 다른 피크민은 못 가는 곳 / Found at the bottom of deep water, where no other Pikmin can go"
+ },
+ {
+  "id": "pkblue:c0",
+  "pet": "pkblue",
+  "petName": "Blue Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌊",
+  "place": "동네 연못 / Neighborhood Pond",
+  "message": "옹~ 씌~ (Pikmin babble)",
+  "mood": "underwater"
+ },
+ {
+  "id": "pkblue:c1",
+  "pet": "pkblue",
+  "petName": "Blue Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐟",
+  "place": "물고기 지나가는 강 / Fish River",
+  "message": "옹! 옹? (Pikmin babble)",
+  "mood": "underwater"
+ },
+ {
+  "id": "pkblue:c2",
+  "pet": "pkblue",
+  "petName": "Blue Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐋",
+  "place": "깊은 바다 밑 / Deep Seafloor",
+  "message": "…옹씌. 옹! (Pikmin babble)",
+  "mood": "underwater"
+ },
+ {
+  "id": "pkpurple:s0",
+  "pet": "pkpurple",
+  "petName": "Purple Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪨",
+  "name": "묵직한 문진 / Hefty Paperweight",
+  "desc": "가벼운 건 재미없대요. 혼자서 번쩍 / Light things are no fun. Lifted it alone"
+ },
+ {
+  "id": "pkpurple:s1",
+  "pet": "pkpurple",
+  "petName": "Purple Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏋️",
+  "name": "아령 한 쌍 / Pair of Dumbbells",
+  "desc": "보라 피크민 한 마리가 열 마리 몫을 해요 / One Purple does the work of ten"
+ },
+ {
+  "id": "pkpurple:s2",
+  "pet": "pkpurple",
+  "petName": "Purple Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌰",
+  "name": "거대 도토리 / Colossal Acorn",
+  "desc": "먼 숲에서 쿵 떨어진 걸 혼자 들고 왔어요 / Fell with a thud in a far forest. Carried it alone"
+ },
+ {
+  "id": "pkpurple:c0",
+  "pet": "pkpurple",
+  "petName": "Purple Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏡",
+  "place": "정원 뒤뜰 / Backyard",
+  "message": "옹! 옹! 옹옹! (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkpurple:c1",
+  "pet": "pkpurple",
+  "petName": "Purple Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌲",
+  "place": "깊은 숲 / Deep Forest",
+  "message": "씌… 옹! (Pikmin babble)",
+  "mood": "forest"
+ },
+ {
+  "id": "pkpurple:c2",
+  "pet": "pkpurple",
+  "petName": "Purple Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🍳",
+  "place": "거인의 부엌 / The Giant's Kitchen",
+  "message": "옹?! 씌옹씌! (Pikmin babble)",
+  "mood": "indoor"
+ },
+ {
+  "id": "pkwhite:s0",
+  "pet": "pkwhite",
+  "petName": "White Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔑",
+  "name": "땅속 열쇠 / Buried Key",
+  "desc": "하양 피크민은 땅에 묻힌 걸 잘 찾아요 / Whites are great at finding buried things"
+ },
+ {
+  "id": "pkwhite:s1",
+  "pet": "pkwhite",
+  "petName": "White Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧪",
+  "name": "보라 물약 병 / Purple Potion",
+  "desc": "독 안개 속에서 주워 왔어요. 마시지 마세요 / Found in poison fog. Do not drink"
+ },
+ {
+  "id": "pkwhite:s2",
+  "pet": "pkwhite",
+  "petName": "White Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "💎",
+  "name": "땅속 깊은 보석 / Deep-Buried Gem",
+  "desc": "아무도 모르는 곳에 묻혀 있던 보석을 빨간 눈으로 찾았대요 / Spotted with red eyes where nobody knew to look"
+ },
+ {
+  "id": "pkwhite:c0",
+  "pet": "pkwhite",
+  "petName": "White Pikmin",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌸",
+  "place": "분홍 꽃길 / Pink Flower Path",
+  "message": "씌! 씌! 씌! (Pikmin babble)",
+  "mood": "day"
+ },
+ {
+  "id": "pkwhite:c1",
+  "pet": "pkwhite",
+  "petName": "White Pikmin",
+  "tier": "far (먼 곳)",
+  "emojiHint": "☁️",
+  "place": "독 안개 계곡 / Poison Fog Valley",
+  "message": "옹? 씌~ 옹! (Pikmin babble)",
+  "mood": "sunset"
+ },
+ {
+  "id": "pkwhite:c2",
+  "pet": "pkwhite",
+  "petName": "White Pikmin",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🕳️",
+  "place": "지하 동굴 깊은 곳 / Deep in the Cave",
+  "message": "…씌. 옹씌? (Pikmin babble)",
+  "mood": "night"
+ }
+]

@@ -5596,7 +5596,7 @@ function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·�
       TRIP_TIER.map((tr,t)=>h('div',{class:'anyrow'},h('b',{class:'small'},tr[1]),['s','c'].map(k=>h('div',{class:'anyset'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),h('div',{class:'anyslots'},TRIP_ANY[k][t].map((_,i)=>slot('any:'+k+t+'-'+i,''))))))))];
 }
 setCloud('local'); render(); decorate(); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v125'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v126'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
