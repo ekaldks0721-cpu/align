@@ -1,0 +1,104 @@
+[
+ {
+  "id": "hw:s0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍬",
+  "name": "호박 사탕 바구니",
+  "desc": "동네 집집마다 \"트릭 오어 트릿!\" 하고 받아 온 사탕이에요",
+  "note": "Halloween limited souvenir"
+ },
+ {
+  "id": "hw:s1",
+  "tier": "nearby (동네)",
+  "emojiHint": "🕯️",
+  "name": "잭오랜턴 촛불",
+  "desc": "호박 속 촛불이 깜빡깜빡. 무섭지 않고 귀여워요",
+  "note": "Halloween limited souvenir"
+ },
+ {
+  "id": "hw:s2",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧹",
+  "name": "마녀의 빗자루",
+  "desc": "먼 숲 마녀가 잠깐 빌려줬대요. 아직 조금 떠요",
+  "note": "Halloween limited souvenir"
+ },
+ {
+  "id": "hw:s3",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🦇",
+  "name": "박쥐 머리핀",
+  "desc": "동굴 박쥐들과 친구가 되어 받은 선물이에요",
+  "note": "Halloween limited souvenir"
+ },
+ {
+  "id": "hw:s4",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔮",
+  "name": "마녀의 수정 구슬",
+  "desc": "들여다보면 내일 할 일이 다 끝나 있는 게 보인대요",
+  "note": "Halloween limited souvenir"
+ },
+ {
+  "id": "hw:s5",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👻",
+  "name": "유령 파티 초대장",
+  "desc": "보름달 밤 유령 파티 초대장. 열면 \"부우~\" 소리가 나요",
+  "note": "Halloween limited souvenir"
+ },
+ {
+  "id": "hw:c0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎃",
+  "place": "밤 호박밭",
+  "message": "호박이 나보다 커! 제일 동그란 걸로 골라 줄게",
+  "mood": "night",
+  "note": "Halloween limited postcard"
+ },
+ {
+  "id": "hw:c1",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏚️",
+  "place": "트릭 오어 트릿 골목",
+  "message": "\"트릭 오어 트릿!\" 사탕 주머니가 가득 찼어",
+  "mood": "night",
+  "note": "Halloween limited postcard"
+ },
+ {
+  "id": "hw:c2",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌕",
+  "place": "보름달 언덕",
+  "message": "보름달이 엄청 커. 늑대 소리는… 못 들은 걸로",
+  "mood": "night",
+  "note": "Halloween limited postcard"
+ },
+ {
+  "id": "hw:c3",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🕸️",
+  "place": "거미줄 숲",
+  "message": "거미줄에 이슬이 반짝. 거미는 하나도 안 무서웠어 (조금 무서웠어)",
+  "mood": "forest",
+  "note": "Halloween limited postcard"
+ },
+ {
+  "id": "hw:c4",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏰",
+  "place": "유령의 성",
+  "message": "유령들이랑 숨바꼭질 했어. 내가 이겼어!",
+  "mood": "night",
+  "note": "Halloween limited postcard"
+ },
+ {
+  "id": "hw:c5",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧙",
+  "place": "마녀의 오두막",
+  "message": "마녀가 수프를 끓여 줬어. 맛은… 신기했어",
+  "mood": "night",
+  "note": "Halloween limited postcard"
+ }
+]
