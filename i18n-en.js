@@ -5797,4 +5797,5 @@ window.I18N_EN={
   "상점의 배경·날씨를 모두 모으기":"Collect every scene and weather in the shop",
   "여의도 한강공원":"Yeouido Hangang Park",
   "와이키키 해변":"Waikiki Beach",
+  "송도 솔찬공원":"Songdo Solchan Park",
 };
