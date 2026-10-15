@@ -401,7 +401,7 @@ dialog img{max-width:100%;max-height:70vh;display:block;margin:0 auto;border-rad
 .catbox{border-top:1px solid var(--rule);margin-top:1rem;padding-top:.9rem}
 .catbox .list li{flex-wrap:wrap}
 .seg.wrap{flex-wrap:wrap;border-radius:18px}
-.form{display:grid;gap:.7rem}
+.form{display:grid;grid-template-columns:minmax(0,1fr);gap:.7rem} .form label>select{min-width:0;text-overflow:ellipsis}
 .form label{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;justify-content:space-between}
 .sw{display:flex;gap:.3rem;flex-wrap:wrap}
 .sw button,.sw button:hover{width:26px;height:26px;min-height:0;padding:0;border-radius:50%;background:var(--c);border:2px solid var(--surface)}
@@ -5879,7 +5879,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v132'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v133'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
