@@ -3446,6 +3446,7 @@ let CURSP='';
 function eyesG(G,st,kind){
   const A=tplA(st), y=A.ey, xs=SP[CURSP]&&SP[CURSP].eyeX||[5,10];
   if(SP[CURSP]&&SP[CURSP].extEyes) return; // 눈이 틀 밖(ext)에 있는 친구는 ext가 직접 그려요
+  if(SP[CURSP]&&SP[CURSP].lines==='PIKMIN') return; // 피크민은 눈을 감지 않아요 (늘 동그랗게 뜬 그대로)
   if(SP[CURSP]&&SP[CURSP].fixedEyes){if(kind==='sleep'||kind==='blink') [4,5,6,9,10,11].forEach(x=>{gset(G,x,y-1,'b'); gset(G,x,y,'o'); gset(G,x,y+1,'b')}); return} // 두들밥: 낙서 눈은 늘 동그랗게 (잘 때만 감아요)
   if(SP[CURSP]&&SP[CURSP].bigeye){[[5,6],[9,10]].forEach(([a,b])=>{ // 미카엘: 동글동글 까만 눈 (반짝임 한 칸)
     const row=(yy,c1,c2)=>{gset(G,a,yy,c1); gset(G,b,yy,c2==null?c1:c2)};
@@ -5967,7 +5968,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v134'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v135'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
