@@ -623,7 +623,12 @@ section[data-card=pet] h2,.pxui h2{font-family:inherit;font-weight:700;font-size
 .shopit{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.7rem .4rem;border:2px solid var(--px-line);background:var(--px-bg);text-align:center;min-width:0}
 .shopit b{font-size:14px;overflow-wrap:anywhere} .shopit.on{background:var(--px-soft)}
 .shopit .emo{font-size:2rem;line-height:1.2} .shopit .price{display:inline-flex;align-items:center;gap:.2rem;font-size:13px} .shopit .row{justify-content:center;gap:.3rem}
-.shopit button{padding:.2em .8em} .jarpv svg{max-width:100%;height:auto}
+.shopit button{padding:.2em .8em}
+.amb{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem;margin-top:.6rem} .amb button{padding:.25em .8em;font-size:14px}
+.ambgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(7.5rem,1fr));gap:.5rem}
+.ambit{display:flex;flex-direction:column;gap:.35rem;padding:.45rem;border:1px solid var(--rule2);border-radius:12px} .ambit.on{border-color:var(--accent,#3060E0);background:var(--soft,rgba(48,96,224,.06))}
+.ambit button{display:flex;align-items:center;gap:.4rem;border:0;background:none;padding:.2rem;font-weight:600;justify-content:flex-start;text-align:left;min-height:0;word-break:keep-all} .ambit .emo{font-size:1.3rem}
+.ambdlg{display:grid;gap:.8rem} .ambdlg input[type=range]{width:100%;min-height:0;padding:0;accent-color:var(--accent,#3060E0)} .ambdlg label:not(.ck) input[type=range]{flex:1 1 8rem} .jarpv svg{max-width:100%;height:auto}
 .shopit .dexmore{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.2rem;border:0;background:none;color:inherit;width:100%;cursor:pointer}
 .shopit .dexmore .small{opacity:.75}
 .dexhero{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:.6rem;background:var(--px-bg,#FFF8E8);border:2px solid var(--px-line,#202838)}
@@ -758,6 +763,7 @@ body.kb #buddy{display:none!important}
           <button id="t-end">끝내고 기록</button>
           <button class="quiet" id="t-cancel">취소</button>
         </div>
+        <div class="amb" id="t-amb"></div>
         <p class="small frnow" id="t-fr" hidden></p>
         <p class="small frnow" id="t-trip" hidden></p>
         <div class="last" id="t-last" hidden>
@@ -1358,6 +1364,88 @@ function playTone(name,kind){ // kind: focus(집중 끝) · break(휴식 끝, �
       o.connect(g).connect(actx.destination); o.start(st); o.stop(st+tn[4]+.05)});}catch(e){}
 }
 function beep(kind){if(cfg('sound')) playTone(cfg('tone'),kind)}
+
+/* ---------- 배경 소리: 음원 파일 없이 앱이 직접 만들어 내는 소음과 자연의 소리 ---------- */
+// 소리마다 몇 초짜리 소리를 한 번 만들어 두고 끝없이 이어 틀어요 (이음새는 살짝 겹쳐서 안 들리게). 설정은 settings.amb = {mix:{소리:크기}, vol, auto}
+const AMB_LIST=[['white','🌫',TR('백색소음')],['pink','🌸',TR('핑크 소음')],['brown','🟤',TR('갈색 소음')],['rain','🌧',TR('비')],['waves','🌊',TR('파도')],['wind','🍃',TR('바람')],['fire','🔥',TR('모닥불')],['plane','✈️',TR('비행기 객실')]];
+const AMB={buf:{},nodes:{},master:null,playing:false,manual:null,wasFocus:false};
+const ambCfg=()=>Object.assign({mix:{},vol:.6,auto:true},S.settings.v.amb||{});
+function ambSave(c){S.settings.v.amb=c; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush()}
+function ambBuild(kind){ // 소리 한 덩어리 만들기 (좌우 따로 만들어서 넓게 들려요)
+  const sr=actx.sampleRate, secs={rain:10,waves:16,fire:12,wind:20}[kind]||6, L=Math.round(sr*secs), F=Math.round(sr*.5), buf=actx.createBuffer(2,L,sr);
+  const seam=a=>{const o=new Float32Array(L); for(let i=0;i<L;i++) o[i]=a[i]; for(let i=0;i<F;i++){const t=i/F; o[i]=a[i]*Math.sin(t*Math.PI/2)+a[L+i]*Math.cos(t*Math.PI/2)} return o}; // 끝과 처음을 겹쳐서 이음새 없애기
+  const white=()=>{const a=new Float32Array(L+F); for(let i=0;i<a.length;i++) a[i]=Math.random()*2-1; return a};
+  const pink=()=>{const a=white(); let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0; for(let i=0;i<a.length;i++){const w=a[i]; b0=.99886*b0+w*.0555179; b1=.99332*b1+w*.0750759; b2=.969*b2+w*.153852; b3=.8665*b3+w*.3104856; b4=.55*b4+w*.5329522; b5=-.7616*b5-w*.016898; a[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11; b6=w*.115926} return a};
+  const brown=()=>{const a=white(); let l=0; for(let i=0;i<a.length;i++){l=(l+.02*a[i])/1.02; a[i]=l*3.5} return a};
+  const lp=(a,k)=>{let y=0; for(let i=0;i<a.length;i++){y+=k*(a[i]-y); a[i]=y} return a}; // 한 번 거르는 저음 필터 (k가 작을수록 먹먹)
+  const burst=(o,at,len,amp,tone)=>{for(let j=0;j<len&&at+j<L;j++){const e=Math.exp(-j/(len/5)); o[at+j]+=amp*e*(tone?Math.sin(j*tone):Math.random()*2-1)}}; // 짧게 톡 하는 소리
+  const N=L+F, ph=i=>(i%L)/L; // 걸러 내기는 이음새를 만들기 전에 (그래야 끝과 처음이 같은 흐름이에요)
+  for(let ch=0;ch<2;ch++){let a, ev=null;
+    if(kind==='white') a=white();
+    else if(kind==='pink') a=pink();
+    else if(kind==='brown') a=brown();
+    else if(kind==='rain'){a=pink(); const w=white(); let y=0; for(let i=0;i<N;i++){y+=.35*(w[i]-y); a[i]=a[i]*.45+(w[i]-y)*.08} // 쏴아 하는 빗소리 + 톡톡 떨어지는 빗방울
+      ev=o=>{for(let n=0;n<secs*70;n++){const at=Math.floor(Math.random()*(L-sr*.05)), big=Math.random()<.15; burst(o,at,Math.round(sr*(big?.012:.004)),(big?.35:.15)*Math.random(),big?0:(2*Math.PI*(2500+Math.random()*3000)/sr))}}}
+    else if(kind==='waves'){const b=brown(), p=pink(), P1=sr*7; a=new Float32Array(N); // 밀려왔다 부서지고 빠져나가는 파도 두 번
+      for(let i=0;i<N;i++){const j=i%L, t=j<P1?j/P1:(j-P1)/(L-P1), rise=t<.4?Math.pow(Math.sin(t/.4*Math.PI/2),2):Math.exp(-(t-.4)*5)+(t>.9?(t-.9)*0:0), e=.12+.88*rise; a[i]=b[i]*e*.8+p[i]*Math.pow(e,3)*.7}}
+    else if(kind==='wind'){const w=white(); a=new Float32Array(N); let y=0, y2=0; // 세졌다 약해지는 바람
+      for(let i=0;i<N;i++){const t=ph(i), g=.5+.3*Math.sin(2*Math.PI*t*2)+.2*Math.sin(2*Math.PI*t*5+1), k=.004+.03*g*g; y+=k*(w[i]-y); y2+=k*(y-y2); a[i]=y2*(8+10*g)*g}}
+    else if(kind==='fire'){a=lp(brown(),.08); // 낮게 타오르는 소리 + 탁탁 튀는 불똥
+      ev=o=>{const pk=Math.max(...o.slice(0,sr).map(Math.abs))||1; for(let n=0;n<secs*9;n++){const at=Math.floor(Math.random()*(L-sr*.1)), k=1+Math.floor(Math.random()*4), am=(Math.pow(Math.random(),2)*.7+.05)*pk; for(let j=0;j<k;j++) burst(o,at+Math.floor(Math.random()*sr*.03),Math.round(sr*(.001+Math.random()*.003)),am*(j?.5:1),0)}
+        for(let n=0;n<secs*.6;n++) burst(o,Math.floor(Math.random()*(L-sr*.1)),Math.round(sr*.02),(.5+Math.random()*.3)*pk,0)}}
+    else if(kind==='plane'){a=lp(brown(),.12); const p=lp(pink(),.25); for(let i=0;i<N;i++) a[i]+=p[i]*.25} // 낮게 웅웅거리는 엔진과 공기 소리
+    let o=seam(a); if(ev) ev(o);
+    if(kind==='plane') for(let i=0;i<L;i++) o[i]+=.012*Math.sin(2*Math.PI*Math.round(118*secs)/secs*i/sr)+.005*Math.sin(2*Math.PI*Math.round(236*secs)/secs*i/sr); // 엔진 웅 소리 (끝과 처음이 딱 맞는 높이)
+    let ss=0; for(let i=0;i<L;i++) ss+=o[i]*o[i]; const rms=Math.sqrt(ss/L)||1, tgt={white:.11,pink:.13,brown:.16,rain:.12,waves:.14,wind:.15,fire:.13,plane:.16}[kind]; // 소리마다 비슷한 크기로 맞추고, 너무 큰 부분은 부드럽게 눌러요
+    for(let i=0;i<L;i++){const v=o[i]*tgt/rms; o[i]=Math.abs(v)<.7?v:Math.sign(v)*(.7+.25*Math.tanh((Math.abs(v)-.7)/.25))}
+    buf.copyToChannel(o,ch)}
+  return buf;
+}
+function ambVoice(kind,level){ // 소리 하나 틀기 (크기는 천천히 바꿔요)
+  if(!AMB.buf[kind]) AMB.buf[kind]=ambBuild(kind);
+  const src=actx.createBufferSource(), g=actx.createGain(); src.buffer=AMB.buf[kind]; src.loop=true; g.gain.value=0;
+  let tail=src; if(kind==='rain'||kind==='plane'){const f=actx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=kind==='rain'?7000:900; src.connect(f); tail=f}
+  tail.connect(g); g.connect(AMB.master); src.start(0,Math.random()*src.buffer.duration); g.gain.setTargetAtTime(level,actx.currentTime,.4);
+  return {src,g};
+}
+function ambApply(){ // 지금 설정에 맞게 소리 켜기·끄기·크기 맞추기
+  if(!actx) return; const c=ambCfg(), now=actx.currentTime;
+  if(!AMB.master){AMB.master=actx.createGain(); AMB.master.gain.value=0; AMB.master.connect(actx.destination)}
+  AMB.master.gain.setTargetAtTime(AMB.playing?c.vol*c.vol:0,now,AMB.playing?.5:.35);
+  AMB_LIST.forEach(([k])=>{const lv=AMB.playing?c.mix[k]||0:0, n=AMB.nodes[k];
+    if(lv>0&&!n) AMB.nodes[k]=ambVoice(k,lv*lv);
+    else if(n&&lv>0) n.g.gain.setTargetAtTime(lv*lv,now,.15);
+    else if(n&&!lv){n.g.gain.setTargetAtTime(0,now,.3); const s=n.src; delete AMB.nodes[k]; setTimeout(()=>{try{s.stop()}catch(e){}},1500)}});
+}
+function ambSet(on){ // 틀기 / 끄기
+  if(on){ensureAudio(); if(!actx) return; if(!Object.values(ambCfg().mix).some(v=>v>0)){const c=ambCfg(); c.mix={rain:.7}; ambSave(c)}}
+  AMB.playing=!!on; ambApply(); paintAmb();
+}
+function ambSync(){ // '집중할 때 자동으로': 집중 타이머가 돌면 틀고, 쉬거나 멈추면 꺼요. 손으로 켜고 끈 건 다음 집중 시작·끝까지 그대로
+  const c=ambCfg(), f=!!(T.running&&isFocus());
+  if(f!==AMB.wasFocus){AMB.wasFocus=f; AMB.manual=null}
+  const want=AMB.manual!=null?AMB.manual:(c.auto&&f&&Object.values(c.mix).some(v=>v>0));
+  if(want!==AMB.playing){if(want&&(!actx||actx.state!=='running')){ensureAudio(); if(!actx||actx.state!=='running') return} ambSet(want)}
+}
+document.addEventListener('pointerdown',()=>{if(actx&&actx.state==='suspended'&&(AMB.playing||AMB.manual)) actx.resume()},true); // 새로고침 뒤 첫 터치에 다시 이어 틀기
+function ambLabel(){const c=ambCfg(), on=AMB_LIST.filter(([k])=>c.mix[k]>0); return on.length?on.map(x=>x[1]).join(''):TR('끔')}
+function paintAmb(){const el=$('#t-amb'); if(!el) return; const c=ambCfg(), has=Object.values(c.mix).some(v=>v>0);
+  el.replaceChildren(h('button',{class:'quiet ambopen',onclick:ambDlg,'aria-label':TR('배경 소리 고르기')},'🎧 '+TR('배경 소리')+' · '+ambLabel()),
+    has?h('button',{class:'quiet ambplay','aria-pressed':String(AMB.playing),onclick:()=>{AMB.manual=!AMB.playing; ambSet(AMB.manual)}},AMB.playing?'⏸ '+TR('끄기'):'▶ '+TR('틀기')):null)}
+function ambDlg(){
+  const box=h('div',{class:'ambdlg'}), pb=h('button',{onclick:()=>{AMB.manual=!AMB.playing; ambSet(AMB.manual); paint()}}), paint=()=>{const c=ambCfg(); pb.textContent=AMB.playing?'⏸ '+TR('끄기'):'▶ '+TR('틀기');
+    const slider=(val,on,label)=>h('input',{type:'range',min:0,max:100,value:Math.round(val*100),'aria-label':label,oninput:e=>on(e.target.value/100,false),onchange:e=>on(e.target.value/100,true)});
+    const setLv=(k,v,save)=>{const c2=ambCfg(); c2.mix=Object.assign({},c2.mix,{[k]:v}); if(!v) delete c2.mix[k]; if(save) ambSave(c2); else S.settings.v.amb=c2; if(AMB.playing) ambApply(); if(save){paintAmb(); if(!v) paint()}};
+    box.replaceChildren(
+      h('div',{class:'ambgrid'},AMB_LIST.map(([k,emo,n])=>{const on=c.mix[k]>0; return h('div',{class:'ambit'+(on?' on':'')},
+        h('button',{'aria-pressed':String(on),onclick:()=>{const c2=ambCfg(); c2.mix=Object.assign({},c2.mix); if(on) delete c2.mix[k]; else c2.mix[k]=.6; ambSave(c2); if(!on&&!AMB.playing){AMB.manual=true; ambSet(true)} else ambApply(); paintAmb(); paint()}},h('span',{class:'emo'},emo),h('span',null,n)),
+        on?slider(c.mix[k],(v,s)=>setLv(k,v,s),n+' '+TR('크기')):null)})),
+      h('label',null,TR('전체 크기'),slider(c.vol,(v,s)=>{const c2=ambCfg(); c2.vol=v; if(s) ambSave(c2); else S.settings.v.amb=c2; if(AMB.playing) ambApply()},TR('전체 크기'))),
+      h('label',{class:'ck'},h('input',{type:'checkbox',checked:c.auto,onchange:e=>{const c2=ambCfg(); c2.auto=e.target.checked; ambSave(c2); AMB.manual=null; ambSync(); paintAmb()}}),TR('집중 타이머가 돌 때 자동으로 틀고, 쉬는 시간엔 꺼요')),
+      h('p',{class:'small muted',style:'margin:0'},TR('여러 소리를 함께 틀 수 있어요. 음원 파일 없이 앱이 직접 만드는 소리라 인터넷 없이도 나와요. 휴대폰에서는 화면을 끄거나 다른 앱으로 가면 멈출 수 있어요.')))};
+  paint();
+  openDlg('🎧 '+TR('배경 소리'),h('div',{class:'form'},box),[pb,h('button',{class:'primary',onclick:closeDlg},TR('닫기'))]);
+}
 // 브라우저는 사용자가 한 번 누른 뒤에야 소리를 낼 수 있게 해 줘서, 아무 곳이나 처음 누를 때 소리를 준비해 둠
 ['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev,()=>{if(!actx||actx.state==='suspended') ensureAudio()},true));
 let wl=null, wlBusy=false, wlFail=false; // 타이머가 도는 동안 화면이 꺼지지 않게 함 (지원하는 브라우저에서만)
@@ -1414,7 +1502,7 @@ function paintTimer(){
   const end=$('#t-end'); end.textContent=isFocus()?TR('끝내고 기록'):TR('휴식 건너뛰기'); end.hidden=isFocus()?!started:false;
   $('#t-cancel').hidden=!(isFocus()&&started);
   $('#t-quick').hidden=!(T.mode==='pomo'&&T.phase==='focus'&&!started);
-  paintPomoCfg();
+  paintPomoCfg(); ambSync();
 }
 const PCFG=[['focus',TR('집중'),[5,10,15,20,25,30,35,40,45,50,55,60,75,90,120],TR('분')],['short',TR('짧은 휴식'),[1,2,3,4,5,7,10,15,20],TR('분')],
   ['long',TR('긴 휴식'),[5,10,15,20,25,30,40,45,60],TR('분')],['every',TR('긴 휴식까지'),[1,2,3,4,5,6,7,8],TR('회')]];
@@ -5878,8 +5966,8 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
         hasTh?h('button',{onclick:()=>setTerra('theme',e.theme)},TR('배경으로 쓰기')):h('button',{class:cb>=e.themePrice?'primary':'',disabled:cb<e.themePrice,onclick:()=>{if(!evSpend(e,e.themePrice,TR('배경')+' · '+tn)) return; put('wardrobe',{id:th}); setTerra('theme',e.theme); celebrate('🌙 '+tn,TR('이벤트가 끝나도 계속 쓸 수 있어요'),true)}},TR('바꾸기')))),
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
-setCloud('local'); render(); decorate(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v133'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
+const APP_V='align-v134'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
