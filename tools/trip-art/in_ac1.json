@@ -1,0 +1,121 @@
+[
+ {
+  "id": "timmy:s2",
+  "pet": "timmy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🗝️",
+  "name": "백화점 개업 열쇠 / Grand Opening Key",
+  "desc": "가게가 백화점이 됐어요! 기념 열쇠예요! / The shop became a department store! A key to celebrate!"
+ },
+ {
+  "id": "timmy:c0",
+  "pet": "timmy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛒",
+  "name": "상점 계산대 / Shop Counter",
+  "message": "계산대 뒤에서 밤돌이랑 숨바꼭질했어요! / Played hide-and-seek with Tommy behind the counter!",
+  "mood": "indoor"
+ },
+ {
+  "id": "timmy:c1",
+  "pet": "timmy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍑",
+  "name": "과일 나무 언덕 / Fruit Tree Hill",
+  "message": "과일 따러 왔어요! 밤돌이가 다 먹었어요! / Came to pick fruit! Tommy ate it all!",
+  "mood": "day"
+ },
+ {
+  "id": "timmy:c2",
+  "pet": "timmy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎪",
+  "name": "섬 축제 노점 / Festival Stall",
+  "message": "축제 장사 대박이에요! 콩돌이 최고! / Sold out at the festival! Go Timmy!",
+  "mood": "night"
+ },
+ {
+  "id": "tommy:s0",
+  "pet": "tommy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍂",
+  "name": "따라 쓴 쪽지 / Copied Note",
+  "desc": "콩돌이 쪽지를 따라 썼어요! …썼어요! / Copied Timmy's note! ...note!"
+ },
+ {
+  "id": "tommy:s1",
+  "pet": "tommy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍊",
+  "name": "반쪽 오렌지 / Half an Orange",
+  "desc": "형아랑 반씩 나눠 먹었어요! …먹었어요! / Shared it half and half with Timmy! ...half!"
+ },
+ {
+  "id": "tommy:s2",
+  "pet": "tommy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌠",
+  "name": "별똥별 소원 카드 / Shooting Star Wish Card",
+  "desc": "형아랑 같은 소원을 빌었어요! …빌었어요! / Made the same wish as Timmy! ...wish!"
+ },
+ {
+  "id": "tommy:c0",
+  "pet": "tommy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌳",
+  "name": "상점 앞 나무 그늘 / Shade by the Shop",
+  "message": "콩돌이 형아 기다리는 중이에요! …중이에요! / Waiting for Timmy! ...waiting!",
+  "mood": "day"
+ },
+ {
+  "id": "tommy:c1",
+  "pet": "tommy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏖️",
+  "name": "섬 모래사장 / Island Beach",
+  "message": "조개 주웠어요! 형아 거보다 커요! / Found a shell! Bigger than Timmy's!",
+  "mood": "sea"
+ },
+ {
+  "id": "tommy:c2",
+  "pet": "tommy",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌌",
+  "name": "별똥별 내리는 밤 / Night of Shooting Stars",
+  "message": "별똥별에 소원 빌었어요! …빌었어요! / Wished on a shooting star! ...star!",
+  "mood": "night"
+ },
+ {
+  "id": "blathers:s0",
+  "pet": "blathers",
+  "tier": "nearby (동네)",
+  "emojiHint": "🦴",
+  "name": "공룡 발가락뼈 / Dino Toe Bone",
+  "desc": "부엉! 이건 무려 공룡의 발가락뼈라네 / Hoo! This, my friend, is a dinosaur toe bone."
+ },
+ {
+  "id": "blathers:s1",
+  "pet": "blathers",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🔍",
+  "name": "감정용 돋보기 / Appraisal Loupe",
+  "desc": "화석 감정할 때 쓰는 돋보기라네. 벌레는 비추지 말게 / For appraising fossils. Never point it at bugs."
+ },
+ {
+  "id": "blathers:s2",
+  "pet": "blathers",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦖",
+  "name": "완성된 티라노 화석 / Complete T. Rex Fossil",
+  "desc": "드디어 머리, 몸통, 꼬리를 다 맞췄다네! / Skull, torso and tail, all together at last!"
+ },
+ {
+  "id": "blathers:c0",
+  "pet": "blathers",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏛️",
+  "name": "박물관 입구 / Museum Entrance",
+  "message": "박물관에 온 걸 환영하네! 부엉! / Welcome to the museum! Hoo!",
+  "mood": "indoor"
+ }
+]

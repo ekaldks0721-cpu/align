@@ -1,0 +1,120 @@
+[
+ {
+  "id": "nook:s0",
+  "pet": "nook",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍃",
+  "name": "나뭇잎 포장지 / Leaf Wrapping Paper",
+  "desc": "물건을 사면 나뭇잎 모양으로 싸 준대요구리 / Buy something and it comes wrapped in a leaf."
+ },
+ {
+  "id": "nook:s1",
+  "pet": "nook",
+  "tier": "far (먼 곳)",
+  "emojiHint": "💰",
+  "name": "벨 주머니 / Bag of Bells",
+  "desc": "섬에서 쓰는 돈 주머니예요. 묵직해요구리 / Island money in a bag. Nice and heavy."
+ },
+ {
+  "id": "nook:s2",
+  "pet": "nook",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📜",
+  "name": "무인도 이주 패키지 계약서 / Island Getaway Contract",
+  "desc": "서명하면 새 섬 생활이 시작돼요구리 / Sign here and a brand-new island life begins."
+ },
+ {
+  "id": "nook:c0",
+  "pet": "nook",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏪",
+  "name": "너굴 상점 / Nook's Cranny",
+  "message": "오늘도 개점했어요구리! 쌍둥이가 인사해요구리 / Open again today! The twins say hi.",
+  "mood": "indoor"
+ },
+ {
+  "id": "nook:c1",
+  "pet": "nook",
+  "tier": "far (먼 곳)",
+  "emojiHint": "⛺",
+  "name": "처음 그 텐트 / The First Tent",
+  "message": "처음 섬에 왔을 땐 텐트였죠구리. 그리운 시절이에요구리 / We started out in a tent. Good old days.",
+  "mood": "forest"
+ },
+ {
+  "id": "nook:c2",
+  "pet": "nook",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏝️",
+  "name": "새 무인도 해변 / A New Island Beach",
+  "message": "드디어 섬 하나를 통째로 마련했어요구리! / Finally got a whole island of our own!",
+  "mood": "sea"
+ },
+ {
+  "id": "isabelle:s0",
+  "pet": "isabelle",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔔",
+  "name": "방울 머리끈 / Jingle Hair Tie",
+  "desc": "머리 묶는 빨간 끈이에요. 딸랑딸랑! / The red tie from her hair. Jingle jingle!"
+ },
+ {
+  "id": "isabelle:s1",
+  "pet": "isabelle",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📋",
+  "name": "섬 소식 원고 / Island News Script",
+  "desc": "내일 아침 방송 원고예요. 쉿, 비밀이에요! / Tomorrow's morning broadcast. Shh, it's a secret!"
+ },
+ {
+  "id": "isabelle:s2",
+  "pet": "isabelle",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "⭐",
+  "name": "별 다섯 개 섬 인증서 / Five-Star Island Certificate",
+  "desc": "섬이 별 다섯 개를 받았어요! 모두 덕분이에요 / The island got five stars! Thanks to everyone."
+ },
+ {
+  "id": "isabelle:c0",
+  "pet": "isabelle",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏢",
+  "name": "섬 안내소 / Resident Services",
+  "message": "오늘도 안내소에서 기다리고 있을게요! / I'll be waiting at the front desk today too!",
+  "mood": "indoor"
+ },
+ {
+  "id": "isabelle:c1",
+  "pet": "isabelle",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎤",
+  "name": "아침 방송 스튜디오 / Morning Broadcast Studio",
+  "message": "방송하다 재채기가 나올 뻔했어요. 휴! / Almost sneezed on air. Phew!",
+  "mood": "indoor"
+ },
+ {
+  "id": "isabelle:c2",
+  "pet": "isabelle",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎆",
+  "name": "섬 불꽃 축제 / Island Fireworks Show",
+  "message": "올해 불꽃은 제가 준비했어요! 예쁘죠? / I planned this year's fireworks! Pretty, right?",
+  "mood": "night"
+ },
+ {
+  "id": "timmy:s0",
+  "pet": "timmy",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧹",
+  "name": "상점 빗자루 / Shop Broom",
+  "desc": "매일 가게를 쓸어서 반질반질해요! / Swept the shop every day. Sparkling clean!"
+ },
+ {
+  "id": "timmy:s1",
+  "pet": "timmy",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏷️",
+  "name": "오늘의 특가 스티커 / Hot Item Sticker",
+  "desc": "무엇이든 붙이면 특가가 돼요! / Stick it on anything and it's today's special!"
+ }
+]

@@ -1,0 +1,122 @@
+[
+ {
+  "id": "blathers:c1",
+  "pet": "blathers",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐟",
+  "name": "수족관 터널 / Aquarium Tunnel",
+  "message": "물고기들이 머리 위로 지나간다네. 아름답군 / Fish swimming right overhead. Splendid.",
+  "mood": "underwater"
+ },
+ {
+  "id": "blathers:c2",
+  "pet": "blathers",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔭",
+  "name": "별 관측 천문대 / Observatory",
+  "message": "동생이 좋아하는 별을 보러 왔다네. 부엉! / Came to see my sister's favorite stars. Hoo!",
+  "mood": "night"
+ },
+ {
+  "id": "kk:s0",
+  "pet": "kk",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎸",
+  "name": "닳은 기타 피크 / Worn Guitar Pick",
+  "desc": "줄이 끊어질 때까지 쓴 피크야 / Played until the string snapped."
+ },
+ {
+  "id": "kk:s1",
+  "pet": "kk",
+  "tier": "far (먼 곳)",
+  "emojiHint": "💿",
+  "name": "K.K. 앨범 / K.K. Album",
+  "desc": "신청곡 들은 기념이야. 한정판이지 / A souvenir of your request. Limited edition."
+ },
+ {
+  "id": "kk:s2",
+  "pet": "kk",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎙️",
+  "name": "전설의 라이브 마이크 / Legendary Live Mic",
+  "desc": "가장 유명한 라이브 때 쓴 마이크야 / The mic from the most famous show."
+ },
+ {
+  "id": "kk:c0",
+  "pet": "kk",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎶",
+  "name": "광장 토요일 라이브 / Saturday Plaza Show",
+  "message": "오늘 밤 앙코르는 너를 위한 곡이야 / Tonight's encore is for you.",
+  "mood": "night"
+ },
+ {
+  "id": "kk:c1",
+  "pet": "kk",
+  "tier": "far (먼 곳)",
+  "emojiHint": "☕",
+  "name": "골목 카페 무대 / Back-Alley Café",
+  "message": "옛날엔 여기서 공연했지. 커피 맛은 그대로야 / Used to play here. The coffee hasn't changed.",
+  "mood": "indoor"
+ },
+ {
+  "id": "kk:c2",
+  "pet": "kk",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌃",
+  "name": "대도시 클럽 무대 / Big City Club",
+  "message": "조명이 쏟아져도 제일 좋은 건 광장이야 / Lights everywhere, but the plaza is still the best.",
+  "mood": "city"
+ },
+ {
+  "id": "apollo:s0",
+  "pet": "apollo",
+  "tier": "nearby (동네)",
+  "emojiHint": "☂️",
+  "name": "종이 우산 / Paper Parasol",
+  "desc": "비 올 때 쓰는 거다. 빌려주는 거 아니다, 다꿇어 / For rainy days. Not a loan, pah."
+ },
+ {
+  "id": "apollo:s1",
+  "pet": "apollo",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧥",
+  "name": "까만 비행 재킷 / Black Flight Jacket",
+  "desc": "멋있으니까 입는 거다. 너도 입어 봐라, 다꿇어 / I wear it because it's cool. Try it on, pah."
+ },
+ {
+  "id": "apollo:s2",
+  "pet": "apollo",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏅",
+  "name": "독수리 깃털 훈장 / Eagle Feather Medal",
+  "desc": "똑똑한 독수리만 받는 훈장이다. 발톱은 숨겼지, 다꿇어 / Only for smart eagles. Talons hidden, pah."
+ },
+ {
+  "id": "apollo:c0",
+  "pet": "apollo",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏠",
+  "name": "아폴로네 집 앞 / Outside Apollo's House",
+  "message": "와 봤자 차 한 잔밖에 없다, 다꿇어 / Nothing here but a cup of tea, pah.",
+  "mood": "day"
+ },
+ {
+  "id": "apollo:c1",
+  "pet": "apollo",
+  "tier": "far (먼 곳)",
+  "emojiHint": "⛰️",
+  "name": "산꼭대기 바위 / Mountaintop Rock",
+  "message": "여기서 부르는 노래가 제일 잘 들린다, 다꿇어 / Songs carry best from up here, pah.",
+  "mood": "sunset"
+ },
+ {
+  "id": "apollo:c2",
+  "pet": "apollo",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌙",
+  "name": "달 착륙 기념비 / Moon Landing Marker",
+  "message": "독수리가 달에 내려앉았다. 흥, 당연하지 다꿇어 / The Eagle has landed. Of course it has, pah.",
+  "mood": "space"
+ }
+]

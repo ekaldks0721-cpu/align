@@ -3365,6 +3365,125 @@ const AC_PROP={
   bugeek:(set,{x1,t0,ground,f})=>{const bx=x1+3+(f?1:0); set(bx,ground,'#3A2A18'); set(bx+1,ground,'#5A3A20'); set(bx,ground-1,'#2A1A10'); set(bx+2,ground-1,'#2A1A10'); set(x1+1,t0-11,'#7AC8F8'); set(x1+1,t0-10,'#7AC8F8')}, // 벌레다! (식은땀)
   grump:(set,{x1,t0,f})=>{const vx=x1+2, vy=t0-12+(f?1:0); [[0,0],[2,0],[1,1],[0,2],[2,2]].forEach(([a,b])=>set(vx+a,vy+b,'#E03030'))}, // 팔짱 끼고 부루퉁 (💢)
   parasol:(set,{x1,t0,f})=>{const hx=x1+4, top=t0-17; ['...RRRRR...','.RRWRRRWRR.','RRRRRRRRRRR'].forEach((r,j)=>[...r].forEach((c,i)=>{if(c!=='.') set(hx-5+i,top+j,c==='R'?'#D84848':'#F8E8D0')})); for(let y=top+3;y<=t0-3;y++) set(hx,y,'#8A5A30'); if(f) set(hx-4,top+4,'#8AC8F0')}}; // 종이 우산
+/* 동물의 숲 친구들은 큰 그림(가로 24 × 세로 24)으로 따로 그려요: 게임처럼 머리가 크고 몸은 작게 (틀보다 커도 괜찮아요) */
+const ACD=(()=>{
+  const TOP=6, W=24, H=24+TOP, mx=x=>23-x;
+  const mk=()=>{const G=Array.from({length:H},()=>Array(W).fill('.')); G.px=4; G.py=TOP; return G};
+  const api=G=>{const P=(x,y,c)=>{x=Math.round(x); y=Math.round(y)+TOP; if(x>=0&&x<W&&y>=0&&y<H) G[y][x]=c};
+    const R=(x,y,w,h,c)=>{for(let j=0;j<h;j++)for(let i=0;i<w;i++) P(x+i,y+j,c)};
+    const E=(cx,cy,rx,ry,c)=>{for(let y=Math.floor(cy-ry);y<=Math.ceil(cy+ry);y++)for(let x=Math.floor(cx-rx);x<=Math.ceil(cx+rx);x++){const dx=(x-cx)/(rx+.35), dy=(y-cy)/(ry+.35); if(dx*dx+dy*dy<=1) P(x,y,c)}};
+    const S=(x,y,c)=>{P(x,y,c); P(mx(x),y,c)}; // 좌우 대칭으로 한 점
+    const SR=(x,y,w,h,c)=>{R(x,y,w,h,c); R(mx(x)-w+1,y,w,h,c)};
+    const SE=(cx,cy,rx,ry,c)=>{E(cx,cy,rx,ry,c); E(23-cx,cy,rx,ry,c)};
+    const g=(x,y)=>{y+=TOP; return y>=0&&y<H&&x>=0&&x<W?G[y][x]:'.'};
+    const rows=(x0,y0,rs,m)=>rs.forEach((r,j)=>[...r].forEach((ch,i)=>{if(m[ch]) P(x0+i,y0+j,m[ch])}));
+    return {P,R,E,S,SR,SE,g,rows}};
+  const outline=(G,c)=>{const add=[]; for(let y=0;y<H;y++)for(let x=0;x<W;x++) if(G[y][x]==='.'&&[[1,0],[-1,0],[0,1],[0,-1]].some(([a,b])=>{const v=(G[y+b]||[])[x+a]; return v&&v!=='.'&&v!=='z'})) add.push([x,y]); add.forEach(([x,y])=>G[y][x]=c)};
+  // 몸: 옷(shirt, 그늘 shade), 소매, 팔·다리 색(fur), 발(feet), 치마(skirt)
+  function body(D,b,pose,f){const {P,R,S,SR}=D, sit=['sleep','read','write'].indexOf(pose)>=0, dy=sit?2:0, sh=b.shirt, sd=b.shade||sh;
+    if(sit){SR(7,21,4,2,b.legs); SR(6,22,2,1,b.feet); S(6,22,b.feet)} // 앉아서 다리를 앞으로
+    else{const lift=pose==='walk'?(f?[0,1]:[1,0]):[0,0];
+      [[9,lift[0]],[13,lift[1]]].forEach(([x,l])=>{R(x,20-l,2,3-l,b.legs); R(x-(x<12?1:0),23-l,3,1,b.feet)})}
+    if(b.skirt&&!sit){R(8,18,8,1,b.skirt); R(7,19,10,1,b.skirt); R(7,20,10,1,b.skirtD||b.skirt)}
+    R(9,15+dy,6,1,sh); R(8,16+dy,8,(b.skirt&&!sit?2:4)-(sit?1:0),sh); R(15,16+dy,1,3,sd); if(!b.skirt) R(8,19+dy-(sit?1:0),8,1,sd);
+    if(b.deco) b.deco(D,dy)}
+  const ARMS={cheer:'up',bugeek:'up',hold:'hold',read:'hold',write:'hold',eat:'hold',snack:'hold',money:'hold',coffee:'hold',bellbag:'hold',fossil:'hold',sweep:'hold',guitar:'hold',grump:'cross'};
+  function arms(D,b,pose,f,up){const {R,P,S}=D, sit=['sleep','read','write'].indexOf(pose)>=0, dy=sit?2:0, sl=b.sleeve||b.shirt, fur=b.fur;
+    let L=ARMS[pose]||'down', Rt=L; if(pose==='wag'||pose==='lecture'||pose==='announce'||pose==='sing'||pose==='parasol') Rt='up'; if(pose==='dance'){L=f?'up':'down'; Rt=f?'down':'up'}
+    if(pose==='walk'){L=Rt='down'}
+    const arm=(side,k)=>{const x=side<0?6:16, o=side; if((k==='up')!==!!up) return;
+      if(k==='down'){R(x,16+dy,2,2,sl); R(x,18+dy,2,1,fur)}
+      if(k==='hold'){R(x,16+dy,2,2,sl); R(side<0?8:14,18+dy,2,1,fur)}
+      if(k==='up'){const a=side<0?0:1; R(x,16+dy,2,1,sl); R(side<0?4:18,15+dy,2,1,sl); R(side<0?2:20,14+dy,2,1,sl); R(side<0?1:21,12+dy,2,2,fur)}
+      if(k==='cross'){R(x,16+dy,2,2,sl); R(8,17+dy,8,2,sl); R(side<0?14:8,17+dy,2,1,fur)}};
+    arm(-1,L); arm(1,Rt);
+    if(up&&pose==='wag'&&f){R(21,12,2,2,'.'); R(21,10,2,2,fur)}}
+  // 소품
+  function props(D,pose,f,sp){const {P,R,E,rows}=D;
+    if(pose==='read'){R(8,18,8,4,'#FFFFFF'); R(8,18,8,1,'#4A78C8'); R(11,18,2,4,'#4A78C8'); R(9,19,2,1,'#B8C4D8'); R(13,19,2,1,'#B8C4D8')}
+    if(pose==='write'){R(8,19,8,3,'#FFFFFF'); R(9,20,4,1,'#B8C4D8'); P(15,17,'#F8C838'); P(14,18,'#F8C838'); P(13,19,'#303030')}
+    if(pose==='eat'||pose==='snack'){const c=sp.food==='orange'?'#F89830':sp.food==='apple'?'#E04040':sp.food==='meat'?'#B86A3A':sp.food==='bone'?'#F4EAD8':'#E8B060'; E(11.5,17.5,1.6,1.4,c); P(11,16,'#4AA048'); if(f) P(12,16+1,'#00000000'.slice(0,7))}
+    if(pose==='money'){E(11.5,17.5,2,1.6,'#F0C030'); P(11,17,'#FFF0A0'); P(12,18,'#C89010')}
+    if(pose==='coffee'){R(10,16,4,3,'#F4F4F4'); R(10,16,4,1,'#6A4020'); P(14,17,'#F4F4F4'); if(f){P(11,14,'#D8D8D8'); P(12,13,'#D8D8D8')}}
+    if(pose==='guitar'){E(12.5,18,3,2.2,'#C8642A'); E(12.5,18,1,0.8,'#3A2010'); for(let i=0;i<6;i++) P(9-i,16-i,'#7A4A20'); R(2,9,2,2,'#5A3418'); if(f){P(19,10,'#F07898'); P(20,9,'#F07898')}}
+    if(pose==='sing'){R(21,10,1,2,'#505058'); R(21,8,2,2,'#303038'); (f?[[21,6],[21,5],[22,6]]:[[20,7],[20,6],[21,7]]).forEach(([x,y])=>P(x,y,'#F07898'))}
+    if(pose==='lecture'){for(let i=0;i<5;i++) P(22-i*0.4,11-i,'#C89050')}
+    if(pose==='announce'){R(21,10,1,2,'#505058'); R(21,8,2,2,'#303038'); (f?[[21,6],[21,5],[22,6]]:[[20,7],[20,6],[21,7]]).forEach(([x,y])=>P(x,y,'#F07898')); P(22,3,'#F8D848'); P(21,2,'#F8D848')}
+    if(pose==='bellbag'){rows(8,15-(f?1:0),['..oooo..','.oKKKKo.','oKKKKKKo','oKKYYKKo','oKKYKKKo','oKKKKKKo','.oooooo.'],{o:'#6A5030',K:'#EAD9A8',Y:'#E8A818'})}
+    if(pose==='fossil'){rows(9,15,['.oooo.','oCCcCo','oCoocCo','oCocCo','oCCCCo','.oooo.'],{o:'#6A5A40',C:'#DCCCA4',c:'#B4A47C'}); if(f){P(6,13,'#F8E070'); P(18,14,'#F8E070')}}
+    if(pose==='sweep'){for(let i=0;i<=8;i++) P(17-i*1.4,15+i,'#A87840'); R(3+(f?1:0),22,4,2,'#E8C060'); R(3+(f?1:0),22,4,1,'#D0A040')}
+    if(pose==='bugeek'){const bx=20+(f?1:0); R(bx,22,2,1,'#3A2A18'); P(bx,21,'#2A1A10'); P(bx+2,21,'#2A1A10'); P(19,2,'#7AC8F8'); P(19,3,'#7AC8F8')}
+    if(pose==='grump'){[[0,0],[2,0],[1,1],[0,2],[2,2]].forEach(([a,b])=>P(19+a,0+b+(f?1:0),'#E03030'))}
+    if(pose==='parasol'){rows(15,-6,['....RRRRR....','..RRWRRRWRR..','.RRRRRRRRRRR.','RRRRRRRRRRRRR'],{R:'#D84848',W:'#F8E8D0'}); for(let y=-2;y<=11;y++) P(21,y,'#8A5A30'); if(f){P(13,-1,'#8AC8F0'); P(24,0,'#8AC8F0')}}
+    if(pose==='sleep') rows(f?18:19,f?3:1,['zzz','.z.','zzz'],{z:'#8AA0D8'})}
+  // 표정: 눈 자리(왼쪽 눈 x,y,가로,세로)와 눈꺼풀 색
+  function face(D,c,kind){const {P,R,g}=D, [x,y,w,h]=c.eye, lid=c.lid;
+    const both=(fn)=>{fn(x,1); fn(23-x-(w-1),-1)};
+    if(kind==='blink'||kind==='sleep') both((ex)=>{R(ex,y,w,h,lid); R(ex,y+h-1,w,1,c.ol)});
+    if(kind==='happy') both((ex,o)=>{R(ex,y,w,h,lid); const a=o>0?ex:ex+w-1; P(a-o*0,y+h-1,c.ol); P(a+o,y+h-2<y?y:y+h-2,c.ol); P(a+2*o,y+h-1,c.ol)});
+    if(kind==='sad'||kind==='down') both((ex)=>R(ex,y,w,1,lid));
+    if(kind==='happy'&&c.mouth){const [mx0,my0]=c.mouth; R(mx0,my0,2,1,'#7A2A2A'); P(mx0,my0+1,'#E86060'); P(mx0+1,my0+1,'#E86060')}}
+  const HAPPY=['happy','cheer','wag','dance','eat','snack','money','bellbag','fossil','sweep','announce','sing'];
+  function draw(key,st,base,f){const C=ACC[key], G=mk(), D=api(G); let pose=base;
+    if(base==='stand'||base==='blink'||base==='squash'||!pose) pose='stand';
+    if(base==='walk0'||base==='walk1') pose='walk';
+    const sit=['sleep','read','write'].indexOf(pose)>=0;
+    body(D,C.b,pose,f); arms(D,C.b,pose,f,0); C.head(D,sit?2:(base==='squash'?1:0)); arms(D,C.b,pose,f,1); if(pose!=='guitar') props(D,pose,f,SP[key]);
+    if(pose==='guitar') props(D,pose,f,SP[key]);
+    outline(G,C.ol);
+    const shiftFace=sit?2:(base==='squash'?1:0), D2=shiftFace?api(G):D;
+    const kind=base==='blink'||pose==='sleep'?'blink':HAPPY.indexOf(pose)>=0?'happy':pose==='sad'||pose==='bugeek'?'sad':pose==='read'||pose==='write'?'down':'';
+    if(kind&&!C.fixed) face(shiftFace?{P:(a,b,c2)=>D.P(a,b+shiftFace,c2),R:(a,b,w,h,c2)=>D.R(a,b+shiftFace,w,h,c2),g:D.g}:D,C,kind==='blink'&&pose==='sleep'?'sleep':kind);
+    if(C.fixed&&kind==='happy'&&C.mouth){const [a,b]=C.mouth; D.R(a,b+shiftFace,2,1,'#7A2A2A')}
+    if(C.after) C.after(D,pose,f,shiftFace);
+    return G}
+  const ACC={};
+  return {draw,ACC,api};
+})();
+// 머리 그리기 (dy: 앉으면 아래로)
+const ACT_FUR=(c)=>({fur:c});
+ACD.ACC.nook={ol:'#3A2414',lid:'#5C3A22',eye:[7,8,2,2],mouth:[11,12],
+  b:{shirt:'#5AAAD8',shade:'#4A8CB8',sleeve:'#5AAAD8',fur:'#A0703F',legs:'#A0703F',feet:'#5C3A22',deco:(D,dy)=>{[[9,16],[13,17],[10,18],[14,15]].forEach(([x,y])=>D.P(x,y+dy,'#2E8050')); D.P(12,16+dy,'#F4F4F4'); D.P(11,17+dy,'#2E8050')}},
+  head:(D,dy)=>{const {E,SE,S,R,P}=D, F='#A0703F', f='#B98A55', K='#5C3A22', C='#F2E2C2';
+    SE(5,3+dy,2.4,2.4,K); SE(5.2,3.4+dy,1.1,1.1,'#3E2616'); E(11.5,9+dy,9.2,6.2,F); E(11.5,6.2+dy,5,2.4,f);
+    SE(7.6,9+dy,3,2.2,K); E(11.5,12+dy,5.2,2.6,C); SE(5.4,11.6+dy,1.4,1.2,C);
+    R(7,8+dy,2,2,'#1A100A'); P(7,8+dy,'#FFFFFF'); R(15,8+dy,2,2,'#1A100A'); P(15,8+dy,'#FFFFFF');
+    R(11,10+dy,2,1,'#2A1A10'); R(10,11+dy,4,1,'#2A1A10'); P(10,11+dy,C); P(13,11+dy,C); S(10,13+dy,'#8A5A3A')}};
+ACD.ACC.timmy=ACD.ACC.tommy={ol:'#3A2414',lid:'#6A4A30',eye:[7,10,2,2],mouth:[11,14],
+  b:{shirt:'#6CC070',shade:'#54A058',sleeve:'#6CC070',fur:'#B88A5A',legs:'#B88A5A',feet:'#6A4A30',deco:(D,dy)=>{[[9,16],[13,17],[10,18]].forEach(([x,y])=>D.P(x,y+dy,'#2E8050')); D.P(12,16+dy,'#F4F4F4')}},
+  head:(D,dy)=>{const {E,SE,S,R,P}=D, F='#B88A5A', f='#CCA070', K='#6A4A30', C='#F4E6C8';
+    SE(5.5,5+dy,2.2,2.2,K); SE(5.6,5.4+dy,1,1,'#4A3020'); E(11.5,10.5+dy,8.4,5.4,F); E(11.5,8+dy,4.6,2,f);
+    SE(7.8,10.6+dy,2.6,1.9,K); E(11.5,13.2+dy,4.6,2.1,C);
+    R(7,10+dy,2,2,'#1A100A'); P(7,10+dy,'#FFFFFF'); R(15,10+dy,2,2,'#1A100A'); P(15,10+dy,'#FFFFFF');
+    R(11,12+dy,2,1,'#2A1A10'); S(10,13+dy,'#8A5A3A')}};
+ACD.ACC.isabelle={ol:'#5A3E1E',lid:'#F6CF6A',eye:[7,9,2,2],mouth:[11,13],
+  b:{shirt:'#CDEBC0',shade:'#A8D498',sleeve:'#FFFFFF',fur:'#F6CF6A',legs:'#F6CF6A',feet:'#8A5A30',skirt:'#2E3A6A',skirtD:'#222C52',deco:(D,dy)=>{for(let y=15;y<=17;y++)for(let x=8;x<=15;x++) if((x+y)%2===0) D.P(x,y+dy,'#9CCF88'); D.R(11,15+dy,2,2,'#E03838'); D.P(10,16+dy,'#E03838'); D.P(13,16+dy,'#E03838'); D.P(11,17+dy,'#2E7A40'); D.P(12,17+dy,'#2E7A40')}},
+  head:(D,dy)=>{const {E,SE,S,R,P}=D, F='#F6CF6A', d='#E2A848', M='#FFF6E2';
+    E(11.5,1.8+dy,1.6,1.3,F); P(11,1+dy,'#FFE8A0'); R(10,3+dy,4,1,'#E03838'); S(9,3+dy,'#F0C030');
+    SE(4.4,11.4+dy,1.9,3.8,d); E(11.5,9+dy,8,6,F); SE(4.8,9+dy,1,2,'#EDBB58');
+    E(11.5,12+dy,4.4,2.6,M); E(11.5,6.4+dy,3.6,2,'#FBDD88');
+    R(7,9+dy,2,2,'#2A1A10'); P(7,9+dy,'#FFFFFF'); R(15,9+dy,2,2,'#2A1A10'); P(15,9+dy,'#FFFFFF');
+    R(11,11+dy,2,1,'#3A2414'); S(10,12+dy,'#C08060'); S(5,11+dy,'#F4A8A0')}};
+ACD.ACC.blathers={ol:'#3A2414',lid:'#6E4A2A',eye:[7,8,3,2],mouth:null,
+  b:{shirt:'#8A5E36',shade:'#6E4A2A',sleeve:'#9A6A3A',fur:'#9A6A3A',legs:'#9A6A3A',feet:'#F0A830',deco:(D,dy)=>{[[9,17],[13,17],[11,18],[12,18],[11,16],[12,16]].forEach(([x,y])=>D.P(x,y+dy,'#C89858')); D.R(10,15+dy,4,1,'#2E8A40'); D.P(11,15+dy,'#1E6A30'); D.P(12,15+dy,'#1E6A30')}},
+  head:(D,dy)=>{const {E,SE,S,R,P}=D, F='#8E6239', L='#EBD3A2';
+    S(4,2+dy,F); S(5,2+dy,F); S(4,1+dy,F); E(11.5,8.6+dy,9.2,6.4,F); E(11.5,5+dy,6,2,'#A07448');
+    SE(8,9+dy,3.6,3.3,L); SE(8.2,9+dy,1.9,1.7,'#FFFFFF'); SE(8.2,7.6+dy,2.3,0.9,'#6E4A2A'); S(8,9+dy,'#2A1A10'); S(8,10+dy,'#2A1A10');
+    R(11,10+dy,2,2,'#F0A830'); R(11,12+dy,2,1,'#C88010')}};
+ACD.ACC.kk={ol:'#4A4A4A',lid:'#F7F5EE',eye:[7,9,3,1],mouth:[11,13],fixed:1,
+  b:{shirt:'#F7F5EE',shade:'#E2DED2',sleeve:'#F7F5EE',fur:'#F7F5EE',legs:'#F7F5EE',feet:'#D4D0C4'},
+  head:(D,dy)=>{const {E,SE,S,R,P}=D, F='#F7F5EE';
+    SE(3.6,9.6+dy,2.4,4.2,'#E4E0D4'); E(11.5,8.6+dy,8.2,6.2,F); E(11.5,12+dy,4.2,2.4,'#FFFFFF');
+    R(6,6+dy,4,2,'#1E1E22'); R(14,6+dy,4,2,'#1E1E22'); R(7,9+dy,3,1,'#2A2A2A'); R(14,9+dy,3,1,'#2A2A2A');
+    R(10,10+dy,4,2,'#1E1E22'); P(10,10+dy,F); P(13,10+dy,F); P(11,10+dy,'#4A4A52'); S(10,13+dy,'#B8B4A8')}};
+ACD.ACC.apollo={ol:'#2A2420',lid:'#F6F4EE',eye:[7,8,2,2],mouth:null,
+  b:{shirt:'#2A2A30',shade:'#1C1C22',sleeve:'#2A2A30',fur:'#4A4650',legs:'#4A4650',feet:'#F8C830',deco:(D,dy)=>{D.R(9,15+dy,2,1,'#8A6A48'); D.R(13,15+dy,2,1,'#8A6A48'); D.P(11,16+dy,'#C8C8D0'); D.P(11,17+dy,'#C8C8D0'); D.P(11,18+dy,'#C8C8D0')}},
+  head:(D,dy)=>{const {E,SE,S,R,P}=D, F='#F6F4EE', sh='#DCD8CE';
+    E(11.5,8.6+dy,8.6,6.2,F); S(3,9+dy,F); S(2,10+dy,F); S(3,11+dy,sh); E(11.5,13.4+dy,6,1.4,sh);
+    S(5,6+dy,'#2A2420'); S(6,7+dy,'#2A2420'); S(7,7+dy,'#2A2420'); S(8,8+dy,'#2A2420'); // 성난 눈썹
+    R(7,8+dy,2,2,'#2A1A10'); R(15,8+dy,2,2,'#2A1A10'); P(7,8+dy,'#FFFFFF'); P(15,8+dy,'#FFFFFF');
+    E(11.5,11.4+dy,3.6,1.9,'#F7C42E'); R(10,10+dy,4,1,'#FFE070'); R(9,12+dy,6,1,'#D89A18'); R(11,13+dy,2,1,'#C08010'); P(10,13+dy,'#D89A18'); P(13,13+dy,'#D89A18')}};
+['nook','isabelle','timmy','tommy','blathers','kk','apollo'].forEach(k=>SP[k].acDraw=1);
 const T_TIBFOX={ // 티벳여우: 넓적한 네모 얼굴, 일자로 덮인 눈꺼풀, 옆으로 뻗친 회색 볼털, 하얀 주둥이
   1:{g:['','','','','','','','','..oo........oo..','.obboooooooobbo.','.obbooobbooobbo.','.oabbebbbbebbao.','oaaalllmmlllaaao','.oaallllllllaao.','..oobllllllboo..','...oooo..oooo...'],top:9,ey:11,my:12,ny:13,R:12,small:1},
   2:{g:['','','','..oo........oo..','..obo......obo..','.obbboooooobbbo.','.obbbbbbbbbbbbo.','.obbooobbooobbo.','.oabbebbbbebbao.','oaaabbbbbbbbaaao','oaaalllmmlllaaao','.oaallllllllaao.','...oobllllboo...','....obllllbo....','....obboobbo....','....ooo..ooo....'],top:5,ey:8,my:10,ny:12,R:12},
@@ -3671,6 +3790,7 @@ function poseG(spk,st,wear,pose,xp){
   const sp=SP[spk]||SP.cat;
   if(st===0){let G=fromRows(EGG); if(xp>=20) [[6,9],[7,10],[8,9],[9,10]].forEach(([x,y])=>gset(G,x,y,'o')); if(pose==='egg1') G=shiftG(G,-1,0); if(pose==='egg2') G=shiftG(G,1,0); return {G,pal:sp.pal}}
   const f=/1$/.test(pose)?1:0, base=pose.replace(/[01]$/,'');
+  if(sp.acDraw) return {G:ACD.draw(spk,st,pose==='walk0'||pose==='walk1'?pose:base,f),pal:sp.pal}; // 동물의 숲 친구들: 큰 그림으로 따로
   let G=bodyG(spk,st,base==='wag'?f:0);
   const ey={blink:'blink',sleep:'sleep',read:'down',write:'down',happy:'happy',wag:'happy',cheer:'happy',eat:'happy',sad:'sad'}[base];
   if(sp.bigeye||sp.dora) eyesG(G,st,''); if(ey) eyesG(G,st,ey);
@@ -6226,7 +6346,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v137'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v138'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
