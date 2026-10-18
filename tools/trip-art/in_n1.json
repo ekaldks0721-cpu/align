@@ -1,0 +1,137 @@
+[
+ {
+  "id": "any:s0-9",
+  "tier": "nearby (동네)",
+  "emojiHint": "✏️",
+  "name": "몽당연필 / Pencil Stub",
+  "desc": "끝까지 공부한 연필이래요. 존경의 의미로 / A pencil that studied to the very end. Kept out of respect."
+ },
+ {
+  "id": "any:s0-13",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍀",
+  "name": "네 잎 클로버 / Four-Leaf Clover",
+  "desc": "세 잎 클로버 300개를 뒤져서 찾았대요 / Found after checking 300 three-leaf ones."
+ },
+ {
+  "id": "any:s0-17",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔘",
+  "name": "세탁소에서 준 여분 단추 / Spare Button",
+  "desc": "언젠가 떨어질 단추를 미리 챙겼대요 / Saved for a button that will fall off someday."
+ },
+ {
+  "id": "any:c0-9",
+  "tier": "nearby (동네)",
+  "emojiHint": "📖",
+  "name": "독서실 칸막이 / Study Cubicle",
+  "message": "옆자리 샤프 소리가 ASMR 같아 / The pencil clicks next door are pure ASMR.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c0-13",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌾",
+  "name": "논두렁 길 / Rice Paddy Path",
+  "message": "개구리들이 합창해. 내가 지휘했어 / The frogs sang in chorus. I conducted.",
+  "mood": "day"
+ },
+ {
+  "id": "any:c0-17",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌠",
+  "name": "옥상 별 관측 / Rooftop Stargazing",
+  "message": "별 세다가 잠들었어. 102개까지 셌어 / Fell asleep counting stars. Got to 102.",
+  "mood": "night"
+ },
+ {
+  "id": "any:s1-9",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📏",
+  "name": "박물관 공룡 자 / Museum Dino Ruler",
+  "desc": "공룡 뼈 길이가 눈금으로 새겨져 있어요 / Marked in dinosaur bone lengths."
+ },
+ {
+  "id": "any:s1-13",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎳",
+  "name": "볼링핀 하나 / One Bowling Pin",
+  "desc": "첫 스트라이크 기념으로 한 개만 데려왔대요 / Brought one pin to celebrate a first strike."
+ },
+ {
+  "id": "any:s1-17",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🛰️",
+  "name": "인공위성 나사 / Satellite Screw",
+  "desc": "하늘에서 떨어졌대요. 위성은 괜찮대요 / Fell from the sky. The satellite is fine, apparently."
+ },
+ {
+  "id": "any:c1-9",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🔬",
+  "name": "과학관 / Science Museum",
+  "message": "정전기 공 만졌더니 털이 전부 섰어 / Touched the static ball. Every hair stood up.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c1-13",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎢",
+  "name": "롤러코스터 / Roller Coaster",
+  "message": "소리 질러서 목이 쉬었어. 또 탈래 / Screamed my voice away. Going again.",
+  "mood": "day"
+ },
+ {
+  "id": "any:c1-17",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧙",
+  "name": "마법 학교 기숙사 / Wizard School Dorm",
+  "message": "빗자루 수업 첫날 나무에 걸렸어 / First broom lesson. Ended up in a tree.",
+  "mood": "night"
+ },
+ {
+  "id": "any:s2-9",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏆",
+  "name": "노벨상 메달 (초콜릿) / Nobel Medal (Chocolate)",
+  "desc": "은박을 벗기면 초콜릿이에요. 연구는 내일부터 / Peel the foil, it's chocolate. Research starts tomorrow."
+ },
+ {
+  "id": "any:s2-13",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦄",
+  "name": "말랑한 유니콘 뿔 / Squishy Unicorn Horn",
+  "desc": "유니콘이 사춘기라 빠졌대요. 다시 난대요 / Fell out during unicorn puberty. It grows back."
+ },
+ {
+  "id": "any:s2-17",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌺",
+  "name": "천 년에 한 번 피는 꽃 / Once-a-Millennium Flower",
+  "desc": "피는 순간을 봤대요. 다음은 3026년 / Saw it bloom. Next time: 3026."
+ },
+ {
+  "id": "any:c2-9",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧪",
+  "name": "비밀 연구소 / Secret Lab",
+  "message": "버튼 하나 눌렀더니 전부 초록색이 됐어 / Pressed one button. Everything turned green.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c2-13",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐫",
+  "name": "낙타 행렬 / Camel Caravan",
+  "message": "낙타가 침을 뱉었어. 나한테만 / The camel spat. Only at me.",
+  "mood": "desert"
+ },
+ {
+  "id": "any:c2-17",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏟️",
+  "name": "월드컵 결승전 / World Cup Final",
+  "message": "파도타기 하다가 진짜 날아갈 뻔했어 / Did the wave so hard I nearly took off.",
+  "mood": "city"
+ }
+]

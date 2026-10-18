@@ -1,0 +1,137 @@
+[
+ {
+  "id": "any:s0-11",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥢",
+  "name": "짝짝이 나무젓가락 / Uneven Chopsticks",
+  "desc": "반으로 쪼갰는데 한쪽만 굵어요. 오늘 운세는 흉 / Split them, one side came out fat. Bad luck today."
+ },
+ {
+  "id": "any:s0-15",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍙",
+  "name": "뜯기 실패한 삼각김밥 / Badly Unwrapped Rice Ball",
+  "desc": "김이 다 찢어졌지만 맛은 그대로래요 / The seaweed tore, but it tastes the same."
+ },
+ {
+  "id": "any:s0-19",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌰",
+  "name": "다람쥐가 숨긴 도토리 / A Squirrel's Hidden Acorn",
+  "desc": "다람쥐는 어디 숨겼는지 까먹었대요 / The squirrel forgot where it hid it."
+ },
+ {
+  "id": "any:c0-11",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧺",
+  "name": "빨래방 / Laundromat",
+  "message": "세탁기 도는 거 30분 봤어. 시간 순삭 / Watched the washer spin for 30 minutes. Time flew.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c0-15",
+  "tier": "nearby (동네)",
+  "emojiHint": "🕳️",
+  "name": "수상한 맨홀 / Suspicious Manhole",
+  "message": "밑에서 거북이 넷이 피자 먹는 소리가 났어 / Heard four turtles eating pizza down there.",
+  "mood": "city"
+ },
+ {
+  "id": "any:c0-19",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌸",
+  "name": "벚꽃 터널 / Cherry Blossom Tunnel",
+  "message": "꽃잎이 머리에 쌓여서 모자가 됐어 / Petals piled up into a hat on my head.",
+  "mood": "day"
+ },
+ {
+  "id": "any:s1-11",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🥟",
+  "name": "시장 왕만두 / Giant Market Dumpling",
+  "desc": "얼굴만 한 만두래요. 반은 오다가 먹었대요 / The size of a face. Ate half on the way back."
+ },
+ {
+  "id": "any:s1-15",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🪆",
+  "name": "마트료시카 인형 / Matryoshka Doll",
+  "desc": "열어도 열어도 또 나와요. 마지막은 콩알만 해요 / Open, open, open. The last one is pea-sized."
+ },
+ {
+  "id": "any:s1-19",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧳",
+  "name": "공항 짐표 / Luggage Tag",
+  "desc": "가방은 딴 데로 가고 짐표만 따라왔대요 / The bag went somewhere else. The tag came home."
+ },
+ {
+  "id": "any:c1-11",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍕",
+  "name": "피자의 고향 / Home of Pizza",
+  "message": "피자에 파인애플 올렸다가 쫓겨났어 / Put pineapple on a pizza. Got kicked out.",
+  "mood": "city"
+ },
+ {
+  "id": "any:c1-15",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🗿",
+  "name": "모아이 섬 / Moai Island",
+  "message": "석상이랑 눈싸움했어. 졌어 / Had a staring contest with a statue. Lost.",
+  "mood": "sea"
+ },
+ {
+  "id": "any:c1-19",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🚢",
+  "name": "크루즈 갑판 / Cruise Deck",
+  "message": "갈매기가 내 과자를 훔쳐 갔어. 프로야 / A seagull stole my chips. A true pro.",
+  "mood": "sea"
+ },
+ {
+  "id": "any:s2-11",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🫖",
+  "name": "여왕님의 찻주전자 / The Queen's Teapot",
+  "desc": "차를 따르면 새끼손가락이 저절로 올라가요 / Pour tea and your pinky lifts by itself."
+ },
+ {
+  "id": "any:s2-15",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "☄️",
+  "name": "혜성 꼬리털 / Comet Tail Hair",
+  "desc": "빗질하면 반짝이 가루가 떨어져요 / Brush it and glitter falls out."
+ },
+ {
+  "id": "any:s2-19",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧦",
+  "name": "우주에서 찾은 양말 짝 / The Lost Sock's Partner",
+  "desc": "동네에서 잃어버린 양말 짝이 우주에 있었대요! / Found the lone sock's partner... in space!"
+ },
+ {
+  "id": "any:c2-11",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧜",
+  "name": "인어 마을 / Mermaid Village",
+  "message": "인어들이 노래를 가르쳐 줬어. 숨은 못 참음 / Mermaids taught me to sing. Couldn't hold my breath.",
+  "mood": "underwater"
+ },
+ {
+  "id": "any:c2-15",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🦒",
+  "name": "사바나 초원 / Savanna",
+  "message": "기린한테 길 물어봤는데 목 아파서 포기 / Asked a giraffe for directions. My neck gave up.",
+  "mood": "desert"
+ },
+ {
+  "id": "any:c2-19",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🙃",
+  "name": "거꾸로 마을 / Upside-Down Town",
+  "message": "여기선 다 거꾸로야. 숙제가 쉬는 시간이야 / Everything's backwards here. Homework is break time.",
+  "mood": "candy"
+ }
+]

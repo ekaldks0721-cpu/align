@@ -1,0 +1,137 @@
+[
+ {
+  "id": "any:s0-8",
+  "tier": "nearby (동네)",
+  "emojiHint": "📝",
+  "name": "누가 버린 오답노트 / Someone's Mistake Notebook",
+  "desc": "틀린 문제가 빼곡해요. 동지애가 느껴진대요 / Packed with wrong answers. Feels like a comrade."
+ },
+ {
+  "id": "any:s0-12",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐌",
+  "name": "달팽이 경주 우승 리본 / Snail Race Ribbon",
+  "desc": "1등 달팽이가 결승선까지 3시간 걸렸대요 / The winning snail took three hours to finish."
+ },
+ {
+  "id": "any:s0-16",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥠",
+  "name": "포춘쿠키 쪽지 / Fortune Cookie Note",
+  "desc": "\"오늘은 공부가 잘 될 것이다\"라고 써 있대요 / It says: \"Today, studying will go well.\""
+ },
+ {
+  "id": "any:c0-8",
+  "tier": "nearby (동네)",
+  "emojiHint": "🏫",
+  "name": "방과 후 교실 / Classroom After School",
+  "message": "칠판에 \"집중!\" 써 놓고 왔어. 너 보라고 / Wrote \"FOCUS!\" on the board. For you.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c0-12",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐈",
+  "name": "고양이 골목 / Cat Alley",
+  "message": "고양이 회의에 끼었어. 안건은 낮잠 / Joined a cat meeting. Agenda: naps.",
+  "mood": "city"
+ },
+ {
+  "id": "any:c0-16",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔮",
+  "name": "점집 앞 / Fortune Teller's Door",
+  "message": "내가 내일 간식 먹을 운명이래. 소름 / Says I'm destined for a snack tomorrow. Chills.",
+  "mood": "night"
+ },
+ {
+  "id": "any:s1-8",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎓",
+  "name": "합격 엿 / Good-Luck Taffy",
+  "desc": "시험에 철썩 붙으라고 시장 할머니가 주셨대요 / A market grandma gave it so you \"stick\" to a pass."
+ },
+ {
+  "id": "any:s1-12",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎪",
+  "name": "광대 빨간 코 / Clown Nose",
+  "desc": "광대가 빌려줬는데 깜빡하고 들고 왔대요 / Borrowed from a clown. Forgot to give it back."
+ },
+ {
+  "id": "any:s1-16",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍄",
+  "name": "버섯 모양 돌 / Mushroom-Shaped Rock",
+  "desc": "진짜 버섯인 줄 알고 깨물었다가 이 빠질 뻔했대요 / Bit it thinking it was a mushroom. Nearly lost a tooth."
+ },
+ {
+  "id": "any:c1-8",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏛️",
+  "name": "큰 대학 도서관 / Grand University Library",
+  "message": "책이 천장까지 있어. 사다리 위에서 공부함 / Books up to the ceiling. Studied on a ladder.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c1-12",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🍩",
+  "name": "도넛 공장 / Donut Factory",
+  "message": "구멍 만드는 곳 견학함. 구멍은 공짜래 / Toured the hole department. Holes are free.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c1-16",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🐼",
+  "name": "판다 숲 / Panda Forest",
+  "message": "판다가 하루 종일 대나무만 먹어. 나도 꼈어 / Pandas eat bamboo all day. I joined in.",
+  "mood": "forest"
+ },
+ {
+  "id": "any:s2-8",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📜",
+  "name": "전설의 족보 / Legendary Exam Notes",
+  "desc": "시험에 나올 것만 적혀 있대요. 근데 글씨를 못 읽어요 / Only what's on the test. But nobody can read it."
+ },
+ {
+  "id": "any:s2-12",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👑",
+  "name": "잃어버린 왕관 / Lost Crown",
+  "desc": "쓰면 왠지 낮잠이 와요. 왕의 무게래요 / Wearing it makes you sleepy. The weight of royalty."
+ },
+ {
+  "id": "any:s2-16",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🥚",
+  "name": "공룡 알 (부화 중?) / Dino Egg (Hatching?)",
+  "desc": "가끔 톡톡 소리가 나요. 모르는 척하래요 / Sometimes it taps. Pretend you didn't hear."
+ },
+ {
+  "id": "any:c2-8",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🕰️",
+  "name": "천 년 된 대학 / Thousand-Year-Old University",
+  "message": "천 년 된 강의실에서 졸았어. 전통이래 / Dozed off in a 1,000-year-old lecture hall. Tradition.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c2-12",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🗻",
+  "name": "후지산 꼭대기 / Top of Mt. Fuji",
+  "message": "해 뜨는 거 보려고 밤새 올라왔어. 졸려 / Climbed all night for the sunrise. So sleepy.",
+  "mood": "sunset"
+ },
+ {
+  "id": "any:c2-16",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🎆",
+  "name": "불꽃 축제 / Fireworks Festival",
+  "message": "하트 모양 불꽃이 터졌어. 너 생각났어 / A heart-shaped firework went off. Thought of you.",
+  "mood": "night"
+ }
+]

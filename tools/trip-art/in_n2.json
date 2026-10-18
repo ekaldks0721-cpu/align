@@ -1,0 +1,137 @@
+[
+ {
+  "id": "any:s0-10",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧾",
+  "name": "아주 긴 영수증 / Extremely Long Receipt",
+  "desc": "산 건 하나인데 영수증은 1미터예요 / Bought one thing. Got a meter of receipt."
+ },
+ {
+  "id": "any:s0-14",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧤",
+  "name": "목장갑 한 짝 / One Work Glove",
+  "desc": "짝 잃은 양말이랑 같은 데서 온 것 같대요 / Probably from the same place as the lone sock."
+ },
+ {
+  "id": "any:s0-18",
+  "tier": "nearby (동네)",
+  "emojiHint": "🔭",
+  "name": "장난감 망원경 / Toy Telescope",
+  "desc": "보이는 건 옆집 지붕뿐이래요 / All it shows is the neighbor's roof."
+ },
+ {
+  "id": "any:c0-10",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍜",
+  "name": "동네 분식집 / Corner Snack Bar",
+  "message": "떡볶이 국물에 김밥 찍어 먹었어. 천재야 / Dipped kimbap in tteokbokki sauce. Genius.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c0-14",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎠",
+  "name": "동네 회전목마 / Little Merry-Go-Round",
+  "message": "세 바퀴 돌았더니 세상도 같이 돌아 / Three spins and the world spins too.",
+  "mood": "day"
+ },
+ {
+  "id": "any:c0-18",
+  "tier": "nearby (동네)",
+  "emojiHint": "🛒",
+  "name": "마트 시식 코너 / Supermarket Samples",
+  "message": "시식 다섯 바퀴 돌았어. 직원분이 날 기억해 / Five laps of the samples. The staff know me now.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:s1-10",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🧀",
+  "name": "산골 치즈 / Mountain Cheese",
+  "desc": "구멍이 많을수록 맛있대요. 구멍만 먹어 봐요 / More holes, more flavor. Try eating just the holes."
+ },
+ {
+  "id": "any:s1-14",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏮",
+  "name": "야시장 등불 / Night Market Lantern",
+  "desc": "불을 켜면 시장 냄새가 나는 것 같대요 / Light it and you can almost smell the market."
+ },
+ {
+  "id": "any:s1-18",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎩",
+  "name": "마술사 모자 / Magician's Hat",
+  "desc": "토끼는 안 나오고 비둘기 깃털만 나와요 / No rabbit. Just pigeon feathers."
+ },
+ {
+  "id": "any:c1-10",
+  "tier": "far (먼 곳)",
+  "emojiHint": "♨️",
+  "name": "온천 마을 / Hot Spring Town",
+  "message": "원숭이들이랑 온천했어. 자리 양보받음 / Shared a hot spring with monkeys. They gave me a seat.",
+  "mood": "snow"
+ },
+ {
+  "id": "any:c1-14",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎤",
+  "name": "노래방 / Karaoke Room",
+  "message": "100점 나왔어. 기계가 고장 난 듯 / Scored 100. The machine must be broken.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c1-18",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌀",
+  "name": "미로 정원 / Hedge Maze",
+  "message": "세 시간째 같은 분수 앞이야. 도와줘 / Third hour at the same fountain. Help.",
+  "mood": "forest"
+ },
+ {
+  "id": "any:s2-10",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🍣",
+  "name": "전설의 초밥 한 알 / A Grain of Legendary Sushi",
+  "desc": "100년 쥔 장인의 초밥. 밥알 하나만 가져왔대요 / From a master of 100 years. Brought back one grain."
+ },
+ {
+  "id": "any:s2-14",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🛸",
+  "name": "UFO 운전면허증 / UFO Driver's License",
+  "desc": "외계인이 떨어뜨렸대요. 사진이 너무 잘 나왔어요 / An alien dropped it. Great photo, honestly."
+ },
+ {
+  "id": "any:s2-18",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🗽",
+  "name": "미니 자유의 횃불 / Mini Torch of Liberty",
+  "desc": "공부할 때 들고 있으면 마음이 자유로워진대요 / Hold it while studying and feel free."
+ },
+ {
+  "id": "any:c2-10",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🐲",
+  "name": "용의 둥지 / Dragon's Nest",
+  "message": "용이 알 품는 동안 알한테 책 읽어 줬어 / Read to the egg while the dragon kept it warm.",
+  "mood": "sunset"
+ },
+ {
+  "id": "any:c2-14",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🍫",
+  "name": "초콜릿 강 / Chocolate River",
+  "message": "한 입만 먹으려다 강이 반으로 줄었어 / Meant to take one sip. Drained half the river.",
+  "mood": "candy"
+ },
+ {
+  "id": "any:c2-18",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌑",
+  "name": "달의 뒷면 / Far Side of the Moon",
+  "message": "여기 진짜 아무도 없어. 그래서 집중 잘 돼 / Nobody here at all. Great for focusing.",
+  "mood": "space"
+ }
+]
