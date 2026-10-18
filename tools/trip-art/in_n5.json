@@ -1,0 +1,92 @@
+[
+ {
+  "id": "any:s0-21",
+  "tier": "nearby (동네)",
+  "emojiHint": "🥄",
+  "name": "집게리아 뒤집개 / Krusty Krab Spatula",
+  "desc": "반질반질 닳았어요. 누가 엄청 아끼던 거래요 / Worn shiny. Someone loved this one a lot."
+ },
+ {
+  "id": "any:s0-23",
+  "tier": "nearby (동네)",
+  "emojiHint": "🐚",
+  "name": "핑핑이 껍데기 광택제 / Gary's Shell Polish",
+  "desc": "바르면 껍데기가 반짝반짝. 야옹 / Makes any shell sparkle. Meow."
+ },
+ {
+  "id": "any:c0-21",
+  "tier": "nearby (동네)",
+  "emojiHint": "🪣",
+  "name": "미끼식당 앞 / Outside the Chum Bucket",
+  "message": "손님이 나 하나야. 플랑크톤이 감동해서 울었어 / I was the only customer. Plankton cried with joy.",
+  "mood": "city"
+ },
+ {
+  "id": "any:c0-23",
+  "tier": "nearby (동네)",
+  "emojiHint": "🚤",
+  "name": "퐁퐁 부인 보트 학교 / Mrs. Puff's Boating School",
+  "message": "첫 수업에 벽에 박았어. 선생님이 부풀었어 / Crashed into a wall on day one. My teacher puffed up.",
+  "mood": "underwater"
+ },
+ {
+  "id": "any:s1-21",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎷",
+  "name": "징징이 클라리넷 리드 / Squidward's Clarinet Reed",
+  "desc": "삑사리 나는 부분만 쏙 빼 왔대요 / Took out just the part that squeaks."
+ },
+ {
+  "id": "any:s1-23",
+  "tier": "far (먼 곳)",
+  "emojiHint": "📻",
+  "name": "비키니 시티 라디오 / Bikini Bottom Radio",
+  "desc": "켜면 게살버거 광고 노래만 나와요 / All it plays is the Krabby Patty jingle."
+ },
+ {
+  "id": "any:c1-21",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌿",
+  "name": "해초 숲 / Kelp Forest",
+  "message": "길을 잃었어. 해초가 다 똑같이 생겼어 / Got lost. Every strand of kelp looks the same.",
+  "mood": "underwater"
+ },
+ {
+  "id": "any:c1-23",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🚏",
+  "name": "비키니 시티 버스 정류장 / Bikini Bottom Bus Stop",
+  "message": "버스가 안 와. 한 시간째 기다리는 중 / The bus isn't coming. Waiting for an hour now.",
+  "mood": "underwater"
+ },
+ {
+  "id": "any:s2-21",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📜",
+  "name": "플랑크톤의 비밀 계획서 / Plankton's Secret Plan",
+  "desc": "\"레시피 훔치기 작전 3141호\". 실패 예정 / \"Formula heist, plan #3141.\" Doomed to fail."
+ },
+ {
+  "id": "any:s2-23",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧽",
+  "name": "네모바지 공식 친구 인증서 / Official Friend Certificate",
+  "desc": "\"스폰지밥 공식 친구\" 도장이 쾅 찍혀 있어요 / Stamped \"Official Friend of SquarePants.\""
+ },
+ {
+  "id": "any:c2-21",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "⚓",
+  "name": "플라잉 더치맨의 배 / The Flying Dutchman's Ship",
+  "message": "유령선 구경했어. 선장이 내 간식만 가져감 / Toured the ghost ship. The captain only took my snacks.",
+  "mood": "night"
+ },
+ {
+  "id": "any:c2-23",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌊",
+  "name": "비키니 시티 위 수면 / Above Bikini Bottom",
+  "message": "처음으로 물 밖에 나와 봤어. 바깥은 너무 건조해 / Popped up out of the water. It's so dry up here.",
+  "mood": "sea"
+ }
+]

@@ -1,0 +1,92 @@
+[
+ {
+  "id": "any:s0-20",
+  "tier": "nearby (동네)",
+  "emojiHint": "💭",
+  "name": "비눗방울 막대 / Bubble Wand",
+  "desc": "후 불면 나비 모양 비눗방울이 나와요 / Blow gently and out floats a butterfly bubble."
+ },
+ {
+  "id": "any:s0-22",
+  "tier": "nearby (동네)",
+  "emojiHint": "🌸",
+  "name": "하늘 꽃무늬 스티커 / Sky Flower Sticker",
+  "desc": "비키니 시티 하늘에 뜬 꽃을 떼어 왔대요 / Peeled one of the flowers off the Bikini Bottom sky."
+ },
+ {
+  "id": "any:c0-20",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍔",
+  "name": "집게리아 카운터 / Krusty Krab Counter",
+  "message": "게살버거 주문했는데 동전 하나가 모자랐어 / Ordered a Krabby Patty. One coin short.",
+  "mood": "indoor"
+ },
+ {
+  "id": "any:c0-22",
+  "tier": "nearby (동네)",
+  "emojiHint": "🗿",
+  "name": "징징이네 집 앞 / Outside Squidward's House",
+  "message": "클라리넷 소리가 들려. 귀를 막고 박수 쳤어 / Heard the clarinet. Covered my ears and clapped.",
+  "mood": "underwater"
+ },
+ {
+  "id": "any:s1-20",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🥽",
+  "name": "다람이 공기 헬멧 / Sandy's Air Helmet",
+  "desc": "물속에서 숨 쉬는 헬멧. 공기가 꽉 찼어요 / For breathing underwater. Packed full of air."
+ },
+ {
+  "id": "any:s1-22",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🦸",
+  "name": "인어맨과 조개소년 카드 / Mermaid Man & Barnacle Boy Card",
+  "desc": "반짝이 카드예요. 각도마다 조개소년 표정이 달라요 / A shiny card. Barnacle Boy's face changes with the angle."
+ },
+ {
+  "id": "any:c1-20",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🌳",
+  "name": "다람이네 나무 돔 / Sandy's Treedome",
+  "message": "물이 없는 곳은 처음이야. 헬멧 꼭 써야 해 / First time somewhere with no water. Helmet required.",
+  "mood": "forest"
+ },
+ {
+  "id": "any:c1-22",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎸",
+  "name": "버블 볼 하프타임 무대 / Bubble Bowl Halftime Show",
+  "message": "\"스위트 빅토리\" 떼창했어! 목 다 쉼 / Sang \"Sweet Victory\" with the crowd! Voice gone.",
+  "mood": "night"
+ },
+ {
+  "id": "any:s2-20",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏅",
+  "name": "황금 뒤집개 / Golden Spatula",
+  "desc": "아무도 못 뽑던 전설의 뒤집개래요 / The legendary spatula nobody could pull out."
+ },
+ {
+  "id": "any:s2-22",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "👻",
+  "name": "유령 해적의 양말 / Ghost Pirate's Sock",
+  "desc": "플라잉 더치맨의 냄새나는 양말. 투명해요 / The Flying Dutchman's smelly sock. See-through."
+ },
+ {
+  "id": "any:c2-20",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏙️",
+  "name": "뉴 켈프 시티 / New Kelp City",
+  "message": "해초 도시라더니 해초가 하나도 없어 / A \"kelp city\" without a single kelp.",
+  "mood": "city"
+ },
+ {
+  "id": "any:c2-22",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🏛️",
+  "name": "아틀란티스 / Atlantis",
+  "message": "세상에서 제일 오래된 비눗방울 봤어. 터뜨릴 뻔 / Saw the oldest bubble in the world. Nearly popped it.",
+  "mood": "underwater"
+ }
+]
