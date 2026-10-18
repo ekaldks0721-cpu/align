@@ -696,7 +696,8 @@ body.kb #buddy{display:none!important}
 .trow .tslot{min-width:0;justify-content:center} .tslot small{line-height:1.15;text-align:center;word-break:keep-all} /* 줄이 바뀌어도 같은 줄의 칸은 높이가 같아요 */
 .tslot{flex:1;display:flex;flex-direction:column;align-items:center;gap:.1rem;padding:.3rem .2rem;border:2px dashed var(--px-line,#202838);opacity:.45;min-height:0;background:none}
 .tslot.on{opacity:1;border-style:solid;background:var(--px-bg,#FFF8E8);cursor:pointer} .tslot .temo{font-size:1.5rem;line-height:1.1} .tslot small{font-size:.65rem}
-.anyrow{margin-top:.7rem} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
+.anyslots .tslot{justify-content:space-between;min-height:4.3rem} .anyslots .tslot .temo{flex:none;margin:auto 0} .anyslots .tslot.c .art.px{width:auto;height:2.5rem;max-width:100%} .anyslots .tslot.s .art.px{width:auto;height:2.5rem}
+.anyrow{margin-top:.9rem} .anyrow>.row{margin-bottom:.3rem} .anyg{margin-top:.4rem} .anyslots small{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
 @media (max-width:520px){.anyslots{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .art{display:inline-flex;align-items:center;justify-content:center;line-height:1} .art.px svg{display:block;width:100%;height:100%;image-rendering:pixelated}
 .souvart{width:192px;height:192px;font-size:3.4rem;max-width:60vw;max-height:60vw}
@@ -5826,16 +5827,140 @@ const tripGot=id=>{const d=S.docs.trips&&S.docs.trips[id]; return d&&!d.x?d:null
 const tripN=sp=>['s','c'].reduce((a,k)=>a+[0,1,2].filter(t=>tripGot(sp+':'+k+t)).length,0);
 const PC_BG={day:['#8FCBF2','#D8F0FF','#8CCB78'],sunset:['#F49A6A','#FCD39A','#8A6A9A'],night:['#1E2550','#3A4A8A','#2A3A5A'],sea:['#8FD3F4','#CFF0FF','#3C8FD0'],underwater:['#1F7FB8','#4FB3DE','#E8D49A'],snow:['#A8C8E8','#EEF6FF','#FFFFFF'],
   forest:['#9FD69A','#D8F2C8','#3F8A4A'],desert:['#F6C27A','#FCE6B0','#E0A458'],space:['#0B0B2A','#2A1B5A','#3A3A5A'],candy:['#F8B4D8','#FFE0F0','#B8E6F8'],city:['#9CC4EC','#E0EEFA','#8A8FA0'],indoor:['#E8D4B4','#FAF2E2','#C89A6A']};
-// 어느 동물이든 가져올 수 있는 공통 기념품·엽서 (거리마다 기념품 8개, 엽서 8장). 엽서는 가져온 동물이 서명해요
+// 어느 동물이든 가져올 수 있는 공통 기념품·엽서 (거리마다 기념품 20개, 엽서 20장). 기념품 [이모지, 이름, 설명, 장르], 엽서 [이모지, 장소, 말, 배경, 장르]. 엽서는 가져온 동물이 서명해요
+// 번호가 저장 이름(any:s0-3)이 되니까 새 것은 늘 끝에 붙여요
 const TRIP_ANY={s:[
-  [['🍂','바스락 낙엽','제일 바스락거리는 걸로 골라 왔대요'],['🎫','버스 정류장 표','버스는 안 탔지만 기념으로 챙겼대요'],['🍬','편의점 사탕','계산대 옆에서 손 흔들어서 받았대요'],['🪨','세상에서 제일 동그란 돌','동네에서 제일 동그란 돌이래요'],['🎈','누가 놓친 풍선','하늘로 가기 직전에 잡아 왔어요'],['🌼','민들레 홀씨','소원 빌고 후 불면 돼요'],['🧦','짝 잃은 양말','어디서 왔는지는 아무도 몰라요'],['🍞','빵집 시식빵','한 조각만 먹고 나머지는 너 주려고']],
-  [['🐚','소라 껍데기','귀에 대면 파도 소리가 나요'],['🗝️','낡은 열쇠','뭘 여는 열쇠인지 몰라서 더 좋대요'],['🧲','여행지 자석','냉장고에 붙이면 여행 온 기분'],['🍯','시골 꿀 한 병','시장 할머니가 덤으로 주셨대요'],['📷','흔들린 즉석 사진','흔들렸지만 표정은 최고예요'],['🧭','작은 나침반','늘 네 쪽을 가리킨대요'],['🎐','바람 풍경','바람이 불면 딸랑, 생각나라고'],['🍡','휴게소 경단','휴게소는 여행의 꽃이래요']],
-  [['🌠','별똥별 조각','떨어지는 걸 주웠대요. 아직 따뜻해요'],['🌈','무지개 끝 동전','무지개 끝에 진짜 있었대요'],['🦶','공룡 발자국 화석','1억 년 전 누군가의 산책 흔적'],['🧊','남극 얼음 한 조각','녹기 전에 빨리 보세요'],['🪐','토성 고리 조각','반지로 끼면 딱 맞대요'],['🐉','용의 비늘','용이 허물 벗다 떨어뜨린 거래요'],['🏺','사막의 유물','피라미드 옆에서 반짝여서 주웠대요'],['🔮','수정 구슬','들여다보면 네가 해내는 게 보인대요']]],
+  [
+   ["🍂", "바스락 낙엽", "제일 바스락거리는 걸로 골라 왔대요", "nature"],
+   ["🎫", "버스 정류장 표", "버스는 안 탔지만 기념으로 챙겼대요", "daily"],
+   ["🍬", "편의점 사탕", "계산대 옆에서 손 흔들어서 받았대요", "food"],
+   ["🪨", "세상에서 제일 동그란 돌", "동네에서 제일 동그란 돌이래요", "weird"],
+   ["🎈", "누가 놓친 풍선", "하늘로 가기 직전에 잡아 왔어요", "fun"],
+   ["🌼", "민들레 홀씨", "소원 빌고 후 불면 돼요", "nature"],
+   ["🧦", "짝 잃은 양말", "어디서 왔는지는 아무도 몰라요", "weird"],
+   ["🍞", "빵집 시식빵", "한 조각만 먹고 나머지는 너 주려고", "food"],
+   ["📝", "누가 버린 오답노트", "틀린 문제가 빼곡해요. 동지애가 느껴진대요", "study"],
+   ["✏️", "몽당연필", "끝까지 공부한 연필이래요. 존경의 의미로", "study"],
+   ["🧾", "아주 긴 영수증", "산 건 하나인데 영수증은 1미터예요", "weird"],
+   ["🥢", "짝짝이 나무젓가락", "반으로 쪼갰는데 한쪽만 굵어요. 오늘 운세는 흉", "food"],
+   ["🐌", "달팽이 경주 우승 리본", "1등 달팽이가 결승선까지 3시간 걸렸대요", "fun"],
+   ["🍀", "네 잎 클로버", "세 잎 클로버 300개를 뒤져서 찾았대요", "nature"],
+   ["🧤", "목장갑 한 짝", "짝 잃은 양말이랑 같은 데서 온 것 같대요", "weird"],
+   ["🍙", "뜯기 실패한 삼각김밥", "김이 다 찢어졌지만 맛은 그대로래요", "food"],
+   ["🥠", "포춘쿠키 쪽지", "\"오늘은 공부가 잘 될 것이다\"라고 써 있대요", "mystic"],
+   ["🔘", "세탁소에서 준 여분 단추", "언젠가 떨어질 단추를 미리 챙겼대요", "daily"],
+   ["🔭", "장난감 망원경", "보이는 건 옆집 지붕뿐이래요", "space"],
+   ["🌰", "다람쥐가 숨긴 도토리", "다람쥐는 어디 숨겼는지 까먹었대요", "nature"]],
+  [
+   ["🐚", "소라 껍데기", "귀에 대면 파도 소리가 나요", "nature"],
+   ["🗝️", "낡은 열쇠", "뭘 여는 열쇠인지 몰라서 더 좋대요", "mystic"],
+   ["🧲", "여행지 자석", "냉장고에 붙이면 여행 온 기분", "world"],
+   ["🍯", "시골 꿀 한 병", "시장 할머니가 덤으로 주셨대요", "food"],
+   ["📷", "흔들린 즉석 사진", "흔들렸지만 표정은 최고예요", "fun"],
+   ["🧭", "작은 나침반", "늘 네 쪽을 가리킨대요", "world"],
+   ["🎐", "바람 풍경", "바람이 불면 딸랑, 생각나라고", "daily"],
+   ["🍡", "휴게소 경단", "휴게소는 여행의 꽃이래요", "food"],
+   ["🎓", "합격 엿", "시험에 철썩 붙으라고 시장 할머니가 주셨대요", "study"],
+   ["📏", "박물관 공룡 자", "공룡 뼈 길이가 눈금으로 새겨져 있어요", "study"],
+   ["🧀", "산골 치즈", "구멍이 많을수록 맛있대요. 구멍만 먹어 봐요", "food"],
+   ["🥟", "시장 왕만두", "얼굴만 한 만두래요. 반은 오다가 먹었대요", "food"],
+   ["🎪", "광대 빨간 코", "광대가 빌려줬는데 깜빡하고 들고 왔대요", "fun"],
+   ["🎳", "볼링핀 하나", "첫 스트라이크 기념으로 한 개만 데려왔대요", "fun"],
+   ["🏮", "야시장 등불", "불을 켜면 시장 냄새가 나는 것 같대요", "world"],
+   ["🪆", "마트료시카 인형", "열어도 열어도 또 나와요. 마지막은 콩알만 해요", "world"],
+   ["🍄", "버섯 모양 돌", "진짜 버섯인 줄 알고 깨물었다가 이 빠질 뻔했대요", "weird"],
+   ["🛰️", "인공위성 나사", "하늘에서 떨어졌대요. 위성은 괜찮대요", "space"],
+   ["🎩", "마술사 모자", "토끼는 안 나오고 비둘기 깃털만 나와요", "mystic"],
+   ["🧳", "공항 짐표", "가방은 딴 데로 가고 짐표만 따라왔대요", "world"]],
+  [
+   ["🌠", "별똥별 조각", "떨어지는 걸 주웠대요. 아직 따뜻해요", "space"],
+   ["🌈", "무지개 끝 동전", "무지개 끝에 진짜 있었대요", "mystic"],
+   ["🦶", "공룡 발자국 화석", "1억 년 전 누군가의 산책 흔적", "space"],
+   ["🧊", "남극 얼음 한 조각", "녹기 전에 빨리 보세요", "world"],
+   ["🪐", "토성 고리 조각", "반지로 끼면 딱 맞대요", "space"],
+   ["🐉", "용의 비늘", "용이 허물 벗다 떨어뜨린 거래요", "mystic"],
+   ["🏺", "사막의 유물", "피라미드 옆에서 반짝여서 주웠대요", "world"],
+   ["🔮", "수정 구슬", "들여다보면 네가 해내는 게 보인대요", "mystic"],
+   ["📜", "전설의 족보", "시험에 나올 것만 적혀 있대요. 근데 글씨를 못 읽어요", "study"],
+   ["🏆", "노벨상 메달 (초콜릿)", "은박을 벗기면 초콜릿이에요. 연구는 내일부터", "study"],
+   ["🍣", "전설의 초밥 한 알", "100년 쥔 장인의 초밥. 밥알 하나만 가져왔대요", "food"],
+   ["🫖", "여왕님의 찻주전자", "차를 따르면 새끼손가락이 저절로 올라가요", "world"],
+   ["👑", "잃어버린 왕관", "쓰면 왠지 낮잠이 와요. 왕의 무게래요", "mystic"],
+   ["🦄", "말랑한 유니콘 뿔", "유니콘이 사춘기라 빠졌대요. 다시 난대요", "mystic"],
+   ["🛸", "UFO 운전면허증", "외계인이 떨어뜨렸대요. 사진이 너무 잘 나왔어요", "space"],
+   ["☄️", "혜성 꼬리털", "빗질하면 반짝이 가루가 떨어져요", "space"],
+   ["🥚", "공룡 알 (부화 중?)", "가끔 톡톡 소리가 나요. 모르는 척하래요", "weird"],
+   ["🌺", "천 년에 한 번 피는 꽃", "피는 순간을 봤대요. 다음은 3026년", "nature"],
+   ["🗽", "미니 자유의 횃불", "공부할 때 들고 있으면 마음이 자유로워진대요", "world"],
+   ["🧦", "우주에서 찾은 양말 짝", "동네에서 잃어버린 양말 짝이 우주에 있었대요!", "weird"]]],
  c:[
-  [['🏪','편의점 앞','편의점 앞에서 고양이랑 눈 마주쳤어. 인사함','city'],['🌳','놀이터 그네','그네 타다가 하늘까지 갈 뻔했어','day'],['☔','비 오는 골목','웅덩이 다 밟고 왔어. 시원해!','city'],['📚','동네 도서관','조용히 하랬는데 책 넘기는 소리가 좋았어','indoor'],['🌇','노을 지는 옥상','노을이 네 볼처럼 발그레해','sunset'],['🚌','마을버스 종점','종점까지 갔다가 돌아왔어. 일주 성공','day'],['🍦','아이스크림 가게','맛 고르다가 탐험 시간 다 썼어','indoor'],['🌙','밤 산책길','가로등 세 개 지나니까 별이 보였어','night']],
-  [['🏖️','여름 바닷가','모래성 지었는데 파도가 가져갔어. 괜찮아','sea'],['🏔️','구름 위 산','구름 위라서 발밑이 폭신해 보여','snow'],['🚂','기차 창가','창밖이 계속 바뀌어. 너도 같이 봤으면','day'],['🏯','오래된 성','성 꼭대기에서 손 흔들었어. 보였어?','sunset'],['🌻','해바라기 밭','해바라기들이 다 나를 쳐다봐. 인기 많아','day'],['🎡','바닷가 관람차','꼭대기에서 소원 빌었어. 네 거로','sunset'],['🍢','야시장','냄새만 맡아도 배불러… 아니 배고파','night'],['🔥','깊은 숲 캠핑','마시멜로 구웠어. 반은 태웠어','forest']],
-  [['🌌','오로라 마을','하늘이 춤춰. 사진으로는 안 담겨','night'],['🐋','고래가 지나는 바다','고래가 노래를 불러 줬어. 엄청 커!','underwater'],['🌋','불의 섬','화산 옆이라 따뜻해. 너무 따뜻해','sunset'],['🏜️','별이 쏟아지는 사막','모래에 누워서 별을 셌어. 다 못 셌어','desert'],['🚀','달 기지','달에서 보니까 지구가 동글동글 귀여워','space'],['🍭','구름 과자 나라','구름이 솜사탕 맛이야. 진짜야','candy'],['🗼','반짝이는 대도시','건물이 하늘까지 닿아. 길 잃을 뻔','city'],['🐧','남극 펭귄 마을','펭귄들이랑 줄 서서 걸었어. 뒤뚱뒤뚱','snow']]]};
+  [
+   ["🏪", "편의점 앞", "편의점 앞에서 고양이랑 눈 마주쳤어. 인사함", "city", "daily"],
+   ["🌳", "놀이터 그네", "그네 타다가 하늘까지 갈 뻔했어", "day", "fun"],
+   ["☔", "비 오는 골목", "웅덩이 다 밟고 왔어. 시원해!", "city", "daily"],
+   ["📚", "동네 도서관", "조용히 하랬는데 책 넘기는 소리가 좋았어", "indoor", "study"],
+   ["🌇", "노을 지는 옥상", "노을이 네 볼처럼 발그레해", "sunset", "daily"],
+   ["🚌", "마을버스 종점", "종점까지 갔다가 돌아왔어. 일주 성공", "day", "daily"],
+   ["🍦", "아이스크림 가게", "맛 고르다가 탐험 시간 다 썼어", "indoor", "food"],
+   ["🌙", "밤 산책길", "가로등 세 개 지나니까 별이 보였어", "night", "nature"],
+   ["🏫", "방과 후 교실", "칠판에 \"집중!\" 써 놓고 왔어. 너 보라고", "indoor", "study"],
+   ["📖", "독서실 칸막이", "옆자리 샤프 소리가 ASMR 같아", "indoor", "study"],
+   ["🍜", "동네 분식집", "떡볶이 국물에 김밥 찍어 먹었어. 천재야", "indoor", "food"],
+   ["🧺", "빨래방", "세탁기 도는 거 30분 봤어. 시간 순삭", "indoor", "daily"],
+   ["🐈", "고양이 골목", "고양이 회의에 끼었어. 안건은 낮잠", "city", "daily"],
+   ["🌾", "논두렁 길", "개구리들이 합창해. 내가 지휘했어", "day", "nature"],
+   ["🎠", "동네 회전목마", "세 바퀴 돌았더니 세상도 같이 돌아", "day", "fun"],
+   ["🕳️", "수상한 맨홀", "밑에서 거북이 넷이 피자 먹는 소리가 났어", "city", "weird"],
+   ["🔮", "점집 앞", "내가 내일 간식 먹을 운명이래. 소름", "night", "mystic"],
+   ["🌠", "옥상 별 관측", "별 세다가 잠들었어. 102개까지 셌어", "night", "space"],
+   ["🛒", "마트 시식 코너", "시식 다섯 바퀴 돌았어. 직원분이 날 기억해", "indoor", "food"],
+   ["🌸", "벚꽃 터널", "꽃잎이 머리에 쌓여서 모자가 됐어", "day", "nature"]],
+  [
+   ["🏖️", "여름 바닷가", "모래성 지었는데 파도가 가져갔어. 괜찮아", "sea", "nature"],
+   ["🏔️", "구름 위 산", "구름 위라서 발밑이 폭신해 보여", "snow", "nature"],
+   ["🚂", "기차 창가", "창밖이 계속 바뀌어. 너도 같이 봤으면", "day", "world"],
+   ["🏯", "오래된 성", "성 꼭대기에서 손 흔들었어. 보였어?", "sunset", "world"],
+   ["🌻", "해바라기 밭", "해바라기들이 다 나를 쳐다봐. 인기 많아", "day", "nature"],
+   ["🎡", "바닷가 관람차", "꼭대기에서 소원 빌었어. 네 거로", "sunset", "fun"],
+   ["🍢", "야시장", "냄새만 맡아도 배불러… 아니 배고파", "night", "food"],
+   ["🔥", "깊은 숲 캠핑", "마시멜로 구웠어. 반은 태웠어", "forest", "nature"],
+   ["🏛️", "큰 대학 도서관", "책이 천장까지 있어. 사다리 위에서 공부함", "indoor", "study"],
+   ["🔬", "과학관", "정전기 공 만졌더니 털이 전부 섰어", "indoor", "space"],
+   ["♨️", "온천 마을", "원숭이들이랑 온천했어. 자리 양보받음", "snow", "world"],
+   ["🍕", "피자의 고향", "피자에 파인애플 올렸다가 쫓겨났어", "city", "food"],
+   ["🍩", "도넛 공장", "구멍 만드는 곳 견학함. 구멍은 공짜래", "indoor", "food"],
+   ["🎢", "롤러코스터", "소리 질러서 목이 쉬었어. 또 탈래", "day", "fun"],
+   ["🎤", "노래방", "100점 나왔어. 기계가 고장 난 듯", "indoor", "fun"],
+   ["🗿", "모아이 섬", "석상이랑 눈싸움했어. 졌어", "sea", "world"],
+   ["🐼", "판다 숲", "판다가 하루 종일 대나무만 먹어. 나도 꼈어", "forest", "nature"],
+   ["🧙", "마법 학교 기숙사", "빗자루 수업 첫날 나무에 걸렸어", "night", "mystic"],
+   ["🌀", "미로 정원", "세 시간째 같은 분수 앞이야. 도와줘", "forest", "weird"],
+   ["🚢", "크루즈 갑판", "갈매기가 내 과자를 훔쳐 갔어. 프로야", "sea", "world"]],
+  [
+   ["🌌", "오로라 마을", "하늘이 춤춰. 사진으로는 안 담겨", "night", "nature"],
+   ["🐋", "고래가 지나는 바다", "고래가 노래를 불러 줬어. 엄청 커!", "underwater", "nature"],
+   ["🌋", "불의 섬", "화산 옆이라 따뜻해. 너무 따뜻해", "sunset", "nature"],
+   ["🏜️", "별이 쏟아지는 사막", "모래에 누워서 별을 셌어. 다 못 셌어", "desert", "world"],
+   ["🚀", "달 기지", "달에서 보니까 지구가 동글동글 귀여워", "space", "space"],
+   ["🍭", "구름 과자 나라", "구름이 솜사탕 맛이야. 진짜야", "candy", "mystic"],
+   ["🗼", "반짝이는 대도시", "건물이 하늘까지 닿아. 길 잃을 뻔", "city", "world"],
+   ["🐧", "남극 펭귄 마을", "펭귄들이랑 줄 서서 걸었어. 뒤뚱뒤뚱", "snow", "world"],
+   ["🕰️", "천 년 된 대학", "천 년 된 강의실에서 졸았어. 전통이래", "indoor", "study"],
+   ["🧪", "비밀 연구소", "버튼 하나 눌렀더니 전부 초록색이 됐어", "indoor", "space"],
+   ["🐲", "용의 둥지", "용이 알 품는 동안 알한테 책 읽어 줬어", "sunset", "mystic"],
+   ["🧜", "인어 마을", "인어들이 노래를 가르쳐 줬어. 숨은 못 참음", "underwater", "mystic"],
+   ["🗻", "후지산 꼭대기", "해 뜨는 거 보려고 밤새 올라왔어. 졸려", "sunset", "world"],
+   ["🐫", "낙타 행렬", "낙타가 침을 뱉었어. 나한테만", "desert", "world"],
+   ["🍫", "초콜릿 강", "한 입만 먹으려다 강이 반으로 줄었어", "candy", "food"],
+   ["🦒", "사바나 초원", "기린한테 길 물어봤는데 목 아파서 포기", "desert", "nature"],
+   ["🎆", "불꽃 축제", "하트 모양 불꽃이 터졌어. 너 생각났어", "night", "fun"],
+   ["🏟️", "월드컵 결승전", "파도타기 하다가 진짜 날아갈 뻔했어", "city", "fun"],
+   ["🌑", "달의 뒷면", "여기 진짜 아무도 없어. 그래서 집중 잘 돼", "space", "space"],
+   ["🙃", "거꾸로 마을", "여기선 다 거꾸로야. 숙제가 쉬는 시간이야", "candy", "weird"]]]};
 const TRIP_ANY_N=TRIP_ANY.s.flat().length+TRIP_ANY.c.flat().length;
+const TRIP_GENRE=[['food','🍜',TR('먹거리')],['nature','🌿',TR('자연')],['daily','🏘️',TR('동네·일상')],['fun','🎡',TR('놀이·축제')],['study','📚',TR('공부·학교')],['world','🌏',TR('세계 여행')],['space','🚀',TR('우주·과학')],['mystic','🔮',TR('신비·전설')],['weird','🤪',TR('엉뚱한 것')]];
+const anyGenreIds=g=>[0,1,2].flatMap(t=>['s','c'].flatMap(k=>TRIP_ANY[k][t].map((r,i)=>[r,'any:'+k+t+'-'+i]).filter(([r])=>r[k==='s'?3:4]===g).map(x=>x[1]))); // 장르 하나의 공통 선물 (동네→아주 먼 곳, 기념품 먼저)
+let anyGenre='all';
 const anyIds=t=>['s','c'].flatMap(k=>TRIP_ANY[k][t].map((_,i)=>'any:'+k+t+'-'+i));
 const tripRec=id=>{const [sp,x]=id.split(':'), k=x[0], t=+x[1]; if(TRIP_EV[sp]){const i=+x.slice(1); return {k,t:Math.floor(i/2),r:TRIP_EV[sp][k][i],any:1,ev:sp}} return sp==='any'?{k,t,r:TRIP_ANY[k][t][+x.slice(3)],any:1}:{k,t,r:TRIP[sp]&&TRIP[sp][k][t]}};
 /* 도트 그림: trip-art.js (기념품 32×32, 엽서 풍경 64×40). 처음 필요할 때 불러오고, 그 전에는 이모지로 보여 줘요 */
@@ -5907,8 +6032,12 @@ function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·�
         h('p',{class:'small'},evActive()===e?TR('이벤트 기간에만 탐험에서 가끔 가져와요. {d}까지예요.').replace('{d}',e.to.replace('-','/')):TR('지난 이벤트에서 모은 것들이에요. 다음 이벤트 때 또 모을 수 있어요.')),
         ['s','c'].map(k=>h('div',{class:'anyset'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),h('div',{class:'anyslots evslots'},E[k].map((_,i)=>slot(e.id+':'+k+i,TRIP_TIER[Math.floor(i/2)][1]))))))}),
     h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'🌍 '+TR('공통 기념품·엽서')),h('span',{class:'sp small'},anyHave+' / '+TRIP_ANY_N)),
-      h('p',{class:'small'},TR('어느 동물이든 탐험에서 가끔 가져와요. 멀리 갈수록 더 귀한 게 나와요.')),
-      TRIP_TIER.map((tr,t)=>h('div',{class:'anyrow'},h('b',{class:'small'},tr[1]),['s','c'].map(k=>h('div',{class:'anyset'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),h('div',{class:'anyslots'},TRIP_ANY[k][t].map((_,i)=>slot('any:'+k+t+'-'+i,''))))))))];
+      h('p',{class:'small'},TR('어느 동물이든 탐험에서 가끔 가져와요. 멀리 갈수록 더 귀한 게 나와요. 장르별로 모아 봐요!')),
+      h('div',{class:'seg wrap anyg',role:'group','aria-label':TR('장르')},[['all','🌍',TR('전체')]].concat(TRIP_GENRE).map(g=>{const ids=g[0]==='all'?allAny:anyGenreIds(g[0]), n=ids.filter(tripGot).length;
+        return h('button',{'aria-pressed':String(anyGenre===g[0]),onclick:()=>{anyGenre=g[0]; renderPet()}},g[1]+' '+g[2],h('span',{class:'small num',style:'margin-left:.3em;opacity:.7'},n+'/'+ids.length))})),
+      ...TRIP_GENRE.filter(g=>anyGenre==='all'||anyGenre===g[0]).map(g=>{const ids=anyGenreIds(g[0]), n=ids.filter(tripGot).length;
+        return h('div',{class:'anyrow'},h('div',{class:'row'},h('b',null,g[1]+' '+g[2]),h('span',{class:'sp small'},(n===ids.length?'🎉 ':'')+n+' / '+ids.length)),
+          h('div',{class:'anyslots'},ids.map(id=>{const R=tripRec(id); return slot(id,(R.k==='s'?'🎁':'💌')+TRIP_TIER[R.t][1])})))}))];
 }
 /* ---------- 시즌 이벤트: 기간 한정 화폐(핼러윈은 사탕)를 모아 한정 옷·배경과 바꾸고, 탐험에서 한정 엽서·기념품이 나와요 ---------- */
 // 새 이벤트(크리스마스·설날)는 SEASONS에 한 줄, 옷은 OUT·WEAR에, 탐험 선물은 TRIP_EV에 넣으면 돼요. 받은 화폐는 'evc'에 이벤트-연도별로 남아요
