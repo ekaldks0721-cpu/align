@@ -697,6 +697,8 @@ body.kb #buddy{display:none!important}
 .tslot{flex:1;display:flex;flex-direction:column;align-items:center;gap:.1rem;padding:.3rem .2rem;border:2px dashed var(--px-line,#202838);opacity:.45;min-height:0;background:none}
 .tslot.on{opacity:1;border-style:solid;background:var(--px-bg,#FFF8E8);cursor:pointer} .tslot .temo{font-size:1.5rem;line-height:1.1} .tslot small{font-size:.65rem}
 .anyslots .tslot{justify-content:space-between;min-height:4.3rem} .anyslots .tslot .temo{flex:none;margin:auto 0} .anyslots .tslot.c .art.px{width:auto;height:2.5rem;max-width:100%} .anyslots .tslot.s .art.px{width:auto;height:2.5rem}
+.tmapwrap{border:2px solid var(--px-line,#202838);background:#1E2550;line-height:0;margin-top:.4rem} .tmap{width:100%;height:auto;image-rendering:pixelated;display:block} .tpin:hover rect:nth-child(3){fill:#F8E070}
+.tmapleg{gap:.8rem;margin-top:.4rem} .tmapleg i{display:inline-block;width:.6rem;height:.6rem;margin-right:.25rem;border:1px solid #283048;vertical-align:middle} .tmaptip{margin:.3rem 0 0;min-height:1.4em}
 .anyrow{margin-top:.9rem} .anyrow>.row{margin-bottom:.3rem} .anyg{margin-top:.4rem} .anyslots small{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
 @media (max-width:520px){.anyslots{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .art{display:inline-flex;align-items:center;justify-content:center;line-height:1} .art.px svg{display:block;width:100%;height:100%;image-rendering:pixelated}
@@ -4990,6 +4992,8 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['trip50',TR('여행 박물관'),TR('탐험 선물 50개 모으기'),50,'trips',300],
   ['tripfar5',TR('아주 먼 곳까지'),TR('아주 먼 곳 탐험 선물 5개 모으기'),5,'tripFar',150],
   ['pikmin9',TR('피크민 군단'),TR('피크민 9종 모두와 함께하기'),9,'pikmin',800],
+  ['map5',TR('지도 그리기'),TR('탐험 지도에서 5개 지역 밝히기'),5,'mapReg',80],
+  ['map10',TR('세계 일주'),TR('탐험 지도의 모든 지역 밝히기'),10,'mapReg',500],
   ['acnh7',TR('무인도 이주 패키지'),TR('동물의 숲 친구 7명 모두와 함께하기'),7,'acnh',700],
   ['tripset1',TR('완벽한 여행 앨범'),TR('한 동물의 기념품 3개와 엽서 3장 다 모으기'),1,'tripSet',200]];
 const UNLOCK={ // 레벨(lv) 또는 업적(ach)으로 열림. price는 연 뒤 데려오는 값
@@ -5093,7 +5097,7 @@ function achStats(){
     cram:allOf('tasks-').filter(t=>t.done&&t.due&&t.doneAt&&dayKey(t.doneAt)===t.due).length,
     ontime:coins.filter(c=>String(c.id).indexOf('td:')===0).length,lucky:coins.filter(c=>String(c.id).indexOf('l:')===0).length,care:coins.filter(c=>c.kind==='care').length,
     spent:coins.reduce((a,c)=>a+(c.amt<0?-c.amt:0),0),petLv:Math.max(0,...ps.map(p=>petLv(petXP(p)))),subjWeek:Math.max(0,...Object.values(sw).map(x=>x.size)),
-    diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,pikmin:['pkred','pkyellow','pkblue','pkpurple','pkwhite','pkrock','pkwing','pkice','pkglow'].filter(k=>ps.some(p=>p.sp===k)).length,acnh:DEX_SERIES.acnh.filter(k=>ps.some(p=>p.sp===k)).length,trips:items('trips').length,tripFar:items('trips').filter(x=>x.t===2).length,tripSet:[...new Set(items('trips').map(x=>x.sp))].filter(sp=>tripN(sp)===6).length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').filter(x=>OUT[x.id]).length,jarBuy:items('wardrobe').filter(x=>/^(theme|wx):/.test(x.id)&&x.id!=='theme:pumpkin').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins(),...achMore(logs,day,dk,ps,coins)};
+    diary:Object.keys(S.docs).filter(d=>d.indexOf('diary-')===0&&jEntry(d.slice(6))).length,reviews:items('reviews').length,pets:ps.length,pikmin:['pkred','pkyellow','pkblue','pkpurple','pkwhite','pkrock','pkwing','pkice','pkglow'].filter(k=>ps.some(p=>p.sp===k)).length,acnh:DEX_SERIES.acnh.filter(k=>ps.some(p=>p.sp===k)).length,mapReg:new Set(mapPins().map(p=>p.reg).concat(['home'])).size,trips:items('trips').length,tripFar:items('trips').filter(x=>x.t===2).length,tripSet:[...new Set(items('trips').map(x=>x.sp))].filter(sp=>tripN(sp)===6).length,grown:ps.filter(p=>stageOf(petXP(p))===3).length,wear:items('wardrobe').filter(x=>OUT[x.id]).length,jarBuy:items('wardrobe').filter(x=>/^(theme|wx):/.test(x.id)&&x.id!=='theme:pumpkin').length,treats:allOf('coins-').filter(c=>c.kind==='reward').length,earned:earnedCoins(),...achMore(logs,day,dk,ps,coins)};
 }
 function achMore(logs,day,dk,ps,coins){ // 친구·꾸준함·할 일·일기 업적 더 보기
   const run=(keys,step)=>{let best=0, n=0, prev=null; keys.sort().forEach(k=>{n=prev&&addDays(prev,step)===k?n+1:1; prev=k; best=Math.max(best,n)}); return best};
@@ -5208,7 +5212,7 @@ function dexCatOf(k){const sp=SP[k]||{}; for(const c in DEX_SERIES) if(DEX_SERIE
 // 업적 종류: 통계 키로 나누고, 재미 업적은 따로 모아요
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
 const ACH_FUN=['help1','search10','dark','jar5','rename5','rapid','sleeppat','foxpat','ignored','pause10','leap','fri13','nye','cinder','oldtask','plan20','longtitle','onechar','kkk','emoji10','mikael10','pi314','hangul','halloween','valentine','pepero','wish1111','seq1234','exact60','tiny1','split10','ghost3','wkhard','tomato4','toss10','diary1','patday','coin1004','coin1234','brush50','walk30','yum30','glut10','dogs4','foxbear','fearless','duowatch','lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1','notodo','tomorrowme','emojitask','hatestudy','tears','secret','petdiary','ghost444','samename','studyname'];
-const ACH_KEYCAT={acnh:'pet',jarBuy:'pet',pikmin:'pet',trips:'pet',tripFar:'pet',tripSet:'pet',streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
+const ACH_KEYCAT={acnh:'pet',mapReg:'pet',jarBuy:'pet',pikmin:'pet',trips:'pet',tripFar:'pet',tripSet:'pet',streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
   pets:'pet',dinos:'pet',greys:'pet',marvel:'pet',ooo:'pet',spiderverse:'pet',nwh:'pet',sanrio:'pet',meloKuro:'pet',doodle:'pet',nanamiPet:'pet',finnJake:'pet',spideyPet:'pet',bikini:'pet',chii:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin',
   careFood:'pet',careWater:'pet',careDay:'pet',allHappy:'pet',rescue:'pet',petAge:'pet',pats:'pet',fullMonths:'habit',comeback:'habit',
   bestTaskWeek:'task',taskAM:'task',repDone:'task',ahead:'task',perfectDay:'task',movedDone:'task',diaryStreak:'note',diaryPhotos:'note',diaryFav:'note',diaryChars:'note',reviewStreak:'note',thanks:'note'};
@@ -6262,6 +6266,61 @@ function tripPaint(){ // 타이머 아래: 지금 어디까지 가고 있는지
 function tripDetail(id){const d=tripGot(id); if(!d) return; const R=tripRec(id), p=pets().find(q=>q.id===d.pet)||pets().find(q=>q.sp===(d.from||d.sp));
   openDlg((R.k==='s'?'🎁 ':'💌 ')+TRIP_TIER[R.t][1]+' · '+(R.k==='s'?TR('기념품'):TR('엽서')),h('div',null,tripView(id,p,d),
     h('p',{class:'small muted',style:'text-align:center;margin:.6rem 0 0'},TR('처음 받은 날 ')+mdOf(dayKey(d.ts))+(R.any&&d.name?' · '+jo(TR('{p}이(가) 가져왔어요').replace('{p}',d.name)):'')+(d.n>1?' · '+TR('{n}번 받았어요').replace('{n}',d.n):''))),[h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide')}
+/* ---------- 탐험 지도: 모은 엽서를 지도 위 핀으로. 가 본 지역만 구름이 걷혀요 ---------- */
+// 지역: [키, 이름, 모양(타원 cx,cy,rx,ry 또는 사각 x,y,w,h), 엽서 배경(mood)]. 동네 엽서는 늘 우리 섬에 꽂혀요
+const MAP_W=160, MAP_H=96;
+const MAP_REG=[['home',TR('우리 섬'),{e:[80,76,17,9]}],['forest',TR('초록 숲 대륙'),{e:[30,50,22,14]},['forest','day']],['snow',TR('눈의 땅'),{e:[32,25,20,7]},['snow']],
+  ['desert',TR('모래 사막'),{e:[128,52,21,13]},['desert']],['mount',TR('노을 산맥'),{e:[128,25,20,7]},['sunset','night']],['city',TR('반짝 도시섬'),{e:[134,80,15,8]},['city','indoor']],
+  ['candy',TR('사탕 섬'),{e:[80,28,11,6]},['candy']],['sea',TR('푸른 바다'),{r:[58,42,44,20]},['sea']],['deep',TR('깊은 바닷속'),{r:[4,70,40,24]},['underwater']],['space',TR('우주'),{r:[0,4,160,10]},['space']]];
+const mapRegOf=(mood,t)=>t===0&&mood!=='space'&&mood!=='underwater'?'home':(MAP_REG.find(r=>r[3]&&r[3].indexOf(mood)>=0)||MAP_REG[1])[0];
+const inShape=(s,x,y)=>s.e?((x-s.e[0])/s.e[2])**2+((y-s.e[1])/s.e[3])**2<=.78:x>=s.r[0]+2&&x<s.r[0]+s.r[2]-2&&y>=s.r[1]+2&&y<s.r[1]+s.r[3]-2;
+let MAPBG=null;
+function mapBase(){ if(MAPBG) return MAPBG; // 바탕 지도 (한 번만 그려요)
+  const B=Array.from({length:MAP_H},()=>Array(MAP_W).fill('#4FA6D8'));
+  const P=(x,y,c)=>{x=Math.round(x); y=Math.round(y); if(x>=0&&y>=0&&x<MAP_W&&y<MAP_H) B[y][x]=c};
+  const R=(x,y,w,h,c)=>{for(let j=0;j<h;j++)for(let i=0;i<w;i++) P(x+i,y+j,c)};
+  const E=(cx,cy,rx,ry,c,rough)=>{const r=rng(cx*7+cy); for(let y=Math.floor(cy-ry-2);y<=cy+ry+2;y++)for(let x=Math.floor(cx-rx-2);x<=cx+rx+2;x++){const d=((x-cx)/rx)**2+((y-cy)/ry)**2, n=rough?Math.sin(x*.7+y*.3)*.08+Math.sin(x*.23-y*.6)*.08:0; if(d<=1+n) P(x,y,c)}};
+  const r=rng(77); for(let i=0;i<120;i++){const x=Math.floor(r()*MAP_W), y=14+Math.floor(r()*80); R(x,y,3,1,'#6BB6E0')} // 물결
+  R(0,66,48,30,'#3A88C0'); for(let y=60;y<70;y++) for(let x=0;x<52;x++) if((x+y)%2&&y>60+x/8) P(x,y,'#3A88C0'); for(let y=74;y<96;y++) for(let x=0;x<44;x++) if((x+y)%3===0) P(x,y,'#2E70A8'); // 깊은 바다
+  R(0,0,MAP_W,13,'#1E2550'); for(let x=0;x<MAP_W;x++){P(x,13,(x%2)?'#1E2550':'#3A4A8A'); P(x,12,'#2A3468')} for(let i=0;i<40;i++) P(Math.floor(r()*MAP_W),Math.floor(r()*11),r()<.3?'#F8F0C0':'#A8B0E0'); // 우주
+  [[150,5],[151,4],[152,4],[153,5],[150,6],[150,7],[151,8],[152,8],[153,7]].forEach(([x,y])=>P(x,y,'#F8E8A0')); E(16,6,3,3,'#E89858'); R(10,6,13,1,'#F8D0A0'); // 달과 고리 행성
+  const land=(cx,cy,rx,ry,c,rim)=>{E(cx,cy,rx+1.5,ry+1.5,rim||'#F0DCA0',1); E(cx,cy,rx,ry,c,1)};
+  land(30,50,22,14,'#5DB860'); for(let i=0;i<22;i++){const x=12+r()*36, y=40+r()*20; if(((x-30)/20)**2+((y-50)/12)**2<.8){P(x,y,'#2E8A40'); P(x,y-1,'#3EA050'); P(x+1,y,'#2E8A40')}} // 숲
+  land(32,25,20,7,'#F4F8FF','#C8D8E8'); for(let i=0;i<10;i++){const x=16+r()*32, y=22+r()*6; P(x,y,'#B8C8E0')} [[24,23],[38,22]].forEach(([x,y])=>{P(x,y-2,'#2E7A48'); R(x-1,y-1,3,1,'#2E7A48'); R(x-2,y,5,1,'#2E7A48')}); // 눈
+  land(128,52,21,13,'#F0CC80','#E0B060'); for(let i=0;i<16;i++) R(112+r()*32,44+r()*16,3,1,'#E0B060'); [[122,52],[136,48]].forEach(([x,y])=>{R(x-2,y,5,1,'#C89040'); R(x-1,y-1,3,1,'#D8A050'); P(x,y-2,'#E0B060')}); // 사막과 피라미드
+  land(128,25,20,7,'#9A7AA8','#C8A8C8'); [[116,26],[124,24],[132,25],[140,26]].forEach(([x,y],i)=>{for(let k=0;k<5;k++) R(x-k,y-4+k,1+2*k,1,i%2?'#7A5A90':'#8A6AA0'); P(x,y-4,'#F8F0F0')}); // 노을 산맥
+  land(134,80,15,8,'#A8B0C0','#D8DCE4'); [[124,78,3,5],[129,75,3,8],[134,77,4,6],[139,74,3,9],[144,79,2,4]].forEach(([x,y,w,h])=>{R(x,y,w,h,'#5A6478'); for(let j=1;j<h;j+=2) P(x+1,y+j,'#F8E070')}); // 도시
+  land(80,28,11,6,'#F8B4D8','#FFE0F0'); [[75,27,'#F86888'],[82,26,'#68C8F0'],[86,29,'#F8D838']].forEach(([x,y,c])=>{R(x,y,2,2,c); P(x,y+2,'#FFFFFF')}); // 사탕 섬
+  land(80,76,17,9,'#78C858'); R(76,72,8,4,'#F4E4C4'); R(75,71,10,1,'#D85848'); R(76,70,8,1,'#D85848'); R(79,74,2,2,'#7A4A28'); [[68,76],[92,75],[86,81]].forEach(([x,y])=>{E(x,y-1,2,1.5,'#3E9E48'); P(x,y+1,'#8A5A30')}); // 우리 섬: 집과 나무
+  for(let a=0;a<360;a+=6){const t=a*Math.PI/180; [[30,'#FFFFFF'],[58,'#E8F4FF']].forEach(([rr,c])=>{const x=80+Math.cos(t)*rr*1.3, y=76+Math.sin(t)*rr*.8; if(y>14&&(a/6)%2===0) P(x,y,c)})} // 동네·먼 곳 경계 (점선)
+  let out=''; for(let y=0;y<MAP_H;y++){let x=0; while(x<MAP_W){const c=B[y][x]; let n=1; while(x+n<MAP_W&&B[y][x+n]===c) n++; out+='<rect x="'+x+'" y="'+y+'" width="'+n+'" height="1" fill="'+c+'"/>'; x+=n}}
+  return MAPBG=out}
+function mapPins(){ // 모은 엽서마다 지역 안 한 자리 (같은 엽서는 늘 같은 자리)
+  const ids=items('trips').filter(d=>!d.x&&d.k==='c').map(d=>d.id), used=[], out=[];
+  ids.sort().forEach(id=>{const R=tripRec(id); if(!R||!R.r) return; const reg=mapRegOf(R.r[3],R.t), sh=MAP_REG.find(r=>r[0]===reg)[2], q=rng([...id].reduce((a,c)=>a*31+c.charCodeAt(0)>>>0,7));
+    const box=sh.e?[sh.e[0]-sh.e[2],sh.e[1]-sh.e[3],sh.e[2]*2,sh.e[3]*2]:sh.r; let best=null, bd=-1;
+    for(let k=0;k<40;k++){const x=Math.round(box[0]+q()*box[2]), y=Math.round(box[1]+q()*box[3]); if(!inShape(sh,x,y)) continue; const d=used.reduce((m,[a,b])=>Math.min(m,Math.hypot(a-x,b-y)),99); if(d>bd){bd=d; best=[x,y]} if(d>=6) break}
+    if(!best) best=sh.e?[sh.e[0],sh.e[1]]:[sh.r[0]+sh.r[2]/2,sh.r[1]+sh.r[3]/2]; used.push(best); out.push({id,reg,t:R.t,x:best[0],y:best[1],r:R.r})});
+  return out}
+const PIN_C=['#58C058','#F89838','#B070E0'];
+let mapSel=null;
+function tripMap(){
+  const pins=mapPins(), seen=new Set(pins.map(p=>p.reg).concat(['home'])), NS='http://www.w3.org/2000/svg';
+  let fog=''; MAP_REG.forEach(([k,,sh])=>{if(seen.has(k)) return; const box=sh.e?[sh.e[0]-sh.e[2]-2,sh.e[1]-sh.e[3]-2,sh.e[2]*2+4,sh.e[3]*2+4]:sh.r;
+    for(let y=box[1];y<box[1]+box[3];y++) for(let x=box[0];x<box[0]+box[2];x++){const ex=sh.e||[sh.r[0]+sh.r[2]/2,sh.r[1]+sh.r[3]/2,sh.r[2]/2,sh.r[3]/2], wob=Math.sin(x*.9)*.12+Math.sin(y*1.3+x*.4)*.1, inside=((x-ex[0])/(ex[2]+2))**2+((y-ex[1])/(ex[3]+2))**2<=1+wob; if(inside&&(x+y)%2===0) fog+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="#E4EAF2"/>'}
+    const cx=sh.e?sh.e[0]:sh.r[0]+sh.r[2]/2, cy=sh.e?sh.e[1]:sh.r[1]+sh.r[3]/2; fog+='<text x="'+cx+'" y="'+(cy+2)+'" font-size="6" text-anchor="middle" fill="#7A8AA0" font-family="monospace">?</text>'});
+  const svg=svgEl(MAP_W,MAP_H,mapBase()+fog,'tmap');
+  const ap=activePet(); if(ap&&stageOf(petXP(ap))){const g=document.createElementNS(NS,'g'); const sh2=spriteH(ap.sp,Math.max(1,stageOf(petXP(ap)))); g.setAttribute('transform','translate(64,'+(80-sh2*.45)+') scale(.45)'); g.innerHTML=spriteSVG(ap.sp,Math.max(1,stageOf(petXP(ap))),ap.wear||{},'happy',petXP(ap)); svg.appendChild(g)} // 우리 섬에서 기다리는 친구
+  const tip=h('p',{class:'small tmaptip'},pins.length?TR('핀을 누르면 그 엽서를 볼 수 있어요'):TR('아직 꽂힌 핀이 없어요. 탐험에서 엽서를 받으면 지도에 핀이 생겨요!'));
+  pins.forEach(p=>{const g=document.createElementNS(NS,'g'); g.setAttribute('class','tpin'); g.setAttribute('transform','translate('+p.x+','+p.y+')'); g.style.cursor='pointer';
+    g.innerHTML='<rect x="-3" y="-7" width="7" height="8" fill="transparent"/><rect x="0" y="-2" width="1" height="2" fill="#4A4A58"/><rect x="-1" y="-5" width="3" height="3" fill="#283048"/><rect x="0" y="-4" width="1" height="1" fill="'+PIN_C[p.t]+'"/><rect x="-1" y="-5" width="3" height="1" fill="'+PIN_C[p.t]+'"/><title>'+TR(p.r[1]).replace(/</g,'')+'</title>';
+    g.addEventListener('mouseenter',()=>{tip.textContent='📍 '+TR(p.r[1])+' · '+TRIP_TIER[p.t][1]}); g.addEventListener('click',()=>tripDetail(p.id)); svg.appendChild(g)});
+  const cnt=[0,1,2].map(t=>pins.filter(p=>p.t===t).length), nReg=MAP_REG.filter(r=>seen.has(r[0])).length;
+  return h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'🗺 '+TR('탐험 지도')),h('span',{class:'sp small'},TR('밝힌 지역 {n} / {m}').replace('{n}',nReg).replace('{m}',MAP_REG.length))),
+    h('p',{class:'small'},TR('모은 엽서가 핀으로 꽂혀요. 가 본 곳만 구름이 걷히고, 우리 섬에서 멀리 갈수록 더 먼 곳이 밝아져요.')),
+    h('div',{class:'tmapwrap'},svg),
+    h('div',{class:'pxrow wrap tmapleg'},TRIP_TIER.map((r,t)=>h('span',{class:'small'},h('i',{style:'background:'+PIN_C[t]}),r[1]+' '+cnt[t])),h('span',{class:'small sp'},'📍 '+pins.length)),tip);
+}
 function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·엽서 3칸, 그리고 공통 기념품·엽서
   const own=[...new Map(pets().map(p=>[p.sp,p])).values()].filter(p=>TRIP[p.sp]), allAny=anyIds(0).concat(anyIds(1),anyIds(2)), anyHave=allAny.filter(tripGot).length;
   const total=own.length*6+TRIP_ANY_N, have=own.reduce((a,p)=>a+tripN(p.sp),0)+anyHave;
@@ -6272,6 +6331,7 @@ function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·�
       h('ul',{class:'dextr'},TRIP_TIER.map((r,i)=>h('li',null,r[1]+' · '+(i<2?TR('{a}~{b}분 집중').replace('{a}',r[0]).replace('{b}',TRIP_TIER[i+1][0]-1):TR('{a}분 넘게 집중').replace('{a}',r[0]))))),
       h('p',{class:'small',style:'margin:.2rem 0 0'},TR('동물마다 고유한 기념품 3개와 엽서 3장이 있고, 어느 동물이든 가져올 수 있는 공통 기념품·엽서도 있어요. 이미 가진 걸 또 가져오면 코인으로 바꿔 줘요.')+(ap?' '+TR('지금 탐험 가는 친구: ')+ap.name:'')),
       total?h('div',{class:'pxrow'},pxBar(have/total,16)):null),
+    tripMap(),
     own.length?h('div',{class:'tripgrid'},own.sort((a,b)=>(b.id===(ap&&ap.id))-(a.id===(ap&&ap.id))||tripN(b.sp)-tripN(a.sp)).map(p=>h('section',{class:'card pxcard tripcard'},
       h('div',{class:'row'},tripPetSVG(p.sp,p,48),h('b',null,p.name),h('span',{class:'sp small'},tripN(p.sp)+' / 6')),
       ['s','c'].map(k=>h('div',{class:'trow'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),[0,1,2].map(t=>slot(p.sp+':'+k+t,TRIP_TIER[t][1]))))))):
@@ -6346,7 +6406,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v138'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v139'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
