@@ -6256,7 +6256,7 @@ function tripShow(p,id,dup,got,tries){ // 축하가 끝나고 다른 창이 없�
   const note=dup?TR('이미 가진 거라서 대신 코인을 받았어요')+(got?' (+'+got+' '+COIN+')':''):any?TR('어디서나 만날 수 있는 선물이에요! 공통 {n} / {m}').replace('{n}',anyIds(0).concat(anyIds(1),anyIds(2)).filter(tripGot).length).replace('{m}',TRIP_ANY_N):TR('새로 모았어요! {n} / 6').replace('{n}',tripN(p.sp));
   openDlg('🧭 '+TR('탐험에서 돌아왔어요'),h('div',null,h('p',{style:'margin:0 0 .6rem;text-align:center'},head),R.k==='s'?h('div',{class:'souvwrap'},h('span',{class:'souvpet'},cheerSprite(p,4)),souvEl(R.r,id)):tripView(id,p,tripGot(id)),
     h('p',{class:'small'+(dup?'':' muted'),style:'text-align:center;margin:.6rem 0 0'},note)),
-    [h('button',{onclick:()=>{closeDlg(); petTab='trip'; showView('pet')}},TR('모은 것 보기')),h('button',{class:'primary',onclick:closeDlg},TR('좋아요!'))],'wide');
+    [h('button',{onclick:()=>tripSave(id,p,tripGot(id))},'🖼 '+TR('저장')),h('button',{onclick:()=>{closeDlg(); petTab='trip'; showView('pet')}},TR('모은 것 보기')),h('button',{class:'primary',onclick:closeDlg},TR('좋아요!'))],'wide');
   if(cfg('sound')) coinSound(R.t===2);
 }
 function tripPaint(){ // 타이머 아래: 지금 어디까지 가고 있는지
@@ -6265,9 +6265,45 @@ function tripPaint(){ // 타이머 아래: 지금 어디까지 가고 있는지
   const txt='🧭 '+(t<0?TR('{p}이(가) 탐험 준비 중 · {n}분 더 하면 출발').replace('{n}',10-m):TR('{p}이(가) {w}까지 탐험 중').replace('{w}',TRIP_TIER[t][1])+(t<2?' · '+TR('{n}분 더 하면 {w}').replace('{n}',TRIP_TIER[t+1][0]-m).replace('{w}',TRIP_TIER[t+1][1]):'')).replace('{p}',p.name); const txtJ=jo(txt);
   if(el.textContent!==txtJ) el.textContent=txtJ;
 }
+/* 엽서·기념품을 그림 파일(PNG)로 저장: 도트 그림을 크게 키우고 이름·글·보낸 친구까지 한 장에 담아요 */
+function artCells(id){const raw=window.TRIP_ART&&TRIP_ART[id]; if(!raw) return null; const [wh,pal,data]=raw.split('|'), [W,H]=wh.split(',').map(Number), P=pal.split(','), out=[]; let m; const re=/([^0-9])(\d*)/g;
+  while((m=re.exec(data))) for(let k=+(m[2]||1);k>0;k--) out.push(m[1]==='.'?null:'#'+P[ART_AL.indexOf(m[1])]); return {W,H,c:out}}
+function cvPix(ctx,cells,W,H,x0,y0,s){for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=cells[y*W+x]; if(c){ctx.fillStyle=c; ctx.fillRect(x0+x*s,y0+y*s,s,s)}}}
+function cvPet(ctx,sp,p,x0,yBottom,s){ // 동물 그림 (발이 yBottom에 오게)
+  const xp=p?petXP(p):1200, st=p?Math.max(1,stageOf(xp)):3, {G,pal}=poseG(sp,st,p?p.wear||{}:{},'happy',xp), C=gridColors(G,pal), px=G.px||0, base=spriteH(sp,st), py=G.py||0;
+  C.forEach((r,y)=>r.forEach((c,x)=>{if(c){ctx.fillStyle=c; ctx.fillRect(x0+(x-px)*s,yBottom-(base-(y-py))*s,s,s)}}))}
+function cvWrap(ctx,text,maxW){const out=[]; let line=''; for(const w of String(text).split(/(\s+)/)){const t=line+w; if(ctx.measureText(t).width<=maxW||!line){line=t} else{out.push(line.trim()); line=w.trimStart()}
+  while(ctx.measureText(line).width>maxW){let i=line.length; while(i>1&&ctx.measureText(line.slice(0,i)).width>maxW) i--; out.push(line.slice(0,i)); line=line.slice(i)}} if(line.trim()) out.push(line.trim()); return out}
+async function tripImage(id,p,d){ // 한 장짜리 그림 만들기
+  await needArt(); try{await Promise.all([document.fonts.load('24px Galmuri11'),document.fonts.load('bold 24px Galmuri11')])}catch(e){}
+  const R=tripRec(id), r=R.r, a=artCells(id), F='Galmuri11, sans-serif', ink='#283048', cv=document.createElement('canvas'), ctx=cv.getContext('2d');
+  const sp=R.any||R.ev?(d&&d.from)||(p&&p.sp):id.split(':')[0], who=(d&&d.name)||(p&&p.name)||(SP[sp]?SP[sp].n:''), when=d&&d.ts?mdOf(dayKey(d.ts)):'';
+  const frame=(w,h)=>{cv.width=w; cv.height=h; ctx.imageSmoothingEnabled=false; ctx.fillStyle='#FFF8E8'; ctx.fillRect(0,0,w,h); ctx.fillStyle=ink; ctx.fillRect(0,0,w,8); ctx.fillRect(0,h-8,w,8); ctx.fillRect(0,0,8,h); ctx.fillRect(w-8,0,8,h)};
+  if(R.k==='c'){frame(1040,480); const s=9, X=36, Y=36;
+    ctx.fillStyle=ink; ctx.fillRect(X-4,Y-4,64*s+8,40*s+8); if(a) cvPix(ctx,a.c,a.W,a.H,X,Y,s); else{ctx.fillStyle='#BFE3F8'; ctx.fillRect(X,Y,64*s,40*s)}
+    if(SP[sp]) cvPet(ctx,sp,p,X+6*s,Y+37*s,s);
+    ctx.fillStyle='#C8B898'; for(let y=36;y<444;y+=14) ctx.fillRect(640,y,3,8); // 가운데 점선
+    if(a){const sx=880, sy=40; ctx.fillStyle='#F07090'; for(let i=0;i<=136;i+=8){ctx.fillRect(sx-4+i,sy-4,4,4); ctx.fillRect(sx-4+i,sy+84,4,4)} for(let j=0;j<=88;j+=8){ctx.fillRect(sx-4,sy-4+j,4,4); ctx.fillRect(sx+132,sy-4+j,4,4)} cvPix(ctx,a.c,a.W,a.H,sx+2,sy+2,2)} // 우표
+    ctx.fillStyle='#8A7A60'; ctx.font='18px '+F; ctx.fillText(TRIP_TIER[R.t][1],880,152);
+    ctx.fillStyle=ink; ctx.font='bold 30px '+F; let y=210; cvWrap(ctx,TR(r[1]),340).forEach(l=>{ctx.fillText(l,664,y); y+=38});
+    ctx.font='24px '+F; ctx.fillStyle='#3A4258'; y+=8; const msg=SP[sp]&&SP[sp].babble?babble(TR(r[2])):TR(r[2]); ctx.strokeStyle='#E4D8C0'; cvWrap(ctx,msg,340).forEach(l=>{ctx.fillText(l,664,y); ctx.fillRect(664,y+10,340,1); y+=36});
+    ctx.font='22px '+F; ctx.fillStyle=ink; ctx.textAlign='right'; ctx.fillText('— '+who,1004,Math.max(y+26,400)); ctx.textAlign='left';
+    ctx.font='16px '+F; ctx.fillStyle='#8A7A60'; ctx.fillText('Align · '+TR('펫 탐험')+(when?' · '+when:''),36,440)}
+  else{frame(640,780); const s=13, X=(640-32*s)/2, Y=48;
+    ctx.fillStyle='#F4E8CC'; ctx.beginPath(); ctx.arc(320,Y+16*s,15*s,0,Math.PI*2); ctx.fill(); if(a) cvPix(ctx,a.c,a.W,a.H,X,Y,s);
+    ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='bold 34px '+F; let y=Y+32*s+56; cvWrap(ctx,TR(r[1]),560).forEach(l=>{ctx.fillText(l,320,y); y+=42});
+    ctx.font='24px '+F; ctx.fillStyle='#3A4258'; y+=6; cvWrap(ctx,TR(r[2]),540).forEach(l=>{ctx.fillText(l,320,y); y+=34});
+    ctx.font='18px '+F; ctx.fillStyle='#8A7A60'; ctx.fillText('🎁 '+TRIP_TIER[R.t][1]+' · '+TR('기념품')+(who?' · '+who:''),320,744); ctx.textAlign='left';
+    if(SP[sp]) cvPet(ctx,sp,p,532,740,4)}
+  return await new Promise(res=>cv.toBlob(res,'image/png'))}
+async function tripSave(id,p,d){
+  try{const b=await tripImage(id,p,d), R=tripRec(id), name='align-'+(R.k==='c'?'postcard':'souvenir')+'-'+id.replace(/[^a-z0-9-]+/gi,'-')+'.png', file=new File([b],name,{type:'image/png'});
+    if(/iPad|iPhone|iPod/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]}); return} // 아이폰은 공유 창에서 '이미지 저장'
+    const u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.setAttribute('download',name); document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); toast('🖼 '+TR('그림으로 저장했어요'))}
+  catch(e){if(e&&e.name==='AbortError') return; toast(TR('그림을 만들지 못했어요'))}}
 function tripDetail(id){const d=tripGot(id); if(!d) return; const R=tripRec(id), p=pets().find(q=>q.id===d.pet)||pets().find(q=>q.sp===(d.from||d.sp));
   openDlg((R.k==='s'?'🎁 ':'💌 ')+TRIP_TIER[R.t][1]+' · '+(R.k==='s'?TR('기념품'):TR('엽서')),h('div',null,tripView(id,p,d),
-    h('p',{class:'small muted',style:'text-align:center;margin:.6rem 0 0'},TR('처음 받은 날 ')+mdOf(dayKey(d.ts))+(R.any&&d.name?' · '+jo(TR('{p}이(가) 가져왔어요').replace('{p}',d.name)):'')+(d.n>1?' · '+TR('{n}번 받았어요').replace('{n}',d.n):''))),[h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide')}
+    h('p',{class:'small muted',style:'text-align:center;margin:.6rem 0 0'},TR('처음 받은 날 ')+mdOf(dayKey(d.ts))+(R.any&&d.name?' · '+jo(TR('{p}이(가) 가져왔어요').replace('{p}',d.name)):'')+(d.n>1?' · '+TR('{n}번 받았어요').replace('{n}',d.n):''))),[h('button',{onclick:()=>tripSave(id,p,d)},'🖼 '+TR('이미지로 저장')),h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide')}
 /* ---------- 탐험 지도: 모은 엽서를 지도 위 핀으로. 가 본 지역만 구름이 걷혀요 ---------- */
 // 지역: [키, 이름, 거리(1 먼 곳, 2 아주 먼 곳), 엽서 배경(mood), 모양(타원 e 또는 사각 r), 그림]. 동네 엽서는 우리 섬에 꽂혀요
 const MAP_W=240, MAP_H=160;
@@ -6434,7 +6470,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v140'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v141'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;

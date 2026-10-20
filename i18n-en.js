@@ -6315,4 +6315,7 @@ window.I18N_EN={
   "모험가":"Adventurer",
   "탐험 지도에서 12개 지역 밝히기":"Reveal 12 regions on the expedition map",
   "← 옆으로 밀어서 지도를 둘러보세요 →":"← Swipe sideways to explore the map →",
+  "이미지로 저장":"Save as image",
+  "그림으로 저장했어요":"Saved as an image",
+  "그림을 만들지 못했어요":"Couldn't make the image",
 };
