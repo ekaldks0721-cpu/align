@@ -6335,4 +6335,5 @@ window.I18N_EN={
   "타이머로 10분 넘게 집중한 날마다 그날 함께한 동물 스티커가 붙어요. 1시간이면 큰 스티커, 3시간이면 메달까지!":"Every day you focus with the timer for over 10 minutes gets a sticker of the pet who studied with you. 1 hour earns a big sticker, 3 hours a medal!",
   "스티커 {n}개":"{n} stickers",
   "합계 ":"Total ",
+  "🗺 지도":"🗺 Map",
 };

@@ -703,7 +703,7 @@ body.kb #buddy{display:none!important}
 .roomwrap{border:2px solid var(--px-line,#202838);line-height:0;margin-top:.4rem;display:flex;justify-content:center;background:#F4E4C8;overflow:hidden} .roomsvg{image-rendering:pixelated;max-width:100%;height:auto} .rmit:hover{filter:brightness(1.12)}
 .rmpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(3.4rem,1fr));gap:.3rem;margin-top:.3rem} .rmpick .tslot{min-height:3.2rem;justify-content:center} .rmpick .tslot.c .art.px{width:100%;height:auto} .rmpick .tslot.s .art.px{width:2.2rem;height:2.2rem}
 .stkgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:.4rem} .stkh{text-align:center;opacity:.7} .stkc{position:relative;aspect-ratio:1;background:var(--px-soft,#F4E8D0);border:1px solid rgba(40,48,72,.12);display:flex;align-items:center;justify-content:center;min-width:0}
-.stkc.empty{background:none;border:0} .stkc.today{outline:2px solid var(--accent)} .stkd{position:absolute;left:3px;top:1px;font-size:10px;opacity:.65} .stkgold{position:absolute;right:1px;top:-2px;font-size:.85rem}
+.stkcard .stkgrid{max-width:620px;margin-left:auto;margin-right:auto} .stkc.empty{background:none;border:0} .stkc.today{outline:2px solid var(--accent)} .stkd{position:absolute;left:3px;top:1px;font-size:10px;opacity:.65} .stkgold{position:absolute;right:1px;top:-2px;font-size:.85rem}
 .stk{display:inline-flex;width:70%;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 1px 1px rgba(0,0,0,.25))} .stk.lg{width:92%} .stk .pix svg{width:100%;height:auto} .stkstar{font-size:1.4rem}
 .anyrow{margin-top:.9rem} .anyrow>.row{margin-bottom:.3rem} .anyg{margin-top:.4rem} .anyslots small{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
 @media (max-width:520px){.anyslots{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -2013,6 +2013,7 @@ function renderStats(){
       h('div',{class:'bars',style:'height:90px;margin-top:.8rem'},hrs.map((x,i)=>h('div',{class:'b',title:i+TR('시 ')+fmtDur(x.sec)},h('i',{style:'height:'+(x.sec/hmax*100)+'%;background:var(--accent)'})))),
       h('div',{class:'xl'},hrs.map((_,i)=>h('span',null,i%6===0?i:''))),h('p',{class:'small muted',style:'margin:.6rem 0 0'},hourNote)),
     h('section',{class:'card'},h('div',{class:'row'},h('h2',null,TR('최근 22주')),h('span',{class:'small muted sp'},goal?TR('색이 진할수록 하루 목표에 가까운 날'):TR('색이 진할수록 오래 한 날'))),h('div',{class:'scroll',style:'margin-top:.7rem'},h('div',{class:'heat'},cells))),
+    renderStickers(),
     h('section',{class:'card'},h('div',{class:'row'},h('h2',null,TR('기록')),h('span',{class:'sp row'},h('button',{class:'primary',onclick:()=>aiExportDlg({kind:stMode==='week'?'week':'month',date:stAnchor})},TR('AI 분석용으로 내보내기')),h('button',{hidden:!downloads&&!!window.claude,onclick:()=>exportData('csv')},TR('CSV로 내보내기')),h('button',{hidden:!downloads&&!!window.claude,onclick:()=>exportData('json')},TR('JSON 백업')))),
       list.length?h('div',{class:'scroll'},h('table',{class:'tbl',style:'margin-top:.5rem'},h('thead',null,h('tr',null,[TR('날짜'),TR('시간'),TR('항목'),TR('길이'),TR('집중'),TR('메모'),''].map(x=>h('th',null,x)))),
         h('tbody',null,list.slice(0,60).map(s=>{const a=new Date(s.segs[0][0]*1e3), b=new Date(s.segs[s.segs.length-1][1]*1e3);
@@ -5230,7 +5231,7 @@ function renderPet(){
   const nOpen=Object.keys(SP).filter(k=>spOpen(k,lv)).length, nAch=ACH.filter(a=>hasAch(a[0])).length;
   const head=h('section',{class:'card pxcard'},h('div',{class:'pxhud'},h('span',{class:'lv'},TR('내 레벨')+' '+lv),pxBar((e-myLvCoins(lv))/(myLvCoins(lv+1)-myLvCoins(lv)),12),h('span',{class:'small hudi'},TR('다음 레벨까지 ')+(myLvCoins(lv+1)-e),pxi('coin')),
       h('span',{class:'sp'}),(e=>e?h('button',{class:'tiny evchip',onclick:()=>{petTab='shop'; shopTab='event'; renderPet()},title:TR('이벤트 상점')},e.curEmo+' '+evBal(evKey(e))):null)(evActive()),h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
-    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['room',TR('🏠 방')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['quest',TR('📜 미션')],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['trip',TR('🧭 탐험')],['friend',TR('👫 친구')+((n=>n?' '+n:'')(frBadge()))],['coin',TR('🪙 코인')]]
+    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['quest',TR('📜 미션')],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['trip',TR('🧭 탐험')],['friend',TR('👫 친구')+((n=>n?' '+n:'')(frBadge()))],['coin',TR('🪙 코인')]]
       .map(o=>h('button',{role:'tab','aria-selected':String(petTab===o[0]),onclick:()=>{petTab=o[0]; renderPet(); window.scrollTo(0,0)}},...pxText(o[1])))));
   let body=[];
   if(petTab==='home'){
@@ -5329,7 +5330,6 @@ function renderPet(){
   }
   else if(petTab==='friend') body=renderFriends();
   else if(petTab==='trip') body=renderTrip();
-  else if(petTab==='room') body=renderRoom();
   else{
     const led=allOf('coins-').sort((a,b)=>b.ts-a.ts).slice(0,40);
     body=[h('div',{class:'two'},h('section',{class:'card pxcard'},h('h2',null,TR('코인 받는 법')),h('ul',{class:'list'},[[TR('집중 1분'),'+1'],[TR('그날 첫 집중'),'+5'],[TR('할 일 완료'),'+10'],[TR('마감 전에 끝내기'),'+10'],[TR('장기 할 일 완료'),'+30'],[TR('집중이 끝날 때 가끔 행운'),TR('2배')],[TR('연속 3·7·14·30일…'),TR('연속 일수 × 2')],[TR('오늘의 미션'),'+10~30'],[TR('오늘의 미션 모두 완료'),'+'+Q_ALL_DAY],[TR('이번 주 미션'),'+50~200'],[TR('이번 주 미션 모두 완료'),'+'+Q_ALL_WEEK],[TR('레벨 오를 때'),TR('레벨 × 20')],[TR('업적 달성'),'+15~2,000']].map(r=>h('li',null,h('span',{style:'flex:1'},r[0]),h('b',{class:'num'},r[1])))),
@@ -6345,7 +6345,7 @@ function roomDlg(){ // 진열 바꾸기: 기념품 10개, 엽서 6장까지
       all.length?h('div',{class:'rmpick'},all.map(d=>{const on=pick[k].indexOf(d.id)>=0, R=tripRec(d.id); return h('button',{class:'tslot'+(on?' on':'')+' '+k,'aria-pressed':String(on),title:TR(R.r[1]),onclick:()=>{const i=pick[k].indexOf(d.id); if(i>=0) pick[k].splice(i,1); else if(pick[k].length<max) pick[k].push(d.id); else{toast(TR('가득 찼어요. 하나를 빼고 넣어 주세요')); return} paint()}},artEl(d.id,R.r[0],'temo'))})):h('p',{class:'small muted'},TR('아직 없어요. 탐험에서 모아 와요!')))}));
   paint();
   openDlg('🏠 '+TR('방 꾸미기'),h('div',null,h('p',{class:'small',style:'margin-top:0'},TR('누른 순서대로 진열돼요. 다시 누르면 빠져요.')),box),
-    [h('button',{onclick:()=>{delete S.settings.v.room; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); closeDlg(); renderPet()}},TR('최근 것으로 자동')),h('button',{class:'primary',onclick:()=>{S.settings.v.room=pick; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); closeDlg(); renderPet()}},TR('저장'))],'wide');
+    [h('button',{onclick:()=>{delete S.settings.v.room; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); closeDlg(); render()}},TR('최근 것으로 자동')),h('button',{class:'primary',onclick:()=>{S.settings.v.room=pick; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); closeDlg(); render()}},TR('저장'))],'wide');
 }
 /* ---------- 월간 스티커 달력: 타이머로 집중한 날마다 그날 함께한 동물 스티커가 붙어요 ---------- */
 let stkMonth=null;
@@ -6361,9 +6361,9 @@ function renderStickers(){
     cells.push(h('div',{class:'stkc'+(k===t0?' today':'')+(on?' on':''),title:on?fmtDur(D.sec):''},h('span',{class:'stkd num'},d),
       on?h('span',{class:'stk'+(D.sec>=3600?' lg':''),style:'transform:rotate('+stkTilt(k)+'deg)'},D.pet&&stageOf(petXP(D.pet))?petSVG(D.pet.sp,Math.max(1,stageOf(petXP(D.pet))),D.pet.wear||{},'happy',48,petXP(D.pet)):h('span',{class:'stkstar'},'⭐')):null,
       big?h('span',{class:'stkgold'},'🏅'):null))}
-  const mv=n=>{const d=new Date(y,m-1+n,1); stkMonth=d.getFullYear()+'-'+pad(d.getMonth()+1); renderPet()};
-  return h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'📅 '+TR('스티커 달력')),h('span',{class:'sp'}),
-      h('button',{class:'quiet',onclick:()=>mv(-1),'aria-label':TR('이전 달')},'◀'),h('b',{class:'num',style:'margin:0 .4rem'},EN?new Date(y,m-1,1).toLocaleDateString('en',{year:'numeric',month:'short'}):y+'년 '+m+'월'),h('button',{class:'quiet',onclick:()=>mv(1),'aria-label':TR('다음 달')},'▶')),
+  const mv=n=>{const d=new Date(y,m-1+n,1); stkMonth=d.getFullYear()+'-'+pad(d.getMonth()+1); render()};
+  return h('section',{class:'card stkcard'},h('div',{class:'row'},h('h2',null,'📅 '+TR('스티커 달력')),h('span',{class:'sp'}),
+      h('span',{style:'white-space:nowrap;display:inline-flex;align-items:center'},h('button',{class:'quiet',onclick:()=>mv(-1),'aria-label':TR('이전 달')},'◀'),h('b',{class:'num',style:'margin:0 .3rem'},EN?new Date(y,m-1,1).toLocaleDateString('en',{year:'numeric',month:'short'}):y+'년 '+m+'월'),h('button',{class:'quiet',onclick:()=>mv(1),'aria-label':TR('다음 달')},'▶'))),
     h('p',{class:'small'},TR('타이머로 10분 넘게 집중한 날마다 그날 함께한 동물 스티커가 붙어요. 1시간이면 큰 스티커, 3시간이면 메달까지!')),
     h('div',{class:'stkgrid'},WD.map(w=>h('div',{class:'stkh small'},w)),...cells),
     h('div',{class:'pxrow wrap',style:'margin-top:.6rem'},h('span',{class:'small'},TR('스티커 {n}개').replace('{n}',days.length)+' · '+TR('합계 ')+fmtDur(tot)),h('span',{class:'sp'}),h('button',{onclick:()=>stickerSave(ym)},'🖼 '+TR('이미지로 저장'))))}
@@ -6384,11 +6384,13 @@ async function stickerSave(ym){ // 한 달 달력을 한 장의 그림으로
   const b=await new Promise(res=>cv.toBlob(res,'image/png')), name='align-stickers-'+ym+'.png', file=new File([b],name,{type:'image/png'});
   try{if(/iPad|iPhone|iPod/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]}); return}}catch(e){if(e&&e.name==='AbortError') return}
   const u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.setAttribute('download',name); document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); toast('🖼 '+TR('그림으로 저장했어요'))}
-function renderRoom(){
-  const sel=roomPick(), ns=items('trips').filter(d=>!d.x&&d.k==='s').length, nc=items('trips').filter(d=>!d.x&&d.k==='c').length;
-  return [h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'🏠 '+TR('동물 방')),h('span',{class:'sp small'},TR('기념품 {a} · 엽서 {b} 진열 중').replace('{a}',sel.s.length).replace('{b}',sel.c.length)),h('button',{onclick:roomDlg},'✏️ '+TR('꾸미기'))),
-      h('p',{class:'small'},ns+nc?TR('탐험에서 모은 기념품은 선반에, 엽서는 코르크판에 걸려요. 누르면 크게 볼 수 있어요. 창밖은 지금 시각이에요.'):TR('아직 방이 텅 비었어요. 타이머로 10분 넘게 집중하면 동물이 탐험에서 기념품과 엽서를 가져와요!')),mountRoom()),
-    renderStickers()]}
+let tripMode='map';
+function tripTop(){ // 탐험 탭 맨 위: 🗺 지도 ↔ 🏠 방 (기본은 지도)
+  const seg=h('div',{class:'seg',role:'group','aria-label':TR('보기')},[['map',TR('🗺 지도')],['room',TR('🏠 방')]].map(o=>h('button',{'aria-pressed':String(tripMode===o[0]),onclick:()=>{tripMode=o[0]; renderPet()}},...pxText(o[1]))));
+  if(tripMode!=='room'){const m=tripMap(); m.insertBefore(seg,m.children[1]); return m}
+  const sel=roomPick(), ns=items('trips').filter(d=>!d.x&&d.k==='s').length+items('trips').filter(d=>!d.x&&d.k==='c').length;
+  return h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'🏠 '+TR('동물 방')),h('span',{class:'sp small'},TR('기념품 {a} · 엽서 {b} 진열 중').replace('{a}',sel.s.length).replace('{b}',sel.c.length)),h('button',{onclick:roomDlg},'✏️ '+TR('꾸미기'))),seg,
+    h('p',{class:'small'},ns?TR('탐험에서 모은 기념품은 선반에, 엽서는 코르크판에 걸려요. 누르면 크게 볼 수 있어요. 창밖은 지금 시각이에요.'):TR('아직 방이 텅 비었어요. 타이머로 10분 넘게 집중하면 동물이 탐험에서 기념품과 엽서를 가져와요!')),mountRoom())}
 function tripDetail(id){const d=tripGot(id); if(!d) return; const R=tripRec(id), p=pets().find(q=>q.id===d.pet)||pets().find(q=>q.sp===(d.from||d.sp));
   openDlg((R.k==='s'?'🎁 ':'💌 ')+TRIP_TIER[R.t][1]+' · '+(R.k==='s'?TR('기념품'):TR('엽서')),h('div',null,tripView(id,p,d),
     h('p',{class:'small muted',style:'text-align:center;margin:.6rem 0 0'},TR('처음 받은 날 ')+mdOf(dayKey(d.ts))+(R.any&&d.name?' · '+jo(TR('{p}이(가) 가져왔어요').replace('{p}',d.name)):'')+(d.n>1?' · '+TR('{n}번 받았어요').replace('{n}',d.n):''))),[h('button',{onclick:()=>tripSave(id,p,d)},'🖼 '+TR('이미지로 저장')),h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide')}
@@ -6483,7 +6485,7 @@ function renderTrip(){ // 동물 탭 → 탐험: 동물마다 기념품 3칸·�
       h('ul',{class:'dextr'},TRIP_TIER.map((r,i)=>h('li',null,r[1]+' · '+(i<2?TR('{a}~{b}분 집중').replace('{a}',r[0]).replace('{b}',TRIP_TIER[i+1][0]-1):TR('{a}분 넘게 집중').replace('{a}',r[0]))))),
       h('p',{class:'small',style:'margin:.2rem 0 0'},TR('동물마다 고유한 기념품 3개와 엽서 3장이 있고, 어느 동물이든 가져올 수 있는 공통 기념품·엽서도 있어요. 이미 가진 걸 또 가져오면 코인으로 바꿔 줘요.')+(ap?' '+TR('지금 탐험 가는 친구: ')+ap.name:'')),
       total?h('div',{class:'pxrow'},pxBar(have/total,16)):null),
-    tripMap(),
+    tripTop(),
     own.length?h('div',{class:'tripgrid'},own.sort((a,b)=>(b.id===(ap&&ap.id))-(a.id===(ap&&ap.id))||tripN(b.sp)-tripN(a.sp)).map(p=>h('section',{class:'card pxcard tripcard'},
       h('div',{class:'row'},tripPetSVG(p.sp,p,48),h('b',null,p.name),h('span',{class:'sp small'},tripN(p.sp)+' / 6')),
       ['s','c'].map(k=>h('div',{class:'trow'},h('span',{class:'small lab'},k==='s'?TR('기념품'):TR('엽서')),[0,1,2].map(t=>slot(p.sp+':'+k+t,TRIP_TIER[t][1]))))))):
@@ -6558,7 +6560,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v142'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v143'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
