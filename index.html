@@ -700,6 +700,11 @@ body.kb #buddy{display:none!important}
 .tmapwrap{border:2px solid var(--px-line,#202838);background:#1E2550;line-height:0;margin-top:.4rem;overflow-x:auto;-webkit-overflow-scrolling:touch} .tmap{width:100%;min-width:720px;height:auto;image-rendering:pixelated;display:block}
 .tmlab{fill:#FFFFFF;stroke:#283048;stroke-width:.9px;paint-order:stroke;font-family:Galmuri11,'Galmuri11',monospace,sans-serif;font-weight:700;pointer-events:none} .tpin:hover rect:nth-child(3){fill:#F8E070}
 .tmapleg{gap:.8rem;margin-top:.4rem} .tmapleg i{display:inline-block;width:.6rem;height:.6rem;margin-right:.25rem;border:1px solid #283048;vertical-align:middle} .tmaptip{margin:.3rem 0 0;min-height:1.4em} .tmapsw{display:none;margin:.3rem 0 0;text-align:center} @media (max-width:760px){.tmapsw{display:block}}
+.roomwrap{border:2px solid var(--px-line,#202838);line-height:0;margin-top:.4rem;display:flex;justify-content:center;background:#F4E4C8;overflow:hidden} .roomsvg{image-rendering:pixelated;max-width:100%;height:auto} .rmit:hover{filter:brightness(1.12)}
+.rmpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(3.4rem,1fr));gap:.3rem;margin-top:.3rem} .rmpick .tslot{min-height:3.2rem;justify-content:center} .rmpick .tslot.c .art.px{width:100%;height:auto} .rmpick .tslot.s .art.px{width:2.2rem;height:2.2rem}
+.stkgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:.4rem} .stkh{text-align:center;opacity:.7} .stkc{position:relative;aspect-ratio:1;background:var(--px-soft,#F4E8D0);border:1px solid rgba(40,48,72,.12);display:flex;align-items:center;justify-content:center;min-width:0}
+.stkc.empty{background:none;border:0} .stkc.today{outline:2px solid var(--accent)} .stkd{position:absolute;left:3px;top:1px;font-size:10px;opacity:.65} .stkgold{position:absolute;right:1px;top:-2px;font-size:.85rem}
+.stk{display:inline-flex;width:70%;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 1px 1px rgba(0,0,0,.25))} .stk.lg{width:92%} .stk .pix svg{width:100%;height:auto} .stkstar{font-size:1.4rem}
 .anyrow{margin-top:.9rem} .anyrow>.row{margin-bottom:.3rem} .anyg{margin-top:.4rem} .anyslots small{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
 @media (max-width:520px){.anyslots{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .art{display:inline-flex;align-items:center;justify-content:center;line-height:1} .art.px svg{display:block;width:100%;height:100%;image-rendering:pixelated}
@@ -5225,7 +5230,7 @@ function renderPet(){
   const nOpen=Object.keys(SP).filter(k=>spOpen(k,lv)).length, nAch=ACH.filter(a=>hasAch(a[0])).length;
   const head=h('section',{class:'card pxcard'},h('div',{class:'pxhud'},h('span',{class:'lv'},TR('내 레벨')+' '+lv),pxBar((e-myLvCoins(lv))/(myLvCoins(lv+1)-myLvCoins(lv)),12),h('span',{class:'small hudi'},TR('다음 레벨까지 ')+(myLvCoins(lv+1)-e),pxi('coin')),
       h('span',{class:'sp'}),(e=>e?h('button',{class:'tiny evchip',onclick:()=>{petTab='shop'; shopTab='event'; renderPet()},title:TR('이벤트 상점')},e.curEmo+' '+evBal(evKey(e))):null)(evActive()),h('span',{class:'hudi'},pxi('flame'),'STREAK '+st.n),h('span',{class:'hudi'},pxi('coin'),bal.toLocaleString(LOC))),
-    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['quest',TR('📜 미션')],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['trip',TR('🧭 탐험')],['friend',TR('👫 친구')+((n=>n?' '+n:'')(frBadge()))],['coin',TR('🪙 코인')]]
+    h('div',{class:'pxtabs',role:'tablist'},[['home',TR('🐾 내 동물')],['room',TR('🏠 방')],['dex',TR('📖 도감')+' '+allPs.length+'/'+Object.keys(SP).length],['quest',TR('📜 미션')],['ach',TR('🏆 업적')+' '+nAch+'/'+ACH.length],['shop',TR('🎁 상점')],['trip',TR('🧭 탐험')],['friend',TR('👫 친구')+((n=>n?' '+n:'')(frBadge()))],['coin',TR('🪙 코인')]]
       .map(o=>h('button',{role:'tab','aria-selected':String(petTab===o[0]),onclick:()=>{petTab=o[0]; renderPet(); window.scrollTo(0,0)}},...pxText(o[1])))));
   let body=[];
   if(petTab==='home'){
@@ -5324,6 +5329,7 @@ function renderPet(){
   }
   else if(petTab==='friend') body=renderFriends();
   else if(petTab==='trip') body=renderTrip();
+  else if(petTab==='room') body=renderRoom();
   else{
     const led=allOf('coins-').sort((a,b)=>b.ts-a.ts).slice(0,40);
     body=[h('div',{class:'two'},h('section',{class:'card pxcard'},h('h2',null,TR('코인 받는 법')),h('ul',{class:'list'},[[TR('집중 1분'),'+1'],[TR('그날 첫 집중'),'+5'],[TR('할 일 완료'),'+10'],[TR('마감 전에 끝내기'),'+10'],[TR('장기 할 일 완료'),'+30'],[TR('집중이 끝날 때 가끔 행운'),TR('2배')],[TR('연속 3·7·14·30일…'),TR('연속 일수 × 2')],[TR('오늘의 미션'),'+10~30'],[TR('오늘의 미션 모두 완료'),'+'+Q_ALL_DAY],[TR('이번 주 미션'),'+50~200'],[TR('이번 주 미션 모두 완료'),'+'+Q_ALL_WEEK],[TR('레벨 오를 때'),TR('레벨 × 20')],[TR('업적 달성'),'+15~2,000']].map(r=>h('li',null,h('span',{style:'flex:1'},r[0]),h('b',{class:'num'},r[1])))),
@@ -6301,6 +6307,88 @@ async function tripSave(id,p,d){
     if(/iPad|iPhone|iPod/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]}); return} // 아이폰은 공유 창에서 '이미지 저장'
     const u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.setAttribute('download',name); document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); toast('🖼 '+TR('그림으로 저장했어요'))}
   catch(e){if(e&&e.name==='AbortError') return; toast(TR('그림을 만들지 못했어요'))}}
+/* ---------- 동물 방: 탐험에서 모은 기념품은 선반에, 엽서는 코르크판에. 창밖은 지금 시각 ---------- */
+// 진열은 settings.room = {s:[기념품 10칸], c:[엽서 6칸]} (비어 있으면 최근 것부터 자동으로)
+const RM_W=160, RM_H=110, RM_S=[[8,32],[24,32],[8,52],[26,52],[44,52],[62,52],[80,52],[98,52],[116,52],[134,52]], RM_C=[[52,8],[86,8],[120,8],[52,29],[86,29],[120,29]];
+function roomPick(){const own=k=>items('trips').filter(d=>!d.x&&d.k===k).sort((a,b)=>b.ts-a.ts).map(d=>d.id), v=S.settings.v.room||{};
+  const keep=(arr,k,n)=>{const o=own(k); return arr?arr.filter(id=>o.indexOf(id)>=0).slice(0,n):o.slice(0,n)};
+  return {s:keep(v.s,'s',10),c:keep(v.c,'c',6)}}
+function roomBG(tod){const B=Array.from({length:RM_H},()=>Array(RM_W).fill('#F4E4C8'));
+  const P=(x,y,c)=>{if(x>=0&&y>=0&&x<RM_W&&y<RM_H) B[y][x]=c}, R=(x,y,w,h,c)=>{for(let j=0;j<h;j++)for(let i=0;i<w;i++) P(x+i,y+j,c)};
+  for(let y=4;y<74;y+=8) for(let x=(y/8%2)*6;x<RM_W;x+=12){P(x,y,'#EAD4B0'); P(x+1,y+1,'#F8D8D0')} // 벽지 무늬
+  R(0,74,RM_W,3,'#C89A68'); R(0,77,RM_W,33,'#D8A870'); for(let y=80;y<RM_H;y+=5) R(0,y,RM_W,1,'#C08C58'); for(let y=77;y<RM_H;y+=5) for(let x=(y%10?14:34);x<RM_W;x+=40) R(x,y,1,5,'#C08C58'); // 나무 바닥
+  const sky={day:['#88D0F8','#B8E4F8'],dusk:['#F89870','#F8C888'],night:['#202858','#30407A']}[tod];
+  R(5,5,36,26,'#8A5A30'); R(7,7,32,22,sky[0]); R(7,19,32,10,sky[1]); R(22,7,2,22,'#8A5A30'); R(7,17,32,1,'#8A5A30'); R(4,30,38,2,'#B07040'); // 창문
+  if(tod==='day'){R(30,9,4,4,'#F8D838'); R(29,10,6,2,'#F8D838'); R(9,11,7,2,'#FFFFFF'); R(11,10,3,1,'#FFFFFF')} else if(tod==='night'){R(30,9,3,4,'#F8F0B0'); P(33,9,'#F8F0B0'); P(33,12,'#F8F0B0'); [[10,10],[14,13],[18,9],[26,24],[12,25]].forEach(([x,y])=>P(x,y,'#F8F0C0'))} else R(28,22,8,4,'#F8E070');
+  R(48,4,108,46,'#A8743A'); R(50,6,104,42,'#D8A868'); for(let i=0;i<40;i++) P(50+((i*37)%104),6+((i*23)%42),'#C89858'); // 코르크판
+  R(4,48,40,2,'#9A6A3A'); R(4,68,152,2,'#9A6A3A'); R(6,70,2,3,'#7A4A28'); R(150,70,2,3,'#7A4A28'); R(6,50,2,3,'#7A4A28'); R(38,50,2,3,'#7A4A28'); // 선반
+  for(let y=86;y<104;y++){const w=Math.round(30*Math.sqrt(Math.max(0,1-((y-95)/9)**2))); R(70-w,y,w*2,1,(y+Math.floor(w/3))%4?'#E88A8A':'#F4B0A8')} // 동그란 러그
+  R(126,82,30,14,'#F8F4F0'); R(126,80,30,3,'#8A5A30'); R(150,74,6,22,'#8A5A30'); R(128,84,10,5,'#FFFFFF'); R(138,84,18,10,'#88B8E8'); R(126,96,30,2,'#7A4A28'); // 침대
+  R(112,62,6,6,'#C86A3A'); R(110,56,10,6,'#58B858'); P(111,55,'#3E9E48'); P(117,55,'#3E9E48'); // 화분
+  let out=''; for(let y=0;y<RM_H;y++){let x=0; while(x<RM_W){const c=B[y][x]; let n=1; while(x+n<RM_W&&B[y][x+n]===c) n++; out+='<rect x="'+x+'" y="'+y+'" width="'+n+'" height="1" fill="'+c+'"/>'; x+=n}} return out}
+function roomItem(svg,id,x,y,w,h){const a=artSVG(id); const NS='http://www.w3.org/2000/svg', g=document.createElementNS(NS,'g'); g.setAttribute('class','rmit'); g.style.cursor='pointer';
+  if(a) g.innerHTML=a.svg.replace('<svg ','<svg x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" '); else{const R=tripRec(id); g.innerHTML='<text x="'+(x+w/2)+'" y="'+(y+h*.75)+'" font-size="'+(h*.7)+'" text-anchor="middle">'+R.r[0]+'</text>'}
+  g.insertAdjacentHTML('beforeend','<title>'+TR(tripRec(id).r[1]).replace(/[<&]/g,'')+'</title>'); g.addEventListener('click',()=>tripDetail(id)); svg.appendChild(g)}
+function mountRoom(){
+  const sel=roomPick(), svg=svgEl(RM_W,RM_H,roomBG(timeOfDay()),'roomsvg'), wrap=h('div',{class:'roomwrap'},svg);
+  const go=()=>{sel.c.forEach((id,i)=>{const [x,y]=RM_C[i]; svg.insertAdjacentHTML('beforeend','<rect x="'+(x+1)+'" y="'+(y+1)+'" width="32" height="20" fill="#6A4A2A" opacity=".35"/>'); roomItem(svg,id,x,y,32,20); svg.insertAdjacentHTML('beforeend','<rect x="'+(x+15)+'" y="'+(y-1)+'" width="2" height="2" fill="#E84848"/>')});
+    sel.s.forEach((id,i)=>{const [x,y]=RM_S[i]; roomItem(svg,id,x,y,16,16)});
+    shownPets().filter(p=>stageOf(petXP(p))).slice(0,3).forEach((p,i)=>{const xp=petXP(p), st=stageOf(xp), g=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(g);
+      const a={pet:p,st,xp,svg,g,x:30+i*26,y:84,dir:i%2?-1:1,fi:i,walk:0,min:6,max:108,desk:60,active:p.id===(activePet()||{}).id,sad:petMood(p)==='sad',cur:''}; ACTORS.push(a); showFrame(a,'stand')}); startEngine()};
+  if(window.TRIP_ART) go(); else needArt().then(go);
+  const fit=()=>{const w=wrap.clientWidth||300, s=Math.max(2,Math.min(6,Math.floor(w/RM_W))); svg.setAttribute('width',RM_W*s); svg.setAttribute('height',RM_H*s)}; requestAnimationFrame(fit); if(window.ResizeObserver) new ResizeObserver(fit).observe(wrap);
+  return wrap}
+function roomDlg(){ // 진열 바꾸기: 기념품 10개, 엽서 6장까지
+  const cur=roomPick(), pick={s:cur.s.slice(),c:cur.c.slice()}, box=h('div');
+  const paint=()=>box.replaceChildren(...['s','c'].map(k=>{const all=items('trips').filter(d=>!d.x&&d.k===k).sort((a,b)=>b.ts-a.ts), max=k==='s'?10:6;
+    return h('div',{style:'margin-bottom:.8rem'},h('b',null,(k==='s'?'🎁 '+TR('선반의 기념품'):'💌 '+TR('코르크판의 엽서'))+' '+pick[k].length+' / '+max),
+      all.length?h('div',{class:'rmpick'},all.map(d=>{const on=pick[k].indexOf(d.id)>=0, R=tripRec(d.id); return h('button',{class:'tslot'+(on?' on':'')+' '+k,'aria-pressed':String(on),title:TR(R.r[1]),onclick:()=>{const i=pick[k].indexOf(d.id); if(i>=0) pick[k].splice(i,1); else if(pick[k].length<max) pick[k].push(d.id); else{toast(TR('가득 찼어요. 하나를 빼고 넣어 주세요')); return} paint()}},artEl(d.id,R.r[0],'temo'))})):h('p',{class:'small muted'},TR('아직 없어요. 탐험에서 모아 와요!')))}));
+  paint();
+  openDlg('🏠 '+TR('방 꾸미기'),h('div',null,h('p',{class:'small',style:'margin-top:0'},TR('누른 순서대로 진열돼요. 다시 누르면 빠져요.')),box),
+    [h('button',{onclick:()=>{delete S.settings.v.room; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); closeDlg(); renderPet()}},TR('최근 것으로 자동')),h('button',{class:'primary',onclick:()=>{S.settings.v.room=pick; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); closeDlg(); renderPet()}},TR('저장'))],'wide');
+}
+/* ---------- 월간 스티커 달력: 타이머로 집중한 날마다 그날 함께한 동물 스티커가 붙어요 ---------- */
+let stkMonth=null;
+function stickerDays(ym){ // 날짜 → {sec, pet}
+  const by={}; allOf('log-').forEach(s=>{if(s.kind==='manual'||!s.segs||!s.segs.length) return; const k=dayKey(s.segs[0][0]*1e3); if(k.slice(0,7)!==ym) return; const d=by[k]||(by[k]={sec:0,per:{}}); const t=sessDur(s); d.sec+=t; if(s.pet) d.per[s.pet]=(d.per[s.pet]||0)+t});
+  Object.values(by).forEach(d=>{const best=Object.entries(d.per).sort((a,b)=>b[1]-a[1])[0]; d.pet=best?pets().find(p=>p.id===best[0]):null}); return by}
+const stkTilt=k=>{let x=0; for(const ch of k) x=(x*31+ch.charCodeAt(0))>>>0; return (x%13)-6};
+function renderStickers(){
+  const ym=stkMonth||today().slice(0,7), [y,m]=ym.split('-').map(Number), first=ym+'-01', nDays=new Date(y,m,0).getDate(), lead=wdOf(first), by=stickerDays(ym), t0=today();
+  const days=Object.keys(by).filter(k=>by[k].sec>=600), tot=days.reduce((a,k)=>a+by[k].sec,0);
+  const cells=[]; for(let i=0;i<lead;i++) cells.push(h('div',{class:'stkc empty'}));
+  for(let d=1;d<=nDays;d++){const k=ym+'-'+pad(d), D=by[k], on=D&&D.sec>=600, big=on&&D.sec>=3*3600;
+    cells.push(h('div',{class:'stkc'+(k===t0?' today':'')+(on?' on':''),title:on?fmtDur(D.sec):''},h('span',{class:'stkd num'},d),
+      on?h('span',{class:'stk'+(D.sec>=3600?' lg':''),style:'transform:rotate('+stkTilt(k)+'deg)'},D.pet&&stageOf(petXP(D.pet))?petSVG(D.pet.sp,Math.max(1,stageOf(petXP(D.pet))),D.pet.wear||{},'happy',48,petXP(D.pet)):h('span',{class:'stkstar'},'⭐')):null,
+      big?h('span',{class:'stkgold'},'🏅'):null))}
+  const mv=n=>{const d=new Date(y,m-1+n,1); stkMonth=d.getFullYear()+'-'+pad(d.getMonth()+1); renderPet()};
+  return h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'📅 '+TR('스티커 달력')),h('span',{class:'sp'}),
+      h('button',{class:'quiet',onclick:()=>mv(-1),'aria-label':TR('이전 달')},'◀'),h('b',{class:'num',style:'margin:0 .4rem'},EN?new Date(y,m-1,1).toLocaleDateString('en',{year:'numeric',month:'short'}):y+'년 '+m+'월'),h('button',{class:'quiet',onclick:()=>mv(1),'aria-label':TR('다음 달')},'▶')),
+    h('p',{class:'small'},TR('타이머로 10분 넘게 집중한 날마다 그날 함께한 동물 스티커가 붙어요. 1시간이면 큰 스티커, 3시간이면 메달까지!')),
+    h('div',{class:'stkgrid'},WD.map(w=>h('div',{class:'stkh small'},w)),...cells),
+    h('div',{class:'pxrow wrap',style:'margin-top:.6rem'},h('span',{class:'small'},TR('스티커 {n}개').replace('{n}',days.length)+' · '+TR('합계 ')+fmtDur(tot)),h('span',{class:'sp'}),h('button',{onclick:()=>stickerSave(ym)},'🖼 '+TR('이미지로 저장'))))}
+async function stickerSave(ym){ // 한 달 달력을 한 장의 그림으로
+  try{await Promise.all([document.fonts.load('24px Galmuri11'),document.fonts.load('bold 24px Galmuri11')])}catch(e){}
+  const [y,m]=ym.split('-').map(Number), nDays=new Date(y,m,0).getDate(), lead=wdOf(ym+'-01'), by=stickerDays(ym), rows=Math.ceil((lead+nDays)/7), C=110, W=7*C+60, H=170+rows*C+60, cv=document.createElement('canvas'), ctx=cv.getContext('2d'), F='Galmuri11, sans-serif', ink='#283048';
+  cv.width=W; cv.height=H; ctx.imageSmoothingEnabled=false; ctx.fillStyle='#FFF8E8'; ctx.fillRect(0,0,W,H); ctx.fillStyle=ink; [[0,0,W,8],[0,H-8,W,8],[0,0,8,H],[W-8,0,8,H]].forEach(r=>ctx.fillRect(...r));
+  ctx.font='bold 40px '+F; ctx.fillText(EN?new Date(y,m-1,1).toLocaleDateString('en',{year:'numeric',month:'long'}):y+'년 '+m+'월',30,70);
+  const days=Object.keys(by).filter(k=>by[k].sec>=600); ctx.font='22px '+F; ctx.fillStyle='#6A7088'; ctx.fillText(TR('스티커 {n}개').replace('{n}',days.length)+' · '+TR('합계 ')+fmtDur(days.reduce((a,k)=>a+by[k].sec,0)),30,108);
+  ctx.textAlign='center'; WD.forEach((w,i)=>ctx.fillText(w,30+i*C+C/2,150)); ctx.textAlign='left';
+  for(let d=1;d<=nDays;d++){const i=lead+d-1, cx=30+(i%7)*C, cy=165+Math.floor(i/7)*C, k=ym+'-'+pad(d), D=by[k];
+    ctx.fillStyle='#F4E8D0'; ctx.fillRect(cx+3,cy+3,C-6,C-6); ctx.fillStyle='#8A7A60'; ctx.font='18px '+F; ctx.fillText(String(d),cx+10,cy+26);
+    if(D&&D.sec>=600){const big=D.sec>=3600; ctx.save(); ctx.translate(cx+C/2,cy+C/2+8); ctx.rotate(stkTilt(k)*Math.PI/180);
+      if(D.pet&&stageOf(petXP(D.pet))){const st=Math.max(1,stageOf(petXP(D.pet))), hh=spriteH(D.pet.sp,st), G=poseG(D.pet.sp,st,D.pet.wear||{},'happy',petXP(D.pet)).G, ext=Math.max(G[0].length,hh), s=Math.max(1,Math.floor((big?74:56)/ext)); ctx.fillStyle='#FFFFFF'; ctx.beginPath(); ctx.arc(0,0,ext*s/2+5,0,Math.PI*2); ctx.fill(); cvPet(ctx,D.pet.sp,D.pet,-8*s,hh*s/2,s)}
+      else{ctx.font=(10*s)+'px sans-serif'; ctx.textAlign='center'; ctx.fillText('⭐',0,4*s); ctx.textAlign='left'}
+      ctx.restore(); if(D.sec>=3*3600){ctx.font='26px sans-serif'; ctx.fillText('🏅',cx+C-38,cy+34)}}}
+  ctx.font='16px '+F; ctx.fillStyle='#8A7A60'; ctx.fillText('Align · '+TR('스티커 달력'),30,H-26);
+  const b=await new Promise(res=>cv.toBlob(res,'image/png')), name='align-stickers-'+ym+'.png', file=new File([b],name,{type:'image/png'});
+  try{if(/iPad|iPhone|iPod/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]}); return}}catch(e){if(e&&e.name==='AbortError') return}
+  const u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.setAttribute('download',name); document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); toast('🖼 '+TR('그림으로 저장했어요'))}
+function renderRoom(){
+  const sel=roomPick(), ns=items('trips').filter(d=>!d.x&&d.k==='s').length, nc=items('trips').filter(d=>!d.x&&d.k==='c').length;
+  return [h('section',{class:'card pxcard'},h('div',{class:'row'},h('h2',null,'🏠 '+TR('동물 방')),h('span',{class:'sp small'},TR('기념품 {a} · 엽서 {b} 진열 중').replace('{a}',sel.s.length).replace('{b}',sel.c.length)),h('button',{onclick:roomDlg},'✏️ '+TR('꾸미기'))),
+      h('p',{class:'small'},ns+nc?TR('탐험에서 모은 기념품은 선반에, 엽서는 코르크판에 걸려요. 누르면 크게 볼 수 있어요. 창밖은 지금 시각이에요.'):TR('아직 방이 텅 비었어요. 타이머로 10분 넘게 집중하면 동물이 탐험에서 기념품과 엽서를 가져와요!')),mountRoom()),
+    renderStickers()]}
 function tripDetail(id){const d=tripGot(id); if(!d) return; const R=tripRec(id), p=pets().find(q=>q.id===d.pet)||pets().find(q=>q.sp===(d.from||d.sp));
   openDlg((R.k==='s'?'🎁 ':'💌 ')+TRIP_TIER[R.t][1]+' · '+(R.k==='s'?TR('기념품'):TR('엽서')),h('div',null,tripView(id,p,d),
     h('p',{class:'small muted',style:'text-align:center;margin:.6rem 0 0'},TR('처음 받은 날 ')+mdOf(dayKey(d.ts))+(R.any&&d.name?' · '+jo(TR('{p}이(가) 가져왔어요').replace('{p}',d.name)):'')+(d.n>1?' · '+TR('{n}번 받았어요').replace('{n}',d.n):''))),[h('button',{onclick:()=>tripSave(id,p,d)},'🖼 '+TR('이미지로 저장')),h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide')}
@@ -6470,7 +6558,7 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
 }
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v141'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v142'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
