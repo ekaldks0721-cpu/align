@@ -3458,18 +3458,19 @@ const ACD=(()=>{
     if(kind==='sad'||kind==='down') both((ex)=>R(ex,y,w,1,lid));
     if(kind==='happy'&&c.mouth){const [mx0,my0]=c.mouth; R(mx0,my0,2,1,'#7A2A2A'); P(mx0,my0+1,'#E86060'); P(mx0+1,my0+1,'#E86060')}}
   const HAPPY=['happy','cheer','wag','dance','eat','snack','money','bellbag','fossil','sweep','announce','sing'];
-  function draw(key,st,base,f){const C=ACC[key], G=mk(), D=api(G); let pose=base;
+  function draw(key,st,base,f,wear){const C=ACC[key], G=mk(), D=api(G), w=wear||{}; let pose=base;
     if(base==='stand'||base==='blink'||base==='squash'||!pose) pose='stand';
     if(base==='walk0'||base==='walk1') pose='walk';
     const sit=['sleep','read','write'].indexOf(pose)>=0;
-    body(D,C.b,pose,f); arms(D,C.b,pose,f,0); C.head(D,sit?2:(base==='squash'?1:0)); arms(D,C.b,pose,f,1); if(pose!=='guitar') props(D,pose,f,SP[key]);
+    const hdy=sit?2:(base==='squash'?1:0); acWear(D,key,w,'back',hdy,f);
+    body(D,C.b,pose,f); arms(D,C.b,pose,f,0); C.head(D,hdy); acWear(D,key,w,'head',hdy,f); arms(D,C.b,pose,f,1); if(pose!=='guitar') props(D,pose,f,SP[key]);
     if(pose==='guitar') props(D,pose,f,SP[key]);
     outline(G,C.ol);
     const shiftFace=sit?2:(base==='squash'?1:0), D2=shiftFace?api(G):D;
     const kind=base==='blink'||pose==='sleep'?'blink':HAPPY.indexOf(pose)>=0?'happy':pose==='sad'||pose==='bugeek'?'sad':pose==='read'||pose==='write'?'down':'';
     if(kind&&!C.fixed) face(shiftFace?{P:(a,b,c2)=>D.P(a,b+shiftFace,c2),R:(a,b,w,h,c2)=>D.R(a,b+shiftFace,w,h,c2),g:D.g}:D,C,kind==='blink'&&pose==='sleep'?'sleep':kind);
     if(C.fixed&&kind==='happy'&&C.mouth){const [a,b]=C.mouth; D.R(a,b+shiftFace,2,1,'#7A2A2A')}
-    if(C.after) C.after(D,pose,f,shiftFace);
+    if(C.after) C.after(D,pose,f,shiftFace); acWear(D,key,w,'face',shiftFace,f);
     return G}
   const ACC={};
   return {draw,ACC,api};
@@ -3518,6 +3519,43 @@ ACD.ACC.apollo={ol:'#2A2420',lid:'#F6F4EE',eye:[7,8,2,2],mouth:null,
     R(7,8+dy,2,2,'#2A1A10'); R(15,8+dy,2,2,'#2A1A10'); P(7,8+dy,'#FFFFFF'); P(15,8+dy,'#FFFFFF');
     E(11.5,11.4+dy,3.6,1.9,'#F7C42E'); R(10,10+dy,4,1,'#FFE070'); R(9,12+dy,6,1,'#D89A18'); R(11,13+dy,2,1,'#C08010'); P(10,13+dy,'#D89A18'); P(13,13+dy,'#D89A18')}};
 ['nook','isabelle','timmy','tommy','blathers','kk','apollo'].forEach(k=>SP[k].acDraw=1);
+/* 동물의 숲 친구들 옷: 24칸 큰 그림에 맞춰 다시 그려요. 모자는 WEAR 그림을 1.5배로, 나머지는 얼굴·목 자리에 맞춰 직접 */
+const AC_M={nook:{t:3,mu:12},timmy:{t:5,mu:13},tommy:{t:5,mu:13},isabelle:{t:3,mu:12},blathers:{t:2,mu:13},kk:{t:1,mu:12},apollo:{t:1,mu:14}}; // t: 머리 꼭대기 줄, mu: 콧수염 줄
+const acUp=rs0=>{const W=Math.max(...rs0.map(r=>r.length)), at=(x,y)=>(rs0[y]||'')[x]||'.', rs=rs0.map((r,y)=>[...r.padEnd(W,'.')].map((c,x)=>c==='o'&&[[1,0],[-1,0],[0,1],[0,-1]].some(([a,b])=>at(x+a,y+b)==='.')?'.':c).join('')), oh=Math.round(rs.length*1.5), ow=Math.round(W*1.5); return Array.from({length:oh},(_,y)=>Array.from({length:ow},(_,x)=>(rs[Math.floor(y/1.5)]||'')[Math.floor(x/1.5)]||'.').join(''))};
+function acWear(D,key,w,stage,dy,f){
+  const C=ACD.ACC[key], M=AC_M[key]||{t:3,mu:12}, {P,R,E,S,SR,g,rows}=D, t=M.t+dy, [ex,ey,ew,eh]=C.eye, EY=ey+dy, n=15+dy, ol=C.ol;
+  const em=(x,y,c)=>{if(g(x,y)==='.') P(x,y,c)};
+  if(stage==='back'){const b=w.back; if(!b) return;
+    if(b==='cape'){for(let y=n-1;y<=23;y++){const hw=5+Math.floor((y-n)/2); R(12-hw,y,hw*2,1,y>=22?'#901828':'#D83040')}}
+    if(b==='ghostcape'){for(let y=n-1;y<=23;y++){const hw=6+Math.floor((y-n)/3); R(12-hw,y,hw*2,1,y===23?(y%2?'#9890B8':'#C4BEE8'):'#D8D4F0')} for(let x=5;x<19;x+=3) P(x,23,'.')}
+    if(b==='wings'){const r=['oo....','owwo..','owwwwo','owwwww','.owwww','..owww','...oww'], c={o:'#8890B8',w:'#FFFFFF'}; rows(0,n-3,r,c); rows(18,n-3,r.map(x=>[...x].reverse().join('')),c)}
+    if(b==='batwings'){const r=['o.....','oo....','oko...','okko..','okkko.','okkkko','o.okkk','...o.k'], c={o:'#2A1E38',k:'#5A3E78'}; rows(0,n-4,r,c); rows(18,n-4,r.map(x=>[...x].reverse().join('')),c)}
+    if(b==='backpack'){R(4,n,3,5,'#E8A040'); R(4,n,3,1,'#C07828'); R(17,n,3,5,'#E8A040'); R(17,n,3,1,'#C07828')}
+    if(b==='giftsack'){rows(16,n-4,['...rr...','..rRRr..','...SS...','..SSSS..','.SSSSSS.','SSSSSSDD','SSSSSSDD','SSSSSDDD','.SSSSDD.','..SSDD..'],{r:'#E83838',R:'#A01818',S:'#D8A868',D:'#A87838'})}
+    return}
+  if(stage==='head'){
+    const hd=w.head;
+    if(hd&&WEAR[hd]){const d=WEAR[hd], U=acUp(d.r), ow=U[0].length, m={}; Object.keys(d.c).forEach(k=>m[k]=d.c[k]); m.o=ol;
+      if(d.side) rows(d.side<0?3:20-ow+1,t-1,U,m); else rows(12-Math.round(ow/2),t+4-U.length,U,m)}
+    if(hd==='headphones'||hd==='earmuffs'){const band=hd==='headphones'?'#383848':'#C83858'; for(let x=6;x<=17;x++) P(x,t-1,band); S(5,t,band); S(4,t+1,band); for(let y=t+2;y<EY-1;y++) S(3,y,band);
+      if(hd==='headphones'){SR(1,EY-1,3,4,'#E84848'); S(0,EY,'#383848'); S(0,EY+1,'#383848')} else{D.SE(2,EY+0.5,2,2.2,'#FFFFFF'); D.SE(2,EY+0.5,1,1.2,'#F8C8D8')}}
+    const nk=w.neck;
+    if(nk==='scarf'){for(let x=7;x<=16;x++){P(x,n,x%3?'#E83838':'#FFFFFF'); P(x,n+1,x%3?'#C82828':'#F0F0F0')} for(let y=n+2;y<=n+4;y++) R(14,y,2,1,y%2?'#E83838':'#FFFFFF'); P(14,n+5,'#C82828'); P(15,n+5,'#C82828')}
+    if(nk==='bowtie'){rows(8,n,['RR....RR','RRRDDRRR','RR....RR'],{R:'#E83838',D:'#901818'})}
+    if(nk==='bell'){R(8,n,8,1,'#E83838'); R(10,n+1,4,2,'#F8D030'); P(10,n+2,'#D8A818'); P(13,n+2,'#D8A818'); R(11,n+3,2,1,'#901818')}
+    if(nk==='bandana'){for(let j=0;j<5;j++) R(7+j,n+j,10-2*j,1,'#E84848'); [[9,n+1],[13,n+1],[11,n+2],[12,n+3]].forEach(([x,y])=>P(x,y,'#FFFFFF'))}
+    if(nk==='tie'){R(11,n,2,1,'#203890'); R(11,n+1,2,3,'#3858C8'); R(10,n+3,4,1,'#3858C8'); R(11,n+4,2,1,'#203890')}
+    if(nk==='medal'){for(let j=0;j<3;j++){P(8+j,n+j,'#3868D8'); P(15-j,n+j,'#3868D8')} P(11,n+2,'#E84848'); P(12,n+2,'#E84848'); E(11.5,n+4.5,1.6,1.6,'#F8C838'); P(11,n+4,'#FFF0A0'); P(13,n+5,'#B07810')}
+    if(nk==='xlights'){const B=['#F84848','#F8D030','#48A8F8','#58D058']; for(let x=7;x<=16;x++) P(x,n,'#2E6A38'); [7,9,11,13,15].forEach((x,i)=>{P(x,n+1,B[(i+(f?1:0))%4]); P(x+1,n+1,'#2E6A38')})}
+    return}
+  if(stage==='face'){const fc=w.face, rx=23-ex-(ew-1), ring=(x,c)=>{R(x-1,EY-1,ew+2,1,c); R(x-1,EY+eh,ew+2,1,c); R(x-1,EY,1,eh,c); R(x+ew,EY,1,eh,c)};
+    if(fc==='glasses'){ring(ex,'#384068'); ring(rx,'#384068'); R(ex+ew+1,EY,rx-ex-ew-2,1,'#384068')}
+    if(fc==='shades'){[ex,rx].forEach(x=>{R(x-1,EY-1,ew+2,eh+2,'#202028'); P(x,EY-1,'#A8D8F8')}); R(ex+ew+1,EY-1,rx-ex-ew-2,1,'#202028'); R(ex-3,EY-1,2,1,'#202028'); R(rx+ew+1,EY-1,2,1,'#202028')}
+    if(fc==='heartglass'){[ex,rx].forEach(x=>{rows(x-1,EY-1,['HH.HH','HHHHH','.HHH.','..H..'].map(r=>r.slice(0,ew+3)),{H:'#F04870'}); P(x,EY-1,'#FFB0C8')}); R(ex+ew+1,EY,rx-ex-ew-2,1,'#F04870')}
+    if(fc==='monocle'){ring(rx,'#B07810'); for(let y=EY+eh+1;y<EY+eh+5;y++) P(rx+ew+1,y,'#B07810')}
+    if(fc==='mustache'){const y=M.mu+dy; rows(7,y-1,['oo........oo','.oooo..oooo.','..oooooooo..'],{o:'#4A2C18'})}}
+}
+
 const T_TIBFOX={ // 티벳여우: 넓적한 네모 얼굴, 일자로 덮인 눈꺼풀, 옆으로 뻗친 회색 볼털, 하얀 주둥이
   1:{g:['','','','','','','','','..oo........oo..','.obboooooooobbo.','.obbooobbooobbo.','.oabbebbbbebbao.','oaaalllmmlllaaao','.oaallllllllaao.','..oobllllllboo..','...oooo..oooo...'],top:9,ey:11,my:12,ny:13,R:12,small:1},
   2:{g:['','','','..oo........oo..','..obo......obo..','.obbboooooobbbo.','.obbbbbbbbbbbbo.','.obbooobbooobbo.','.oabbebbbbebbao.','oaaabbbbbbbbaaao','oaaalllmmlllaaao','.oaallllllllaao.','...oobllllboo...','....obllllbo....','....obboobbo....','....ooo..ooo....'],top:5,ey:8,my:10,ny:12,R:12},
@@ -3829,7 +3867,7 @@ function poseG(spk,st,wear,pose,xp){
   const sp=SP[spk]||SP.cat;
   if(st===0){let G=fromRows(EGG); if(xp>=20) [[6,9],[7,10],[8,9],[9,10]].forEach(([x,y])=>gset(G,x,y,'o')); if(pose==='egg1') G=shiftG(G,-1,0); if(pose==='egg2') G=shiftG(G,1,0); return {G,pal:sp.pal}}
   const f=/1$/.test(pose)?1:0, base=pose.replace(/[01]$/,'');
-  if(sp.acDraw) return {G:ACD.draw(spk,st,pose==='walk0'||pose==='walk1'?pose:base,f),pal:sp.pal}; // 동물의 숲 친구들: 큰 그림으로 따로
+  if(sp.acDraw) return {G:ACD.draw(spk,st,pose==='walk0'||pose==='walk1'?pose:base,f,wear),pal:sp.pal}; // 동물의 숲 친구들: 큰 그림으로 따로
   let G=bodyG(spk,st,base==='wag'?f:0);
   const ey={blink:'blink',sleep:'sleep',read:'down',write:'down',happy:'happy',wag:'happy',cheer:'happy',eat:'happy',sad:'sad'}[base];
   if(sp.bigeye||sp.dora) eyesG(G,st,''); if(ey) eyesG(G,st,ey);
@@ -6740,7 +6778,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v144'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v145'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
