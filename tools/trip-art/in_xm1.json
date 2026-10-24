@@ -1,0 +1,74 @@
+[
+ {
+  "id": "xmas:c0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎄",
+  "place": "크리스마스 트리 광장",
+  "message": "광장에 엄청 큰 트리가 생겼어! 꼭대기 별까지 반짝반짝",
+  "mood": "night",
+  "note": "Christmas limited postcard"
+ },
+ {
+  "id": "xmas:c1",
+  "tier": "nearby (동네)",
+  "emojiHint": "⛸️",
+  "place": "꽁꽁 언 호수 스케이트장",
+  "message": "얼음 위에서 빙글빙글 돌았어. 넘어진 건 세 번뿐이야",
+  "mood": "snow",
+  "note": "Christmas limited postcard"
+ },
+ {
+  "id": "xmas:c2",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🏠",
+  "place": "진저브레드 마을",
+  "message": "집이 전부 과자로 되어 있어! 지붕을 조금 먹어 봤어 (비밀)",
+  "mood": "candy",
+  "note": "Christmas limited postcard"
+ },
+ {
+  "id": "xmas:c3",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🎁",
+  "place": "산타의 선물 공장",
+  "message": "요정들이 선물을 엄청 빨리 포장해. 나도 리본 묶는 걸 도왔어",
+  "mood": "indoor",
+  "note": "Christmas limited postcard"
+ },
+ {
+  "id": "xmas:c4",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🌌",
+  "place": "오로라 아래 순록 마을",
+  "message": "하늘이 초록색으로 춤춰! 순록들이 밤새 썰매 끄는 연습을 했어",
+  "mood": "night",
+  "note": "Christmas limited postcard"
+ },
+ {
+  "id": "xmas:c5",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🛷",
+  "place": "산타 썰매 정거장",
+  "message": "썰매가 출발 준비 중이야. 선물 자루가 산더미! 산타 할아버지가 손 흔들어 줬어",
+  "mood": "night",
+  "note": "Christmas limited postcard"
+ },
+ {
+  "id": "xmasx:c0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍫",
+  "place": "빼빼로 데이",
+  "message": "다 같이 빼빼로를 들고 찰칵! 초코가 손에 다 묻었어",
+  "mood": "day",
+  "note": "Pepero day (Korean Nov 11 stick-snack day) group photo postcard"
+ },
+ {
+  "id": "xmasx:c1",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🛷",
+  "place": "산타 썰매 위에서",
+  "message": "산타 할아버지 옆자리에 탔어! 발밑으로 온 세상 지붕이 반짝반짝, 보름달 앞을 날아가는 중",
+  "mood": "night",
+  "note": "LEGENDARY final Christmas postcard: make it the most magical scene. Sled flying across a huge full moon over snowy rooftops, from the sled seat perspective is fine. Keep the pet area lower-left as the sled seat floor."
+ }
+]

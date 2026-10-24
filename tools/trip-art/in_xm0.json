@@ -1,0 +1,82 @@
+[
+ {
+  "id": "xmas:s0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍪",
+  "name": "진저브레드 쿠키",
+  "desc": "동네 빵집에서 구운 생강 쿠키 사람이에요. 웃는 얼굴에 단추 세 개",
+  "note": "Christmas limited souvenir"
+ },
+ {
+  "id": "xmas:s1",
+  "tier": "nearby (동네)",
+  "emojiHint": "🧦",
+  "name": "크리스마스 양말",
+  "desc": "벽난로에 걸어 두면 산타가 선물을 넣어 준대요. 한쪽만 엄청 커요",
+  "note": "Christmas limited souvenir"
+ },
+ {
+  "id": "xmas:s2",
+  "tier": "far (먼 곳)",
+  "emojiHint": "🔔",
+  "name": "썰매 방울",
+  "desc": "루돌프 썰매에서 떨어진 금빛 방울. 흔들면 딸랑딸랑",
+  "note": "Christmas limited souvenir"
+ },
+ {
+  "id": "xmas:s3",
+  "tier": "far (먼 곳)",
+  "emojiHint": "❄️",
+  "name": "녹지 않는 눈송이",
+  "desc": "북쪽 마을 요정이 준 커다란 눈송이. 손에 올려도 안 녹아요",
+  "note": "Christmas limited souvenir"
+ },
+ {
+  "id": "xmas:s4",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🔮",
+  "name": "스노볼",
+  "desc": "흔들면 작은 마을에 눈이 내려요. 자세히 보면 우리 집도 있어요",
+  "note": "Christmas limited souvenir"
+ },
+ {
+  "id": "xmas:s5",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "📜",
+  "name": "산타의 착한 아이 명단",
+  "desc": "몰래 한 장 가져왔어요. 내 이름 옆에 \"공부 열심히\" 도장이 쾅",
+  "note": "Christmas limited souvenir"
+ },
+ {
+  "id": "xmasx:s0",
+  "tier": "nearby (동네)",
+  "emojiHint": "🍫",
+  "name": "빼빼로 한 상자",
+  "desc": "11월 11일! 막대 과자를 친구들과 하나씩 나눠 먹었어요. 초코·아몬드·딸기 맛",
+  "note": "Christmas special (advent calendar / Pepero day) souvenir"
+ },
+ {
+  "id": "xmasx:s1",
+  "tier": "nearby (동네)",
+  "emojiHint": "🎁",
+  "name": "엉망진창 포장 선물",
+  "desc": "테이프가 열두 겹, 리본은 세 개, 포장지는 삐뚤빼뚤. 동물 친구가 혼자 쌌대요",
+  "note": "Christmas special (advent calendar / Pepero day) souvenir"
+ },
+ {
+  "id": "xmasx:s2",
+  "tier": "far (먼 곳)",
+  "emojiHint": "⭐",
+  "name": "트리 꼭대기 별",
+  "desc": "트리를 끝까지 꾸몄더니 하늘에서 내려온 별이에요. 밤에 살짝 빛나요",
+  "note": "Christmas special (advent calendar / Pepero day) souvenir"
+ },
+ {
+  "id": "xmasx:s3",
+  "tier": "very far (아주 먼 곳)",
+  "emojiHint": "🧤",
+  "name": "산타의 빨간 장갑",
+  "desc": "썰매 대타를 잘 해냈다고 산타가 준 털장갑. 아직 따뜻해요",
+  "note": "Christmas special (advent calendar / Pepero day) souvenir"
+ }
+]
