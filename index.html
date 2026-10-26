@@ -14,7 +14,7 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#F3F5FA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0A1120" media="(prefers-color-scheme: dark)">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Gamja+Flower&display=swap">
 <style>
 :root{
   --paper:color-mix(in srgb,var(--accent) 5%,#F8F9FB); --surface:#FFFFFF; --ink:#0F1E3D; --ink2:#5B6C8F; --rule:#E1E9F5; --rule2:#BCCAE2;
@@ -715,8 +715,8 @@ body.kb #buddy{display:none!important}
 .stampart{font-size:1.5rem} .stampart.px{width:48px;height:30px}
 .tslot .art.px{width:100%;height:auto} .tslot.s .art.px{width:min(100%,40px);height:auto;aspect-ratio:1} .tslot.c .art.px{aspect-ratio:64/40}
 .terrawrap:has(.guestnote){flex-wrap:wrap} .guestnote{text-align:center;margin:.3rem 0 0;width:100%;flex:0 0 100%}
-.doodle{display:flex;align-items:center;gap:.35rem;margin:-.2rem 0 .3rem auto;width:max-content;max-width:min(80%,300px);padding:.15rem .3rem;background:none;border:0;box-shadow:none;min-height:0;color:var(--dc);font-family:'Galmuri11',cursive;font-size:.85rem;transform:rotate(var(--rot));cursor:pointer;opacity:.9;z-index:1}
-.doodle .dart svg{width:22px;height:22px;display:block} .doodle .dtx{border-bottom:2px dashed var(--dc);line-height:1.2;text-align:left} .doodle small{font-size:.65rem;opacity:.8;white-space:nowrap} .doodle:hover{opacity:1}
+.doodle{display:flex;align-items:center;gap:.35rem;margin:-.2rem 0 .3rem auto;width:max-content;max-width:min(80%,300px);padding:.15rem .3rem;background:none;border:0;box-shadow:none;min-height:0;color:var(--dc);font-family:'Gamja Flower','Galmuri11',cursive;font-size:1.3rem;letter-spacing:.02em;transform:rotate(var(--rot));cursor:pointer;opacity:.9;z-index:1}
+.doodle .dart svg{width:22px;height:22px;display:block} .doodle .dtx{border-bottom:2px dashed var(--dc);line-height:1.2;text-align:left} .doodle small{font-size:.85rem;opacity:.8;white-space:nowrap} .doodle:hover{opacity:1}
 .doodle.erase{animation:derase .6s forwards} @keyframes derase{30%{transform:rotate(var(--rot)) translateX(-4px)}60%{transform:rotate(var(--rot)) translateX(4px);opacity:.5}100%{opacity:0;filter:blur(3px)}}
 .oopsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem} .oopsmini{display:flex;flex-direction:column;align-items:stretch;gap:.2rem;padding:.3rem;min-width:0;background:#FFFDF6} .oopsmini small{text-align:center}
 .oopspic{position:relative;display:block;width:100%;aspect-ratio:64/40;overflow:hidden;background:#BFE3F8} .oopspic .art,.oopspic svg{width:100%;height:100%;display:block}
@@ -6850,7 +6850,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v146'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v147'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
