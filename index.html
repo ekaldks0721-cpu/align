@@ -714,7 +714,26 @@ body.kb #buddy{display:none!important}
 .pcpic .pcpet{left:9.4%;bottom:5%;transform:none;width:25%} .pcpic .pcpet svg{width:100%;height:auto;display:block}
 .stampart{font-size:1.5rem} .stampart.px{width:48px;height:30px}
 .tslot .art.px{width:100%;height:auto} .tslot.s .art.px{width:min(100%,40px);height:auto;aspect-ratio:1} .tslot.c .art.px{aspect-ratio:64/40}
-.terrawrap:has(.guestnote){flex-wrap:wrap} .guestnote{text-align:center;margin:.3rem 0 0;width:100%;flex:0 0 100%}
+.terrawrap:has(.guestnote){flex-wrap:wrap} .pal{position:relative;margin:.9rem 0 .2rem;padding:.6rem .6rem .5rem;border-radius:16px;background:rgba(var(--ti),.12);text-align:left}
+.palscene{display:flex;justify-content:center} .palscene svg{width:100%;max-width:360px;height:auto;display:block;margin:0 auto;border-radius:10px;image-rendering:pixelated}
+.timer .palx{position:absolute;top:.15rem;right:.25rem;min-height:0;min-width:0;padding:.05rem .45rem;z-index:1}
+.palbub{margin:.5rem auto 0;max-width:400px;padding:.5rem .7rem;border-radius:12px;background:#FFFDF6;color:#283048;font-size:.92rem;box-shadow:0 2px 0 rgba(0,0,0,.12)} .palbub p{margin:0 0 .4rem} .paltr{color:#7A8098;font-size:.85em} .palbub p:last-child{margin:0}
+.palchips{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center} .timer .palbub button,.timer .palbub button:hover{min-height:0;padding:.25rem .7rem;font-size:.85rem;border-radius:99px;background:#EEF2FB;border-color:#C8D2EC;color:#283048}
+.timer .palbub button.on{background:#283048;color:#fff;border-color:#283048} .timer .palbub button.quiet{background:none;border-color:transparent;color:#6A7490}
+.palin{display:inline-flex;gap:.3rem} .timer .palbub input{width:9rem;min-height:0;padding:.25rem .5rem;background:#fff;color:#283048;border-color:#C8D2EC} .timer .palbub input::placeholder{color:#9AA2B8}
+.palinfo{display:flex;flex-wrap:wrap;gap:.2rem .9rem;justify-content:center;margin-top:.45rem;opacity:.95} .timer .palinfo button{min-height:0;padding:0;border:0;background:none;color:inherit;text-decoration:underline dotted;font-size:inherit}
+.timer .palopen{min-height:0;padding:.2rem .6rem;font-size:.85rem}
+.polgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.7rem} .pol{background:#fff;padding:.5rem .5rem .6rem;box-shadow:0 2px 8px rgba(0,0,0,.15);transform:rotate(-1deg);display:flex;flex-direction:column;gap:.2rem} .pol:nth-child(even){transform:rotate(1.2deg)}
+.polpic{position:relative;display:flex;align-items:flex-end;justify-content:center;aspect-ratio:1;background:linear-gradient(#BFE3F8,#E8F4FC 60%,#9AD08A 60%)} .polpic.k-late,.polpic.k-word{background:linear-gradient(#1E2550,#3A4A8A 60%,#4A5A78 60%)} .polpic.k-exam{background:linear-gradient(#F8D8A0,#FCEBD0 60%,#C89868 60%)} .polpic.k-goal,.polpic.k-h100{background:linear-gradient(#FCE8F0,#FFF6E0 60%,#F0C8A0 60%)}
+.polic{position:absolute;top:.3rem;right:.4rem;font-size:1.2rem} .pol b{font-size:.82rem;line-height:1.3} .pol small{color:#8A8070}
+.tpet{display:inline-flex;align-items:center;gap:.1rem;margin-left:.35rem;vertical-align:middle;line-height:0;pointer-events:none} .tpet svg{width:24px;height:24px} .tpet i{font-style:normal;font-size:.95rem;line-height:1}
+.tpoint i{animation:tpoint .9s ease-in-out infinite} @keyframes tpoint{50%{transform:translateX(-4px)}} .tpoint.glare svg{filter:drop-shadow(0 0 2px #F05858)}
+.tsiren i{display:inline-block;animation:tsiren .8s linear infinite} @keyframes tsiren{to{transform:rotate(360deg)}} .tsiren svg{animation:tbob .4s steps(2) infinite} @keyframes tbob{50%{transform:translateY(-2px)}}
+li.eating{position:relative} li.eating .ktitle{animation:teat 1.4s steps(6) forwards} @keyframes teat{0%{clip-path:inset(0 0 0 0)}80%{clip-path:inset(0 0 0 100%)}100%{clip-path:inset(0 0 0 0)}}
+.teat{position:absolute;right:30%;top:50%;transform:translateY(-50%);margin:0;animation:teatrun 1.4s ease-out forwards} .teat i{color:#E8507A;font-weight:700} @keyframes teatrun{from{right:5%}to{right:70%}}
+#buddy[data-full="1"] .bpet{transform:scaleX(1.12)} #buddy[data-full="2"] .bpet{transform:scaleX(1.24);animation:bwob .9s ease-in-out infinite} @keyframes bwob{25%{rotate:-4deg}75%{rotate:4deg}}
+@media (prefers-reduced-motion:reduce){.tpoint i,.tsiren i,.tsiren svg,li.eating .ktitle,.teat,#buddy[data-full="2"] .bpet{animation:none}}
+.guestnote{text-align:center;margin:.3rem 0 0;width:100%;flex:0 0 100%}
 .doodle{display:flex;align-items:center;gap:.35rem;margin:-.2rem 0 .3rem auto;width:max-content;max-width:min(80%,300px);padding:.15rem .3rem;background:none;border:0;box-shadow:none;min-height:0;color:var(--dc);font-family:'Gamja Flower','Galmuri11',cursive;font-size:1.3rem;letter-spacing:.02em;transform:rotate(var(--rot));cursor:pointer;opacity:.9;z-index:1}
 .doodle .dart svg{width:22px;height:22px;display:block} .doodle .dtx{border-bottom:2px dashed var(--dc);line-height:1.2;text-align:left} .doodle small{font-size:.85rem;opacity:.8;white-space:nowrap} .doodle:hover{opacity:1}
 .doodle.erase{animation:derase .6s forwards} @keyframes derase{30%{transform:rotate(var(--rot)) translateX(-4px)}60%{transform:rotate(var(--rot)) translateX(4px);opacity:.5}100%{opacity:0;filter:blur(3px)}}
@@ -798,6 +817,7 @@ body.kb #buddy{display:none!important}
           <button id="t-end">끝내고 기록</button>
           <button class="quiet" id="t-cancel">취소</button>
         </div>
+        <div class="pal" id="t-pal" hidden></div>
         <div class="amb" id="t-amb"></div>
         <p class="small frnow" id="t-fr" hidden></p>
         <p class="small frnow" id="t-trip" hidden></p>
@@ -1402,12 +1422,12 @@ function beep(kind){if(cfg('sound')) playTone(cfg('tone'),kind)}
 
 /* ---------- 배경 소리: 음원 파일 없이 앱이 직접 만들어 내는 소음과 자연의 소리 ---------- */
 // 소리마다 몇 초짜리 소리를 한 번 만들어 두고 끝없이 이어 틀어요 (이음새는 살짝 겹쳐서 안 들리게). 설정은 settings.amb = {mix:{소리:크기}, vol, auto}
-const AMB_LIST=[['white','🌫',TR('백색소음')],['pink','🌸',TR('핑크 소음')],['brown','🟤',TR('갈색 소음')],['rain','🌧',TR('비')],['waves','🌊',TR('파도')],['wind','🍃',TR('바람')],['fire','🔥',TR('모닥불')],['plane','✈️',TR('비행기 객실')]];
+const AMB_LIST=[['white','🌫',TR('백색소음')],['pink','🌸',TR('핑크 소음')],['brown','🟤',TR('갈색 소음')],['rain','🌧',TR('비')],['waves','🌊',TR('파도')],['wind','🍃',TR('바람')],['fire','🔥',TR('모닥불')],['plane','✈️',TR('비행기 객실')],['library','📚',TR('도서관 (옆자리 동료)')]];
 const AMB={buf:{},nodes:{},master:null,playing:false,manual:null,wasFocus:false};
 const ambCfg=()=>Object.assign({mix:{},vol:.6,auto:true},S.settings.v.amb||{});
 function ambSave(c){S.settings.v.amb=c; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush()}
 function ambBuild(kind){ // 소리 한 덩어리 만들기 (좌우 따로 만들어서 넓게 들려요)
-  const sr=actx.sampleRate, secs={rain:10,waves:16,fire:12,wind:20}[kind]||6, L=Math.round(sr*secs), F=Math.round(sr*.5), buf=actx.createBuffer(2,L,sr);
+  const sr=actx.sampleRate, secs={rain:10,waves:16,fire:12,wind:20,library:24}[kind]||6, L=Math.round(sr*secs), F=Math.round(sr*.5), buf=actx.createBuffer(2,L,sr);
   const seam=a=>{const o=new Float32Array(L); for(let i=0;i<L;i++) o[i]=a[i]; for(let i=0;i<F;i++){const t=i/F; o[i]=a[i]*Math.sin(t*Math.PI/2)+a[L+i]*Math.cos(t*Math.PI/2)} return o}; // 끝과 처음을 겹쳐서 이음새 없애기
   const white=()=>{const a=new Float32Array(L+F); for(let i=0;i<a.length;i++) a[i]=Math.random()*2-1; return a};
   const pink=()=>{const a=white(); let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0; for(let i=0;i<a.length;i++){const w=a[i]; b0=.99886*b0+w*.0555179; b1=.99332*b1+w*.0750759; b2=.969*b2+w*.153852; b3=.8665*b3+w*.3104856; b4=.55*b4+w*.5329522; b5=-.7616*b5-w*.016898; a[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11; b6=w*.115926} return a};
@@ -1428,10 +1448,16 @@ function ambBuild(kind){ // 소리 한 덩어리 만들기 (좌우 따로 만들
     else if(kind==='fire'){a=lp(brown(),.08); // 낮게 타오르는 소리 + 탁탁 튀는 불똥
       ev=o=>{const pk=Math.max(...o.slice(0,sr).map(Math.abs))||1; for(let n=0;n<secs*9;n++){const at=Math.floor(Math.random()*(L-sr*.1)), k=1+Math.floor(Math.random()*4), am=(Math.pow(Math.random(),2)*.7+.05)*pk; for(let j=0;j<k;j++) burst(o,at+Math.floor(Math.random()*sr*.03),Math.round(sr*(.001+Math.random()*.003)),am*(j?.5:1),0)}
         for(let n=0;n<secs*.6;n++) burst(o,Math.floor(Math.random()*(L-sr*.1)),Math.round(sr*.02),(.5+Math.random()*.3)*pk,0)}}
+    else if(kind==='library'){a=lp(brown(),.05); for(let i=0;i<N;i++) a[i]*=.1; // 조용한 방 공기 + 연필 사각사각 · 책장 넘기기 · 가끔 키보드
+      ev=o=>{const pk=.5, w=white(); let y=0; const hp=new Float32Array(w.length); for(let i=0;i<w.length;i++){y+=.25*(w[i]-y); hp[i]=w[i]-y}
+        const stroke=(at,len,amp)=>{for(let j=0;j<len&&at+j<L;j++) o[at+j]+=amp*Math.pow(Math.sin(Math.PI*j/len),.6)*hp[(at+j)%hp.length]*(.6+.4*Math.sin(j/sr*2*Math.PI*30))};
+        const Q=L/4; for(let n=0;n<4;n++){let at=Math.floor(n*Q+Math.random()*(Q-sr*3)); const k=4+Math.floor(Math.random()*8); for(let j=0;j<k;j++){const len=Math.round(sr*(.06+Math.random()*.16)); stroke(at,len,pk*(.18+Math.random()*.12)); at+=len+Math.round(sr*(.03+Math.random()*.12))}} // 연필로 쓰기
+        for(let n=0;n<2;n++){const at=Math.floor((n*.5+.1+Math.random()*.3)*L), len=Math.round(sr*(.35+Math.random()*.25)); let z=0; for(let j=0;j<len;j++){z+=.08*(w[(at+j)%w.length]-z); const t=j/len; o[at+j]+=pk*.9*z*Math.pow(Math.sin(Math.PI*t),2)*(t>.8?1.6:1)} burst(o,at+len,Math.round(sr*.01),pk*.12,0)} // 책장 넘기기
+        {let at=Math.floor((Math.floor(Math.random()*4)*Q)+Math.random()*(Q-sr*4)); const k=8+Math.floor(Math.random()*16); for(let j=0;j<k;j++){burst(o,at,Math.round(sr*.003),pk*(.08+Math.random()*.06),0); burst(o,at+Math.round(sr*.004),Math.round(sr*.006),pk*.04,2*Math.PI*180/sr); at+=Math.round(sr*(.07+Math.random()*.18))}}}} // 키보드 톡톡
     else if(kind==='plane'){a=lp(brown(),.12); const p=lp(pink(),.25); for(let i=0;i<N;i++) a[i]+=p[i]*.25} // 낮게 웅웅거리는 엔진과 공기 소리
     let o=seam(a); if(ev) ev(o);
     if(kind==='plane') for(let i=0;i<L;i++) o[i]+=.012*Math.sin(2*Math.PI*Math.round(118*secs)/secs*i/sr)+.005*Math.sin(2*Math.PI*Math.round(236*secs)/secs*i/sr); // 엔진 웅 소리 (끝과 처음이 딱 맞는 높이)
-    let ss=0; for(let i=0;i<L;i++) ss+=o[i]*o[i]; const rms=Math.sqrt(ss/L)||1, tgt={white:.11,pink:.13,brown:.16,rain:.12,waves:.14,wind:.15,fire:.13,plane:.16}[kind]; // 소리마다 비슷한 크기로 맞추고, 너무 큰 부분은 부드럽게 눌러요
+    let ss=0; for(let i=0;i<L;i++) ss+=o[i]*o[i]; const rms=Math.sqrt(ss/L)||1, tgt={white:.11,pink:.13,brown:.16,rain:.12,waves:.14,wind:.15,fire:.13,plane:.16,library:.08}[kind]; // 소리마다 비슷한 크기로 맞추고, 너무 큰 부분은 부드럽게 눌러요
     for(let i=0;i<L;i++){const v=o[i]*tgt/rms; o[i]=Math.abs(v)<.7?v:Math.sign(v)*(.7+.25*Math.tanh((Math.abs(v)-.7)/.25))}
     buf.copyToChannel(o,ch)}
   return buf;
@@ -1498,7 +1524,7 @@ function finishFocus(endTs){
   if(T.running) T.segs.push([Math.round(T.segStart/1e3),Math.round(endTs/1e3)]);
   const segs=T.segs.filter(g=>g[1]>g[0]), total=segs.reduce((a,g)=>a+g[1]-g[0],0), quick=!!T.quick; T.quick=false;
   T.running=false; T.elapsed=0; T.segs=[]; T.segStart=null;
-  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){} try{evReward(it)}catch(e){} setTimeout(()=>{try{guestCheck()}catch(e){}},3000);
+  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){} try{evReward(it)}catch(e){} setTimeout(()=>{try{guestCheck()}catch(e){}},3000); try{palSessionDone(it)}catch(e){}
     if(T.mode==='pomo'&&!quick){T.count++; T.phase=T.count%Math.max(1,cfg('every'))===0?'long':'short';
       if(cfg('autoBreak')&&Date.now()-endTs<60e3){T.running=true; T.segStart=Date.now()}}
   } else toast(TR('1분이 안 되는 시간은 기록하지 않았어요'));
@@ -1537,7 +1563,7 @@ function paintTimer(){
   const end=$('#t-end'); end.textContent=isFocus()?TR('끝내고 기록'):TR('휴식 건너뛰기'); end.hidden=isFocus()?!started:false;
   $('#t-cancel').hidden=!(isFocus()&&started);
   $('#t-quick').hidden=!(T.mode==='pomo'&&T.phase==='focus'&&!started);
-  paintPomoCfg(); ambSync();
+  paintPomoCfg(); ambSync(); paintPal();
 }
 const PCFG=[['focus',TR('집중'),[5,10,15,20,25,30,35,40,45,50,55,60,75,90,120],TR('분')],['short',TR('짧은 휴식'),[1,2,3,4,5,7,10,15,20],TR('분')],
   ['long',TR('긴 휴식'),[5,10,15,20,25,30,40,45,60],TR('분')],['every',TR('긴 휴식까지'),[1,2,3,4,5,6,7,8],TR('회')]];
@@ -1680,7 +1706,7 @@ function renderTasks(){
       h('div',{class:'kch'},g.id?h('button',{class:'kgrip','aria-label':'"'+g.name+TR('" 카테고리를 끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)'),title:TR('끌어서 카테고리 순서 바꾸기'),onpointerdown:e=>kDrag(e,kSaveCatOrder),onkeydown:e=>kKey(e,kSaveCatOrder)},'⋮⋮'):null,g.name,h('span',{class:'n num'},g.done+' / '+g.n)),
       g.subs.map(sg=>[sg.showHead?h('div',{class:'ksh'},h('i',{class:'dot',style:'background:'+sg.color}),sg.name):null,
         h('ul',{class:'kgl',style:'--c:'+sg.color},sg.tasks.map(taskRow))]))):[h('li',{class:'empty art'},TR('아직 할 일이 없어요. 아래에 적고 예상 시간을 정해 추가한 뒤, ▶를 누르면 타이머가 그 할 일에 맞춰져요. 왼쪽 ⋮⋮를 끌면 순서를 바꿀 수 있어요.'))]));
-  paintYday(); paintDoodle();
+  paintYday(); paintDoodle(); palTasks(list);
   const od=viewDate===today()?pastTasks():[], carry=$('#k-carry');
   carry.hidden=!od.length; carry.textContent=TR('지난 미완료 ')+od.length+TR('개 옮기기·미루기'); carry.onclick=overdueDlg;
   const ks=$('#k-sub'), keep=ks.value; ks.replaceChildren(h('option',{value:''},TR('항목 없음')),...subOptions(null).filter(Boolean)); ks.value=keep;
@@ -5755,7 +5781,8 @@ const BOKGIL_ALOOF=[TR('다른 강아지? 별로 관심 없어'),TR('(다른 강
 const petLines0=k=>{const p=activePet(), sp=p&&SP[p.sp], L=sp&&(LINESETS[sp.lines]||ANIMAL_LINES[p.sp]);
   if(p&&p.sp==='duo'&&(k==='tap'||k==='evening'||k==='night'||k==='day')&&rewardDay(today())<60&&hourNow()>=15) return DUO_NAG;
   const base=(L&&L[k])||LINES[k]; if(sp&&sp.dogHate&&(k==='tap'||k==='day')&&ownsOtherDog(p)) return base.concat(BORMI_DOG); if(sp&&sp.aloof&&(k==='tap'||k==='day')&&ownsOtherDog(p)) return base.concat(BOKGIL_ALOOF); return sp&&sp.lines==='CHUL'&&CHUL_YB[k]&&pets().some(q=>q.sp==='yongbok')?base.concat(CHUL_YB[k]):base};
-const petLines=k=>{const b=petLines0(k); if(!['tap','day','morning','evening','night'].includes(k)||!XM()) return b; const p=activePet(); return Math.random()<.35?(p&&XMAS_SP[p.sp])||XMAS_LINES:b}; // 크리스마스 기간엔 가끔 크리스마스 이야기
+const petLines=k=>{let b=petLines0(k); if(!['tap','day','morning','evening','night','done'].includes(k)) return b; const p=activePet(); if(!p) return b; // 크리스마스 이야기 · 둘만의 말 · 이름 부르기
+  if(XM()&&k!=='done'&&Math.random()<.35) b=XMAS_SP[p.sp]||XMAS_LINES; const w=k!=='done'&&palLine(p); if(w) b=[w]; const c=palCall(p); if(c&&Math.random()<.3) b=b.map(t=>c+', '+t); return b}; // 크리스마스 기간엔 가끔 크리스마스 이야기
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 function buddySay(text,ms){
   if(!buddyEl||buddyEl.hidden||!talkOn()||!text) return; const b=buddyEl.querySelector('.bbub'); {const ap=activePet(); if(ap&&SP[ap.sp]&&SP[ap.sp].babble) text=babble(text)} // 피크민은 무슨 말이든 '옹', '씌'로
@@ -6670,6 +6697,196 @@ function evShop(p,bal){ // 상점 → 이벤트 칸
     h('p',{class:'small muted',style:'margin:.6rem 0 0'},TR('배경은 이벤트 기간에는 누구나 쓸 수 있고, 바꿔 두면 이벤트가 끝나도 남아요.'))];
   return e.id==='xmas'?xmHub(e,head,shop):[head,...shop];
 }
+/* ---------- 공부 짝꿍: 타이머 옆 책상에서 동물이 같이 공부하고, 목표를 같이 채우고, 서로 이야기를 주고받아요 ---------- */
+// 'pal' 모음: me(이름·좋아하는 것·둘만의 말) · d-날짜(그날 목표·부탁·고민·기운) · ex-디데이id(시험 결과). 'mem' 모음: 추억 앨범
+const PAL={eatSeen:null,eatDay:'',ev:null,evT:0,say:'',sayT:0,lastPaint:0,minsC:null,habC:null};
+const palDoc=id=>{const d=S.docs.pal&&S.docs.pal[id]; return d&&!d.x?d:null};
+const palMe=()=>palDoc('me')||{};
+const palDay=k=>palDoc('d-'+(k||today()))||{};
+const palSetMe=o=>put('pal',Object.assign({},palMe(),o,{id:'me'}));
+const palSetDay=o=>{const k=today(); put('pal',Object.assign({},palDay(k),o,{id:'d-'+k}))};
+const palSeed=k=>hashStr(guestSeed()+(k||today())+':pal');
+const palOff=()=>{try{return localStorage.getItem('align.palHide')==='1'}catch(e){return false}};
+const palJo=t=>jo(t);
+function palCall(p){const n=palMe().name; if(!n) return ''; const b=(c=>c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28>0)(n.charCodeAt(n.length-1));
+  if(EN) return n; return {nook:n+' 씨',timmy:n+' 씨',tommy:n+' 씨',isabelle:n+' 님',blathers:n+' 군',baymax:n+' 님',apollo:n,kk:n}[p.sp]||n+(b?'아':'야')}
+/* 같이 공부한 시간 (그 동물과 함께 기록한 집중) */
+function palMins(p){const now=Date.now(), sig=Object.keys(S.docs).filter(d=>d.indexOf('log-')===0).map(d=>Object.keys(S.docs[d]).length).join(); if(!PAL.minsC||PAL.minsC.sig!==sig||now-PAL.minsC.t>6e4){const m={}; allOf('log-').forEach(s=>{if(s.pet&&s.kind!=='manual'&&s.segs) m[s.pet]=(m[s.pet]||0)+sessDur(s)}); PAL.minsC={t:now,m,sig}} return Math.floor((PAL.minsC.m[p.id]||0)/60)}
+/* 과목: 고른 항목 이름으로 책상 위 소품을 골라요 */
+const PAL_SUBJ=[['math',/수학|math|calc|미적|확률|통계|기하|산수|회계|경제/i,'📐'],['eng',/영어|english|toeic|토익|토플|ielts|단어|voca|일본어|중국어|스페인|독일|프랑스|language|외국어/i,'🔤'],['sci',/과학|물리|화학|생명|생물|지구|science|physics|chem|bio|의학|약학/i,'🧪'],
+  ['code',/코딩|프로그래밍|개발|code|coding|컴퓨터|알고리즘|python|java|웹|앱/i,'💻'],['music',/음악|피아노|기타|노래|music|piano|악기|작곡/i,'🎵'],['art',/미술|그림|디자인|드로잉|art|design|draw/i,'🎨'],['hist',/역사|사회|지리|한국사|세계사|history|정치|법/i,'🌍'],['kor',/국어|문학|독서|글쓰기|논술|kor|literature|reading|writing/i,'📖']];
+function palSubj(){const s=sub(T.sub), c=s.id?catName(catOf(s.id)):'', t=(s.name||'')+' '+c; const m=PAL_SUBJ.find(x=>x[1].test(t)); return m?m[0]:'note'}
+/* 동물마다 공부하는 모습 */
+function palStudyPose(p,now){const sp=SP[p.sp]||{}, fa=focusAct(sp), slot=Math.floor(now/9000)%4;
+  if(sp.lines==='PIKMIN') return slot===3?'read':'carry';
+  if(p.sp==='apollo') return slot===2?'read':'grump';
+  if(p.sp==='nook') return slot===1?'money':'write';
+  if(p.sp==='kk') return slot===3?'write':'read';
+  if(fa&&slot===3) return fa; return slot%2?'write':'read'}
+const PAL_PROP={blathers:'magnify',kk:'notes',apollo:'glare'};
+/* 책상 장면 (96×44): 벽·창문(지금 시간), 책상, 동물, 과목 소품, 쌓이는 책과 컵, 둘이 채우는 병 */
+function palScene(p,st,frame,o){
+  const W=80, H=40, X=pxBuf(W,H), {P,R}=X, tod=timeOfDay();
+  const wall=tod==='night'?['#3A4068','#343A60']:tod==='dusk'?['#F0D8C8','#E8CCBC']:['#F6ECD8','#EEE2CA']; R(0,0,W,30,wall[0]); for(let y=3;y<30;y+=6) for(let x=(y%12?3:0);x<W;x+=6) P(x,y,wall[1]);
+  const sky=tod==='night'?['#1E2550','#2A3A78']:tod==='dusk'?['#F8A070','#F8D098']:['#8CCCF4','#C4E8FA']; R(3,3,20,16,'#8A5A30'); R(4,4,18,14,sky[0]); R(4,11,18,7,sky[1]); R(12,4,1,14,'#8A5A30'); R(4,11,18,1,'#8A5A30');
+  if(tod==='night'){P(6,6,'#F8F0C0'); P(18,8,'#F8F0C0'); P(9,14,'#C8D0F0'); R(15,5,3,3,'#F8F0B0'); P(15,5,sky[0])} else if(tod==='day'){R(16,5,4,4,'#F8D838'); R(6,14,5,2,'#FFFFFF')} else R(6,14,6,3,'#F87848');
+  if(o.bottle!=null){const bx=66, by=8, bh=18, lv=Math.round(Math.min(1,o.bottle)*(bh-3)); R(bx+3,by-3,6,2,'#C8A070'); R(bx+2,by-1,8,1,'#A8D0E8'); R(bx,by,12,bh,'#D8ECF8'); R(bx+1,by+bh-1-lv,10,lv,o.bottle>=1?'#F8C838':'#58A8E8'); if(lv>1) R(bx+1,by+bh-1-lv,10,1,o.bottle>=1?'#FFE890':'#98D0F8');
+    for(let y=by;y<by+bh;y++){P(bx,y,'#6A8AA8'); P(bx+11,y,'#6A8AA8')} R(bx,by+bh,12,1,'#6A8AA8'); P(bx+2,by+2,'#FFFFFF'); P(bx+2,by+3,'#FFFFFF'); if(o.bottle>=1) [[bx-2,by-2],[bx+13,by],[bx+6,by-5]].forEach(([x,y])=>P(x,y,'#F8E060'))}
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g'), hh=spriteH(p.sp,st); g.setAttribute('transform','translate(30,'+(35-hh)+')'); g.innerHTML=spriteSVG(p.sp,st,p.wear||{},frame,petXP(p),false);
+  R(0,27,W,2,'#C08848'); R(0,27,W,1,'#D8A060'); R(0,29,W,11,'#9A6634'); R(0,29,W,1,'#7A4A24'); for(let x=4;x<W;x+=16) R(x,33,8,1,'#8A5A2C'); // 책상
+  const bk=Math.min(7,o.books||0), BC=['#E85858','#4A88D8','#58B068','#F0B030','#9A68D8','#E87898','#48B8B8']; for(let i=0;i<bk;i++) R(19-i%2,25-i*2,9,2,BC[i%BC.length]); for(let i=0;i<bk;i++) R(20-i%2,25-i*2,7,1,'#FFFFFF'); // 쌓이는 책
+  for(let i=0;i<Math.min(3,o.cups||0);i++){const x=2+i*6; R(x,23,4,4,'#FFFFFF'); R(x,23,4,1,'#8A5A30'); P(x+4,24,'#FFFFFF'); P(x+4,25,'#FFFFFF')}
+  const sx=49, sy=21, sj=o.subj; // 과목 소품
+  if(sj==='math'){R(sx,sy+2,12,4,'#FFFFFF'); [[1,3],[3,3],[2,2],[2,4],[6,3],[8,3],[10,2],[10,4],[9,3]].forEach(([a,b])=>P(sx+a,sy+b,'#3A4A7A')); for(let i=0;i<6;i++) P(sx+14+i,sy+5-i,'#F0B030')}
+  else if(sj==='eng'){R(sx,sy+1,8,5,'#FFF8D8'); R(sx+3,sy+3,8,5,'#FFFFFF'); [[5,4],[6,5],[7,4],[8,5],[9,4],[5,6]].forEach(([a,b])=>P(sx+a,sy+b,'#D84848')); P(sx+1,sy+2,'#3A78D8')}
+  else if(sj==='sci'){R(sx+3,sy-1,3,3,'#D8ECF8'); R(sx+1,sy+2,7,4,'#D8ECF8'); R(sx+2,sy+3,5,3,'#68D088'); P(sx+3,sy+3,'#B8F8C8'); if(o.f) P(sx+4,sy-3,'#B8F8C8')}
+  else if(sj==='code'){R(sx,sy-2,12,7,'#3A4050'); R(sx+1,sy-1,10,5,'#1E2430'); [[2,0,'#58D088'],[3,1,'#F0B030'],[2,2,'#58A8E8']].forEach(([a,b,c])=>R(sx+a,sy+b,4+(a%2),1,c)); R(sx-1,sy+5,14,1,'#8890A0')}
+  else if(sj==='music'){R(sx,sy+1,11,5,'#FFFFFF'); for(let i=0;i<4;i++) R(sx,sy+2+i,11,1,i%2?'#FFFFFF':'#C8C8D8'); P(sx+3,sy+4,'#303030'); P(sx+7,sy+3,'#303030'); if(o.f){P(sx+12,sy-2,'#F070A0'); P(sx+12,sy-3,'#F070A0')}}
+  else if(sj==='art'){R(sx,sy+2,10,4,'#E8D0A0'); [[2,3,'#E84848'],[5,3,'#4A88D8'],[3,4,'#F0C030'],[7,4,'#58B068']].forEach(([a,b,c])=>P(sx+a,sy+b,c)); for(let i=0;i<5;i++) P(sx+11+i,sy+1-i,'#8A5A30')}
+  else if(sj==='hist'){R(sx+2,sy-1,7,7,'#4A88D8'); R(sx+3,sy+1,3,2,'#58B068'); R(sx+6,sy+3,2,2,'#58B068'); R(sx+5,sy+6,1,1,'#8A5A30'); R(sx+3,sy+7,5,1,'#8A5A30')}
+  else if(sj==='kor'){R(sx,sy+2,12,4,'#FFFFFF'); R(sx+6,sy+2,1,4,'#C8B898'); R(sx,sy+5,12,1,'#B85838'); for(let i=0;i<2;i++){R(sx+1,sy+3+i,4,1,'#C8C8D8'); R(sx+8,sy+3+i,3,1,'#C8C8D8')}}
+  else{R(sx,sy+2,10,4,'#FFFFFF'); R(sx,sy+2,10,1,'#58A8E8'); R(sx+1,sy+4,7,1,'#C8C8D8')}
+  if(o.penDown){R(42,26,7,1,'#F0C030'); P(41,26,'#303030'); P(49,26,'#F0A0A0')} // 펜을 내려놓았어요
+  if(o.prop==='magnify'){for(let a=0;a<12;a++){const t=a/12*Math.PI*2; P(44+Math.round(Math.cos(t)*2.4),17+Math.round(Math.sin(t)*2.4),'#C89050')} P(44,17,'#D8F0F8'); P(41,20,'#8A5A30'); P(40,21,'#8A5A30')}
+  if(o.prop==='notes'&&o.focus) [[45,o.f?11:12],[48,o.f?8:9]].forEach(([x,y])=>{P(x,y,'#F070A0'); P(x,y-1,'#F070A0'); P(x+1,y-2,'#F070A0')});
+  if(o.mark==='zz') [[45,12],[47,9],[49,6]].forEach(([x,y],i)=>{if(i<=o.f+1){R(x,y,3,1,'#8AA0D8'); P(x+1,y+1,'#8AA0D8'); R(x,y+2,3,1,'#8AA0D8')}});
+  if(o.mark==='!') {R(46,6,2,5,'#E84848'); R(46,12,2,2,'#E84848')}
+  if(o.mark==='?') {R(45,6,4,1,'#5A6AA8'); P(48,7,'#5A6AA8'); P(47,8,'#5A6AA8'); P(46,9,'#5A6AA8'); P(46,11,'#5A6AA8')}
+  if(o.mark==='♪') [[45,o.f?8:9],[50,o.f?5:6]].forEach(([x,y])=>{R(x,y,1,4,'#F0A030'); R(x-1,y+3,2,2,'#F0A030'); P(x+1,y,'#F0A030')});
+  if(o.mark==='sweat') {P(44,11,'#78C8F8'); P(44,12,'#78C8F8'); P(43,13,'#78C8F8')}
+  if(o.mark==='heart') [[55,12],[57,12],[54,13],[55,13],[56,13],[57,13],[58,13],[55,14],[56,14],[57,14],[56,15]].forEach(([x,y])=>P(x-11,y-4+(o.f?0:1),'#F05878'));
+  const svg=X.svg('palsvg'), rs=[...svg.children], // 동물은 책상보다 먼저 그려야 책상 뒤에 앉은 것처럼 보여요
+    cut=rs.findIndex(r=>+r.getAttribute('y')>=27&&r.getAttribute('fill')==='#C08848'); if(cut>=0) svg.insertBefore(g,rs[cut]); else svg.appendChild(g);
+  return svg}
+/* 하루 운: 기운 없는 날 · 고민 · 부탁 · 습관 이야기 · 추억 꺼내기 (그날은 늘 같아요) */
+const PAL_DOWN={apollo:TR('오늘 노래 고음이 안 올라가…'),kk:TR('오늘은 기타 줄이 자꾸 끊겨…'),nook:TR('오늘 가게 장사가 영 안 돼요구리…'),isabelle:TR('오늘 안내 방송에서 말을 더듬었어요…'),blathers:TR('호오… 오늘은 눈꺼풀이 너무 무겁소'),timmy:TR('오늘 손님이 하나도 없었어…')};
+const PAL_DOWN_ANY=[TR('오늘은 왠지 기운이 없어…'),TR('오늘 아침에 넘어졌어…'),TR('간식을 떨어뜨렸어… 흑'),TR('오늘은 아무것도 하기 싫어…')];
+const PAL_WORRY={apollo:TR('요즘 노래 연습을 해도 늘지 않아. …아니, 고민 같은 거 아니다'),kk:TR('새 곡이 하나도 안 써져'),nook:TR('대출 상환을 아무도 안 해 줘요구리…'),isabelle:TR('제가 일을 잘하고 있는 걸까요?'),blathers:TR('박물관에 또 벌레 기증이 들어왔소…'),timmy:TR('형이랑 똑같은 옷이 싫어질 때가 있어')};
+const PAL_WORRY_ANY=[TR('나 요즘 털이 푸석한 것 같아'),TR('산책을 못 가서 좀 우울해'),TR('꿈에서 시험을 망쳤어…'),TR('나 쓸모없는 것 같을 때가 있어'),TR('다들 나보다 잘하는 것 같아')];
+const PAL_COMFORT=[TR('괜찮아, 잘하고 있어'),TR('같이 해 보자!'),TR('오늘은 쉬어도 돼')];
+const PAL_REQ=[['more15',TR('오늘 15분만 같이 더 하자!'),TR('좋아!')],['water',TR('물 한 잔 마셔 줘. 나도 마실게'),TR('마셨어!')],['stretch',TR('같이 기지개 켜자, 으쌰!'),TR('쭉~ 켰어!')],['task1',TR('오늘 할 일 하나만 끝내 줘!'),TR('좋아!')],['early',TR('오늘은 일찍 자자. 약속!'),TR('약속!')]];
+const PAL_Q=[['snack',TR('제일 좋아하는 간식이 뭐야?'),[TR('초콜릿'),TR('과자'),TR('과일'),TR('커피'),TR('떡볶이'),TR('아이스크림')]],['fav',TR('제일 좋아하는 과목은 뭐야?'),null],['hate',TR('제일 하기 싫은 과목은?'),null],
+  ['time',TR('언제 공부가 제일 잘 돼?'),[TR('아침'),TR('낮'),TR('저녁'),TR('밤')]],['dream',TR('꿈이 뭐야? 나한테만 알려 줘'),[]]];
+const PAL_EXAM={apollo:TR('노래 오디션'),kk:TR('콘서트'),blathers:TR('화석 감정사 시험'),nook:TR('부동산 자격 시험'),isabelle:TR('안내 방송 대회'),timmy:TR('계산 대회'),tommy:TR('계산 대회'),sponge:TR('보트 운전면허 시험'),baymax:TR('간호 실습 평가'),snowman:TR('얼음 조각 대회'),rudolph:TR('썰매 운전 시험')};
+const palExam=p=>PAL_EXAM[p.sp]||(SP[p.sp]&&SP[p.sp].lines==='PIKMIN'?TR('운반 대회'):SP[p.sp]&&SP[p.sp].food==='bone'?TR('공 물어 오기 대회'):SP[p.sp]&&SP[p.sp].food==='fish'?TR('수영 대회'):TR('달리기 대회'));
+function palDday(){const t0=today(); const d=items('ddays').filter(x=>!x.arch&&x.date>=addDays(t0,-3)).sort((a,b)=>a.date<b.date?-1:1); return d.find(x=>x.date>=t0)||d.find(x=>x.date<t0&&!palDoc('ex-'+x.id))||null}
+const ddDiff=k=>Math.round((new Date(...(p=>[p[0],p[1]-1,p[2]])(parts(k)))-new Date(...(p=>[p[0],p[1]-1,p[2]])(parts(today()))))/864e5);
+/* 내 습관 알아채기: 지난 6주 기록에서 찾아요 */
+function palHabits(){const now=Date.now(); if(PAL.habC&&now-PAL.habC.t<10*6e4) return PAL.habC.l; const from=addDays(today(),-42), wd=[0,0,0,0,0,0,0], hb=[0,0,0,0], by={}; let best=0, n=0;
+  allOf('log-').forEach(s=>{if(s.kind==='manual'||!s.segs||!s.segs.length) return; const k=dayKey(s.segs[0][0]*1e3); if(k<from) return; const d=sessDur(s), h0=new Date(s.segs[0][0]*1e3).getHours(); n++; wd[wdOf(k)]+=d; hb[h0<11&&h0>=5?0:h0<17?1:h0<21?2:3]+=d; const nm=sub(s.sub).name; by[nm]=(by[nm]||0)+d; if(d>best) best=d});
+  const l=[]; if(n>=6){const W=EN?['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']:['월요일','화요일','수요일','목요일','금요일','토요일','일요일'], bw=wd.indexOf(Math.max(...wd)), bh=hb.indexOf(Math.max(...hb)), top=Object.keys(by).sort((a,b)=>by[b]-by[a])[0];
+    l.push(TR('너 {d}에 제일 많이 하더라').replace('{d}',W[bw])); l.push([TR('너 보통 아침에 공부하네. 부지런해!'),TR('너 보통 낮에 공부하네'),TR('너 보통 저녁에 공부하더라'),TR('너 보통 밤에 공부하네. 올빼미야?')][bh]);
+    if(top) l.push(palJo(TR('요즘 제일 많이 한 건 {s}이야').replace('{s}',top))); if(best>=1800) l.push(TR('한 번에 제일 오래 한 건 {t}였어! 대단해').replace('{t}',fmtDur(best)))}
+  PAL.habC={t:now,l}; return l}
+/* 둘만의 말: 같이 쌓은 버릇이 생기면 이름을 붙여요 */
+const PAL_WORDS=[['owl',TR('올빼미 클럽'),3],['sparrow',TR('아침 참새단'),3],['marathon',TR('엉덩이 무거운 팀'),2],['weekend',TR('주말 전사'),4]];
+function palWordCheck(){const me=palMe(), have=me.words||[]; if(have.length>=PAL_WORDS.length) return; const c={owl:0,sparrow:0,marathon:0}, wk=new Set();
+  allOf('log-').forEach(s=>{if(s.kind==='manual'||!s.segs||!s.segs.length) return; const a=new Date(s.segs[0][0]*1e3), b=new Date(s.segs[s.segs.length-1][1]*1e3), eh=b.getHours()+b.getMinutes()/60, sh=a.getHours(); if(eh>=23.5||eh<4) c.owl++; if(sh>=4&&sh<8) c.sparrow++; if(sessDur(s)>=7200) c.marathon++; const k=dayKey(a.getTime()); if(wdOf(k)>=5) wk.add(k)}); c.weekend=wk.size;
+  const nw=PAL_WORDS.find(w=>have.indexOf(w[0])<0&&c[w[0]]>=w[2]); if(nw) palSetMe({words:have.concat(nw[0]),wnew:nw[0]})}
+const palWord=k=>(PAL_WORDS.find(w=>w[0]===k)||['',''])[1];
+/* 추억 앨범 */
+function palMem(kind,p,text,once){const id=kind+':'+(once?'':today()+':')+(p?p.id:'');
+  if(items('mem').some(m=>m.id===id)) return; put('mem',{id,kind,text,date:today(),pet:p?p.id:'',sp:p?p.sp:'',wear:p?clone(p.wear||{}):{},st:p?Math.max(1,stageOf(petXP(p))):3,ts:Date.now()}); setTimeout(checkProgress,200)}
+const MEM_IC={first:'🌱',h3:'🔥',late:'🌙',exam:'🎓',h100:'💯',goal:'🫙',recover:'💪',word:'🤝'};
+function palAlbum(){const ms=items('mem').sort((a,b)=>b.ts-a.ts);
+  openDlg('📷 '+TR('추억 앨범'),h('div',null,ms.length?h('div',{class:'polgrid'},ms.map(m=>h('div',{class:'pol'},h('div',{class:'polpic k-'+m.kind},SP[m.sp]?petSVG(m.sp,m.st,m.wear,'happy',64):null,h('span',{class:'polic'},MEM_IC[m.kind]||'✨')),h('b',null,m.text),h('small',null,mdOf(m.date))))):h('p',{class:'empty'},TR('아직 추억이 없어요. 처음 같이 공부한 날, 3시간 한 날, 밤늦게까지 한 날 같은 특별한 순간에 사진을 찍어 둘게요.'))),
+    [h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide')}
+/* 지금 무슨 말을 할지 (집중 중에는 말없이) */
+function palAsk(p){
+  const k=today(), d=palDay(k), me=palMe(), seed=palSeed(k), r=n=>(seed>>>n)%100, F=focusState(), name=p.name;
+  if(F.focus) return null;
+  if(me.name==null) return {t:TR('나 너를 뭐라고 부를까?'),input:{ph:TR('이름이나 별명'),ok:v=>{palSetMe({name:v.slice(0,12)}); PAL.say=palJo(TR('좋아, {n}! 앞으로 그렇게 부를게').replace('{n}',v.slice(0,12)))}},skip:()=>palSetMe({name:''})};
+  if(d.goal==null){const g=(goalOf(rewardCats()?rewardCats()[0]:'')||goalOf('')||{}).d; return {t:TR('오늘 목표 몇 시간으로 할까? 같이 채우자!'),chips:[1,2,3,4,5,6].map(n=>[n+TR('시간'),()=>{palSetDay({goal:n*60}); PAL.say=TR('좋아, {n}시간! 병에 같이 채워 보자').replace('{n}',n)},g&&Math.round(g/60)===n]),skip:()=>palSetDay({goal:0})}}
+  if(me.wnew) return {t:TR('우리 이제 「{w}」야! 우리끼리만 아는 이름이야').replace('{w}',palWord(me.wnew)),chips:[[TR('좋아!'),()=>{palSetMe({wnew:null}); palMem('word',p,palWord(me.wnew),0)}]]};
+  {const dd=palDday(); if(dd&&dd.date<=k&&!palDoc('ex-'+dd.id)){const ex=palExam(p), done=(ans,say)=>{put('pal',{id:'ex-'+dd.id,ans}); palMem('exam',p,dd.title+' · '+ans,0); PAL.say=say};
+    return {t:palJo(TR('{d} 날이었지! 나는 {e} 합격했어 🎉 너는 어땠어?').replace('{d}',dd.title).replace('{e}',ex)),chips:[[TR('잘 봤어!'),()=>done(TR('잘 봤어'),TR('역시! 우리 둘 다 해냈다!!'))],[TR('그럭저럭'),()=>done(TR('그럭저럭'),TR('끝까지 한 게 제일 대단한 거야'))],[TR('망했어 ㅠ'),()=>done(TR('아쉬웠어'),TR('괜찮아. 나는 네가 얼마나 열심히 했는지 다 봤어'))]]}}}
+  {const prev=items('pal').filter(x=>x.id.indexOf('d-')===0&&x.id<'d-'+k&&x.worry&&x.worry.ans&&!x.worry.fu).sort((a,b)=>a.id<b.id?1:-1)[0];
+    if(prev) return {t:palJo(TR('어제 네가 "{a}"라고 해 줘서 괜찮아졌어. 고마워!').replace('{a}',prev.worry.ans)),chips:[[TR('다행이다'),()=>put('pal',Object.assign({},prev,{worry:Object.assign({},prev.worry,{fu:1})}))]]}}
+  if(d.down&&!d.downAck&&!d.recovered) return {t:d.down,chips:[[TR('같이 하자!'),()=>{palSetDay({downAck:1}); PAL.say=TR('…응. 네가 하면 나도 해 볼게')}]]};
+  if(d.worry&&!d.worry.ans) return {t:d.worry.t,chips:PAL_COMFORT.map(c=>[c,()=>{palSetDay({worry:Object.assign({},d.worry,{ans:c})}); PAL.say=TR('…고마워. 조금 나아졌어')}]),input:{ph:TR('직접 한마디'),ok:v=>{palSetDay({worry:Object.assign({},d.worry,{ans:v.slice(0,40)})}); PAL.say=TR('…고마워. 조금 나아졌어')}}};
+  if(d.req&&!d.req.st){const q=PAL_REQ.find(x=>x[0]===d.req.k); return {t:q[1],chips:[[q[2],()=>{const now={st:'on',base:rewardDay(k),tb:tasksOf(k).filter(t=>t.done).length}; if(['water','stretch','early'].indexOf(q[0])>=0){palSetDay({req:Object.assign({},d.req,now,{st:'done'})}); palReqDone(p)} else palSetDay({req:Object.assign({},d.req,now)})}],[TR('다음에'),()=>palSetDay({req:Object.assign({},d.req,{st:'no'})})]]}}
+  {const q=PAL_Q.find(x=>(me.likes||{})[x[0]]==null); if(q&&r(5)<45&&!d.qa){const set=v=>{palSetMe({likes:Object.assign({},me.likes||{},{[q[0]]:v})}); palSetDay({qa:1}); PAL.say=TR('기억해 둘게!')};
+    const opts=q[2]||subs().filter(s=>!hiddenSub(s)).slice(0,6).map(s=>s.name); return {t:q[1],chips:opts.map(o=>[o,()=>set(o)]),input:{ph:TR('직접 쓰기'),ok:v=>set(v.slice(0,20))},skip:()=>palSetDay({qa:1})}}}
+  if(r(3)<35&&!d.hab){const l=palHabits(); if(l.length) return {t:l[seed%l.length],chips:[[TR('오, 그러네!'),()=>palSetDay({hab:1})]]}}
+  if(r(11)<14&&!d.memo){const ms=items('mem').filter(m=>m.date<=addDays(k,-3)); if(ms.length){const m=ms[seed%ms.length]; return {t:TR('이날 기억나? {d} · {t}').replace('{d}',mdOf(m.date)).replace('{t}',m.text),chips:[[TR('기억나!'),()=>palSetDay({memo:1})],[TR('앨범 보기'),()=>{palSetDay({memo:1}); palAlbum()}]]}}}
+  return null}
+const palText=(p,t)=>SP[p.sp]&&SP[p.sp].babble?[babble(t),h('span',{class:'paltr'},' ('+t+')')]:[t]; // 피크민 말은 옹씌로, 뜻은 옆에 작게
+function palReqDone(p){const k=today(); award('palreq:'+k,10,TR('짝꿍 부탁 들어주기')); petReact('cheer',2600); PAL.say=TR('고마워!! 최고야')+' 💛'; PAL.ev={k:'heart',until:Date.now()+4000}}
+/* 하루 운 정하기 · 진행 확인 (짝꿍 그릴 때마다) */
+function palDaily(p){const k=today(), d=palDay(k), seed=palSeed(k), r=n=>(seed>>>n)%100;
+  if(d.rolled) return; const o={rolled:1}; const sp=p.sp;
+  if(r(0)<18) o.down=PAL_DOWN[sp]||PAL_DOWN_ANY[seed%PAL_DOWN_ANY.length];
+  else if(r(7)<22){const others=pets().filter(q=>q.id!==p.id&&stageOf(petXP(q))); o.worry={t:others.length&&r(9)<40?palJo(TR('나 {o}와(과) 싸웠어…').replace('{o}',others[seed%others.length].name)):PAL_WORRY[sp]||PAL_WORRY_ANY[seed%PAL_WORRY_ANY.length]}}
+  if(r(14)<45) o.req={k:PAL_REQ[(seed>>>21)%PAL_REQ.length][0]};
+  palSetDay(o)}
+function palProgress(p){const k=today(), d=palDay(k), m=Math.floor(rewardDay(k)/60);
+  if(d.down&&!d.recovered&&m>=25){palSetDay({recovered:1}); PAL.say=TR('네 덕분에 했어! 기운 났어!')+' 💪'; PAL.ev={k:'heart',until:Date.now()+5000}; award('palup:'+k,10,TR('짝꿍 기운 내게 하기')); palMem('recover',p,TR('기운 없던 날, 같이 해서 힘을 냈어'),0)}
+  if(d.req&&d.req.st==='on'){const q=d.req.k; if((q==='more15'&&rewardDay(k)>=d.req.base+900)||(q==='task1'&&tasksOf(k).filter(t=>t.done).length>d.req.tb)){palSetDay({req:Object.assign({},d.req,{st:'done'})}); palReqDone(p)}}
+  if(d.goal&&!d.full&&m>=d.goal){palSetDay({full:1}); celebrate('🫙 '+TR('둘이 같이 채웠어요!'),palJo(TR('{p}와(과) 오늘 목표 {t} 달성').replace('{p}',p.name).replace('{t}',fmtDur(d.goal*60))),true); palMem('goal',p,TR('처음으로 둘이 목표 병을 다 채운 날'),1)}
+  if(m>=180) palMem('h3',p,TR('하루에 3시간 넘게 같이 한 날'),1);
+  const tm=palMins(p); if(tm>=6000) palMem('h100',p,TR('같이 공부한 지 100시간'),1); if(tm>=1) palMem('first',p,TR('처음 같이 공부한 날'),1)}
+function palSessionDone(it){ // 집중을 마칠 때: 좋아하는 것·싫어하는 것을 기억해서 한마디
+  PAL.minsC=null; PAL.habC=null; const p=activePet(); if(!p||!stageOf(petXP(p))) return; const L=palMe().likes||{}, nm=sub(it.sub).name||'', h0=new Date(it.segs[0][0]*1e3).getHours(), tb=h0<11&&h0>=5?TR('아침'):h0<17?TR('낮'):h0<21?TR('저녁'):TR('밤'), e=new Date(it.segs[it.segs.length-1][1]*1e3).getHours();
+  if(e>=2&&e<5) palMem('late',p,TR('새벽까지 같이 공부한 날'),1);
+  palWordCheck(); let say='';
+  if(L.hate&&nm&&(nm.indexOf(L.hate)>=0||L.hate.indexOf(nm)>=0)) say=palJo(TR('{s} 싫다며, 그래도 했네! 멋있어').replace('{s}',L.hate));
+  else if(L.fav&&nm&&(nm.indexOf(L.fav)>=0||L.fav.indexOf(nm)>=0)) say=palJo(TR('역시 좋아하는 {s}은(는) 신나지?').replace('{s}',L.fav));
+  else if(L.time&&L.time===tb&&Math.random()<.5) say=TR('{t}에 잘 된다더니 진짜네!').replace('{t}',L.time);
+  else if(L.snack&&Math.random()<.4) say=TR('수고했어! {s} 먹으면서 쉬자').replace('{s}',L.snack);
+  else if(L.dream&&Math.random()<.25) say=TR('{d}에 한 걸음 더 가까워졌어!').replace('{d}',L.dream);
+  if(say){PAL.say=say; PAL.sayT=Date.now()+9000; setTimeout(()=>buddySay(say,5000),2600)}}
+function palLine(p){ // 이름 부르기 · 둘만의 말이 섞인 평소 말
+  const me=palMe(), w=me.words||[], hr=hourNow(); if(w.indexOf('owl')>=0&&(hr>=22||hr<3)&&Math.random()<.3) return TR('오늘도 「올빼미 클럽」 출동?');
+  if(w.indexOf('sparrow')>=0&&hr>=5&&hr<9&&Math.random()<.3) return TR('「아침 참새단」 회의 시작!'); if(w.indexOf('weekend')>=0&&wdOf(today())>=5&&Math.random()<.3) return TR('「주말 전사」 출근했다!');
+  if(w.indexOf('marathon')>=0&&Math.random()<.1) return TR('우리 「엉덩이 무거운 팀」이잖아'); return null}
+/* 그리기: 타이머 카드 안 짝꿍 자리 */
+function paintPal(force){
+  const box=$('#t-pal'); if(!box) return; const p=activePet(), now=Date.now();
+  if(!p||!stageOf(petXP(p))){box.hidden=true; return} box.hidden=false;
+  if(palOff()){if(box.dataset.k!=='off'){box.dataset.k='off'; box.replaceChildren(h('button',{class:'quiet palopen',onclick:()=>{try{localStorage.removeItem('align.palHide')}catch(e){} box.dataset.k=''; paintPal(1)}},'🐾 '+TR('공부 짝꿍 보기')))} return}
+  if(!force&&now-PAL.lastPaint<700) return; PAL.lastPaint=now;
+  palDaily(p); palProgress(p);
+  const k=today(), d=palDay(k), st=Math.max(1,stageOf(petXP(p))), F=focusState(), started=T.running||T.elapsed>0, paused=isFocus()&&started&&!T.running, m=Math.floor(rewardDay(k)/60), f=Math.floor(now/600)%2;
+  const goal=d.goal||0, prog=goal?m/goal:null, down=d.down&&!d.recovered;
+  let pose='stand', mark='', pen=false;
+  if(PAL.ev&&PAL.ev.until>now){pose='cheer'; mark=PAL.ev.k}
+  else if(F.focus){const ph=Math.floor(now/1000)%40; pose=down&&ph<20?'sad':palStudyPose(p,now); if(ph>=33&&ph<37&&!down){pose='sleep'; mark='zz'} else if(ph===37) mark='!'; else if(prog!=null&&prog>=.7) mark='♪'; else if(elapsedMs()>50*6e4&&ph<6) mark='sweat'}
+  else if(F.rest){pose=Math.floor(now/6000)%3===0?'happy':'sleep'; mark=pose==='sleep'?'zz':''}
+  else if(paused){pose='stand'; pen=true; mark='?'}
+  else{pose=down?'sad':Math.floor(now/7000)%3===0?wagOr(p.sp,'happy'):'stand'; pen=!down}
+  const seq=SEQ[pose]||[pose], frame=seq[Math.floor(now/300)%seq.length];
+  const sig=[p.id,JSON.stringify(p.wear||{}),frame,mark,f,pen,m,goal,d.full?1:0,timeOfDay(),palSubj(),F.focus?1:0].join('|');
+  let scene=box.querySelector('.palscene'); if(!scene){box.replaceChildren(); scene=h('div',{class:'palscene pix'}); box.append(h('button',{class:'quiet palx','aria-label':TR('공부 짝꿍 숨기기'),title:TR('숨기기'),onclick:()=>{try{localStorage.setItem('align.palHide','1')}catch(e){} paintPal(1)}},'×'),scene,h('div',{class:'palbub'}),h('div',{class:'palinfo small'}))}
+  if(scene.dataset.sig!==sig){scene.dataset.sig=sig; scene.replaceChildren(palScene(p,st,frame,{bottle:goal?Math.min(1,prog):null,books:Math.floor(m/30),cups:Math.floor(m/60),subj:palSubj(),penDown:pen,mark,f,focus:F.focus,prop:PAL_PROP[p.sp]}))}
+  // 말풍선: 물어볼 게 있으면 버튼과 함께, 아니면 방금 한 말
+  const ask=palAsk(p), bub=box.querySelector('.palbub'), say=PAL.say&&(!PAL.sayT||now<PAL.sayT)?PAL.say:'', bsig=ask?'a:'+ask.t:say?'s:'+say:F.focus?'f':'';
+  if(bub.dataset.sig!==bsig){bub.dataset.sig=bsig; const done=()=>{bub.dataset.sig=''; paintPal(1)};
+    if(ask){const inp=ask.input?h('input',{type:'text',placeholder:ask.input.ph,maxlength:40,onkeydown:e=>{if(e.key==='Enter'&&e.target.value.trim()){ask.input.ok(e.target.value.trim()); PAL.sayT=now+8000; done()}}}):null;
+      bub.replaceChildren(h('p',null,h('b',null,p.name),' ',...palText(p,ask.t)),h('div',{class:'palchips'},...(ask.chips||[]).map(([l,fn,on])=>h('button',{class:on?'on':'',onclick:()=>{fn(); PAL.sayT=Date.now()+8000; done()}},l)),
+        inp?h('span',{class:'palin'},inp,h('button',{onclick:()=>{if(inp.value.trim()){ask.input.ok(inp.value.trim()); PAL.sayT=Date.now()+8000; done()}}},TR('확인'))):null,ask.skip?h('button',{class:'quiet',onclick:()=>{ask.skip(); done()}},TR('나중에')):null)); bub.hidden=false}
+    else if(say){bub.replaceChildren(h('p',null,h('b',null,p.name),' ',...palText(p,say))); bub.hidden=false}
+    else bub.hidden=true}
+  // 아래 줄: 함께한 시간 · 오늘 목표 병 · 시험 · 추억
+  const info=box.querySelector('.palinfo'), dd=palDday(), tm=palMins(p), isig=[tm,m,goal,dd&&dd.id,items('mem').length,palMe().name].join('|');
+  if(info.dataset.sig!==isig){info.dataset.sig=isig; const call=palCall(p);
+    info.replaceChildren(...[h('span',null,'🐾 '+palJo(TR('{p}와(과) 함께 공부한 시간').replace('{p}',p.name))+' ',h('b',null,fmtDur(tm*60))),
+      goal?h('span',null,'🫙 '+TR('오늘 목표')+' '+fmtDur(m*60)+' / '+fmtDur(goal*60)):h('button',{class:'quiet',onclick:()=>{palSetDay({goal:null}); paintPal(1)}},'🫙 '+TR('목표 정하기')),
+      dd?h('span',null,'📅 '+dd.title+' '+(ddDiff(dd.date)>0?'D-'+ddDiff(dd.date):'D-day')+' · '+palJo(TR('{p}도 같은 날 {e}!').replace('{p}',p.name).replace('{e}',palExam(p)))):null,
+      h('button',{class:'quiet',onclick:palAlbum},'📷 '+TR('추억')+' '+items('mem').length),call?h('span',null,'💬 '+TR('부르는 이름: {n}').replace('{n}',call)):null].filter(Boolean))}
+}
+/* 할 일과 함께: 끝낸 할 일 냠 먹기 · 다음 할 일 가리키기 · 마감 사이렌 */
+function palTasks(list){
+  const p=activePet(); if(!p||!stageOf(petXP(p))||viewDate!==today()) return; const st=Math.max(1,stageOf(petXP(p))), ts=tasksOf(viewDate), now=Date.now(), mini=(mood,cls,extra)=>h('span',{class:'tpet '+cls,'aria-hidden':'true'},petSVG(p.sp,st,p.wear||{},mood,32,petXP(p)),extra);
+  const done=new Set(ts.filter(t=>t.done).map(t=>t.id)), k=today();
+  if(PAL.eatDay!==k||!PAL.eatSeen){PAL.eatDay=k; PAL.eatSeen=done}
+  const fresh=[...done].filter(id=>!PAL.eatSeen.has(id)); PAL.eatSeen=done;
+  fresh.forEach(id=>{const li=list.querySelector('li[data-id="'+id+'"]'); if(!li) return; li.classList.add('eating'); li.append(mini('happy','teat',h('i',null,TR('냠!')))); setTimeout(()=>{li.classList.remove('eating'); const e=li.querySelector('.teat'); if(e) e.remove()},1800)});
+  const open=ts.filter(t=>!t.done); let sirens=0;
+  open.forEach(t=>{const li=list.querySelector('li[data-id="'+t.id+'"]'); if(!li) return; const dt=t.due?dueTs(t)-now:Infinity;
+    if(dt<864e5&&dt>-864e5&&sirens<3){sirens++; const tt=li.querySelector('.t'); tt.after(mini('stand','tsiren',h('i',null,'🚨')))}});
+  const nx=open.find(t=>!(t.due&&dueTs(t)-now<864e5&&dueTs(t)-now>-864e5)); if(nx){const li=list.querySelector('li[data-id="'+nx.id+'"]'); if(li){const late=nx.orig&&nx.orig<nx.date; li.querySelector('.t').after(mini(late?'sad':'happy','tpoint'+(late?' glare':''),h('i',null,late?'💢':'👈')))}}
+  const eaten=tasksOf(k).filter(t=>t.done&&t.doneAt&&dayKey(t.doneAt)===k).length; if(buddyEl) buddyEl.dataset.full=eaten>=8?2:eaten>=4?1:0}
+setInterval(()=>{if(document.visibilityState==='visible'&&view==='today') paintPal()},800);
 /* ---------- 떠돌이 손님: 아주 가끔 처음 보는 동물이 하루 놀러 와요. 그날 25분 집중하면 엽서를 남기고 가요 ('guests'에 날짜별로) ---------- */
 const GUEST_MIN=25;
 const hashStr=t=>{let x=2166136261; for(const ch of String(t)){x^=ch.charCodeAt(0); x=Math.imul(x,16777619)} return x>>>0};
@@ -6850,7 +7067,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v147'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v148'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
