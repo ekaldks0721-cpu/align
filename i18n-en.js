@@ -6757,4 +6757,13 @@ window.I18N_EN={
   "추억":"Memories",
   "부르는 이름: {n}":"Calls you: {n}",
   "냠!":"Nom!",
+  "왼쪽 ⋮⋮를 끌면 카테고리와 항목 순서를 바꿀 수 있어요 (키보드는 ↑↓). 바꾼 순서는 타이머, 할 일, 통계에도 그대로 쓰여요.":"Drag the ⋮⋮ on the left to reorder categories and items (or use ↑↓ on the keyboard). The new order is used in the timer, to-dos and stats too.",
+  "\" 항목을 끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)":"\" item: drag to reorder (you can also use the up and down arrow keys)",
+  "부르는 이름 정하기":"Choose what to be called",
+  "예: 민지":"e.g. Minji",
+  "기본 이름을 따라요":"Uses the default name",
+  "나를 부르는 이름":"What pets call me",
+  "기본 이름":"Default name",
+  "기본 이름은 동물 말투에 맞춰 불러요 (너굴은 \"○○ 씨\", 대부분은 \"○○아/야\"). 동물마다 따로 정하면 쓴 그대로 불러요. 비워 두면 기본 이름을 따라요.":"Pets say the default name in their own style. Set a name for a pet and it calls you exactly that. Leave it blank to use the default name.",
+  "부르는 이름을 바꿨어요":"Updated what your pets call you",
 };

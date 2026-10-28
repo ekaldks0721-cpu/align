@@ -398,7 +398,7 @@ dialog img{max-width:100%;max-height:70vh;display:block;margin:0 auto;border-rad
 .looks{display:flex;flex-wrap:wrap;gap:.45rem}
 .arch{border-top:1px solid var(--rule);margin-top:1rem;padding-top:.8rem}
 .arch summary{cursor:pointer;color:var(--ink2);font-weight:500}
-.catbox{border-top:1px solid var(--rule);margin-top:1rem;padding-top:.9rem}
+.catbox{border-top:1px solid var(--rule);margin-top:1rem;padding-top:.9rem} .catlist{list-style:none;margin:0;padding:0} .catlist>li.kdrag,.catbox .list li.kdrag{background:var(--surface);box-shadow:0 8px 24px rgba(20,48,120,.22);border-radius:10px;position:relative;z-index:3} .catbox .row>.kgrip{margin-left:-.4rem}
 .catbox .list li{flex-wrap:wrap}
 .seg.wrap{flex-wrap:wrap;border-radius:18px}
 .form{display:grid;grid-template-columns:minmax(0,1fr);gap:.7rem} .form label>select{min-width:0;text-overflow:ellipsis}
@@ -717,7 +717,7 @@ body.kb #buddy{display:none!important}
 .terrawrap:has(.guestnote){flex-wrap:wrap} .pal{position:relative;margin:.9rem 0 .2rem;padding:.6rem .6rem .5rem;border-radius:16px;background:rgba(var(--ti),.12);text-align:left}
 .palscene{display:flex;justify-content:center} .palscene svg{width:100%;max-width:360px;height:auto;display:block;margin:0 auto;border-radius:10px;image-rendering:pixelated}
 .timer .palx{position:absolute;top:.15rem;right:.25rem;min-height:0;min-width:0;padding:.05rem .45rem;z-index:1}
-.palbub{margin:.5rem auto 0;max-width:400px;padding:.5rem .7rem;border-radius:12px;background:#FFFDF6;color:#283048;font-size:.92rem;box-shadow:0 2px 0 rgba(0,0,0,.12)} .palbub p{margin:0 0 .4rem} .paltr{color:#7A8098;font-size:.85em} .palbub p:last-child{margin:0}
+.palbub{margin:.5rem auto 0;max-width:400px;padding:.5rem .7rem;border-radius:12px;background:#FFFDF6;color:#283048;font-size:.92rem;box-shadow:0 2px 0 rgba(0,0,0,.12)} .palbub p{margin:0 0 .4rem} .paltr{color:#7A8098;font-size:.85em} .palnames li{display:flex;align-items:center;gap:.5rem} .palnames li b{min-width:5.5rem} .palnames input{flex:1;min-width:0} .palbub p:last-child{margin:0}
 .palchips{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center} .timer .palbub button,.timer .palbub button:hover{min-height:0;padding:.25rem .7rem;font-size:.85rem;border-radius:99px;background:#EEF2FB;border-color:#C8D2EC;color:#283048}
 .timer .palbub button.on{background:#283048;color:#fff;border-color:#283048} .timer .palbub button.quiet{background:none;border-color:transparent;color:#6A7490}
 .palin{display:inline-flex;gap:.3rem} .timer .palbub input{width:9rem;min-height:0;padding:.25rem .5rem;background:#fff;color:#283048;border-color:#C8D2EC} .timer .palbub input::placeholder{color:#9AA2B8}
@@ -1729,6 +1729,11 @@ function kSaveOrder(ul){ // 화면에 보이는 순서대로 o를 다시 매김 
     slots.forEach((p,i)=>{all[p]=moved[i]}); repSetOrder(all); repReorder(addDays(viewDate,1))}
   return n;
 }
+function setSaveOrder(ul,coll,list){ // 설정: 보이는 순서대로 원래 쓰던 o 값을 나눠 가져요 (보관한 것은 그대로)
+  const its=[...ul.children].map(li=>li.dataset.id).filter(Boolean).map(id=>list.find(x=>x.id===id)).filter(Boolean), os=its.map(x=>x.o||0).sort((a,b)=>a-b);
+  for(let i=1;i<os.length;i++) if(os[i]<=os[i-1]) os[i]=os[i-1]+1; let n=0; its.forEach((x,i)=>{if((x.o||0)!==os[i]){put(coll,Object.assign(clone(x),{o:os[i]})); n++}}); return n}
+const setSaveCats=ul=>setSaveOrder(ul,'cats',cats()), setSaveSubs=ul=>setSaveOrder(ul,'subjects',subs());
+const setGrip=(save,label)=>h('button',{class:'kgrip','aria-label':label,title:TR('끌어서 순서 바꾸기'),onpointerdown:e=>kDrag(e,save),onkeydown:e=>kKey(e,save,'#v-set')},'⋮⋮');
 function kSaveCatOrder(ul){ // 카테고리 순서는 설정의 카테고리 순서 자체를 바꿈 (보이는 카테고리끼리 원래 o 값을 나눠 가짐)
   const cs=[...ul.children].map(li=>li.dataset.cid).filter(Boolean).map(cat).filter(Boolean);
   const os=cs.map(c=>c.o||0).sort((a,b)=>a-b); for(let i=1;i<os.length;i++) if(os[i]<=os[i-1]) os[i]=os[i-1]+1;
@@ -1750,10 +1755,10 @@ function kDrag(e,save){
     if(sig()!==before&&save(ul)){render(); toast(TR('순서를 바꿨어요'))}};
   window.addEventListener('pointermove',mv,{passive:false}); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up);
 }
-function kKey(e,save){ // 키보드: 손잡이에서 ↑↓로 한 칸씩
+function kKey(e,save,root){ // 키보드: 손잡이에서 ↑↓로 한 칸씩
   if(e.key!=='ArrowUp'&&e.key!=='ArrowDown') return; e.preventDefault(); const li=e.currentTarget.closest('li'), ul=li.parentElement, sel=li.dataset.id!=null?'li[data-id="'+li.dataset.id+'"]':'li[data-cid="'+li.dataset.cid+'"]';
   if(e.key==='ArrowUp'&&li.previousElementSibling) ul.insertBefore(li,li.previousElementSibling); else if(e.key==='ArrowDown'&&li.nextElementSibling) ul.insertBefore(li.nextElementSibling,li); else return;
-  if(save(ul)){render(); const g=document.querySelector('#k-list '+sel+' .kgrip'); if(g) g.focus()}
+  if(save(ul)){render(); const g=document.querySelector((root||'#k-list')+' '+sel+' .kgrip'); if(g) g.focus()}
 }
 const mdOf=k=>parts(k)[1]+'/'+parts(k)[2];
 const dayDiff=(a,b)=>Math.round((new Date(parts(b)[0],parts(b)[1]-1,parts(b)[2])-new Date(parts(a)[0],parts(a)[1]-1,parts(a)[2]))/864e5);
@@ -2479,19 +2484,20 @@ function renderSet(){
         h('label',null,TR('하루가 시작되는 시각 (시)'),num('dayStart',0,12)),h('p',{class:'small muted',style:'margin:0'},TR('이 시각 전까지 한 공부는 전날 기록으로 들어가요. 타임테이블도 이 시각부터 시작해요.'))))),
     h('section',{class:'card'},h('h2',null,TR('카테고리와 항목')),
       h('p',{class:'small muted',style:'margin:.3rem 0 0'},TR('시간은 카테고리별로 따로 집계돼요. 항목은 타이머에서 고르는 단위예요.')),
-      cats().filter(c=>!c.arch).map(c=>{const mine=subs().filter(x=>catOf(x.id)===c.id&&!x.arch), all=subs().filter(x=>catOf(x.id)===c.id), fN=h('input',{type:'text',placeholder:c.name+TR('에 새 항목'),maxlength:24,style:'flex:1;min-width:8rem'});
+      h('p',{class:'small muted',style:'margin:.3rem 0 0'},TR('왼쪽 ⋮⋮를 끌면 카테고리와 항목 순서를 바꿀 수 있어요 (키보드는 ↑↓). 바꾼 순서는 타이머, 할 일, 통계에도 그대로 쓰여요.')),
+      h('ul',{class:'catlist'},cats().filter(c=>!c.arch).map(c=>{const mine=subs().filter(x=>catOf(x.id)===c.id&&!x.arch), all=subs().filter(x=>catOf(x.id)===c.id), fN=h('input',{type:'text',placeholder:c.name+TR('에 새 항목'),maxlength:24,style:'flex:1;min-width:8rem'});
         const add=()=>{const name=fN.value.trim(); if(!name){fN.focus(); return} put('subjects',{id:uid(),name,cat:c.id,color:PALETTE[subs().length%PALETTE.length],o:Date.now()}); render()};
         fN.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing) add()});
-        return h('div',{class:'catbox'},
-          h('div',{class:'row'},h('input',{type:'text',value:c.name,maxlength:16,style:'font-weight:600;width:9rem','aria-label':TR('카테고리 이름'),onchange:e=>{const v=e.target.value.trim(); if(!v){e.target.value=c.name; return} const it=clone(c); it.name=v; put('cats',it); render()}}),
+        return h('li',{class:'catbox','data-id':c.id},
+          h('div',{class:'row'},setGrip(setSaveCats,'"'+c.name+TR('" 카테고리를 끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)')),h('input',{type:'text',value:c.name,maxlength:16,style:'font-weight:600;width:9rem','aria-label':TR('카테고리 이름'),onchange:e=>{const v=e.target.value.trim(); if(!v){e.target.value=c.name; return} const it=clone(c); it.name=v; put('cats',it); render()}}),
             c.id==='c-study'?h('span',{class:'small muted'},TR('기본 카테고리')):h('button',{class:'quiet sp',onclick:()=>{put('cats',Object.assign(clone(c),{arch:true})); render(); toast('"'+c.name+TR('" 카테고리를 보관했어요'))}},TR('보관')),
             c.id==='c-study'?null:h('button',{class:'quiet',onclick:async()=>{if(all.length){toast(TR('안에 있는 항목을 먼저 옮기거나 지워 주세요')); return} if(await ask('"'+c.name+TR('" 카테고리를 지울까요?'),TR('비어 있는 카테고리예요.'),TR('카테고리 지우기'))){del('cats',c.id); render()}}},TR('카테고리 지우기'))),
-          h('ul',{class:'list'},mine.map(x=>h('li',null,h('input',{type:'text',value:x.name,maxlength:24,style:'flex:1;min-width:7rem','aria-label':TR('항목 이름'),onchange:e=>{const v=e.target.value.trim(); if(!v){e.target.value=x.name; return} const it=clone(x); it.name=v; put('subjects',it); render()}}),
+          h('ul',{class:'list'},mine.map(x=>h('li',{'data-id':x.id},setGrip(setSaveSubs,'"'+x.name+TR('" 항목을 끌어서 순서 바꾸기 (위·아래 화살표 키로도 옮길 수 있어요)')),h('input',{type:'text',value:x.name,maxlength:24,style:'flex:1;min-width:7rem','aria-label':TR('항목 이름'),onchange:e=>{const v=e.target.value.trim(); if(!v){e.target.value=x.name; return} const it=clone(x); it.name=v; put('subjects',it); render()}}),
             h('select',{'aria-label':TR('카테고리 옮기기'),onchange:e=>{const it=clone(x); it.cat=e.target.value; put('subjects',it); render()}},cats().filter(k=>!k.arch).map(k=>h('option',{value:k.id,selected:k.id===c.id},k.name))),
             h('span',{class:'sw'},swItems(x.color,col=>{const it=clone(x); it.color=col; put('subjects',it); render()})),
             h('button',{class:'quiet',onclick:()=>{put('subjects',Object.assign(clone(x),{arch:true})); render(); toast('"'+x.name+TR('" 항목을 보관했어요'))}},TR('보관')),
             h('button',{class:'quiet',onclick:async()=>{if(await ask('"'+x.name+TR('" 항목을 지울까요?'),TR('이 항목으로 남긴 기록은 지워지지 않고 미분류로 보여요.'),TR('항목 지우기'))){del('subjects',x.id); render()}}},TR('지우기'))))),
-          h('div',{class:'addrow',style:'margin-top:.6rem'},fN,h('button',{onclick:add},TR('항목 추가'))))}),
+          h('div',{class:'addrow',style:'margin-top:.6rem'},fN,h('button',{onclick:add},TR('항목 추가'))))})),
       h('div',{class:'catbox addrow'},fNew,h('button',{onclick:addS},TR('카테고리 추가'))),
       (()=>{const ac=cats().filter(c=>c.arch), as=subs().filter(x=>x.arch); if(!ac.length&&!as.length) return null;
         return h('details',{class:'arch'},h('summary',null,TR('보관함 ')+(ac.length+as.length)+TR('개')),
@@ -6708,7 +6714,8 @@ const palSetDay=o=>{const k=today(); put('pal',Object.assign({},palDay(k),o,{id:
 const palSeed=k=>hashStr(guestSeed()+(k||today())+':pal');
 const palOff=()=>{try{return localStorage.getItem('align.palHide')==='1'}catch(e){return false}};
 const palJo=t=>jo(t);
-function palCall(p){const n=palMe().name; if(!n) return ''; const b=(c=>c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28>0)(n.charCodeAt(n.length-1));
+// 동물마다 따로 정한 이름이 있으면 그대로, 없으면 기본 이름에 그 동물 말투를 붙여요
+function palCall(p,base){const me=palMe(), own=!base&&me.names&&me.names[p.id]; if(own) return own; const n=me.name; if(!n) return ''; const b=(c=>c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28>0)(n.charCodeAt(n.length-1));
   if(EN) return n; return {nook:n+' 씨',timmy:n+' 씨',tommy:n+' 씨',isabelle:n+' 님',blathers:n+' 군',baymax:n+' 님',apollo:n,kk:n}[p.sp]||n+(b?'아':'야')}
 /* 같이 공부한 시간 (그 동물과 함께 기록한 집중) */
 function palMins(p){const now=Date.now(), sig=Object.keys(S.docs).filter(d=>d.indexOf('log-')===0).map(d=>Object.keys(S.docs[d]).length).join(); if(!PAL.minsC||PAL.minsC.sig!==sig||now-PAL.minsC.t>6e4){const m={}; allOf('log-').forEach(s=>{if(s.pet&&s.kind!=='manual'&&s.segs) m[s.pet]=(m[s.pet]||0)+sessDur(s)}); PAL.minsC={t:now,m,sig}} return Math.floor((PAL.minsC.m[p.id]||0)/60)}
@@ -6867,13 +6874,20 @@ function paintPal(force){
     else if(say){bub.replaceChildren(h('p',null,h('b',null,p.name),' ',...palText(p,say))); bub.hidden=false}
     else bub.hidden=true}
   // 아래 줄: 함께한 시간 · 오늘 목표 병 · 시험 · 추억
-  const info=box.querySelector('.palinfo'), dd=palDday(), tm=palMins(p), isig=[tm,m,goal,dd&&dd.id,items('mem').length,palMe().name].join('|');
+  const info=box.querySelector('.palinfo'), dd=palDday(), tm=palMins(p), isig=[tm,m,goal,dd&&dd.id,items('mem').length,palMe().name,JSON.stringify(palMe().names||{}),p.id].join('|');
   if(info.dataset.sig!==isig){info.dataset.sig=isig; const call=palCall(p);
     info.replaceChildren(...[h('span',null,'🐾 '+palJo(TR('{p}와(과) 함께 공부한 시간').replace('{p}',p.name))+' ',h('b',null,fmtDur(tm*60))),
       goal?h('span',null,'🫙 '+TR('오늘 목표')+' '+fmtDur(m*60)+' / '+fmtDur(goal*60)):h('button',{class:'quiet',onclick:()=>{palSetDay({goal:null}); paintPal(1)}},'🫙 '+TR('목표 정하기')),
       dd?h('span',null,'📅 '+dd.title+' '+(ddDiff(dd.date)>0?'D-'+ddDiff(dd.date):'D-day')+' · '+palJo(TR('{p}도 같은 날 {e}!').replace('{p}',p.name).replace('{e}',palExam(p)))):null,
-      h('button',{class:'quiet',onclick:palAlbum},'📷 '+TR('추억')+' '+items('mem').length),call?h('span',null,'💬 '+TR('부르는 이름: {n}').replace('{n}',call)):null].filter(Boolean))}
+      h('button',{class:'quiet',onclick:palAlbum},'📷 '+TR('추억')+' '+items('mem').length),h('button',{class:'quiet',onclick:palNameDlg},'💬 '+(call?TR('부르는 이름: {n}').replace('{n}',call):TR('부르는 이름 정하기')))].filter(Boolean))}
 }
+function palNameDlg(){ // 동물마다 나를 부르는 이름
+  const me=palMe(), base=h('input',{type:'text',value:me.name||'',maxlength:12,placeholder:TR('예: 민지')}), ps=pets().filter(p=>stageOf(petXP(p)));
+  const rows=ps.map(p=>{const inp=h('input',{type:'text',value:(me.names||{})[p.id]||'',maxlength:12,placeholder:palCall(p,1)||TR('기본 이름을 따라요'),'aria-label':p.name}); return {p,inp,el:h('li',{class:'palname'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),p.wear||{},'happy',32,petXP(p)),h('b',null,p.name),inp)}});
+  const preview=()=>{const n=base.value.trim(), keep=me.name; S.docs.pal&&S.docs.pal.me&&(S.docs.pal.me.name=n); rows.forEach(r=>r.inp.placeholder=palCall(r.p,1)||TR('기본 이름을 따라요')); S.docs.pal&&S.docs.pal.me&&(S.docs.pal.me.name=keep)}; base.addEventListener('input',preview); // 기본 이름을 바꾸면 동물마다 어떻게 부를지 미리 보여요
+  openDlg('💬 '+TR('나를 부르는 이름'),h('div',null,h('label',null,TR('기본 이름'),base),h('p',{class:'small muted',style:'margin:.2rem 0 .6rem'},TR('기본 이름은 동물 말투에 맞춰 불러요 (너굴은 "○○ 씨", 대부분은 "○○아/야"). 동물마다 따로 정하면 쓴 그대로 불러요. 비워 두면 기본 이름을 따라요.')),
+    ps.length?h('ul',{class:'list palnames'},rows.map(r=>r.el)):null),
+    [h('button',{onclick:closeDlg},TR('취소')),h('button',{class:'primary',onclick:()=>{const names={}; rows.forEach(r=>{const v=r.inp.value.trim(); if(v) names[r.p.id]=v}); palSetMe({name:base.value.trim(),names}); closeDlg(); const inf=document.querySelector('#t-pal .palinfo'); if(inf) inf.dataset.sig=''; paintPal(1); toast(TR('부르는 이름을 바꿨어요'))}},TR('저장'))])}
 /* 할 일과 함께: 끝낸 할 일 냠 먹기 · 다음 할 일 가리키기 · 마감 사이렌 */
 function palTasks(list){
   const p=activePet(); if(!p||!stageOf(petXP(p))||viewDate!==today()) return; const st=Math.max(1,stageOf(petXP(p))), ts=tasksOf(viewDate), now=Date.now(), mini=(mood,cls,extra)=>h('span',{class:'tpet '+cls,'aria-hidden':'true'},petSVG(p.sp,st,p.wear||{},mood,32,petXP(p)),extra);
@@ -7067,7 +7081,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v148'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v149'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
