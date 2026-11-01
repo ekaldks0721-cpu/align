@@ -3237,7 +3237,10 @@ const OUT={ // 옷: 머리·얼굴·목·등 칸에 하나씩. need가 있으면
   bowtie:{n:TR('나비넥타이'),slot:'neck',price:250},bell:{n:TR('방울 목걸이'),slot:'neck',price:300},bandana:{n:TR('손수건'),slot:'neck',price:300},scarf:{n:TR('목도리'),slot:'neck',price:350},tie:{n:TR('넥타이'),slot:'neck',price:350},medal:{n:TR('금메달'),slot:'neck',price:2000,need:{ach:'h100'}},
   backpack:{n:TR('책가방'),slot:'back',price:700},cape:{n:TR('망토'),slot:'back',price:1000,need:{lv:12}},wings:{n:TR('천사 날개'),slot:'back',price:2500,need:{ach:'s100'}},
   pumpkinhat:{n:TR('호박 모자'),slot:'head',price:0,ev:'hw',candy:15},witchhat:{n:TR('마녀 모자'),slot:'head',price:0,ev:'hw',candy:20},ghostcape:{n:TR('유령 망토'),slot:'back',price:0,ev:'hw',candy:25},batwings:{n:TR('박쥐 날개'),slot:'back',price:0,ev:'hw',candy:30},
-  elfhat:{n:TR('요정 모자'),slot:'head',price:0,ev:'xmas',candy:15},antlers:{n:TR('루돌프 뿔'),slot:'head',price:0,ev:'xmas',candy:15},earmuffs:{n:TR('털 귀마개'),slot:'head',price:0,ev:'xmas',candy:20},xlights:{n:TR('꼬마전구 목걸이'),slot:'neck',price:0,ev:'xmas',candy:20},giftsack:{n:TR('선물 자루'),slot:'back',price:0,ev:'xmas',candy:30}}; // ev: 시즌 이벤트 한정 (화폐로만 바꿔요)
+  elfhat:{n:TR('요정 모자'),slot:'head',price:0,ev:'xmas',candy:15},antlers:{n:TR('루돌프 뿔'),slot:'head',price:0,ev:'xmas',candy:15},earmuffs:{n:TR('털 귀마개'),slot:'head',price:0,ev:'xmas',candy:20},xlights:{n:TR('꼬마전구 목걸이'),slot:'neck',price:0,ev:'xmas',candy:20},
+  bunnyears:{n:TR('토끼 귀 머리띠'),slot:'head',price:400},catears:{n:TR('고양이 귀 머리띠'),slot:'head',price:400},beret:{n:TR('베레모'),slot:'head',price:350},party:{n:TR('고깔모자'),slot:'head',price:300},chef:{n:TR('요리사 모자'),slot:'head',price:450},frog:{n:TR('개구리 모자'),slot:'head',price:500},halo:{n:TR('천사 고리'),slot:'head',price:700,need:{lv:7}},tiara:{n:TR('티아라'),slot:'head',price:900,need:{lv:9}},
+  blush:{n:TR('볼 스티커'),slot:'face',price:200},eyepatch:{n:TR('해적 안대'),slot:'face',price:350},pearl:{n:TR('진주 목걸이'),slot:'neck',price:600},lei:{n:TR('꽃목걸이'),slot:'neck',price:400},giftsack:{n:TR('선물 자루'),slot:'back',price:0,ev:'xmas',candy:30},
+  wreath:{n:TR('호랑가시 머리띠'),slot:'head',price:0,ev:'xmas',candy:15},starhat:{n:TR('트리 별 머리띠'),slot:'head',price:0,ev:'xmas',candy:15},snowhat:{n:TR('눈사람 모자'),slot:'head',price:0,ev:'xmas',candy:18},xknit:{n:TR('크리스마스 니트 목도리'),slot:'neck',price:0,ev:'xmas',candy:18},xcape:{n:TR('산타 망토'),slot:'back',price:0,ev:'xmas',candy:25}}; // ev: 시즌 이벤트 한정 (화폐로만 바꿔요)
 const STAGES=[[0,TR('알')],[30,TR('아기')],[300,TR('어린이')],[1200,TR('어른')]]; // 자라는 데 필요한 집중 시간(분)
 const stageOf=xp=>xp>=1200?3:xp>=300?2:xp>=30?1:0;
 const petLv=xp=>Math.floor(Math.sqrt(Math.max(0,xp)/8))+1, lvXP=n=>8*(n-1)*(n-1); // 레벨 n이 되는 데 필요한 분
@@ -3593,6 +3596,7 @@ function acWear(D,key,w,stage,dy,f){
   const em=(x,y,c)=>{if(g(x,y)==='.') P(x,y,c)};
   if(stage==='back'){const b=w.back; if(!b) return;
     if(b==='cape'){for(let y=n-1;y<=23;y++){const hw=5+Math.floor((y-n)/2); R(12-hw,y,hw*2,1,y>=22?'#901828':'#D83040')}}
+    if(b==='xcape'){for(let y=n-1;y<=23;y++){const hw=5+Math.floor((y-n)/2); R(12-hw,y,hw*2,1,y>=22?'#FFFFFF':'#D83838'); P(12-hw,y,'#FFFFFF'); P(11+hw,y,'#FFFFFF')}}
     if(b==='ghostcape'){for(let y=n-1;y<=23;y++){const hw=6+Math.floor((y-n)/3); R(12-hw,y,hw*2,1,y===23?(y%2?'#9890B8':'#C4BEE8'):'#D8D4F0')} for(let x=5;x<19;x+=3) P(x,23,'.')}
     if(b==='wings'){const r=['oo....','owwo..','owwwwo','owwwww','.owwww','..owww','...oww'], c={o:'#8890B8',w:'#FFFFFF'}; rows(0,n-3,r,c); rows(18,n-3,r.map(x=>[...x].reverse().join('')),c)}
     if(b==='batwings'){const r=['o.....','oo....','oko...','okko..','okkko.','okkkko','o.okkk','...o.k'], c={o:'#2A1E38',k:'#5A3E78'}; rows(0,n-4,r,c); rows(18,n-4,r.map(x=>[...x].reverse().join('')),c)}
@@ -3612,6 +3616,9 @@ function acWear(D,key,w,stage,dy,f){
     if(nk==='bandana'){for(let j=0;j<5;j++) R(7+j,n+j,10-2*j,1,'#E84848'); [[9,n+1],[13,n+1],[11,n+2],[12,n+3]].forEach(([x,y])=>P(x,y,'#FFFFFF'))}
     if(nk==='tie'){R(11,n,2,1,'#203890'); R(11,n+1,2,3,'#3858C8'); R(10,n+3,4,1,'#3858C8'); R(11,n+4,2,1,'#203890')}
     if(nk==='medal'){for(let j=0;j<3;j++){P(8+j,n+j,'#3868D8'); P(15-j,n+j,'#3868D8')} P(11,n+2,'#E84848'); P(12,n+2,'#E84848'); E(11.5,n+4.5,1.6,1.6,'#F8C838'); P(11,n+4,'#FFF0A0'); P(13,n+5,'#B07810')}
+    if(nk==='xknit'){for(let x=7;x<=16;x++){P(x,n,x%2?'#E83838':'#2E8A48'); P(x,n+1,x%3?'#2E8A48':'#FFFFFF')} for(let y=n+2;y<=n+4;y++) R(14,y,2,1,y%2?'#E83838':'#2E8A48')}
+    if(nk==='pearl'){for(let x=7;x<=16;x++) P(x,n,x%2?'#F8F4EC':'#D8D0C8'); R(11,n+1,2,1,'#F8F4EC')}
+    if(nk==='lei'){const C=['#F05878','#F8D038','#F890C0','#58C8F8']; for(let x=7;x<=16;x++){P(x,n,C[x%4]); if(x%2) P(x,n+1,C[(x+1)%4])}}
     if(nk==='xlights'){const B=['#F84848','#F8D030','#48A8F8','#58D058']; for(let x=7;x<=16;x++) P(x,n,'#2E6A38'); [7,9,11,13,15].forEach((x,i)=>{P(x,n+1,B[(i+(f?1:0))%4]); P(x+1,n+1,'#2E6A38')})}
     return}
   if(stage==='face'){const fc=w.face, rx=23-ex-(ew-1), ring=(x,c)=>{R(x-1,EY-1,ew+2,1,c); R(x-1,EY+eh,ew+2,1,c); R(x-1,EY,1,eh,c); R(x+ew,EY,1,eh,c)};
@@ -3619,6 +3626,8 @@ function acWear(D,key,w,stage,dy,f){
     if(fc==='shades'){[ex,rx].forEach(x=>{R(x-1,EY-1,ew+2,eh+2,'#202028'); P(x,EY-1,'#A8D8F8')}); R(ex+ew+1,EY-1,rx-ex-ew-2,1,'#202028'); R(ex-3,EY-1,2,1,'#202028'); R(rx+ew+1,EY-1,2,1,'#202028')}
     if(fc==='heartglass'){[ex,rx].forEach(x=>{rows(x-1,EY-1,['HH.HH','HHHHH','.HHH.','..H..'].map(r=>r.slice(0,ew+3)),{H:'#F04870'}); P(x,EY-1,'#FFB0C8')}); R(ex+ew+1,EY,rx-ex-ew-2,1,'#F04870')}
     if(fc==='monocle'){ring(rx,'#B07810'); for(let y=EY+eh+1;y<EY+eh+5;y++) P(rx+ew+1,y,'#B07810')}
+    if(fc==='blush'){R(4,EY+3,2,1,'#F87898'); R(18,EY+3,2,1,'#F87898')}
+    if(fc==='eyepatch'){R(3,EY-2,18,1,'#202028'); R(rx-1,EY-1,ew+2,eh+2,'#202028')}
     if(fc==='mustache'){const y=M.mu+dy; rows(7,y-1,['oo........oo','.oooo..oooo.','..oooooooo..'],{o:'#4A2C18'})}}
 }
 
@@ -3827,6 +3836,17 @@ Object.assign(WEAR,{
   pumpkinhat:{c:{k:'#F08020',K:'#C05810',y:'#FFE060',g:'#58A030'},r:['.....g.....','...ooooo...','..okkkkko..','.okykkkyko.','.okkyyykko.','oKKKKKKKKKo']}, // 잭오랜턴 호박 모자
   witchhat:{c:{k:'#4A2A6A',K:'#2A1840',b:'#F08020'},r:['........o..','.......oko.','......okko.','.....okko..','....okkko..','...okkkkko.','...obbbbbo.','ooooooooooo','oKKKKKKKKKo']},
   elfhat:{c:{g:'#38A048',G:'#287838',y:'#F8D030',r:'#E83838',w:'#FFFFFF'},r:['..........yy','.........oy.','......ooog..','....ogggggo.','...oggGgggo.','..ogggggGgo.','.orwrwrwrwro']}, // 초록 요정 모자 (끝에 방울)
+  bunnyears:{c:{w:'#FFFFFF',p:'#F8B8D0',k:'#F07898'},r:['..oo...oo..','.owwo.owwo.','.owpo.owpo.','.owpo.owpo.','.owpo.owpo.','..oo...oo..','.okkkkkkko.']}, // 토끼 귀 머리띠
+  catears:{c:{x:'#3A3A44',p:'#F8A8C0',k:'#3A3A44'},r:['.o.......o.','.oo.....oo.','.opo...opo.','.oxpo.opxo.','.okkkkkkko.']},
+  beret:{c:{k:'#D83848',K:'#A82838'},r:['....oo....','..okkkko..','.okkkkkkko','okkkkkkkkko','.oKKKKKKKo.']},
+  party:{c:{k:'#5A9AE8',y:'#F8D038',p:'#F070A0'},r:['....p....','...oyo...','...oko...','..okyko..','..okkko..','.okkpkko.','.okykkyko','ooooooooo']},
+  chef:{c:{w:'#FFFFFF',g:'#D8DCE4'},r:['..oooooo..','.owwwwwwo.','owwwwwwwwo','owwwwwwwwo','.owwwwwwo.','..owwwwo..','..oggggo..']},
+  frog:{c:{w:'#FFFFFF',b:'#202028',g:'#68C048',G:'#48A030'},r:['.ooo...ooo.','owbwo.owbwo','owwwo.owwwo','.oggoooggo.','oggggggggggo','oGGGGGGGGGGo']},
+  halo:{c:{y:'#F8E060',Y:'#D8B020'},r:['.YYYYYYY.','Yy.....yY','.YYYYYYY.','.........','.........']}, // 테두리 대신 진한 금색 (크게 그려도 고리가 남게)
+  wreath:{c:{g:'#2E8A48',G:'#1E6A34',r:'#E83838'},r:['.g.r.g.g.r.g','gGgggGgGgggG','.GGGGGGGGGG.']}, // 호랑가시 머리띠
+  starhat:{c:{y:'#F8D838',Y:'#C89818'},r:['...y...','..yyy..','yyyyyyy','.yyyyy.','.yy.yy.','...Y...','.oYYYo.']}, // 트리 별 머리띠
+  snowhat:{c:{k:'#2A2A34',K:'#4A4A58',g:'#2E8A48',r:'#E83838'},r:['..oooooo..','..okkkko..','..okkkko..','..okkkko..','..ogrgko..','oooooooooo','oKKKKKKKKo']}, // 눈사람 모자
+  tiara:{c:{y:'#F8D038',p:'#58C8F8',r:'#F05878'},r:['....o....','...opo...','.o.oyo.o.','oroyyyoro','oyyyyyyyo','.ooooooo.']},
   antlers:{c:{a:'#A87040',A:'#7A4A20',k:'#E83838'},r:['a.a......a.a','.aa......aa.','..A......A..','..A......A..','.okkkkkkkko.']}}); // 루돌프 뿔 머리띠;
 const WEARC={G:'#384068',S:'#202028',W:'#F8F8F8',R:'#E83838',D:'#901818',Y:'#F8D030'};
 function wearG(G,st,wear){
@@ -3844,17 +3864,23 @@ function wearG(G,st,wear){
   if(w.head==='earmuffs'){const d='#C83858', f='#FFFFFF', q='#F8B8C8'; for(let x=4;x<=11;x++) gset(G,x,t-1,d); for(let y=t;y<ey-1;y++){gset(G,3,y,d); gset(G,12,y,d)} for(let y=ey-2;y<=ey+1;y++) for(const x of [1,2,3,12,13,14]) gset(G,x,y,(x===2||x===13)&&y>ey-2&&y<ey+1?q:f); gset(G,1,ey-2,'.'); gset(G,14,ey-2,'.'); gset(G,1,ey+1,'.'); gset(G,14,ey+1,'.')} // 하얀 털 귀마개
   if(w.face==='heartglass'){[5,10].forEach(x=>{[[x-1,ey-1],[x+1,ey-1],[x-1,ey],[x,ey],[x+1,ey],[x,ey+1]].forEach(([a,b])=>gset(G,a,b,'#F04870'))}); for(let x=7;x<=8;x++) gset(G,x,ey,'#F04870'); gset(G,4,ey-1,'#FFB0C8')}
   if(w.face==='monocle'){[[10,ey-1],[9,ey],[11,ey],[9,ey+1],[11,ey+1],[10,ey+2]].forEach(([a,b])=>gset(G,a,b,'#B07810')); gset(G,10,ey+1,'#C8E8F8'); gset(G,12,ey+2,'#B07810'); gset(G,12,ey+3,'#B07810')}
+  if(w.face==='blush'){[[3,ey+2],[4,ey+2],[11,ey+2],[12,ey+2]].forEach(([a,b])=>gset(G,a,b,'#F87898')); gset(G,4,ey+1,'#FFC8D8')} // 볼 스티커
+  if(w.face==='eyepatch'){for(let x=3;x<=12;x++) if(gget(G,x,ey-1)!=='.') gset(G,x,ey-1,'#202028'); [[9,ey],[10,ey],[11,ey],[9,ey+1],[10,ey+1],[11,ey+1]].forEach(([a,b])=>gset(G,a,b,'#202028'))} // 해적 안대
   if(w.face==='mustache'){const m=A.my; [[5,m],[6,m],[9,m],[10,m],[4,m-1],[11,m-1]].forEach(([a,b])=>gset(G,a,b,'#4A2C18'))}
   const ny=A.ny;
   if(w.neck==='tie'){gset(G,7,ny,'#203890'); gset(G,8,ny,'#203890'); for(let y=ny+1;y<=ny+3;y++){gset(G,7,y,'#3858C8'); gset(G,8,y,'#3858C8')} gset(G,7,ny+4,'#203890'); gset(G,8,ny+4,'#203890')}
   if(w.neck==='medal'){[[5,ny-1],[6,ny],[10,ny-1],[9,ny]].forEach(([a,b])=>gset(G,a,b,'#3868D8')); gset(G,7,ny+1,'#3868D8'); gset(G,8,ny+1,'#E84848'); [[7,ny+2],[8,ny+2],[7,ny+3],[8,ny+3]].forEach(([a,b])=>gset(G,a,b,'#F8C838')); gset(G,6,ny+2,'#B07810'); gset(G,9,ny+2,'#B07810'); gset(G,6,ny+3,'#B07810'); gset(G,9,ny+3,'#B07810'); gset(G,7,ny+4,'#B07810'); gset(G,8,ny+4,'#B07810'); gset(G,7,ny+2,'#FFF0A0')}
   if(w.neck==='xlights'){const B=['#F84848','#F8D030','#48A8F8','#58D058']; for(let x=3;x<=12;x++){if(gget(G,x,ny)!=='.') gset(G,x,ny,'#2E6A38')} [4,6,8,10,12].forEach((x,i)=>{gset(G,x-1,ny+1,B[i%4])}); gset(G,6,ny+1,B[1]); gset(G,10,ny+1,B[3])} // 초록 전선에 알록달록 꼬마전구
+  if(w.neck==='xknit'){for(let x=3;x<=12;x++){if(gget(G,x,ny)!=='.') gset(G,x,ny,x%2?'#E83838':'#2E8A48')} for(let y=ny+1;y<=ny+3;y++){gset(G,4,y,y%2?'#2E8A48':'#E83838'); gset(G,5,y,'#FFFFFF')}} // 빨강·초록 니트 목도리
+  if(w.neck==='pearl'){for(let x=4;x<=11;x++) if(gget(G,x,ny)!=='.') gset(G,x,ny,x%2?'#F8F4EC':'#D8D0C8'); gset(G,7,ny+1,'#F8F4EC'); gset(G,8,ny+1,'#F8F4EC')} // 진주 목걸이
+  if(w.neck==='lei'){const C=['#F05878','#F8D038','#F890C0','#58C8F8']; for(let x=3;x<=12;x++){if(gget(G,x,ny)!=='.') gset(G,x,ny,C[x%4])} [5,7,9].forEach((x,i)=>gset(G,x+1,ny+1,C[(i+1)%4]))} // 꽃목걸이
   if(w.neck==='bandana'){for(let x=3;x<=12;x++) if(gget(G,x,ny)!=='.') gset(G,x,ny,'#E84848'); for(let x=5;x<=10;x++) gset(G,x,ny+1,'#E84848'); for(let x=6;x<=9;x++) gset(G,x,ny+2,'#E84848'); gset(G,7,ny+3,'#E84848'); gset(G,8,ny+3,'#E84848'); gset(G,6,ny+1,'#FFFFFF'); gset(G,9,ny+1,'#FFFFFF'); gset(G,8,ny+2,'#FFFFFF')}
   if(w.back){const em=(x,y,c)=>{if(gget(G,x,y)==='.') gset(G,x,y,c)};
     if(w.back==='wings'){const rows=['oo..','owwo','owww','owww','.oww'], cols={o:'#8890B8',w:'#FFFFFF'}; rows.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!=='.'){const f=i<3?(x,y,c)=>gset(G,x,y,c):em; f(i,ny-4+j,cols[ch]); f(15-i,ny-4+j,cols[ch])}}))}
     if(w.back==='ghostcape') for(let y=ny-1;y<=15;y++){let l=-1,r=-1; for(let x=0;x<16;x++) if(G[y][x]!=='.'){if(l<0) l=x; r=x} if(l<0) continue; const c=y===15?'#9890B8':'#D8D4F0'; em(l-1,y,c); em(r+1,y,c); if(y>ny+1&&(y%2||y<15)){em(l-2,y,y===15?'#9890B8':'#C4BEE8'); em(r+2,y,y===15?'#9890B8':'#C4BEE8')}} // 하얀 천 유령 망토 (아래가 물결)
     if(w.back==='batwings'){const rows=['o...','oo..','oko.','okko','okkk','o.ok'], cols={o:'#2A1E38',k:'#5A3E78'}; rows.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!=='.'){const f=i<3?(x,y,c)=>gset(G,x,y,c):em; f(i,ny-5+j,cols[ch]); f(15-i,ny-5+j,cols[ch])}}))} // 뾰족한 박쥐 날개
     if(w.back==='giftsack'){const rows=['..rr..','.rRRr.','..SS..','.SSSS.','SSSSSD','SSSSDD','SSSSDD','.SSDD.'], cols={r:'#E83838',R:'#A01818',S:'#D8A868',D:'#A87838'}; rows.forEach((r,j)=>[...r].forEach((ch,i)=>{if(ch!=='.') em(10+i,ny-8+j,cols[ch])}))} // 어깨 너머로 보이는 선물 자루
+    if(w.back==='xcape'){for(let y=ny-1;y<=15;y++){let l=-1,r=-1; for(let x=0;x<16;x++) if(G[y][x]!=='.'){if(l<0) l=x; r=x} if(l<0) continue; const c=y===15?'#FFFFFF':'#D83838'; em(l-1,y,c); em(r+1,y,c); if(y>ny+1){em(l-2,y,y===15?'#FFFFFF':'#F4F4F8'); em(r+2,y,y===15?'#FFFFFF':'#F4F4F8')}}} // 하얀 털이 달린 산타 망토
     if(w.back==='cape') for(let y=ny-1;y<=15;y++){let l=-1,r=-1; for(let x=0;x<16;x++) if(G[y][x]!=='.'){if(l<0) l=x; r=x} if(l<0) continue; const c=y===15?'#901828':'#D83040'; em(l-1,y,c); em(r+1,y,c); if(y>ny+1){em(l-2,y,'#901828'); em(r+2,y,'#901828')}}
     if(w.back==='backpack'){for(let y=ny+1;y<=ny+3;y++){em(2,y,'#E8A040'); em(1,y,'#8A5020'); em(13,y,'#E8A040'); em(14,y,'#8A5020')} em(2,ny,'#8A5020'); em(13,ny,'#8A5020'); for(let y=ny;y<=ny+3;y++){gset(G,4,y,'#A06030'); gset(G,11,y,'#A06030')}}
   }
@@ -6767,6 +6793,21 @@ const ME_OUT=[
   {k:'rain',n:TR('우비'),e:'☔',price:350,b:{shirt:'#F8D030',short:0,pants:'#F8D030',dress:1,shoes:'#3A78D8'},deco:[[7,1,'#C89810'],[7,3,'#C89810'],[8,0,'#E8B818']]},
   {k:'hanbok',n:TR('한복'),e:'🎎',price:600,b:{shirt:'#F07890',short:0,pants:'#5A78D8',dress:1,shoes:'#FFFFFF'},deco:[[6,0,MEO_W],[7,1,MEO_W],[8,0,MEO_W],[8,2,'#C83858'],[8,3,'#C83858'],[9,3,'#C83858'],[5,1,'#F8D848'],[10,1,'#58B868'],[5,2,'#5A9AE8'],[10,2,'#F8D848']]},
   {k:'gown',n:TR('졸업 가운'),e:'🎓',price:800,b:{shirt:'#2A2A38',short:0,pants:'#2A2A38',dress:1,shoes:'#2A2A30'},deco:[[6,0,MEO_W],[9,0,MEO_W],[7,1,'#F8C838'],[8,1,'#F8C838']],head:'gradcap'},
+  {k:'sailor',n:TR('세일러복'),e:'⚓',price:450,b:{shirt:'#FFFFFF',short:1,pants:'#2A3A6A',shoes:'#2A2A30'},deco:[[5,0,'#2A3A6A'],[6,0,'#2A3A6A'],[9,0,'#2A3A6A'],[10,0,'#2A3A6A'],[5,1,'#2A3A6A'],[10,1,'#2A3A6A'],[7,1,'#E83848'],[8,1,'#E83848'],[7,2,'#C82838']]},
+  {k:'track',n:TR('체육복'),e:'🏃',price:300,b:{shirt:'#2A4AA8',short:0,pants:'#2A4AA8',dress:0,shoes:'#FFFFFF'},deco:[...[0,1,2,3,4,5].flatMap(y=>[[5,y,MEO_W],[10,y,MEO_W]]),[7,0,MEO_W],[8,0,MEO_W]]},
+  {k:'suit',n:TR('정장'),e:'👔',price:600,b:{shirt:'#2A2E3A',short:0,pants:'#2A2E3A',dress:0,shoes:'#1A1A20'},deco:[[7,0,MEO_W],[8,0,MEO_W],[7,1,'#D83848'],[7,2,'#D83848'],[8,1,MEO_W],[9,2,'#E4E4EC']]},
+  {k:'overall',n:TR('멜빵바지'),e:'👖',price:400,b:{pants:'#4A78C8',dress:0},deco:[[6,0,'#4A78C8'],[9,0,'#4A78C8'],[6,1,'#4A78C8'],[9,1,'#4A78C8'],...meoRow(2,'#4A78C8',6,9),...meoRow(3,'#4A78C8',6,9),[6,1,'#F8D038'],[9,1,'#F8D038']]},
+  {k:'cardigan',n:TR('가디건'),e:'🧶',price:350,b:{shirt:'#F4D8A8',short:0},deco:[[7,0,MEO_W],[8,0,MEO_W],[7,1,MEO_W],[8,1,MEO_W],[7,2,MEO_W],[8,2,MEO_W],[7,3,MEO_W],[8,3,MEO_W],[6,1,'#8A5A30'],[6,3,'#8A5A30']]},
+  {k:'chefcoat',n:TR('요리사 옷'),e:'👨‍🍳',price:500,b:{shirt:'#FFFFFF',short:0,pants:'#3A3A44',dress:0,shoes:'#2A2A30'},deco:[[6,1,'#7A7C88'],[9,1,'#7A7C88'],[6,3,'#7A7C88'],[9,3,'#7A7C88'],[5,0,'#E8E8EC'],[10,0,'#E8E8EC']],head:'chef'},
+  {k:'idol',n:TR('아이돌 무대 의상'),e:'🎤',price:700,b:{shirt:'#F058A8',short:1,pants:'#FFFFFF',dress:1,shoes:'#F8D038'},deco:[[6,1,'#F8E060'],[9,2,'#F8E060'],[7,3,'#F8E060'],[8,0,'#FFFFFF'],[5,2,'#FFFFFF'],[10,1,'#FFFFFF']],head:'starpin'},
+  {k:'ski',n:TR('스키복'),e:'⛷️',price:500,b:{shirt:'#F07830',short:0,pants:'#2A3450',dress:0,shoes:'#E8E8EC'},deco:[[7,0,MEO_W],[7,1,MEO_W],[7,2,MEO_W],...meoRow(3,MEO_W)],head:'beanie'},
+  {k:'mage',n:TR('마법사 로브'),e:'🔮',price:650,b:{shirt:'#5A3AA8',short:0,pants:'#5A3AA8',dress:1,shoes:'#2A2A30'},deco:[[6,1,'#F8D838'],[9,2,'#F8D838'],[7,3,'#F8D838'],[8,0,'#F8D838'],[5,4,'#F8D838'],[10,5,'#F8D838']],head:'wizard'},
+  {k:'doctor',n:TR('의사 가운'),e:'🩺',price:550,b:{shirt:'#FFFFFF',short:0,pants:'#7AB0E8',dress:0,shoes:'#F4F4F8'},deco:[[7,0,'#7AB0E8'],[8,0,'#7AB0E8'],[7,1,'#7AB0E8'],[9,2,'#D8DCE4'],[10,2,'#D8DCE4'],[9,1,'#4A78C8'],[5,1,'#3A8A9A'],[5,2,'#3A8A9A']]},
+  {k:'xsweater',n:TR('크리스마스 스웨터'),e:'🧶',ev:'xmas',candy:18,b:{shirt:'#2E8A48',short:0},deco:[...meoRow(0,'#E83838'),...meoRow(3,'#E83838'),[7,1,MEO_W],[6,2,MEO_W],[8,2,MEO_W],[7,2,'#F8D838'],[9,1,MEO_W],[5,2,MEO_W],[10,2,MEO_W]]},
+  {k:'elfsuit',n:TR('요정 옷'),e:'🧝',ev:'xmas',candy:22,b:{shirt:'#38A048',short:0,pants:'#E83838',dress:0,shoes:'#38A048'},deco:[[5,0,MEO_W],[7,0,MEO_W],[9,0,MEO_W],...meoRow(3,'#2A2A30'),[7,3,'#F8D038'],[8,3,'#F8D038']],head:'elfhat'},
+  {k:'deer',n:TR('루돌프 잠옷'),e:'🦌',ev:'xmas',candy:22,b:{shirt:'#A8683A',short:0,pants:'#A8683A',dress:0,shoes:'#7A4A28'},deco:[[7,1,'#E8C898'],[8,1,'#E8C898'],[7,2,'#E8C898'],[8,2,'#E8C898'],[7,3,'#E8C898'],[8,3,'#E8C898'],[7,0,'#E83838']],head:'antlers'},
+  {k:'xdress',n:TR('산타 드레스'),e:'💃',ev:'xmas',candy:25,b:{shirt:'#D83838',short:1,pants:'#D83838',dress:1,shoes:'#2A2A30'},deco:[...meoRow(0,MEO_W),...meoRow(3,'#2A2A30'),[7,3,'#F8D038'],...meoRow(5,MEO_W)],head:'santa'},
+  {k:'snowsuit',n:TR('눈사람 옷'),e:'⛄',ev:'xmas',candy:20,b:{shirt:'#F4F8FF',short:0,pants:'#F4F8FF',dress:0,shoes:'#2A2A30'},deco:[...meoRow(0,'#E83838'),[9,1,'#E83838'],[7,2,'#2A2A30'],[7,4,'#2A2A30']],head:'snowhat'},
   {k:'xsanta',n:TR('산타 옷'),e:'🎅',ev:'xmas',candy:25,b:{shirt:'#D83838',short:0,pants:'#D83838',shoes:'#2A2A30'},deco:[...meoRow(3,MEO_W),[7,1,MEO_W],[7,2,MEO_W],...meoRow(4,'#2A2A30')],head:'santa'},
   {k:'witch',n:TR('핼러윈 마녀 망토'),e:'🎃',ev:'hw',candy:20,b:{shirt:'#4A2A6A',short:0,pants:'#4A2A6A',dress:1,shoes:'#2A2A30'},deco:[[7,1,'#F08020'],[8,1,'#F08020'],[7,2,'#F08020'],[8,2,'#F08020'],[5,0,'#F08020'],[10,0,'#F08020']],head:'witchhat'}];
 const meOut=k=>ME_OUT.find(o=>o.k===k);
@@ -7356,7 +7397,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v154'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v155'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
