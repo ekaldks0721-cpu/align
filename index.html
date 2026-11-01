@@ -1461,10 +1461,9 @@ function ambBuild(kind){ // 소리 한 덩어리 만들기 (좌우 따로 만들
     const ev=[], R=Math.random, noise=n=>{const d=new Float32Array(n); for(let i=0;i<n;i++) d[i]=R()*2-1; return d};
     const band=(d,lo,hi)=>{let a=0,b=0; const kl=1-Math.exp(-2*Math.PI*lo/sr), kh=1-Math.exp(-2*Math.PI*hi/sr); for(let i=0;i<d.length;i++){a+=kh*(d[i]-a); b+=kl*(a-b); d[i]=a-b} return d}; // lo~hi만 남기는 부드러운 필터
     const env=(d,att,rel)=>{const A=Math.round(sr*att), Rl=Math.round(sr*rel); for(let i=0;i<d.length;i++) d[i]*=Math.min(1,i/A,(d.length-i)/Rl); return d};
-    const Q=L/4; for(let n=0;n<4;n++){let at=Math.floor(n*Q+R()*(Q-sr*4)); const k=3+Math.floor(R()*5); // 연필로 몇 글자 쓰고 쉬어요 (오른쪽 옆자리)
-      for(let j=0;j<k;j++){const len=Math.round(sr*(.05+R()*.08)), d=env(band(noise(len),1800,4200),.012,.03), amp=.12+R()*.05; for(let q=0;q<len;q++) d[q]*=amp; ev.push({at,d,l:.55,r:.9}); at+=len+Math.round(sr*(.09+R()*.2)); if(at>L-sr) break}}
-    for(let n=0;n<2;n++){const at=Math.floor((n*.5+.12+R()*.25)*L), len=Math.round(sr*(.45+R()*.2)), d=band(noise(len),250,2600); // 책장 넘기기 (왼쪽 옆자리)
-      for(let q=0;q<len;q++){const t=q/len; d[q]*=.32*Math.pow(Math.sin(Math.PI*t),2)}; ev.push({at,d,l:.9,r:.55})}
+    for(let n=0;n<3;n++){const at=Math.floor((n/3+.04+R()*.18)*L), len=Math.round(sr*(.45+R()*.2)), d=band(noise(len),250,2400), side=n%2; // 책장 넘기기 (양옆 자리에서 번갈아)
+      for(let q=0;q<len;q++){const t=q/len; d[q]*=.3*Math.pow(Math.sin(Math.PI*t),2)}; ev.push({at,d,l:side?.55:.9,r:side?.9:.55})}
+    {const at=Math.floor((.45+R()*.12)*L), len=Math.round(sr*.25), d=new Float32Array(len); for(let q=0;q<len;q++){const t=q/sr; d[q]=.09*Math.min(1,t*200)*Math.exp(-t*20)*Math.sin(2*Math.PI*90*t)+.025*Math.exp(-t*50)*(R()*2-1)} ev.push({at,d,l:.75,r:.75})} // 책을 책상에 살며시 내려놓는 툭
     {let at=Math.floor(R()*(L-sr*5)); const k=6+Math.floor(R()*10); for(let j=0;j<k;j++){const len=Math.round(sr*.012), d=env(band(noise(len),600,3000),.001,.008); for(let q=0;q<len;q++) d[q]*=.1; ev.push({at,d,l:.6,r:.6}); at+=Math.round(sr*(.11+R()*.16))}} // 멀리서 키보드 톡톡
     return ev};
   for(let ch=0;ch<2;ch++){let a, ev=null;
@@ -1480,7 +1479,7 @@ function ambBuild(kind){ // 소리 한 덩어리 만들기 (좌우 따로 만들
     else if(kind==='fire'){a=lp(brown(),.08); // 낮게 타오르는 소리 + 탁탁 튀는 불똥
       ev=o=>{const pk=Math.max(...o.slice(0,sr).map(Math.abs))||1; for(let n=0;n<secs*9;n++){const at=Math.floor(Math.random()*(L-sr*.1)), k=1+Math.floor(Math.random()*4), am=(Math.pow(Math.random(),2)*.7+.05)*pk; for(let j=0;j<k;j++) burst(o,at+Math.floor(Math.random()*sr*.03),Math.round(sr*(.001+Math.random()*.003)),am*(j?.5:1),0)}
         for(let n=0;n<secs*.6;n++) burst(o,Math.floor(Math.random()*(L-sr*.1)),Math.round(sr*.02),(.5+Math.random()*.3)*pk,0)}}
-    else if(kind==='library'){a=lp(brown(),.05); for(let i=0;i<N;i++) a[i]*=.07; // 조용한 방 공기 + 옆자리에서 들리는 연필·책장·키보드 소리
+    else if(kind==='library'){a=lp(brown(),.05); for(let i=0;i<N;i++) a[i]*=.07; // 조용한 방 공기 + 옆자리에서 들리는 책장 넘기기·책 내려놓기·키보드 소리
       const S0=LIB||(LIB=libEvents()); ev=o=>S0.forEach(e=>{const g=ch?e.r:e.l; for(let j=0;j<e.d.length&&e.at+j<L;j++) o[e.at+j]+=e.d[j]*g})} // 소리는 좌우가 같은 걸 써서 한 자리에서 들려요 (좌우로 날아다니지 않게)
     else if(kind==='plane'){a=lp(brown(),.12); const p=lp(pink(),.25); for(let i=0;i<N;i++) a[i]+=p[i]*.25} // 낮게 웅웅거리는 엔진과 공기 소리
     let o=seam(a); if(ev) ev(o);
@@ -7403,7 +7402,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v156'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v157'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
