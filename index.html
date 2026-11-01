@@ -167,6 +167,7 @@ main{max-width:1080px;margin:0 auto;padding:1.1rem 1rem 2rem}
 .bar{position:absolute;top:4px;bottom:4px;border-radius:5px;background:var(--c);opacity:var(--hl);mix-blend-mode:var(--blend);border:0;padding:0;min-height:0;cursor:pointer}
 .bar:hover{background:var(--c);opacity:1}
 .bar{color:#0F1E3D;font-size:.68rem;font-weight:500;line-height:20px;text-align:left;padding:0 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.bar:empty,.planb:empty{padding:0;min-width:0} /* 이름이 없는 짧은 막대는 여백 없이 (여백만큼 커져서 칸 밖으로 나가지 않게) */
 .bar.live{background-image:repeating-linear-gradient(90deg,transparent 0 5px,rgba(255,255,255,.55) 5px 8px)}
 .fix{position:absolute;top:1px;bottom:1px;border:1px dashed var(--rule2);border-radius:5px;pointer-events:none;overflow:hidden;
   background:repeating-linear-gradient(135deg,transparent 0 5px,color-mix(in srgb,var(--accent) 12%,transparent) 5px 6px);
@@ -1869,7 +1870,7 @@ function renderTable(){
   const draw=(a,b,mk)=>{a=Math.max(0,a); b=Math.min(1440,b); const ps=[]; for(let r=Math.floor(a/60);r<24&&r*60<b;r++){const m0=Math.max(a,r*60)-r*60, m1=Math.min(b,(r+1)*60)-r*60; if(m1<=m0) continue;
     ps.push([r,m0,m1])}
     let big=0; ps.forEach((p,i)=>{if(p[2]-p[1]>ps[big][2]-ps[big][1]) big=i});
-    ps.forEach((p,i)=>{const el=mk(i===0,i===big); el.style.left=(p[1]/60*100)+'%'; el.style.width=(p[2]-p[1])/60*100+'%'; tracks[p[0]].append(el)})};
+    ps.forEach((p,i)=>{const el=mk(i===0,i===big&&p[2]-p[1]>=6); /* 6분보다 짧은 조각엔 이름을 안 써요 (들어갈 자리가 없어요) */ el.style.left=(p[1]/60*100)+'%'; el.style.width=(p[2]-p[1])/60*100+'%'; tracks[p[0]].append(el)})};
   const tk={}; allOf('tasks-').forEach(t=>tk[t.id]=t.title); const lab=(sid,tid)=>tk[tid]||sub(sid).name;
   fixedFor(viewDate).forEach(f=>draw(f.a,f.b,first=>h('div',{class:'fix sch',style:'--c:'+f.e.color},first?h('button',{class:'schl',title:TR('이 날만 바꾸거나 쉬기'),onclick:()=>schedOccDlg(f.e,f.date)},f.e.title+(f.e.changed?' ✎':'')):'')));
   calFor(viewDate).forEach(f=>draw(f.a,f.b,first=>h('div',{class:'fix cal',style:'--c:'+f.e.color},first?f.e.title:'')));
@@ -7391,7 +7392,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v158'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v159'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
