@@ -754,6 +754,16 @@ li.eating{position:relative} li.eating .ktitle{animation:teat 1.4s steps(6) forw
 .oops-flash .pcpic>*:not(.oopsflash),.oops-flash .oopspic>*:not(.oopsflash){filter:brightness(1.55) contrast(.7) saturate(.6)} .oopsflash{position:absolute;inset:0;background:radial-gradient(circle at 62% 38%,#FFFFFFF0 0,#FFFFFFA0 18%,#FFFFFF00 48%);pointer-events:none}
 .oopsfinger{position:absolute;left:3%;bottom:-32%;width:21%;height:78%;border-radius:46% 46% 30% 30%/30% 30% 20% 20%;background:linear-gradient(90deg,#E8A890,#F8D4C0 40%,#F2C0A8 70%,#D89880);transform:rotate(24deg);box-shadow:inset -3px 0 6px #B8706044;pointer-events:none;z-index:2} .oopsfinger::after{content:'';position:absolute;top:7%;left:22%;width:56%;height:22%;border-radius:45% 45% 30% 30%;background:#FBE4DC;box-shadow:inset 0 -2px 0 #E8B8A8}
 @media (prefers-reduced-motion:reduce){.doodle.erase{animation:none;opacity:0}}
+.xdn{display:inline-block;padding:.15rem .6rem;border-radius:99px;background:#E4F4E8;color:#1E5A34;font-size:.85rem;font-weight:600;margin-left:.4rem}
+.xwhead{margin:.4rem 0 .6rem} .xwhead p{margin:.3rem 0 0} .xwstamps{display:inline-flex;gap:.3rem;margin-left:.6rem} .xwstamp{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;border:2px dashed #C8B898;opacity:.55;font-size:1rem} .xwstamp.on{opacity:1;border:2px solid #C83838;background:#FFF0E8}
+.xwcard{border:2px solid var(--rule);border-radius:12px;padding:.6rem .75rem;margin:.5rem 0;background:var(--surface)} .xwcard.done{border-color:#58B068} .xwcard.locked{opacity:.6} .xwcard p{margin:.25rem 0 .4rem}
+.xwopts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem} .xwopt{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.35rem .5rem;min-height:0} .xwopt.on{outline:3px solid var(--accent);outline-offset:-1px} .xwsw{width:34px;height:34px;border-radius:8px 8px 50% 50%;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.xwsocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.5rem;margin-top:.5rem} .xwsock{display:flex;gap:.5rem;align-items:flex-start} .xwsock .seg{margin-top:.25rem} .xwsock .seg button{padding:.15rem .45rem;font-size:.75rem;min-height:0} .xwsock .mec{width:20px;height:20px;background:var(--c)!important;border:2px solid rgba(0,0,0,.18)!important;box-shadow:none!important} .xsock svg{image-rendering:pixelated;display:block}
+.xwstaff{display:flex;gap:.25rem;margin-top:.5rem} .xwstaff span{flex:1;text-align:center;padding:.3rem 0;border-bottom:2px solid #8A7A60;border-top:1px solid #C8B898;color:#B8A888;font-weight:700} .xwstaff span.on{color:#C83838;background:#FFF4E8}
+.xadvsocks{display:flex;flex-wrap:wrap;gap:.6rem;margin:.6rem 0;padding:.5rem .6rem;border-top:3px solid #8A5A30;background:repeating-linear-gradient(90deg,#FFF8EC 0 20px,#FFF2E0 20px 40px);border-radius:0 0 10px 10px} .xadvsock{display:flex;flex-direction:column;align-items:center;min-width:52px} .xadvsock small{font-size:.7rem} .xadvin{min-height:1.2rem;font-size:.85rem;letter-spacing:-.1em}
+.xletter.reply{background-color:#FFF4F4;border-color:#E8A8A8} .xhand{color:#C83858;margin-right:.3rem;font-weight:700}
+.xevestage{display:flex;flex-wrap:wrap;justify-content:center;gap:.2rem;margin:.4rem 0;padding:.6rem;border-radius:12px;background:linear-gradient(#2A2050,#4A3A78)} .xevep{display:inline-block;animation:xeve .7s ease-in-out infinite alternate} @keyframes xeve{to{transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.xevep{animation:none}}
 .evbar.xmas{background:#1E5A34;color:#FFF4D0;border-color:#0E2A18} .evbar.xmas .small{color:#CFE8C8}
 .xe{font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif} .xfriends{display:flex;flex-wrap:wrap;gap:.3rem 1rem;margin:.2rem 0 .5rem}
 .xtreewrap{display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;margin:.6rem 0} .xtreebox{width:168px;height:192px;background:linear-gradient(#1E2A58,#3A4A8A);border:2px solid var(--ink,#283048);flex:none} .xtreebox svg{width:100%;height:100%;display:block}
@@ -798,6 +808,7 @@ li.eating{position:relative} li.eating .ktitle{animation:teat 1.4s steps(6) forw
   <div class="dayhead">
     <span class="hello" id="d-hello"></span>
     <span class="date" id="d-date"></span>
+    <span class="xdn" id="d-xm" hidden></span>
     <span class="row">
       <button class="quiet" id="d-prev" aria-label="이전 날">◀</button>
       <button class="quiet" id="d-today">오늘</button>
@@ -1535,7 +1546,7 @@ function finishFocus(endTs){
   if(T.running) T.segs.push([Math.round(T.segStart/1e3),Math.round(endTs/1e3)]);
   const segs=T.segs.filter(g=>g[1]>g[0]), total=segs.reduce((a,g)=>a+g[1]-g[0],0), quick=!!T.quick; T.quick=false;
   T.running=false; T.elapsed=0; T.segs=[]; T.segStart=null;
-  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){} try{evReward(it)}catch(e){} setTimeout(()=>{try{guestCheck()}catch(e){}},3000); try{palSessionDone(it)}catch(e){}
+  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){} try{evReward(it)}catch(e){} setTimeout(()=>{try{guestCheck()}catch(e){}},3000); try{palSessionDone(it)}catch(e){} setTimeout(()=>{try{xwCheck()}catch(e){}},3500);
     if(T.mode==='pomo'&&!quick){T.count++; T.phase=T.count%Math.max(1,cfg('every'))===0?'long':'short';
       if(cfg('autoBreak')&&Date.now()-endTs<60e3){T.running=true; T.segStart=Date.now()}}
   } else toast(TR('1분이 안 되는 시간은 기록하지 않았어요'));
@@ -1964,6 +1975,7 @@ function renderToday(){
   const [y,m,d]=parts(viewDate);
   $('#d-date').textContent=dayTitle(viewDate)+(y!==new Date().getFullYear()?' ('+y+')':'');
   $('#d-today').disabled=viewDate===today();
+  {const e=XM(), el=$('#d-xm'); if(el){const n=e?Math.round((new Date(+xmY(),11,25)-new Date(...(q=>[q[0],q[1]-1,q[2]])(parts(today()))))/864e5):0; el.hidden=!e||viewDate!==today(); el.textContent=n>0?'🎄 '+TR('크리스마스까지 {n}일').replace('{n}',n):'🎄 '+TR('메리 크리스마스!')}} // 크리스마스까지 며칠
   const hr=new Date().getHours(); $('#d-hello').textContent=viewDate===today()?(hr<5?TR('늦은 시간까지 수고가 많아요'):hr<11?TR('좋은 아침이에요'):hr<17?TR('좋은 오후예요'):hr<22?TR('좋은 저녁이에요'):TR('오늘 하루도 수고했어요')):viewDate<today()?TR('지난 날의 기록'):TR('앞으로의 계획');
   const t0=today(), dd=items('ddays').filter(x=>!x.arch).map(x=>({x,n:Math.round((new Date(...((p)=>[p[0],p[1]-1,p[2]])(parts(x.date)))-new Date(...((p)=>[p[0],p[1]-1,p[2]])(parts(t0))))/864e5)})).filter(o=>o.n>=0).sort((a,b)=>a.n-b.n).slice(0,3);
   $('#d-dday').replaceChildren(viewDate===t0&&pastTasks().length?h('button',{class:'chip',onclick:overdueDlg},TR('못 끝낸 할 일 ')+pastTasks().length+TR('개')):'',viewDate===t0&&dueTasks().filter(x=>dueTs(x)-Date.now()<48*36e5).length?h('button',{class:'chip',onclick:dueDlg},TR('마감 임박 ')+dueTasks().filter(x=>dueTs(x)-Date.now()<48*36e5).length+TR('개')):'',...dd.map(o=>h('span',{class:'chip'},o.x.title+' ',h('b',{class:'num'},o.n?'D-'+o.n:'D-day'))),
@@ -5149,6 +5161,7 @@ const ACH=[ // id, 이름, 할 일, 목표, 통계 키, 코인 (예전 쉬운 �
   ['map10',TR('세계 일주'),TR('탐험 지도의 모든 지역 밝히기'),25,'mapReg',500],
   ['acnh7',TR('무인도 이주 패키지'),TR('동물의 숲 친구 7명 모두와 함께하기'),7,'acnh',700],
   ['xtree',TR('반짝반짝 트리'),TR('크리스마스 트리 장식 10개 모두 달기'),10,'xtree',150],['xadv',TR('어드벤트 완주'),TR('어드벤트 캘린더 25칸 모두 열기'),25,'xadv',300],
+  ['xws4',TR('견습 요정 졸업'),TR('산타 공방 요정 도장 4개 모두 받기'),4,'xws',150],['xginger',TR('과자 집 건축가'),TR('진저브레드 집 완성하기'),10,'xgb',150],
   ['photo1',TR('찰칵!'),TR('사진관에서 사진 찍기'),1,'photo',30],['meout3',TR('패셔니스타'),TR('내 옷장에 옷 3벌 모으기'),3,'meOuts',100],
   ['guest1',TR('첫 손님'),TR('떠돌이 손님에게 엽서 받기'),1,'guests',30],['guest10',TR('방명록이 가득'),TR('떠돌이 손님 10명에게 엽서 받기'),10,'guests',200],
   ['oops1',TR('앗, 실패!'),TR('실패작 사진 처음 받기'),1,'oops',20],['oopsAll',TR('실패작 장인'),TR('실패작 사진 6종류 모두 모으기'),6,'oopsKinds',150],['doodle20',TR('지우개 장인'),TR('동물 낙서 20번 지우기'),20,'doodleErase',40],
@@ -5371,7 +5384,7 @@ function dexCatOf(k){const sp=SP[k]||{}; for(const c in DEX_SERIES) if(DEX_SERIE
 // 업적 종류: 통계 키로 나누고, 재미 업적은 따로 모아요
 const ACH_CATS=[['all',TR('전체')],['focus',TR('⏱ 집중')],['habit',TR('🔥 꾸준함')],['task',TR('✅ 할 일')],['note',TR('📔 일기·회고')],['quest',TR('📜 미션')],['pet',TR('🐾 친구')],['coin',TR('🪙 코인·레벨')],['fun',TR('🎲 재미')]];
 const ACH_FUN=['photo1','doodle20','help1','search10','dark','jar5','rename5','rapid','sleeppat','foxpat','ignored','pause10','leap','fri13','nye','cinder','oldtask','plan20','longtitle','onechar','kkk','emoji10','mikael10','pi314','hangul','halloween','valentine','pepero','wish1111','seq1234','exact60','tiny1','split10','ghost3','wkhard','tomato4','toss10','diary1','patday','coin1004','coin1234','brush50','walk30','yum30','glut10','dogs4','foxbear','fearless','duowatch','lucky77','newyear','aprilfool','dorabday','xmas','midnight','friday','monday','owlbird','toss5','novel','rename','fullwear','jarfull','archive1','catdog','doramouse','profcram','lucky2','jackpot','broke','pat100','pat1000','doh1','doh5','cram1','notodo','tomorrowme','emojitask','hatestudy','tears','secret','petdiary','ghost444','samename','studyname'];
-const ACH_KEYCAT={meOuts:'pet',guests:'pet',oops:'pet',oopsKinds:'pet',doodleErase:'fun',xtree:'pet',xadv:'pet',xmin:'focus',acnh:'pet',mapReg:'pet',jarBuy:'pet',pikmin:'pet',trips:'pet',tripFar:'pet',tripSet:'pet',streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
+const ACH_KEYCAT={xws:'pet',xgb:'pet',meOuts:'pet',guests:'pet',oops:'pet',oopsKinds:'pet',doodleErase:'fun',xtree:'pet',xadv:'pet',xmin:'focus',acnh:'pet',mapReg:'pet',jarBuy:'pet',pikmin:'pet',trips:'pet',tripFar:'pet',tripSet:'pet',streak:'habit',studyDays:'habit',fullWeeks:'habit',weekends:'habit',goalDays:'habit',tasks:'task',bestTaskDay:'task',goals:'task',ontime:'task',cram:'task',dohs:'task',diary:'note',reviews:'note',questDays:'quest',questWeeks:'quest',
   pets:'pet',dinos:'pet',greys:'pet',marvel:'pet',ooo:'pet',spiderverse:'pet',nwh:'pet',sanrio:'pet',meloKuro:'pet',doodle:'pet',nanamiPet:'pet',finnJake:'pet',spideyPet:'pet',bikini:'pet',chii:'pet',grown:'pet',petLv:'pet',care:'pet',wear:'pet',people:'pet',chulPet:'pet',famHK:'pet',famHomer:'pet',famMarge:'pet',famBart:'pet',famLisa:'pet',famAll:'pet',earned:'coin',spent:'coin',treats:'coin',lucky:'coin',lvl:'coin',
   careFood:'pet',careWater:'pet',careDay:'pet',allHappy:'pet',rescue:'pet',petAge:'pet',pats:'pet',fullMonths:'habit',comeback:'habit',
   bestTaskWeek:'task',taskAM:'task',repDone:'task',ahead:'task',perfectDay:'task',movedDone:'task',diaryStreak:'note',diaryPhotos:'note',diaryFav:'note',diaryChars:'note',reviewStreak:'note',thanks:'note'};
@@ -6914,6 +6927,11 @@ function palScene(p,st,frame,o){
   if(o.mark==='♪') [[45+MX,o.f?8:9],[50+MX,o.f?5:6]].forEach(([x,y])=>{R(x,y,1,4,'#F0A030'); R(x-1,y+3,2,2,'#F0A030'); P(x+1,y,'#F0A030')});
   if(o.mark==='sweat') {P(44+MX,11,'#78C8F8'); P(44+MX,12,'#78C8F8'); P(43+MX,13,'#78C8F8')}
   if(o.mark==='heart') [[55+MX,12],[57+MX,12],[54+MX,13],[55+MX,13],[56+MX,13],[57+MX,13],[58+MX,13],[55+MX,14],[56+MX,14],[57+MX,14],[56+MX,15]].forEach(([x,y])=>P(x-11,y-4+(o.f?0:1),'#F05878'));
+  if(o.xw>=1){for(let x=0;x<W;x++) P(x,1+Math.round(Math.sin(x/4)),'#2E6A38'); for(let x=2;x<W;x+=5) P(x,2+Math.round(Math.sin(x/4)),['#F84848','#F8D030','#48A8F8','#F878C8'][((x/5|0)+(o.f?1:0))%4]); // 공방 1주: 벽에 꼬마전구, 창가에 작은 트리
+    const tc=o.tt||{a:'#48A858',m:'#2E8A48',d:'#1E6A34'}; for(let j=0;j<6;j++) R(7-Math.floor(j/2),11+j,1+2*Math.floor(j/2),1,j%2?tc.m:tc.a); P(7,10,'#F8D838'); R(6,17,3,1,'#B86A30')}
+  if(o.xw>=2) (o.socks||[]).slice(0,3).forEach((sk,i)=>{const x=37+i*6, y=5; R(x,y,4,1,'#FFFFFF'); R(x,y+1,4,3,sk.c); R(x,y+4,5,1,sk.c); R(x+1,y+5,4,1,sk.c); P(x+4,y+5,'#FFFFFF'); P(x+1,y+2,sk.c==='#F4F4F8'?'#E83838':'#FFFFFF')}); // 2주: 벽에 건 양말
+  if(o.xw>=3) [[o.me?9:11,15,'#E83838','#F8D838'],[o.me?4:15,16,'#4A88D8','#FFFFFF'],[o.me?14:18,15,'#58B068','#E83838']].forEach(([x,y,c,b])=>{R(x,y,3,3,c); R(x+1,y,1,3,b); R(x,y+1,3,1,b)}); // 3주: 창가에 포장한 선물 (내가 앉아 있으면 왼쪽으로)
+  if(o.xw>=4) [[5,5],[10,8],[14,5],[19,9],[8,12],[17,13],[12,10]].forEach(([x,y],i)=>P(x,y+((i+(o.f?1:0))%2),'#FFFFFF')); // 4주: 창밖에 첫눈
   if(o.joint==='five'&&o.me){const x=Math.round((24+PCX)/2), y=o.f?9:10; [[0,-3],[0,3],[-3,0],[3,0],[-2,-2],[2,2],[-2,2],[2,-2]].forEach(([a,b])=>P(x+a,y+b,'#F8D838')); R(x-1,y-1,3,3,'#FFF4B0')} // 하이파이브 짝!
   if(o.joint==='snack'){const x=Math.round((24+PCX)/2)-5; R(x,24,4,3,'#D8A060'); R(x+6,24,4,3,'#D8A060'); P(x+1,24,'#6A3A18'); P(x+2,25,'#6A3A18'); P(x+7,25,'#6A3A18'); P(x+8,24,'#6A3A18'); P(x+4,26,'#D8A060'); P(x+5,25,'#E8B878')} // 반으로 쪼갠 쿠키
   const svg=X.svg('palsvg'), rs=[...svg.children], // 동물은 책상보다 먼저 그려야 책상 뒤에 앉은 것처럼 보여요
@@ -7020,9 +7038,9 @@ function paintPal(force){
   else{pose=down?'sad':Math.floor(now/7000)%3===0?wagOr(p.sp,'happy'):'stand'; pen=!down}
   const seq=SEQ[pose]||[pose], frame=seq[Math.floor(now/300)%seq.length];
   let mf=null; if(meOn()){const mp=joint==='five'?'wag':joint==='night'?(Math.floor(now/5000)%4===0?'wag':'stand'):PAL.ev&&PAL.ev.until>now?'cheer':F.focus?(Math.floor((now+4500)/9000)%2?'write':'read'):F.rest?'happy':paused?'stand':Math.floor(now/11000)%4===0?'wag':'stand', ms=SEQ[mp]||[mp]; mf=ms[Math.floor(now/300)%ms.length]} // 나도 같은 리듬으로
-  const sig=[p.id,JSON.stringify(p.wear||{}),frame,mark,f,pen,m,goal,d.full?1:0,timeOfDay(),palSubj(),F.focus?1:0,mf,ME.sig,joint].join('|');
+  const sig=[p.id,JSON.stringify(p.wear||{}),frame,mark,f,pen,m,goal,d.full?1:0,timeOfDay(),palSubj(),F.focus?1:0,mf,ME.sig,joint,XM()?xwWeeks()+JSON.stringify(xmSocks())+xmTT()[0]:''].join('|');
   let scene=box.querySelector('.palscene'); if(!scene){box.replaceChildren(); scene=h('div',{class:'palscene pix'}); box.append(h('button',{class:'quiet palx','aria-label':TR('공부 짝꿍 숨기기'),title:TR('숨기기'),onclick:()=>{try{localStorage.setItem('align.palHide','1')}catch(e){} paintPal(1)}},'×'),scene,h('div',{class:'palbub'}),h('div',{class:'palinfo small'}))}
-  if(scene.dataset.sig!==sig){scene.dataset.sig=sig; scene.replaceChildren(palScene(p,st,frame,{bottle:goal?Math.min(1,prog):null,books:Math.floor(m/30),cups:Math.floor(m/60),subj:palSubj(),penDown:pen,mark,f,focus:F.focus,prop:PAL_PROP[p.sp],me:mf,joint}))}
+  if(scene.dataset.sig!==sig){scene.dataset.sig=sig; scene.replaceChildren(palScene(p,st,frame,{bottle:goal?Math.min(1,prog):null,books:Math.floor(m/30),cups:Math.floor(m/60),subj:palSubj(),penDown:pen,mark,f,focus:F.focus,prop:PAL_PROP[p.sp],me:mf,joint,xw:XM()?(xmDec()?4:xwWeeks()):0,socks:XM()?xmMembers().map((q,i)=>xmSockOf(q.id,i)):[],tt:XM()?xmTT()[2]:null}))}
   // 말풍선: 물어볼 게 있으면 버튼과 함께, 아니면 방금 한 말
   const ask=palAsk(p), bub=box.querySelector('.palbub'), say=PAL.say&&(!PAL.sayT||now<PAL.sayT)?PAL.say:'', bsig=ask?'a:'+ask.t:say?'s:'+say:F.focus?'f':'';
   if(bub.dataset.sig!==bsig){bub.dataset.sig=bsig; const done=()=>{bub.dataset.sig='-'; paintPal(1)}; // 답한 뒤엔 꼭 다시 그려요 (다음 말이 없어도 말풍선이 닫히게)
@@ -7131,7 +7149,7 @@ const xmDoc=id=>{const d=S.docs.xmas&&S.docs.xmas[id]; return d&&!d.x?d:null};
 const xmDay=()=>+today().slice(8); // 12월 며칠
 const xmDec=()=>md(today())>='12-01'&&md(today())<='12-25';
 function xmMins(){const t=today(); if(t.slice(5,7)!=='11'&&t.slice(5,7)!=='12') return 0; const Y=t.slice(0,4), end=t<Y+'-12-25'?t:Y+'-12-25'; let s=0; for(let k=Y+'-11-01';k<=end;k=addDays(k,1)) s+=rewardDay(k); return Math.floor(s/60)} // 올해 이벤트 동안 집중한 분
-function xmStats(){const Y=xmY(); return {xtree:XORN.filter(o=>xmDoc('orn-'+Y+'-'+o[0])).length,xadv:items('xmas').filter(d=>d.id.indexOf('adv-'+Y+'-')===0).length,xmin:xmMins()}}
+function xmStats(){const Y=xmY(); return {xws:[0,1,2,3].filter(i=>xmDoc('ws-'+Y+'-'+i)).length,xgb:items('xmas').filter(d=>d.id.indexOf('gb-'+Y+'-')===0).length,xtree:XORN.filter(o=>xmDoc('orn-'+Y+'-'+o[0])).length,xadv:items('xmas').filter(d=>d.id.indexOf('adv-'+Y+'-')===0).length,xmin:xmMins()}}
 function xmGive(id,p){ // 엽서·기념품을 바로 받기 (이미 있으면 false)
   if(tripGot(id)) return false; const R=tripRec(id); p=p||activePet();
   put('trips',Object.assign({id,sp:'ev',ev:id.split(':')[0],k:R.k,t:R.t,ts:Date.now(),n:1},p?{pet:p.id,from:p.sp,name:p.name}:{})); setTimeout(checkProgress,100); return true}
@@ -7141,10 +7159,10 @@ function pxBuf(W,H){const B=Array.from({length:H},()=>Array(W).fill(null)), P=(x
 /* 트리: 장식을 달수록 트리가 커지고, 장식마다 트리에 그려져요 */
 const XORN=[['red','🔴',TR('빨간 방울'),3],['gold','🟡',TR('금빛 방울'),3],['cane','🍬',TR('지팡이 사탕'),4],['garland','✨',TR('반짝이 줄'),5],['ginger','🍪',TR('진저브레드 장식'),5],['lights','💡',TR('꼬마전구'),6],['bell','🔔',TR('금 종'),6],['flake','❄️',TR('눈송이 장식'),6],['gift','🎁',TR('트리 밑 선물'),8],['star','⭐',TR('꼭대기 별'),10]];
 function xmTree(have,f){
-  const W=56, H=64, X=pxBuf(W,H), {P,R}=X, n=have.size, tiers=2+Math.ceil(n*.4), cx=28, bot=53, top=bot-(tiers*6+2), leaf=[];
+  const W=56, H=64, X=pxBuf(W,H), {P,R}=X, n=have.size, tiers=2+Math.ceil(n*.4), cx=28, bot=53, top=bot-(tiers*6+2), leaf=[], TC=xmTT()[2]; // 공방 1주차에 고른 트리 모양
   R(0,56,W,8,'#F4F8FF'); for(let x=0;x<W;x++) P(x,55+Math.round(Math.sin(x/4)),'#F4F8FF'); for(let x=3;x<W;x+=7) R(x,59+(x%3),3,1,'#D8E4F4');
   R(cx-2,bot-1,5,5,'#7A4A28'); R(cx-2,bot-1,1,5,'#9A6A38');
-  for(let i=0;i<tiers;i++){const y0=top+i*6; for(let j=0;j<8;j++){const hw=Math.min(25,Math.round(1+i*2.6+j*1.1)); for(let x=-hw;x<=hw;x++){const c=x<=-hw+1?'#48A858':x>=hw-1?'#1E6A34':j===7&&(x+i)%3===0?'#F4F8FF':'#2E8A48'; P(cx+x,y0+j,c); if(j>1&&j<7&&Math.abs(x)<hw-2) leaf.push([cx+x,y0+j,i])}}}
+  for(let i=0;i<tiers;i++){const y0=top+i*6; for(let j=0;j<8;j++){const hw=Math.min(25,Math.round(1+i*2.6+j*1.1)); for(let x=-hw;x<=hw;x++){const c=x<=-hw+1?TC.a:x>=hw-1?TC.d:(j===7&&(x+i)%(TC.snow?2:3)===0)||(TC.snow&&j===0)?'#F4F8FF':TC.m; P(cx+x,y0+j,c); if(j>1&&j<7&&Math.abs(x)<hw-2) leaf.push([cx+x,y0+j,i])}}}
   const r=rng(9), used=new Set(), spot=(sz,minY)=>{for(let k=0;k<200;k++){const [x,y]=leaf[Math.floor(r()*leaf.length)]; if(y<(minY||0)) continue; let ok=true; for(let a=-1;a<=sz;a++) for(let b=-1;b<=sz;b++) if(used.has((x+a)+','+(y+b))) ok=false; if(!ok) continue; for(let a=0;a<sz;a++) for(let b=0;b<sz;b++) used.add((x+a)+','+(y+b)); return [x,y]} return null};
   const ball=(c,d)=>{const s=spot(2,top+4); if(s){P(s[0],s[1],'#FFFFFF'); P(s[0]+1,s[1],c); P(s[0],s[1]+1,c); P(s[0]+1,s[1]+1,d)}};
   if(have.has('garland')) for(let i=0;i<tiers;i++){const y0=top+i*6+4; for(let x=-25;x<=25;x++){const y=y0+Math.round(1.2*Math.sin((x+i*3)/2.5)); if(leaf.some(l=>l[0]===cx+x&&l[1]===y)){P(cx+x,y,(x+i)%2?'#F8D030':'#FFF0A0'); used.add((cx+x)+','+y)}}}
@@ -7164,11 +7182,11 @@ function xmTreeEl(have){const el=h('div',{class:'xtreebox pix'}), fr=[xmTree(hav
   if(!reduceMotion()){const t=setInterval(()=>{if(!el.isConnected){clearInterval(t); return} i^=1; el.replaceChildren(fr[i])},700)} return el}
 function xmTreePanel(e){
   const Y=xmY(), have=new Set(XORN.filter(o=>xmDoc('orn-'+Y+'-'+o[0])).map(o=>o[0])), cb=evBal(evKey(e));
-  const buy=o=>{if(!evSpend(e,o[3],TR('트리 장식')+' · '+o[2])) return; put('xmas',{id:'orn-'+Y+'-'+o[0],ts:Date.now()});
+  const buy=o=>{if(!evSpend(e,xmPr(o[3]),TR('트리 장식')+' · '+o[2])) return; put('xmas',{id:'orn-'+Y+'-'+o[0],ts:Date.now()});
     if(XORN.every(x=>x[0]===o[0]||have.has(x[0]))){xmGive('xmasx:s2'); celebrate('⭐ '+TR('트리 완성!'),TR('하늘에서 별이 내려왔어요. 탐험 → 크리스마스 한정에 「트리 꼭대기 별」이 생겼어요'),true)} else toast(o[1]+' '+jo(TR('{o}을(를) 달았어요').replace('{o}',o[2]))); setTimeout(checkProgress,200); renderPet()};
   return [h('div',{class:'xtreewrap'},xmTreeEl(have),h('div',{class:'xtreeside'},h('b',null,TR('우리 집 트리')+' · '+have.size+' / '+XORN.length),
       h('p',{class:'small'},have.size>=XORN.length?TR('트리를 다 꾸몄어요! 반짝반짝 🎄'):TR('장식을 달수록 트리가 커져요. 10개를 다 달면 특별한 선물이 와요.')),pxBar(have.size/XORN.length,10))),
-    h('div',{class:'xorns'},XORN.map(o=>{const g=have.has(o[0]); return h('button',{class:'xorn'+(g?' on':''),disabled:g||cb<o[3],onclick:()=>buy(o)},h('span',{class:'emo'},o[1]),h('b',null,o[2]),h('small',null,g?TR('달았어요'):e.curEmo+' '+o[3]))}))]}
+    h('div',{class:'xorns'},XORN.map(o=>{const g=have.has(o[0]); const pr=xmPr(o[3]); return h('button',{class:'xorn'+(g?' on':''),disabled:g||cb<pr,onclick:()=>buy(o)},h('span',{class:'emo'},o[1]),h('b',null,o[2]),h('small',null,g?TR('달았어요'):e.curEmo+' '+pr+(pr<o[3]?' (-30%)':'')))}))]}
 /* 산타에게 쓰는 편지: 동물마다 바라는 선물이 있어요. 성탄절에 비밀 산타가 서로 소원을 들어줘요 */
 const XWISH=[[TR('간식이 끝없이 나오는 그릇이요'),TR('간식 그릇'),'🥣'],[TR('포근한 털 담요요. 같이 덮고 공부해요'),TR('털 담요'),'🧶'],[TR('우리 주인이 시험을 잘 보는 거요!'),TR('합격 부적'),'🍀'],[TR('눈이 펑펑 오는 크리스마스요'),TR('눈 오는 스노볼'),'🔮'],[TR('반짝이는 새 목걸이요'),TR('방울 목걸이'),'🔔'],[TR('같이 산책 가는 하루요'),TR('산책 지도'),'🗺️'],[TR('제일 큰 케이크요. 혼자 다 먹을 거예요'),TR('딸기 케이크'),'🍰'],[TR('친구들이랑 사진 한 장이요'),TR('액자'),'🖼️'],[TR('따끈한 코코아 한 잔이요'),TR('코코아'),'☕'],[TR('잠이 솔솔 오는 베개요'),TR('구름 베개'),'☁️']];
 const XWISH_SP={apollo:[TR('선물 같은 건 필요 없다. …새 재킷이면 좋겠다, 다꿇어'),TR('가죽 재킷'),'🧥'],nook:[TR('손님이 아주 많이 오는 한 해요구리!'),TR('손님 부르는 복주머니'),'💰'],isabelle:[TR('주민 여러분 모두가 행복한 한 해요!'),TR('작은 꽃 화분'),'🌼'],timmy:[TR('형이랑 똑같은 선물이요!'),TR('똑같은 머그컵'),'☕'],tommy:[TR('…똑같은 선물이요!'),TR('똑같은 머그컵'),'☕'],blathers:[TR('호오, 화석이면 좋겠소. 벌레만 아니면 뭐든!'),TR('공룡 화석'),'🦴'],kk:[TR('새 기타 줄이 필요해'),TR('기타 줄'),'🎸'],
@@ -7184,6 +7202,7 @@ function xmLetterPanel(){
     !ps.length?h('p',{class:'empty'},TR('알에서 나온 친구가 있어야 편지를 쓸 수 있어요.')):null,
     h('div',{class:'xletters'},ps.map(p=>xmDoc('let-'+Y+'-'+p.id)?xmLetterEl(p):h('div',{class:'xletter blank'},h('span',{class:'xlpet'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),p.wear||{},'stand',56,petXP(p))),
       h('div',null,h('b',null,p.name),h('p',{class:'small'},TR('아직 편지를 안 썼어요')),h('button',{class:'primary',onclick:()=>write(p)},'✉️ '+TR('편지 쓰게 하기')))))),
+    md(today())>='11-25'&&done.length?h('div',null,h('h3',{style:'margin:1rem 0 .3rem'},'🎅 '+TR('산타의 답장')),h('div',{class:'xletters'},done.map(p=>h('div',{class:'xletter reply'},h('span',{class:'xlpet'},'🎅'),h('div',null,h('b',null,p.name+TR('에게')),h('p',null,xmReplyText(p))))))):null,
     md(today())==='12-25'&&ps.length?h('button',{class:'primary',style:'margin-top:.6rem',onclick:()=>xmChristmas(true)},'🎅 '+TR('비밀 산타 공개!')):h('p',{class:'small muted'},TR('편지 {n} / {m} · 비밀 산타는 12월 25일에 공개돼요').replace('{n}',done.length).replace('{m}',ps.length))]}
 function xmPairs(){ // 비밀 산타: 해마다 같은 짝 (자기 자신은 안 걸려요). 친구가 하나면 진짜 산타가 와요
   const ps=pets().filter(p=>stageOf(petXP(p))).sort((a,b)=>a.id<b.id?-1:1), r=rng(+xmY()*7+3), o=ps.slice(); for(let i=o.length-1;i>0;i--){const j=Math.floor(r()*(i+1)); [o[i],o[j]]=[o[j],o[i]]}
@@ -7193,9 +7212,9 @@ function xmChristmas(force){ // 12월 25일: 눈 내리는 축하 + 비밀 산�
   if(dlg.open&&!force){setTimeout(()=>xmChristmas(false),6000); return}
   const pr=xmPairs(), first=!xmDoc('day-'+Y); put('xmas',{id:'day-'+Y,ts:Date.now()}); const got=first&&pr.length?award('xmss:'+Y,20*pr.length,TR('비밀 산타')):0;
   const snow=h('div',{class:'xsnow','aria-hidden':'true'},...Array.from({length:24},(_,i)=>h('i',{style:'left:'+((i*37)%100)+'%;animation-delay:-'+(i*.37%4).toFixed(2)+'s;animation-duration:'+(4+i%3)+'s'})));
-  openDlg('🎄 '+TR('메리 크리스마스!'),h('div',{class:'xday'},snow,h('div',{class:'xdaypets'},pets().slice(0,10).map(p=>petSVG(p.sp,Math.max(1,stageOf(petXP(p))),Object.assign({head:'santa'},p.wear||{}),'happy',64,petXP(p)))),
+  openDlg('🎄 '+TR('메리 크리스마스!'),h('div',{class:'xday'},snow,h('div',{class:'xdaypets'},meOn()?meSVG(64,'happy'):null,pets().slice(0,10).map(p=>petSVG(p.sp,Math.max(1,stageOf(petXP(p))),Object.assign({head:'santa'},p.wear||{}),'happy',64,petXP(p)))),
     h('p',{style:'text-align:center'},TR('두 달 동안 정말 열심히 했어요. 동물 친구들이 몰래 준비한 선물을 열어 봐요!')),
-    pr.length?h('ul',{class:'xss'},pr.map(([g,p])=>{const w=xmWish(p); return h('li',null,h('span',{class:'emo'},w[2]),h('span',null,jo((g?TR('{g}이(가) {p}에게 「{w}」을(를) 선물했어요'):TR('산타 할아버지가 {p}에게 「{w}」을(를) 선물했어요')).replace('{g}',g?g.name:'').replace('{p}',p.name).replace('{w}',w[1]))))})):null,
+    pr.length?h('ul',{class:'xss'},pr.map(([g,p],i)=>{const w=xmWish(p), hand=i<Math.floor(xwProg(2)*pr.length+1e-9); return h('li',null,h('span',{class:'emo'},w[2]),hand?h('span',{class:'small xhand'},'🎀 '+TR('손수 만든')):null,h('span',null,jo((g?TR('{g}이(가) {p}에게 「{w}」을(를) 선물했어요'):TR('산타 할아버지가 {p}에게 「{w}」을(를) 선물했어요')).replace('{g}',g?g.name:'').replace('{p}',p.name).replace('{w}',w[1]))))})):null,
     got?h('p',{class:'small',style:'text-align:center'},'+'+got+' '+COIN):null),[h('button',{class:'primary',onclick:closeDlg},TR('메리 크리스마스!'))],'wide')}
 /* 어드벤트 캘린더: 12월에 10분 넘게 집중한 날마다 한 칸. 지난 칸도 나중에 열 수 있어요 */
 const XADV=[null,['snow',3],['coin',50],['orn'],['snow',3],['dud'],['coin',80],['snow',5],['trip','xmas:s0'],['orn'],['snow',4],['dud'],['coin',100],['trip','xmas:c0'],['snow',5],['out','earmuffs'],['coin',120],['dud'],['snow',6],['trip','xmas:s2'],['trip','xmasx:s3'],['snow',6],['coin',150],['trip','xmas:c3'],['santa'],['final']];
@@ -7221,6 +7240,7 @@ function xmAdvPanel(e){
   const emo=n=>{const k=XADV[n][0]; return {snow:'❄️',coin:'🪙',orn:'🎄',dud:'🎁',trip:'💌',out:'👒',santa:'🎅',final:'🛷'}[k]};
   return [h('p',{class:'small'},dec?TR('12월에 타이머로 10분 넘게 집중한 날마다 한 칸을 열 수 있어요. 바빴던 날은 나중에 집중해서 지난 칸을 열어도 돼요.'):TR('12월 1일부터 열려요! 12월에 10분 넘게 집중한 날마다 한 칸씩 열 수 있어요. 24일엔 산타 모자, 25일엔 전설의 엽서가 기다려요.')),
     dec?h('div',{class:'evbar xmas'},h('b',null,TR('열 수 있는 칸')+' '+Math.max(0,left)),h('span',{class:'small'},TR('집중한 날 {n}일 · 연 칸 {m}개').replace('{n}',tok).replace('{m}',opened.length)),rewardDay(today())<600?h('span',{class:'small sp'},TR('오늘 10분 집중하면 +1')):null):null,
+    (mem=>mem.length?h('div',{class:'xadvsocks'},mem.map((q,i)=>h('div',{class:'xadvsock'},h('span',{class:'xadvin'},opened.filter(d=>(d.n-1)%mem.length===i).slice(-3).map(d=>emo(d.n)).join('')),sockSVG(xmSockOf(q.id,i),34),h('small',null,q.name)))):null)(xmMembers()), // 연 칸의 선물은 양말에 차례로 담겨요
     h('div',{class:'xadv'},Array.from({length:25},(_,i)=>{const n=i+1, d=xmDoc('adv-'+Y+'-'+n), can=dec&&!d&&n<=day&&left>0;
       return h('button',{class:'xcell'+(d?' open':can?' can':'')+(n===24||n===25?' big':''),disabled:!can,onclick:()=>xmAdvOpen(e,n),title:d&&d.late?TR('늦게 열었어요'):''},h('b',null,n),h('span',{class:'emo'},d?emo(n):n>day?'🔒':'🎁'),d&&d.late?h('small',null,'⏰'):null)}))]}
 function xmPepero(){ // 11월 11일: 빼빼로 데이 (한 번)
@@ -7228,18 +7248,115 @@ function xmPepero(){ // 11월 11일: 빼빼로 데이 (한 번)
   if(dlg.open){setTimeout(xmPepero,6000); return} const p=activePet(); put('xmas',{id:'pep-'+Y,ts:Date.now()}); xmGive('xmasx:s0',p); xmGive('xmasx:c0',p);
   openDlg('🍫 '+TR('빼빼로 데이!'),h('div',null,h('p',{style:'text-align:center'},TR('오늘은 11월 11일! 동물 친구들이 빼빼로를 하나씩 나눠 줬어요.')),p?tripView('xmasx:c0',p,tripGot('xmasx:c0')):souvEl(tripRec('xmasx:s0').r,'xmasx:s0'),
     h('p',{class:'small muted',style:'text-align:center'},TR('빼빼로 한 상자와 엽서는 동물 → 탐험에 모아 뒀어요'))),[h('button',{class:'primary',onclick:closeDlg},TR('냠냠!'))],'wide')}
+/* ---------- 🧝 산타 공방 견습 요정 (11월 4주): 주마다 다른 일을 배우고, 그 주부터 집중한 시간만큼 일이 진행돼요. 12월 트리·양말·비밀 산타·이브 공연으로 이어져요 ---------- */
+// 'xmas' 모음: tt-연도(트리 모양) · sock-연도(양말 색·무늬) · ws-연도-주(요정 도장) · gb-연도-부품(과자 집) · reply-연도(산타 답장 봤음) · eve-연도(이브 공연 봤음)
+const XW=[['tree','🌲',TR('트리 고르기'),'11-01',TR('우리 집 트리 모양을 골라 심어요. 장식은 그대로 달리고 모양만 바뀌어요.')],
+  ['sock','🧦',TR('양말 뜨개질'),'11-09',TR('나와 동물마다 양말을 떠요. 12월 어드벤트 선물이 이 양말에 담겨요.')],
+  ['gift','🎁',TR('선물 만들기'),'11-16',TR('산타 편지 소원을 보고 서로에게 줄 선물을 손수 만들어요. 성탄절 비밀 산타 때 나와요.')],
+  ['carol','🎶',TR('캐럴 연습'),'11-23',TR('이브 공연에서 부를 캐럴을 한 소절씩 외워요. 12월 24일 밤에 다 같이 불러요.')]];
+const XW_GOAL=180; // 주마다 3시간
+const xwStart=i=>xmY()+'-'+XW[i][3], xwOpen=i=>today()>=xwStart(i)&&today().slice(5)>='11-01';
+function xwMins(i){if(!xwOpen(i)) return 0; const k=today(), end=xmY()+'-12-25'; let s=0; for(let d=xwStart(i);d<=k&&d<=end;d=addDays(d,1)) s+=rewardDay(d); return Math.floor(s/60)}
+const xwProg=i=>xmDoc('ws-'+xmY()+'-'+i)?1:Math.min(1,xwMins(i)/XW_GOAL);
+const xwWeeks=()=>XW.filter((_,i)=>xwOpen(i)).length;
+function xwCheck(){const e=XM(); if(!e) return; const Y=xmY();
+  XW.forEach((w,i)=>{if(!xwOpen(i)||xmDoc('ws-'+Y+'-'+i)||xwMins(i)<XW_GOAL) return; put('xmas',{id:'ws-'+Y+'-'+i,ts:Date.now()}); evAward(e,'ws:'+Y+':'+i,6,TR('공방 도장')+' · '+w[2]);
+    const all=XW.every((_,j)=>xmDoc('ws-'+Y+'-'+j)); if(all&&!evOwn('elfhat')) put('wardrobe',{id:'elfhat'});
+    celebrate(w[1]+' '+TR('요정 도장 받았어요!'),all?TR('견습 요정 졸업! 요정 모자를 선물로 받았어요'):jo(TR('「{w}」을(를) 다 해냈어요 · ❄️ +6').replace('{w}',w[2])),all); setTimeout(checkProgress,200)})}
+/* 1주: 트리 모양 */
+const XTT=[['fir',TR('전나무'),{a:'#48A858',m:'#2E8A48',d:'#1E6A34'}],['silver',TR('은빛 트리'),{a:'#F4F8FC',m:'#C8D6E4',d:'#94A6BA'}],['pink',TR('분홍 트리'),{a:'#FCD4E4',m:'#F4A8C8',d:'#D878A0'}],['snowy',TR('눈 쌓인 트리'),{a:'#E8F4FC',m:'#2E8A48',d:'#1E6A34',snow:1}]];
+const xmTT=()=>XTT.find(t=>t[0]===((xmDoc('tt-'+xmY())||{}).k||'fir'))||XTT[0];
+/* 2주: 양말 */
+const XSOCKC=['#E83838','#2E8A48','#F4F4F8','#4A78D8','#F498B8','#F0B030','#8A58D0','#5A3A24'], XSOCKP=[['plain',TR('민무늬')],['stripe',TR('줄무늬')],['dot',TR('물방울')],['flake',TR('눈송이')],['pepero',TR('빼빼로')]];
+function xmMembers(){const m=[]; if(meOn()) m.push({id:'me',name:palMe().name||TR('나')}); pets().filter(p=>stageOf(petXP(p))).slice(0,8).forEach(p=>m.push({id:p.id,name:p.name,p})); return m}
+const xmSocks=()=>(xmDoc('sock-'+xmY())||{}).m||{};
+const xmSockOf=(id,i)=>xmSocks()[id]||{c:XSOCKC[i%XSOCKC.length],p:'stripe'};
+function sockRows(s){const c=s.c, w='#FFFFFF', light=c==='#F4F4F8'||c==='#FFFFFF', pc=light?'#E83838':w; const g=['.wwwww..','.wwwww..','.bbbbb..','.bbbbb..','.bbbbb..','.bbbbbb.','.bbbbbbb','.wbbbbbw','..wwwww.'].map(r=>[...r]);
+  const B=(x,y,v)=>{if(g[y][x]==='b') g[y][x]=v};
+  if(s.p==='stripe') for(let y=2;y<8;y+=2) for(let x=0;x<8;x++) B(x,y,'p'); if(s.p==='dot') [[2,2],[4,3],[3,5],[5,6],[2,6]].forEach(([x,y])=>B(x,y,'p'));
+  if(s.p==='flake') [[3,3],[2,4],[3,4],[4,4],[3,5]].forEach(([x,y])=>B(x,y,'p')); if(s.p==='pepero') for(let y=2;y<8;y++) B(2+(y%2),y,'#6A3A18'), B(4,y,'#F4D8A0');
+  const G=g.map(r=>r.map(ch=>ch==='.'?null:ch==='w'?w:ch==='b'?c:ch==='p'?pc:ch)), O=G.map(r=>r.slice()); // 흰 바탕에서도 보이게 테두리
+  for(let y=0;y<9;y++) for(let x=0;x<8;x++) if(!G[y][x]&&[[1,0],[-1,0],[0,1],[0,-1]].some(([a,b])=>G[y+b]&&G[y+b][x+a])) O[y][x]='#5A4A48'; return O}
+function sockSVG(s,px){let r=''; sockRows(s).forEach((row,y)=>row.forEach((c,x)=>{if(c) r+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="'+c+'"/>'})); const v=svgEl(8,9,r); v.setAttribute('width',px||40); v.setAttribute('height',Math.round((px||40)*9/8)); return h('span',{class:'pix xsock'},v)}
+/* 4주: 캐럴 (징글벨 8마디) — 앱이 오르골 소리를 직접 만들어요 */
+const XCAROL=[[['E',.5],['E',.5],['E',1]],[['E',.5],['E',.5],['E',1]],[['E',.5],['G',.5],['C',.75],['D',.25]],[['E',2]],[['F',.5],['F',.5],['F',.75],['F',.25]],[['F',.5],['E',.5],['E',.5],['E',.25],['E',.25]],[['E',.5],['D',.5],['D',.5],['E',.5]],[['D',1],['G',1]]];
+const XNOTE={C:523.25,D:587.33,E:659.25,F:698.46,G:783.99};
+const xwBars=()=>Math.floor(xwProg(3)*8+1e-9);
+function xmPlayCarol(n){try{ensureAudio(); if(!actx) return; let t=actx.currentTime+.08; const beat=.38;
+  XCAROL.slice(0,n).flat().forEach(([k,d])=>{[1,2].forEach((mul,j)=>{const o=actx.createOscillator(), g=actx.createGain(); o.type=j?'triangle':'sine'; o.frequency.value=XNOTE[k]*mul; g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(j?.025:.09,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+Math.max(.35,d*beat*1.6)); o.connect(g).connect(actx.destination); o.start(t); o.stop(t+Math.max(.4,d*beat*1.7))}); t+=d*beat})}catch(e){}}
+/* 진저브레드 집: 트리처럼 눈송이로 부품을 하나씩 붙여요 */
+const XGB=[['wall','🧱',TR('과자 벽'),4],['roof','🍫',TR('초코 지붕'),5],['icing','🤍',TR('아이싱 눈'),4],['door','🚪',TR('사탕 문'),3],['window','🪟',TR('설탕 창문'),3],['cane','🍬',TR('지팡이 사탕 기둥'),4],['jelly','🔴',TR('젤리 장식'),3],['chimney','💨',TR('굴뚝 연기'),5],['ginger','🍪',TR('진저브레드 가족'),6],['star','⭐',TR('지붕 위 별'),6]];
+function xmGinger(have,f){
+  const W=56, H=48, X=pxBuf(W,H), {P,R}=X; R(0,40,W,8,'#F4F8FF'); for(let x=0;x<W;x++) P(x,39+Math.round(Math.sin(x/5)),'#F4F8FF'); R(8,40,40,2,'#E8E0D8'); R(10,42,36,1,'#C8C0B8'); // 눈밭과 접시
+  if(have.has('wall')){R(14,22,28,18,'#C8783A'); R(14,22,1,18,'#A85A28'); R(41,22,1,18,'#A85A28'); for(let y=25;y<40;y+=4) R(15,y,26,1,'#B86A30')}
+  if(have.has('chimney')){R(34,8,5,8,'#B86A30'); R(33,8,7,1,'#8A4A20'); [[0,0],[1,-2],[-1,-4],[0,-6]].forEach(([a,b],i)=>{if(i<=1+f*2) {R(35+a,5+b,3,2,'#E8ECF4')}})}
+  if(have.has('roof')) for(let j=0;j<12;j++) R(28-4-j*1.6,10+j,8+j*3.2,1,j%3===2?'#4A2414':'#5E3020');
+  if(have.has('icing')){for(let j=0;j<12;j++){P(Math.round(28-4-j*1.6),10+j,'#FFFFFF'); P(Math.round(28+4+j*1.6),10+j,'#FFFFFF')} for(let x=11;x<46;x+=2) P(x,22+(x%4?0:1),'#FFFFFF')}
+  if(have.has('jelly')) [[22,15,'#F04858'],[30,13,'#58C858'],[26,18,'#F8C838'],[34,17,'#48A8F8'],[19,19,'#F498B8']].forEach(([x,y,c])=>{if(!have.has('roof')) y+=8; R(x,y,2,2,c)});
+  if(have.has('door')){R(25,31,6,9,'#E85878'); R(26,30,4,1,'#E85878'); for(let y=32;y<40;y+=2) R(25,y,6,1,'#F498B8'); P(29,35,'#F8D838')}
+  if(have.has('window')) [[17,27],[34,27]].forEach(([x,y])=>{R(x,y,5,5,f?'#F8E070':'#F8D848'); R(x+2,y,1,5,'#FFFFFF'); R(x,y+2,5,1,'#FFFFFF')});
+  if(have.has('cane')) [11,44].forEach(x=>{for(let y=24;y<40;y++) P(x,y,y%3?'#FFFFFF':'#E83838'); P(x+1,23,'#E83838'); P(x+2,24,'#FFFFFF')});
+  if(have.has('ginger')) [[3,32],[49,33]].forEach(([x,y])=>{R(x+1,y,2,2,'#C8783A'); R(x,y+2,4,2,'#C8783A'); P(x,y+4,'#C8783A'); P(x+3,y+4,'#C8783A'); P(x+1,y+1,'#3A2010'); P(x+1,y+2,'#FFFFFF')});
+  if(have.has('star')){const y=have.has('roof')?4:14; [[0,0],[-1,1],[0,1],[1,1],[-2,2],[-1,2],[0,2],[1,2],[2,2],[-1,3],[1,3]].forEach(([a,b])=>P(28+a,y+b,'#F8D838')); if(f){P(25,y,'#FFF4B0'); P(31,y+1,'#FFF4B0')}}
+  if(!have.size) [[24,36],[28,35],[31,36]].forEach(([x,y])=>R(x,y,3,2,'#E8D0A8')); // 빈 접시엔 부스러기만
+  return X.svg('xtree')}
+function xmGingerEl(have){const el=h('div',{class:'xtreebox xgb pix'}), fr=[xmGinger(have,0),xmGinger(have,1)]; let i=0; el.append(fr[0]); if(!reduceMotion()){const t=setInterval(()=>{if(!el.isConnected){clearInterval(t); return} i^=1; el.replaceChildren(fr[i])},800)} return el}
+const xmSale=()=>{const m=md(today()); return m>='11-27'&&m<='11-29'};
+const xmPr=p=>xmSale()?Math.ceil(p*.7):p;
+function xmGingerPanel(e){
+  const Y=xmY(), have=new Set(XGB.filter(o=>xmDoc('gb-'+Y+'-'+o[0])).map(o=>o[0])), cb=evBal(evKey(e));
+  const buy=o=>{if(!evSpend(e,xmPr(o[3]),TR('과자 집')+' · '+o[2])) return; put('xmas',{id:'gb-'+Y+'-'+o[0],ts:Date.now()});
+    if(XGB.every(x=>x[0]===o[0]||have.has(x[0]))) celebrate('🏠 '+TR('과자 집 완성!'),TR('달콤한 냄새가 솔솔 나요'),true); else toast(o[1]+' '+jo(TR('{o}을(를) 붙였어요').replace('{o}',o[2]))); setTimeout(checkProgress,200); renderPet()};
+  return [h('h3',{style:'margin:1rem 0 .3rem'},'🏠 '+TR('진저브레드 집')+' · '+have.size+' / '+XGB.length),
+    h('div',{class:'xtreewrap'},xmGingerEl(have),h('div',{class:'xtreeside'},h('p',{class:'small'},have.size>=XGB.length?TR('과자 집이 완성됐어요! 굴뚝에서 연기가 솔솔'):TR('눈송이로 벽, 지붕, 사탕 장식을 하나씩 붙여 과자 집을 지어요.')),pxBar(have.size/XGB.length,10))),
+    h('div',{class:'xorns'},XGB.map(o=>{const g=have.has(o[0]), pr=xmPr(o[3]); return h('button',{class:'xorn'+(g?' on':''),disabled:g||cb<pr,onclick:()=>buy(o)},h('span',{class:'emo'},o[1]),h('b',null,o[2]),h('small',null,g?TR('붙였어요'):e.curEmo+' '+pr+(pr<o[3]?' (-30%)':'')))}))]}
+/* 공방 칸 */
+function xmWorkPanel(e){
+  xwCheck(); const Y=xmY(), cur=xwWeeks(), mem=xmMembers();
+  const card=(i,body)=>{const w=XW[i], open=xwOpen(i), done=!!xmDoc('ws-'+Y+'-'+i), m=xwMins(i);
+    return h('section',{class:'xwcard'+(open?'':' locked')+(done?' done':'')},h('div',{class:'row'},h('b',null,w[1]+' '+(i+1)+TR('주')+' · '+w[2]),h('span',{class:'sp small'},done?'🧝 '+TR('도장 받음'):open?Math.min(m,XW_GOAL)+' / '+XW_GOAL+TR('분'):TR('{d}부터').replace('{d}',w[3].replace('-','/')))),
+      h('p',{class:'small'},w[4]),open?pxBar(xwProg(i),10):null,open?body():null)};
+  const treeBody=()=>{const tt=xmTT()[0]; return h('div',{class:'xwopts'},XTT.map(t=>h('button',{class:'xwopt'+(tt===t[0]?' on':''),'aria-pressed':String(tt===t[0]),onclick:()=>{put('xmas',{id:'tt-'+Y,k:t[0],ts:Date.now()}); renderPet()}},h('span',{class:'xwsw',style:'background:linear-gradient(135deg,'+t[2].a+','+t[2].m+' 50%,'+t[2].d+')'}),h('small',null,t[1]))))};
+  const sockBody=()=>{const all=xmSocks(); return h('div',{class:'xwsocks'},mem.map((q,i)=>{const s=xmSockOf(q.id,i), set=o=>{put('xmas',{id:'sock-'+Y,m:Object.assign({},all,{[q.id]:Object.assign({},s,o)}),ts:Date.now()}); renderPet()};
+    return h('div',{class:'xwsock'},sockSVG(s,36),h('div',null,h('b',{class:'small'},q.name),h('span',{class:'mesw'},XSOCKC.map(c=>h('button',{class:'mec'+(s.c===c?' on':''),style:'--c:'+c,'aria-label':c,onclick:()=>set({c})}))),
+      h('div',{class:'seg wrap'},XSOCKP.map(([k,l])=>h('button',{'aria-pressed':String(s.p===k),onclick:()=>set({p:k})},l)))))}))};
+  const giftBody=()=>{const pr=xmPairs(), n=Math.floor(xwProg(2)*pr.length+1e-9); return pr.length?h('ul',{class:'xss'},pr.map(([g,p],i)=>{const w=xmWish(p); return h('li',null,h('span',{class:'emo'},i<n?'🎁':'🧶'),h('span',null,jo((g?TR('{g}이(가) {p}에게 줄 「{w}」'):TR('산타 할아버지가 {p}에게 줄 「{w}」')).replace('{g}',g?g.name:'').replace('{p}',p.name).replace('{w}',w[1]))+' · '+(i<n?TR('완성! 포장했어요'):TR('만드는 중…'))))})):h('p',{class:'small muted'},TR('알에서 나온 친구가 있어야 선물을 만들 수 있어요.'))};
+  const carolBody=()=>{const b=xwBars(), eve=md(today())>='12-24'&&md(today())<='12-25'; return h('div',null,h('div',{class:'xwstaff'},XCAROL.map((_,i)=>h('span',{class:i<b?'on':''},i<b?'♪':'·'))),
+    h('div',{class:'row',style:'gap:.4rem;margin-top:.4rem'},h('button',{onclick:()=>{if(!b){toast(TR('아직 한 소절도 못 외웠어요. 조금 더 집중해 봐요!')); return} xmPlayCarol(b)}},'🔊 '+TR('연습한 만큼 들어 보기')+' ('+b+'/8)'),eve?h('button',{class:'primary',onclick:()=>xmEve(true)},'🎤 '+TR('이브 공연 보기')):h('span',{class:'small muted'},TR('공연은 12월 24일 밤이에요'))))};
+  const stamps=XW.map((w,i)=>h('span',{class:'xwstamp'+(xmDoc('ws-'+Y+'-'+i)?' on':'')},xmDoc('ws-'+Y+'-'+i)?'🧝':w[1]));
+  return [h('div',{class:'xwhead'},h('b',null,'🧝 '+TR('산타 공방 견습 요정')),h('span',{class:'xwstamps'},stamps),h('p',{class:'small'},TR('11월에 주마다 공방 일을 하나씩 배워요. 그 주가 시작된 날부터 집중한 시간이 3시간이 되면 요정 도장을 받아요(눈송이 +6). 도장 4개를 다 모으면 요정 모자를 선물로 받아요.'))),
+    card(0,treeBody),card(1,sockBody),card(2,giftBody),card(3,carolBody)]}
+/* 산타의 답장 (11/25부터) */
+function xmReplyText(p){const w=xmWish(p); return palJo(TR('{p}에게. 편지 잘 받았단다. 「{w}」 말이지? 착한 아이 명단에 꼭 적어 두마. 그동안 공부하는 친구 곁을 잘 지켜 주렴. — 산타').replace('{p}',p.name).replace('{w}',w[1]))}
+function xmReply(tries){const e=XM(); if(!e||md(today())<'11-25'||xmDoc('reply-'+xmY())||(fbCfg&&!gateOK)) return; const Y=xmY(), ps=pets().filter(p=>xmDoc('let-'+Y+'-'+p.id)); if(!ps.length) return;
+  if((dlg.open||celebOn)&&(tries||0)<20){setTimeout(()=>xmReply((tries||0)+1),6000); return} put('xmas',{id:'reply-'+Y,ts:Date.now()});
+  openDlg('🎅 '+TR('산타에게서 답장이 왔어요!'),h('div',null,h('div',{class:'xletters'},ps.slice(0,4).map(p=>h('div',{class:'xletter reply'},h('span',{class:'xlpet'},'🎅'),h('div',null,h('b',null,TR('산타의 답장')),h('p',null,xmReplyText(p)))))),
+    h('p',{class:'small muted',style:'text-align:center'},TR('상점 → 크리스마스 → 산타 편지에서 다시 볼 수 있어요'))),[h('button',{class:'primary',onclick:closeDlg},TR('좋아요!'))],'wide')}
+/* 12월 24일 밤: 캐럴 공연 (연습한 만큼 잘 불러요) */
+const XEVE_SP={kk:TR('♪ 징글벨~ 내 스타일로 편곡했지'),apollo:TR('(마지못해) …징글벨, 다꿇어'),nook:TR('♪ 선물 특가 종이 울려요구리~'),isabelle:TR('♪ 메리 크리스마스, 여러분~!'),blathers:TR('호오… ♪ 징글벨이오'),snowman:TR('♪ 녹지 않는 겨울을 위하여~'),rudolph:TR('♪ 빨간 코의 루돌프~ 그게 나야!'),sponge:TR('♪ 징글벨! 준비됐어! 준비됐어!')};
+const XEVE_ANY=[TR('♪ 징글벨 징글벨~'),TR('♪ 종소리 울려라~'),TR('♪ 썰매를 타고 달려요~'),TR('♪ 흰 눈 사이로~')];
+function xmEve(force){const Y=xmY(), m=md(today()); if(!force&&(m!=='12-24'||hourNow()<17||xmDoc('eve-'+Y)||(fbCfg&&!gateOK))) return;
+  if(dlg.open&&!force){setTimeout(()=>xmEve(false),6000); return} const first=!xmDoc('eve-'+Y); put('xmas',{id:'eve-'+Y,ts:Date.now()});
+  const b=xwBars(), ps=pets().filter(p=>stageOf(petXP(p))).slice(0,8), grade=b>=8?TR('완벽한 합창이었어요! 관객석에서 박수가 쏟아져요 👏'):b>=4?TR('조금 틀렸지만 다 같이 즐겁게 불렀어요!'):TR('가사를 많이 까먹었지만… 그래도 제일 신났어요!');
+  const got=first?award('xeve:'+Y,10*Math.max(1,b),TR('이브 공연')):0;
+  const snow=h('div',{class:'xsnow','aria-hidden':'true'},...Array.from({length:20},(_,i)=>h('i',{style:'left:'+((i*41)%100)+'%;animation-delay:-'+(i*.43%4).toFixed(2)+'s;animation-duration:'+(4+i%3)+'s'})));
+  openDlg('🎤 '+TR('크리스마스이브 캐럴 공연'),h('div',{class:'xday xeve'},snow,h('div',{class:'xevestage'},meOn()?h('span',{class:'xevep'},meSVG(64,'happy')):null,ps.map((p,i)=>h('span',{class:'xevep',style:'animation-delay:'+(i*.15)+'s'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),Object.assign({head:'santa'},p.wear||{}),'happy',56,petXP(p))))),
+    h('ul',{class:'xss'},ps.map(p=>h('li',null,h('b',null,p.name),' ',xmSay(p,XEVE_SP[p.sp]||XEVE_ANY[[...p.id].reduce((a,c)=>a+c.charCodeAt(0),0)%XEVE_ANY.length])))),
+    h('p',{style:'text-align:center'},grade+' '+TR('(연습 {n}/8소절)').replace('{n}',b)),got?h('p',{class:'small',style:'text-align:center'},'+'+got+' '+COIN):null),
+    [h('button',{onclick:()=>xmPlayCarol(Math.max(1,b))},'🔊 '+TR('다시 듣기')),h('button',{class:'primary',onclick:closeDlg},TR('메리 크리스마스이브!'))],'wide'); setTimeout(()=>xmPlayCarol(Math.max(1,b)),400)}
 let xmTab=null;
 function xmHub(e,head,shop){ // 상점 → 크리스마스 칸: 트리 · 편지 · 어드벤트 · 옷과 배경
-  const tab=xmTab||(xmDec()?'adv':'tree'), m=xmMins(), fr=[['snowman','⛄',600],['rudolph','🦌',1500]];
+  const tab=xmTab||(xmDec()?'adv':'work'), m=xmMins(), fr=[['snowman','⛄',600],['rudolph','🦌',1500]];
   return [head,h('div',{class:'xfriends small'},fr.map(([k,emo,g])=>h('span',null,h('span',{class:'xe'},emo),' '+SP[k].n+' '+(pets().some(p=>p.sp===k)?TR('함께하는 중!'):hasAch(k==='snowman'?'xsnow':'xrudolph')?TR('찾아왔어요! 동물 → 도감에서 데려와요'):Math.floor(m/60)+' / '+g/60+TR('시간')))),md(today())==='11-11'?h('span',null,'🍫 '+TR('오늘은 빼빼로 데이!')):null),
-    h('div',{class:'seg wrap'},[['tree','🎄 '+TR('트리')],['letter','✉️ '+TR('산타 편지')],['adv','📅 '+TR('어드벤트')],['shop','👒 '+TR('옷·배경')]].map(o=>h('button',{'aria-pressed':String(tab===o[0]),onclick:()=>{xmTab=o[0]; renderPet()}},o[1]))),
-    ...(tab==='tree'?xmTreePanel(e):tab==='letter'?xmLetterPanel():tab==='adv'?xmAdvPanel(e):shop)]}
+    h('div',{class:'seg wrap'},[['work','🧝 '+TR('공방')],['tree','🎄 '+TR('트리')],['letter','✉️ '+TR('산타 편지')],['adv','📅 '+TR('어드벤트')],['shop','👒 '+TR('옷·배경')]].map(o=>h('button',{'aria-pressed':String(tab===o[0]),onclick:()=>{xmTab=o[0]; renderPet()}},o[1]))),
+    xmSale()?h('div',{class:'evbar xmas'},h('b',null,'🏷 '+TR('크리스마스 준비 특가예요구리!')),h('span',{class:'small'},TR('트리 장식·과자 집 30% 할인 · 11/29까지'))):null,
+    ...(tab==='work'?xmWorkPanel(e):tab==='tree'?[...xmTreePanel(e),...xmGingerPanel(e)]:tab==='letter'?xmLetterPanel():tab==='adv'?xmAdvPanel(e):shop)]}
 const XMAS_LINES=[TR('크리스마스까지 며칠 남았지?'),TR('산타 할아버지는 공부하는 아이를 좋아한대'),TR('눈 오면 같이 눈사람 만들자'),TR('양말 걸어 둘까?'),TR('징글벨~ 징글벨~ ♪'),TR('올해 착한 아이 명단에 들 수 있을까?'),TR('트리에 장식 하나 더 달고 싶다')];
 const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스마스라고 들뜬 거 아니다, 다꿇어'),TR('캐럴? …한 곡 정도는 불러 주지')],nook:[TR('크리스마스 특가예요구리!'),TR('선물 포장도 해 드려요구리')],isabelle:[TR('여러분, 메리 크리스마스예요!'),TR('광장에 트리를 세웠어요!')],kk:[TR('오늘 밤은 캐럴 라이브다'),TR('징글벨… 내 스타일로 편곡했지')],timmy:[TR('크리스마스 특가… 예요!')],tommy:[TR('…특가예요!')],blathers:[TR('호오, 크리스마스에도 박물관은 열려 있소')]};
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
-setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v153'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
+const APP_V='align-v154'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
