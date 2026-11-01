@@ -1457,6 +1457,16 @@ function ambBuild(kind){ // 소리 한 덩어리 만들기 (좌우 따로 만들
   const lp=(a,k)=>{let y=0; for(let i=0;i<a.length;i++){y+=k*(a[i]-y); a[i]=y} return a}; // 한 번 거르는 저음 필터 (k가 작을수록 먹먹)
   const burst=(o,at,len,amp,tone)=>{for(let j=0;j<len&&at+j<L;j++){const e=Math.exp(-j/(len/5)); o[at+j]+=amp*e*(tone?Math.sin(j*tone):Math.random()*2-1)}}; // 짧게 톡 하는 소리
   const N=L+F, ph=i=>(i%L)/L; // 걸러 내기는 이음새를 만들기 전에 (그래야 끝과 처음이 같은 흐름이에요)
+  let LIB=null; const libEvents=()=>{ // 도서관 소리: 무엇이 언제 어디서 날지 한 번만 정해요
+    const ev=[], R=Math.random, noise=n=>{const d=new Float32Array(n); for(let i=0;i<n;i++) d[i]=R()*2-1; return d};
+    const band=(d,lo,hi)=>{let a=0,b=0; const kl=1-Math.exp(-2*Math.PI*lo/sr), kh=1-Math.exp(-2*Math.PI*hi/sr); for(let i=0;i<d.length;i++){a+=kh*(d[i]-a); b+=kl*(a-b); d[i]=a-b} return d}; // lo~hi만 남기는 부드러운 필터
+    const env=(d,att,rel)=>{const A=Math.round(sr*att), Rl=Math.round(sr*rel); for(let i=0;i<d.length;i++) d[i]*=Math.min(1,i/A,(d.length-i)/Rl); return d};
+    const Q=L/4; for(let n=0;n<4;n++){let at=Math.floor(n*Q+R()*(Q-sr*4)); const k=3+Math.floor(R()*5); // 연필로 몇 글자 쓰고 쉬어요 (오른쪽 옆자리)
+      for(let j=0;j<k;j++){const len=Math.round(sr*(.05+R()*.08)), d=env(band(noise(len),1800,4200),.012,.03), amp=.12+R()*.05; for(let q=0;q<len;q++) d[q]*=amp; ev.push({at,d,l:.55,r:.9}); at+=len+Math.round(sr*(.09+R()*.2)); if(at>L-sr) break}}
+    for(let n=0;n<2;n++){const at=Math.floor((n*.5+.12+R()*.25)*L), len=Math.round(sr*(.45+R()*.2)), d=band(noise(len),250,2600); // 책장 넘기기 (왼쪽 옆자리)
+      for(let q=0;q<len;q++){const t=q/len; d[q]*=.32*Math.pow(Math.sin(Math.PI*t),2)}; ev.push({at,d,l:.9,r:.55})}
+    {let at=Math.floor(R()*(L-sr*5)); const k=6+Math.floor(R()*10); for(let j=0;j<k;j++){const len=Math.round(sr*.012), d=env(band(noise(len),600,3000),.001,.008); for(let q=0;q<len;q++) d[q]*=.1; ev.push({at,d,l:.6,r:.6}); at+=Math.round(sr*(.11+R()*.16))}} // 멀리서 키보드 톡톡
+    return ev};
   for(let ch=0;ch<2;ch++){let a, ev=null;
     if(kind==='white') a=white();
     else if(kind==='pink') a=pink();
@@ -1470,12 +1480,8 @@ function ambBuild(kind){ // 소리 한 덩어리 만들기 (좌우 따로 만들
     else if(kind==='fire'){a=lp(brown(),.08); // 낮게 타오르는 소리 + 탁탁 튀는 불똥
       ev=o=>{const pk=Math.max(...o.slice(0,sr).map(Math.abs))||1; for(let n=0;n<secs*9;n++){const at=Math.floor(Math.random()*(L-sr*.1)), k=1+Math.floor(Math.random()*4), am=(Math.pow(Math.random(),2)*.7+.05)*pk; for(let j=0;j<k;j++) burst(o,at+Math.floor(Math.random()*sr*.03),Math.round(sr*(.001+Math.random()*.003)),am*(j?.5:1),0)}
         for(let n=0;n<secs*.6;n++) burst(o,Math.floor(Math.random()*(L-sr*.1)),Math.round(sr*.02),(.5+Math.random()*.3)*pk,0)}}
-    else if(kind==='library'){a=lp(brown(),.05); for(let i=0;i<N;i++) a[i]*=.1; // 조용한 방 공기 + 연필 사각사각 · 책장 넘기기 · 가끔 키보드
-      ev=o=>{const pk=.5, w=white(); let y=0; const hp=new Float32Array(w.length); for(let i=0;i<w.length;i++){y+=.25*(w[i]-y); hp[i]=w[i]-y}
-        const stroke=(at,len,amp)=>{for(let j=0;j<len&&at+j<L;j++) o[at+j]+=amp*Math.pow(Math.sin(Math.PI*j/len),.6)*hp[(at+j)%hp.length]*(.6+.4*Math.sin(j/sr*2*Math.PI*30))};
-        const Q=L/4; for(let n=0;n<4;n++){let at=Math.floor(n*Q+Math.random()*(Q-sr*3)); const k=4+Math.floor(Math.random()*8); for(let j=0;j<k;j++){const len=Math.round(sr*(.06+Math.random()*.16)); stroke(at,len,pk*(.18+Math.random()*.12)); at+=len+Math.round(sr*(.03+Math.random()*.12))}} // 연필로 쓰기
-        for(let n=0;n<2;n++){const at=Math.floor((n*.5+.1+Math.random()*.3)*L), len=Math.round(sr*(.35+Math.random()*.25)); let z=0; for(let j=0;j<len;j++){z+=.08*(w[(at+j)%w.length]-z); const t=j/len; o[at+j]+=pk*.9*z*Math.pow(Math.sin(Math.PI*t),2)*(t>.8?1.6:1)} burst(o,at+len,Math.round(sr*.01),pk*.12,0)} // 책장 넘기기
-        {let at=Math.floor((Math.floor(Math.random()*4)*Q)+Math.random()*(Q-sr*4)); const k=8+Math.floor(Math.random()*16); for(let j=0;j<k;j++){burst(o,at,Math.round(sr*.003),pk*(.08+Math.random()*.06),0); burst(o,at+Math.round(sr*.004),Math.round(sr*.006),pk*.04,2*Math.PI*180/sr); at+=Math.round(sr*(.07+Math.random()*.18))}}}} // 키보드 톡톡
+    else if(kind==='library'){a=lp(brown(),.05); for(let i=0;i<N;i++) a[i]*=.07; // 조용한 방 공기 + 옆자리에서 들리는 연필·책장·키보드 소리
+      const S0=LIB||(LIB=libEvents()); ev=o=>S0.forEach(e=>{const g=ch?e.r:e.l; for(let j=0;j<e.d.length&&e.at+j<L;j++) o[e.at+j]+=e.d[j]*g})} // 소리는 좌우가 같은 걸 써서 한 자리에서 들려요 (좌우로 날아다니지 않게)
     else if(kind==='plane'){a=lp(brown(),.12); const p=lp(pink(),.25); for(let i=0;i<N;i++) a[i]+=p[i]*.25} // 낮게 웅웅거리는 엔진과 공기 소리
     let o=seam(a); if(ev) ev(o);
     if(kind==='plane') for(let i=0;i<L;i++) o[i]+=.012*Math.sin(2*Math.PI*Math.round(118*secs)/secs*i/sr)+.005*Math.sin(2*Math.PI*Math.round(236*secs)/secs*i/sr); // 엔진 웅 소리 (끝과 처음이 딱 맞는 높이)
@@ -7397,7 +7403,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v155'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v156'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
