@@ -6984,8 +6984,6 @@ window.I18N_EN={
   "페루 마추픽추": "Machu Picchu",
   "로마 콜로세움": "Colosseum, Rome",
   "제주 성산일출봉": "Jeju Seongsan Ilchulbong",
-  "바닷속 마을": "Undersea town",
-  "다다미 방": "Tatami room",
   "과자 나라": "Candy kingdom",
   "구름 위 성": "Castle in the clouds",
   "버섯 요정 마을": "Mushroom fairy village",

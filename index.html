@@ -4726,30 +4726,6 @@ const TERRA_X={
     rows(12,36,['..hhhh..','.hhhhhh.','hhhhhhhh','hkhhhhkh','hhhnnhhh','hhhnnhhh','.hhhhhh.','.hh..hh.','hhhhhhhh','hhAhhAhh','hAAhhAAh','hhhhhhhh','hhhhhhhh','hhhhhhhh','hhhhhhhh','hhhhhhhh','.hhhhhh.','.hhhhhh.','.hhhhhh.'],{h:ba,k:'#18161C',n:'#4A4850',A:'#4A4850'}); // 돌하르방
     rows(78,52,['..g..','.ooo.','ooooo','ooooo','.ooo.'],{g:'#3E9E40',o:'#F89828'}); rows(84,54,['..g.','.oo.','oooo','.oo.'],{g:'#3E9E40',o:'#F8A838'}); // 귤
   },
-  seatown:K=>{const {R,P,rows,tod}=K, N=tod==='night'; // 🐚 바닷속 마을: 소라 집, 돌 집, 산호 탑, 해파리, 꽃무늬 물결
-    const w=N?['#0A2050','#0E2C62','#143A76']:['#38A0E0','#50B8EA','#70CCF0']; R(0,0,TW,TH,w[2]); R(0,0,TW,24,w[0]); R(0,24,TW,18,w[1]);
-    const fl=N?'#2A4A90':'#A8E8FF'; [[10,14],[30,26],[56,16],[80,30],[44,36]].forEach(([x,y])=>rows(x,y,['.f.f.','fffff','.fff.','fffff','.f.f.'],{f:fl})); // 꽃 모양 물결
-    for(let x=0;x<TW;x++){const y=54+Math.round(1.5*Math.sin(x/6)); R(x,y,1,TH-y,N?'#8A7A58':'#F0DCA0'); P(x,y,N?'#A09068':'#F8ECC0')} for(let y=58;y<TH;y+=3) for(let x=(y*7)%10;x<TW;x+=10) P(x,y,N?'#6A5A40':'#D8C088');
-    const lt=N?'#F8E080':'#FFF8C8';
-    rows(8,30,['......oo......','.....oyyo.....','....oyyyyo....','...oyyyyyyo...','...oyoyyyyo...','..oyyyoyyyyo..','..oyyyyoyyyo..','.oyyyyyyoyyyo.','.oyyyyyyyoyyo.','oyyyyyyyyyyyyo','oyyddyyyyyyyyo','oyyddyywwyyyyo','oyyddyywwyyyyo','oyyddyyyyyyyyo','.oooooooooooo.'],{o:'#B86830',y:N?'#C88858':'#F8B878',d:'#6A3818',w:lt}); // 소라 집
-    rows(30,38,['....gggggg....','..gggggggggg..','.gggggggggggg.','gggwwgggggwwgg','gggwwgggggwwgg','gggggggggggggg','ggggggddgggggg','ggggggddgggggg','ggggggddgggggg','gggggggggggggg','.gggggggggggg.'],{g:N?'#5A6A78':'#9AA8B8',w:lt,d:'#4A3A30'}); rows(34,36,['..ss..','.ssss.'],{s:'#68B868'}); // 돌 집
-    for(let y=22;y<55;y++){const hw=y<28?2:3+((y>>2)%2); R(66-hw,y,hw*2+1,1,N?'#A04868':'#F07090'); if(y%5===0) {R(66-hw-1,y,1,1,N?'#A04868':'#F07090'); R(66+hw+1,y,1,1,N?'#A04868':'#F07090')}} [[65,30],[65,38],[65,46]].forEach(([x,y])=>R(x,y,3,3,lt)); R(65,51,3,4,'#6A3818'); // 산호 탑
-    const weed=(x,h,c)=>{for(let j=0;j<h;j++) R(x+Math.round(Math.sin(j/2.2)),55-j,2,1,c)}; weed(26,18,'#2E9E58'); weed(84,22,'#48B868'); weed(88,14,'#2E9E58');
-    rows(76,14,['.pppp.','pppppp','pwppwp','pppppp','p.p.p.','.p.p.p','p.p.p.'],{p:N?'#B080D0':'#F0A8F0',w:'#FFFFFF'}); rows(50,22,['.ppp.','ppppp','p.p.p','.p.p.'],{p:N?'#8070C0':'#C8B0F8'}); // 해파리
-    [[22,26],[24,20],[58,32],[60,26]].forEach(([x,y])=>rows(x,y,['.c.','c.c','.c.'],{c:'#E0F8FF'}));
-  },
-  tatami:K=>{const {R,P,rows,drawSky,tod,lamp}=K, N=tod==='night'; // 🎏 다다미 방: 미닫이 벽장, 창가 앉은뱅이 책상, 개켜 둔 이불, 만화책
-    const wall=N?'#8A8070':'#F0E4C8'; R(0,0,TW,TH,wall); R(0,10,TW,2,N?'#6A5040':'#A07848');
-    R(4,14,30,38,N?'#6A5040':'#A07848'); R(5,15,14,36,N?'#C8C0B0':'#F8F4EA'); R(20,15,13,36,N?'#C8C0B0':'#F8F4EA'); R(5,32,28,1,N?'#6A5040':'#A07848'); [[16,24],[22,24],[16,42],[22,42]].forEach(([x,y])=>R(x,y,1,3,'#6A5040')); // 미닫이 벽장
-    for(let i=0;i<5;i++) rows(8+i*2,20,['w'],{w:'#E0D8C8'}); rows(7,18,['..b..','.bbb.','bbbbb'],{b:N?'#8A90A8':'#A8B8D8'});
-    R(50,14,34,22,N?'#6A5040':'#A07848'); drawSky(52,16,30,18); R(66,16,2,18,N?'#6A5040':'#A07848'); R(52,24,30,1,N?'#6A5040':'#A07848'); R(48,36,38,2,N?'#8A6A50':'#C89868'); // 창문
-    R(0,52,TW,TH-52,N?'#8A9060':'#C8D088'); for(let x=0;x<TW;x+=24) R(x,52,1,TH-52,N?'#3A4030':'#5A6040'); R(0,62,TW,1,N?'#3A4030':'#5A6040'); for(let y=53;y<TH;y+=2) for(let x=(y%4?1:3);x<TW;x+=4) P(x,y,N?'#7A8050':'#B8C078'); // 다다미
-    R(54,42,28,3,'#8A5A30'); R(54,42,28,1,'#B07840'); R(56,45,2,8,'#6A3E20'); R(78,45,2,8,'#6A3E20'); rows(58,38,['rrrr.bbb','rrrr.bbb','wwww.www'],{r:'#E85858',b:'#4878D8',w:'#F8F8F0'}); // 앉은뱅이 책상과 만화책
-    R(74,32,1,10,'#506080'); R(72,30,6,2,lamp||N?'#F8D848':'#6878A0'); R(72,41,6,1,'#506080'); if(lamp||N) for(let y=33;y<42;y++) for(let x=72-((y-33)>>1);x<78+((y-33)>>1);x++) if((x+y)%2===0&&K.B[y][x]===wall) P(x,y,'#FFF0A0');
-    rows(36,44,['bbbbbbbbbbbb','pppppppppppp','bbbbbbbbbbbb','pppppppppppp','oooooooooooo','oooooooooooo','oooooooooooo','oooooooooooo'],{b:'#F8F8F8',p:'#F8B8C8',o:'#5A88D8'}); // 개켜 둔 이불
-    rows(14,58,['.oooooooo.','orrrrrrrro','orrrrrrrro','.oooooooo.'],{o:'#A04848',r:'#E87070'}); // 방석
-    rows(86,40,['..k..','.kkk.','kkkkk','.k.k.'],{k:N?'#3A3A44':'#6A6A78'}); R(88,44,1,8,'#6A6A78'); // 선풍기
-  },
   candy:K=>{const {R,P,rows,tod}=K, N=tod==='night'; // 🍭 과자 나라: 솜사탕 구름, 막대사탕 나무, 케이크 집, 초콜릿 강, 쿠키 길
     const sk=N?['#3A2A68','#4A3A80']:['#F8C8E0','#FCDCEC']; R(0,0,TW,TH,sk[0]); R(0,28,TW,24,sk[1]); if(N){const r=rng(11); for(let i=0;i<30;i++) P(Math.floor(r()*TW),10+Math.floor(r()*30),r()<.5?'#F8F0B0':'#F8A8D8')}
     [[8,14,'#FFFFFF'],[56,12,'#C8E8FF'],[74,20,'#FFE0F0']].forEach(([x,y,c])=>rows(x,y,['..ccc....','.ccccc.cc','ccccccccc'],{c:N?'#7A6AA8':c})); // 솜사탕 구름
@@ -4928,7 +4904,7 @@ function terraBG(theme,tod,wx,lamp){
   return B;
 }
 function bufRects(B){let out=''; for(let y=0;y<TH;y++){let x=0; while(x<TW){const c=B[y][x]; if(!c){x++; continue} let n=1; while(x+n<TW&&B[y][x+n]===c) n++; out+='<rect x="'+x+'" y="'+y+'" width="'+n+'" height="1" fill="'+c+'"/>'; x+=n}} return out}
-const TERRA_WIN={room:[12,18,22,18],cafe:[10,16,24,18],library:[36,17,20,19],tatami:[52,16,30,18],magic:[12,19,12,20]}; // 실내 배경은 창문 안에만 비·눈이 와요
+const TERRA_WIN={room:[12,18,22,18],cafe:[10,16,24,18],library:[36,17,20,19],magic:[12,19,12,20]}; // 실내 배경은 창문 안에만 비·눈이 와요
 function weatherFrames(theme,wx,tod){ // 날씨는 몇 장을 돌려 가며 보여 줘요
   const r=rng(5), win=TERRA_WIN[theme], area=win||[4,10,88,58], out=[], ok=(X,Y)=>win?X>=area[0]&&X<area[0]+area[2]&&Y>=area[1]&&Y<area[1]+area[3]:inJar(X,Y);
   const rect=(X,Y,w,h2,c)=>ok(X,Y)?'<rect x="'+X+'" y="'+Y+'" width="'+w+'" height="'+h2+'" fill="'+c+'"/>':'';
@@ -4954,7 +4930,7 @@ function weatherFrames(theme,wx,tod){ // 날씨는 몇 장을 돌려 가며 보�
   return out;
 }
 // 상점에서 코인으로 사는 배경과 날씨: [키, 이모지, 이름, 값]. 산 건 옷장('wardrobe')에 theme:키 · wx:키로 남아요
-const JAR_THEMES=[['beach','🏖',TR('바닷가'),300],['sakura','🌸',TR('벚꽃길'),300],['cafe','☕',TR('카페'),350],['library','📚',TR('도서관'),350],['snowtown','⛄',TR('눈 마을'),400],['undersea','🐠',TR('바닷속'),500],['space','🚀',TR('우주'),600],['hangang','🌉',TR('여의도 한강공원'),450],['waikiki','🏄',TR('와이키키 해변'),500],['solchan','🌅',TR('송도 솔찬공원'),450],['paris','🗼',TR('파리 에펠탑'),500],['london','🎡',TR('런던 빅벤'),500],['newyork','🗽',TR('뉴욕 자유의 여신상'),500],['giza','🐫',TR('이집트 피라미드'),500],['fuji','🗻',TR('일본 후지산'),500],['sydney','🎭',TR('시드니 오페라 하우스'),500],['greatwall','🏯',TR('중국 만리장성'),500],['pisa','🍦',TR('피사의 사탑'),500],['santorini','💙',TR('그리스 산토리니'),500],['taj','🕌',TR('인도 타지마할'),500],['moai','🗿',TR('이스터섬 모아이'),500],['gyeongbok','🏯',TR('경복궁'),450],['venice','🛶',TR('베네치아 운하'),500],['windmill','🌷',TR('네덜란드 풍차 마을'),500],['machu','🦙',TR('페루 마추픽추'),500],['colosseum','🏛',TR('로마 콜로세움'),500],['jeju','🍊',TR('제주 성산일출봉'),450],['seatown','🐚',TR('바닷속 마을'),550],['tatami','🎏',TR('다다미 방'),450],['candy','🍭',TR('과자 나라'),550],['skycastle','🏰',TR('구름 위 성'),600],['mushroom','🍄',TR('버섯 요정 마을'),550],['magic','🔮',TR('마법 학교 교실'),550],['dino','🦕',TR('공룡 시대'),550],['moonrabbit','🌕',TR('달나라 옥토끼'),600],['cyber','🌃',TR('미래 도시'),600],['pirate','🏴‍☠️',TR('해적선 갑판'),550]];
+const JAR_THEMES=[['beach','🏖',TR('바닷가'),300],['sakura','🌸',TR('벚꽃길'),300],['cafe','☕',TR('카페'),350],['library','📚',TR('도서관'),350],['snowtown','⛄',TR('눈 마을'),400],['undersea','🐠',TR('바닷속'),500],['space','🚀',TR('우주'),600],['hangang','🌉',TR('여의도 한강공원'),450],['waikiki','🏄',TR('와이키키 해변'),500],['solchan','🌅',TR('송도 솔찬공원'),450],['paris','🗼',TR('파리 에펠탑'),500],['london','🎡',TR('런던 빅벤'),500],['newyork','🗽',TR('뉴욕 자유의 여신상'),500],['giza','🐫',TR('이집트 피라미드'),500],['fuji','🗻',TR('일본 후지산'),500],['sydney','🎭',TR('시드니 오페라 하우스'),500],['greatwall','🏯',TR('중국 만리장성'),500],['pisa','🍦',TR('피사의 사탑'),500],['santorini','💙',TR('그리스 산토리니'),500],['taj','🕌',TR('인도 타지마할'),500],['moai','🗿',TR('이스터섬 모아이'),500],['gyeongbok','🏯',TR('경복궁'),450],['venice','🛶',TR('베네치아 운하'),500],['windmill','🌷',TR('네덜란드 풍차 마을'),500],['machu','🦙',TR('페루 마추픽추'),500],['colosseum','🏛',TR('로마 콜로세움'),500],['jeju','🍊',TR('제주 성산일출봉'),450],['candy','🍭',TR('과자 나라'),550],['skycastle','🏰',TR('구름 위 성'),600],['mushroom','🍄',TR('버섯 요정 마을'),550],['magic','🔮',TR('마법 학교 교실'),550],['dino','🦕',TR('공룡 시대'),550],['moonrabbit','🌕',TR('달나라 옥토끼'),600],['cyber','🌃',TR('미래 도시'),600],['pirate','🏴‍☠️',TR('해적선 갑판'),550]];
 const JAR_WX=[['petal','🌸',TR('꽃잎'),200],['leaf','🍂',TR('낙엽'),200],['bubble','🧼',TR('비눗방울'),200],['firefly','✨',TR('반딧불'),250],['rainbow','🌈',TR('무지개'),300],['stars','🌠',TR('별똥별'),350],['aurora','🌌',TR('오로라'),400]];
 const TERRA_THEMES=[['room',TR('공부방')],['forest',TR('숲')],['garden',TR('정원')]], TERRA_ALL=TERRA_THEMES.concat([['pumpkin',TR('밤 호박밭')],['xmasvil',TR('크리스마스 마을')]],JAR_THEMES.map(t=>[t[0],t[2]]));
 const ownsJar=id=>items('wardrobe').some(x=>x.id===id);
@@ -7068,7 +7044,7 @@ function jarShop(bal){ // 상점 → 배경·날씨 칸
       has?(on?null:h('button',{onclick:()=>setTerra(kind,k)},TR('쓰기'))):
         h('button',{class:bal>=pr?'primary':'',disabled:bal<pr,onclick:()=>{if(!spend(pr,(kind==='theme'?TR('배경'):TR('날씨'))+' · '+n,'jar')) return; put('wardrobe',{id}); setTerra(kind,k); celebrate(emo+' '+n,TR('유리병에 바로 적용했어요'),false); checkProgress()}},bal>=pr?TR('사기'):TR('부족')+' '+(pr-bal)))};
   return [h('p',{class:'small'},TR('유리병 속 세상을 바꿔요. 한 번 사면 계속 쓸 수 있고, 동물 → 내 동물의 유리병 아래에서 언제든 바꿀 수 있어요.')),
-    ...[[TR('배경'),JAR_THEMES.slice(0,7)],['✈️ '+TR('세계 여행'),JAR_THEMES.slice(7,JAR_THEMES.findIndex(t=>t[0]==='seatown'))],['✨ '+TR('상상 속 세상'),JAR_THEMES.slice(JAR_THEMES.findIndex(t=>t[0]==='seatown'))]].flatMap(([t,l])=>[h('h3',null,t),h('div',{class:'shopgrid'},l.map(r=>card('theme',r)))]),
+    ...[[TR('배경'),JAR_THEMES.slice(0,7)],['✈️ '+TR('세계 여행'),JAR_THEMES.slice(7,JAR_THEMES.findIndex(t=>t[0]==='candy'))],['✨ '+TR('상상 속 세상'),JAR_THEMES.slice(JAR_THEMES.findIndex(t=>t[0]==='candy'))]].flatMap(([t,l])=>[h('h3',null,t),h('div',{class:'shopgrid'},l.map(r=>card('theme',r)))]),
     h('h3',null,TR('날씨')),h('p',{class:'small muted'},TR('미리보기는 정원이에요. 별똥별·오로라를 고르면 하늘이 밤으로 바뀌어요.')),h('div',{class:'shopgrid'},JAR_WX.map(r=>card('wx',r)))];
 }
 function evShop(p,bal){ // 상점 → 이벤트 칸
@@ -7732,7 +7708,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v162'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v163'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
