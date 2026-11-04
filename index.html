@@ -6819,6 +6819,7 @@ function meSync(){const av=meAv(), sig=JSON.stringify(av)+'|'+(palMe().name||'')
 const meOn=()=>meSync();
 const meWear=()=>meWearOf(meAv());
 const mePet=()=>({id:'me',sp:'me',name:palMe().name||TR('나'),wear:meWear()});
+function meSnapSVG(av,px){const keep=S.settings.v.avatar; S.settings.v.avatar=av; ME.sig=null; meSync(); const el=petSVG('me',3,meWearOf(av),'happy',px||48,1200); S.settings.v.avatar=keep; ME.sig=null; meSync(); return el} // 저장해 둔 그때의 내 모습
 function meSVG(px,mood){meSync(); return SP.me?petSVG('me',3,meWear(),mood||'happy',px||64,1200):null}
 function meDlg(){ // 나 꾸미기
   const av=Object.assign({},meAv()||ME_DEF), own=new Set(items('wardrobe').map(x=>x.id)); av.wear=Object.assign({},av.wear||{});
@@ -7002,10 +7003,11 @@ function palWordCheck(){const me=palMe(), have=me.words||[]; if(have.length>=PAL
 const palWord=k=>(PAL_WORDS.find(w=>w[0]===k)||['',''])[1];
 /* 추억 앨범 */
 function palMem(kind,p,text,once){const id=kind+':'+(once?'':today()+':')+(p?p.id:'');
-  if(items('mem').some(m=>m.id===id)) return; put('mem',{id,kind,text,date:today(),pet:p?p.id:'',sp:p?p.sp:'',wear:p?clone(p.wear||{}):{},st:p?Math.max(1,stageOf(petXP(p))):3,ts:Date.now()}); setTimeout(checkProgress,200)}
+  if(items('mem').some(m=>m.id===id)) return; put('mem',{id,kind,text,date:today(),pet:p?p.id:'',sp:p?p.sp:'',wear:p?clone(p.wear||{}):{},st:p?Math.max(1,stageOf(petXP(p))):3,me:meAv()?clone(meAv()):false,ts:Date.now()}); /* 그때 내 모습도 같이 남겨요 */ setTimeout(checkProgress,200)}
 const MEM_IC={first:'🌱',h3:'🔥',late:'🌙',exam:'🎓',h100:'💯',goal:'🫙',recover:'💪',word:'🤝'};
-function palAlbum(){const ms=items('mem').sort((a,b)=>b.ts-a.ts);
-  openDlg('📷 '+TR('추억 앨범'),h('div',null,ms.length?h('div',{class:'polgrid'},ms.map(m=>h('div',{class:'pol'},h('div',{class:'polpic k-'+m.kind},meOn()?h('span',{class:'polme'},meSVG(48)):null,SP[m.sp]?petSVG(m.sp,m.st,m.wear,'happy',64):null,h('span',{class:'polic'},MEM_IC[m.kind]||'✨')),h('b',null,m.text),h('small',null,mdOf(m.date))))):h('p',{class:'empty'},TR('아직 추억이 없어요. 처음 같이 공부한 날, 3시간 한 날, 밤늦게까지 한 날 같은 특별한 순간에 사진을 찍어 둘게요.'))),
+function palAlbum(){items('mem').filter(m=>m.me===undefined).forEach(m=>put('mem',Object.assign(clone(m),{me:meAv()?clone(meAv()):false}))); // 예전 추억은 지금 모습으로 한 번 고정해요
+  const ms=items('mem').sort((a,b)=>b.ts-a.ts);
+  openDlg('📷 '+TR('추억 앨범'),h('div',null,ms.length?h('div',{class:'polgrid'},ms.map(m=>h('div',{class:'pol'},h('div',{class:'polpic k-'+m.kind},m.me?h('span',{class:'polme'},meSnapSVG(m.me,48)):null,SP[m.sp]?petSVG(m.sp,m.st,m.wear,'happy',64):null,h('span',{class:'polic'},MEM_IC[m.kind]||'✨')),h('b',null,m.text),h('small',null,mdOf(m.date))))):h('p',{class:'empty'},TR('아직 추억이 없어요. 처음 같이 공부한 날, 3시간 한 날, 밤늦게까지 한 날 같은 특별한 순간에 사진을 찍어 둘게요.'))),
     [h('button',{onclick:()=>{closeDlg(); photoDlg()}},'📸 '+TR('사진관')),h('button',{class:'primary',onclick:closeDlg},TR('닫기'))],'wide')}
 /* 지금 무슨 말을 할지 (집중 중에는 말없이) */
 function palAsk(p){
@@ -7392,7 +7394,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v159'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v160'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
