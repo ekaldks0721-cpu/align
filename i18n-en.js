@@ -6986,6 +6986,7 @@ window.I18N_EN={
   "제주 성산일출봉": "Jeju Seongsan Ilchulbong",
   "바닷속 마을": "Undersea town",
   "다다미 방": "Tatami room",
+  "창가 아이 방": "Kid's room by the window",
   "과자 나라": "Candy kingdom",
   "구름 위 성": "Castle in the clouds",
   "버섯 요정 마을": "Mushroom fairy village",
