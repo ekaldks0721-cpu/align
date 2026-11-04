@@ -4801,6 +4801,27 @@ const TERRA_X={
     R(0,52,TW,TH-52,N?'#181428':'#40485A'); for(let x=0;x<TW;x+=8) R(x,60,4,1,N?'#F848C8':'#F8E848'); R(0,52,TW,1,N?'#48E8F8':'#8898B0'); R(0,66,TW,1,N?'#48E8F8':'#8898B0'); // 빛나는 도로
     for(let i=0;i<6;i++) P(6+i*16,56,N?'#8858F8':'#6878A0');
   },
+  kidroom:K=>{const {R,P,rows,drawSky,tod,lamp}=K, N=tod==='night', on=lamp||N; // 🛏 창가 아이 방: 크림색 벽과 나무 기둥, 초록 커튼 창, 책상과 스탠드, 주황 띠 미닫이 벽장, 초록 바닥, 파란 방석
+    const wall=N?'#9A9070':'#F4E8C4', pan=N?'#8A8064':'#EADCA8', wd=N?'#7A5A28':'#C8962E', wd2=N?'#5A4018':'#9A6E20';
+    R(0,0,TW,54,wall); for(let x=6;x<TW;x+=19) for(let y=23;y<52;y+=8) R(x,y,1,1,pan); // 벽
+    R(0,12,TW,1,wd); R(0,20,TW,2,wd); R(0,22,TW,1,wd2); R(4,0,2,54,wd); R(43,0,3,54,wd); R(45,0,1,54,wd2); R(90,0,2,54,wd); R(0,52,TW,2,wd2); // 나무 기둥·인방·걸레받이
+    R(10,23,26,16,wd); drawSky(12,25,22,12); R(22,25,2,12,wd); R(12,30,22,1,N?'#C0C8D8':'#F8FCFF'); R(10,38,26,1,wd2); [[13,26],[25,26]].forEach(([x,y])=>{R(x,y,3,1,'#FFFFFF');P(x,y+1,'#FFFFFF')}); // 창문
+    R(8,23,30,1,'#8A8E98'); P(8,23,'#5A5E68'); P(37,23,'#5A5E68'); // 커튼봉
+    const cu=N?['#2E6A40','#4A8A58']:['#3E9A50','#78C878']; for(let y=24;y<45;y++){const w=5+((y-24)>>3); for(let x=8;x<8+w;x++) P(x,y,(x+y)%4===0||(x-y+40)%4===0?cu[1]:cu[0])} // 초록 커튼
+    const dk=N?['#8A7850','#6A5A3A','#4A3E28']:['#C8B078','#A89058','#7A6840'];
+    R(14,40,28,2,dk[0]); R(14,41,28,1,dk[1]); R(15,42,2,10,dk[1]); R(32,42,9,10,dk[0]); R(40,42,1,10,dk[2]); [45,48].forEach(y=>R(33,y,7,1,dk[2])); [44,47,50].forEach(y=>P(36,y,dk[2])); // 책상과 서랍
+    rows(26,35,['rgbyo','rgbyo','rgbyo','rgbyo','rgbyo'],{r:'#E85858',g:'#58B868',b:'#4878D8',y:'#F8D048',o:'#F0F0E8'}); P(30,34,'#E8E0C8'); // 책꽂이 책
+    R(19,31,1,9,'#9098A8'); R(16,30,8,2,on?'#F8E060':'#E8ECF0'); R(16,30,8,1,'#B8C0C8'); R(17,39,5,1,'#9098A8'); // 스탠드
+    if(on) for(let y=32;y<40;y++) for(let x=15-((y-32)>>1);x<25+((y-32)>>1);x++) if((x+y)%2===0&&K.B[y][x]===wall) P(x,y,'#FFF0A0');
+    const ch=N?['#2E6A50','#3E8A68']:['#3E9A70','#5ABA88']; R(27,37,3,8,ch[0]); R(27,37,3,1,ch[1]); R(21,45,9,2,ch[0]); R(21,45,9,1,ch[1]); R(25,47,1,4,'#7880A0'); R(21,51,9,1,'#5868A8'); P(21,52,'#3A4878'); P(29,52,'#3A4878'); // 의자
+    R(38,45,5,8,N?'#7898A0':'#A8D8E0'); R(38,45,5,1,'#F8F8F8'); R(39,47,3,4,N?'#5A8878':'#58B898'); // 휴지통
+    R(48,25,10,11,'#D8D4C4'); R(49,26,8,9,'#F8F8F0'); rows(50,28,['....gg','...ggk','gggggg','.gggg.','.g..g.'],{g:N?'#4A8A48':'#68C060',k:'#2A3A28'}); // 공룡 포스터
+    const fr=N?'#2A2A48':'#3E3E78', fu=N?'#C8C4B4':'#F8F6EE', ob=N?'#A86848':'#EE9070', lo=N?'#B8B0A0':'#F0E8D4';
+    R(57,22,28,30,fr); [[58,70],[72,84]].forEach(([a,b])=>{R(a,23,b-a,13,fu); R(a,36,b-a,6,ob); R(a,42,b-a,10,lo); R(a,36,b-a,1,'#C86A50')}); R(70,23,2,29,fr); R(60,38,2,2,fr); R(81,38,2,2,fr); // 미닫이 벽장
+    R(85,27,5,1,'#5A78C8'); [85,87,89].forEach(x=>P(x,26,'#F8C838')); rows(85,28,['.ww.','wbbw','wbbw','wbbw','wwww'],{w:N?'#8AA8C8':'#C8E8F8',b:N?'#5A88B0':'#78B8E8'}); // 벽걸이와 주머니
+    const fl=N?['#6A9050','#5A7E44','#7AA05A']:['#9CCB70','#86B85C','#B4DC88']; R(0,54,TW,TH-54,fl[0]); R(0,54,TW,1,fl[1]); R(0,61,TW,1,fl[1]); for(let x=8;x<TW;x+=26) R(x,54,1,7,fl[1]); for(let x=21;x<TW;x+=26) R(x,62,1,TH-62,fl[1]); for(let y=56;y<TH;y+=3) for(let x=(y*3)%7;x<TW;x+=7) P(x,y,fl[2]); // 초록 바닥
+    const cs=N?['#3A6890','#4A80A8','#2A5070']:['#5AA0D8','#88C4F0','#3A7AB8']; [[32,56],[52,61]].forEach(([x,y])=>rows(x,y,['.aaaaaaaaaaa.','abbbbbbbbbbba','aaaaaaaaaaaaa','.ccccccccccc.'],{a:cs[0],b:cs[1],c:cs[2]})); // 파란 방석
+  },
   pirate:K=>{const {R,P,rows,drawSky,tod}=K, N=tod==='night', D=tod==='dusk'; // 🏴‍☠️ 해적선 갑판: 돛대와 돛, 깃발, 보물섬, 나무통, 보물 상자
     drawSky(0,0,TW,46);
     const sea=N?['#142650','#1E3466']:D?['#6A70B0','#8A88C0']:['#1A70C8','#3A90E0']; R(0,38,TW,10,sea[0]); for(let y=39;y<48;y+=2) for(let x=(y*7)%13;x<TW;x+=13) R(x,y,5,1,sea[1]);
@@ -4904,7 +4925,7 @@ function terraBG(theme,tod,wx,lamp){
   return B;
 }
 function bufRects(B){let out=''; for(let y=0;y<TH;y++){let x=0; while(x<TW){const c=B[y][x]; if(!c){x++; continue} let n=1; while(x+n<TW&&B[y][x+n]===c) n++; out+='<rect x="'+x+'" y="'+y+'" width="'+n+'" height="1" fill="'+c+'"/>'; x+=n}} return out}
-const TERRA_WIN={room:[12,18,22,18],cafe:[10,16,24,18],library:[36,17,20,19],magic:[12,19,12,20]}; // 실내 배경은 창문 안에만 비·눈이 와요
+const TERRA_WIN={room:[12,18,22,18],cafe:[10,16,24,18],library:[36,17,20,19],kidroom:[12,25,22,12],magic:[12,19,12,20]}; // 실내 배경은 창문 안에만 비·눈이 와요
 function weatherFrames(theme,wx,tod){ // 날씨는 몇 장을 돌려 가며 보여 줘요
   const r=rng(5), win=TERRA_WIN[theme], area=win||[4,10,88,58], out=[], ok=(X,Y)=>win?X>=area[0]&&X<area[0]+area[2]&&Y>=area[1]&&Y<area[1]+area[3]:inJar(X,Y);
   const rect=(X,Y,w,h2,c)=>ok(X,Y)?'<rect x="'+X+'" y="'+Y+'" width="'+w+'" height="'+h2+'" fill="'+c+'"/>':'';
@@ -4930,7 +4951,7 @@ function weatherFrames(theme,wx,tod){ // 날씨는 몇 장을 돌려 가며 보�
   return out;
 }
 // 상점에서 코인으로 사는 배경과 날씨: [키, 이모지, 이름, 값]. 산 건 옷장('wardrobe')에 theme:키 · wx:키로 남아요
-const JAR_THEMES=[['beach','🏖',TR('바닷가'),300],['sakura','🌸',TR('벚꽃길'),300],['cafe','☕',TR('카페'),350],['library','📚',TR('도서관'),350],['snowtown','⛄',TR('눈 마을'),400],['undersea','🐠',TR('바닷속'),500],['space','🚀',TR('우주'),600],['hangang','🌉',TR('여의도 한강공원'),450],['waikiki','🏄',TR('와이키키 해변'),500],['solchan','🌅',TR('송도 솔찬공원'),450],['paris','🗼',TR('파리 에펠탑'),500],['london','🎡',TR('런던 빅벤'),500],['newyork','🗽',TR('뉴욕 자유의 여신상'),500],['giza','🐫',TR('이집트 피라미드'),500],['fuji','🗻',TR('일본 후지산'),500],['sydney','🎭',TR('시드니 오페라 하우스'),500],['greatwall','🏯',TR('중국 만리장성'),500],['pisa','🍦',TR('피사의 사탑'),500],['santorini','💙',TR('그리스 산토리니'),500],['taj','🕌',TR('인도 타지마할'),500],['moai','🗿',TR('이스터섬 모아이'),500],['gyeongbok','🏯',TR('경복궁'),450],['venice','🛶',TR('베네치아 운하'),500],['windmill','🌷',TR('네덜란드 풍차 마을'),500],['machu','🦙',TR('페루 마추픽추'),500],['colosseum','🏛',TR('로마 콜로세움'),500],['jeju','🍊',TR('제주 성산일출봉'),450],['candy','🍭',TR('과자 나라'),550],['skycastle','🏰',TR('구름 위 성'),600],['mushroom','🍄',TR('버섯 요정 마을'),550],['magic','🔮',TR('마법 학교 교실'),550],['dino','🦕',TR('공룡 시대'),550],['moonrabbit','🌕',TR('달나라 옥토끼'),600],['cyber','🌃',TR('미래 도시'),600],['pirate','🏴‍☠️',TR('해적선 갑판'),550]];
+const JAR_THEMES=[['beach','🏖',TR('바닷가'),300],['sakura','🌸',TR('벚꽃길'),300],['cafe','☕',TR('카페'),350],['library','📚',TR('도서관'),350],['snowtown','⛄',TR('눈 마을'),400],['undersea','🐠',TR('바닷속'),500],['space','🚀',TR('우주'),600],['hangang','🌉',TR('여의도 한강공원'),450],['waikiki','🏄',TR('와이키키 해변'),500],['solchan','🌅',TR('송도 솔찬공원'),450],['paris','🗼',TR('파리 에펠탑'),500],['london','🎡',TR('런던 빅벤'),500],['newyork','🗽',TR('뉴욕 자유의 여신상'),500],['giza','🐫',TR('이집트 피라미드'),500],['fuji','🗻',TR('일본 후지산'),500],['sydney','🎭',TR('시드니 오페라 하우스'),500],['greatwall','🏯',TR('중국 만리장성'),500],['pisa','🍦',TR('피사의 사탑'),500],['santorini','💙',TR('그리스 산토리니'),500],['taj','🕌',TR('인도 타지마할'),500],['moai','🗿',TR('이스터섬 모아이'),500],['gyeongbok','🏯',TR('경복궁'),450],['venice','🛶',TR('베네치아 운하'),500],['windmill','🌷',TR('네덜란드 풍차 마을'),500],['machu','🦙',TR('페루 마추픽추'),500],['colosseum','🏛',TR('로마 콜로세움'),500],['jeju','🍊',TR('제주 성산일출봉'),450],['kidroom','🛏',TR('창가 아이 방'),500],['candy','🍭',TR('과자 나라'),550],['skycastle','🏰',TR('구름 위 성'),600],['mushroom','🍄',TR('버섯 요정 마을'),550],['magic','🔮',TR('마법 학교 교실'),550],['dino','🦕',TR('공룡 시대'),550],['moonrabbit','🌕',TR('달나라 옥토끼'),600],['cyber','🌃',TR('미래 도시'),600],['pirate','🏴‍☠️',TR('해적선 갑판'),550]];
 const JAR_WX=[['petal','🌸',TR('꽃잎'),200],['leaf','🍂',TR('낙엽'),200],['bubble','🧼',TR('비눗방울'),200],['firefly','✨',TR('반딧불'),250],['rainbow','🌈',TR('무지개'),300],['stars','🌠',TR('별똥별'),350],['aurora','🌌',TR('오로라'),400]];
 const TERRA_THEMES=[['room',TR('공부방')],['forest',TR('숲')],['garden',TR('정원')]], TERRA_ALL=TERRA_THEMES.concat([['pumpkin',TR('밤 호박밭')],['xmasvil',TR('크리스마스 마을')]],JAR_THEMES.map(t=>[t[0],t[2]]));
 const ownsJar=id=>items('wardrobe').some(x=>x.id===id);
@@ -7044,7 +7065,7 @@ function jarShop(bal){ // 상점 → 배경·날씨 칸
       has?(on?null:h('button',{onclick:()=>setTerra(kind,k)},TR('쓰기'))):
         h('button',{class:bal>=pr?'primary':'',disabled:bal<pr,onclick:()=>{if(!spend(pr,(kind==='theme'?TR('배경'):TR('날씨'))+' · '+n,'jar')) return; put('wardrobe',{id}); setTerra(kind,k); celebrate(emo+' '+n,TR('유리병에 바로 적용했어요'),false); checkProgress()}},bal>=pr?TR('사기'):TR('부족')+' '+(pr-bal)))};
   return [h('p',{class:'small'},TR('유리병 속 세상을 바꿔요. 한 번 사면 계속 쓸 수 있고, 동물 → 내 동물의 유리병 아래에서 언제든 바꿀 수 있어요.')),
-    ...[[TR('배경'),JAR_THEMES.slice(0,7)],['✈️ '+TR('세계 여행'),JAR_THEMES.slice(7,JAR_THEMES.findIndex(t=>t[0]==='candy'))],['✨ '+TR('상상 속 세상'),JAR_THEMES.slice(JAR_THEMES.findIndex(t=>t[0]==='candy'))]].flatMap(([t,l])=>[h('h3',null,t),h('div',{class:'shopgrid'},l.map(r=>card('theme',r)))]),
+    ...[[TR('배경'),JAR_THEMES.slice(0,7)],['✈️ '+TR('세계 여행'),JAR_THEMES.slice(7,JAR_THEMES.findIndex(t=>t[0]==='kidroom'))],['✨ '+TR('상상 속 세상'),JAR_THEMES.slice(JAR_THEMES.findIndex(t=>t[0]==='kidroom'))]].flatMap(([t,l])=>[h('h3',null,t),h('div',{class:'shopgrid'},l.map(r=>card('theme',r)))]),
     h('h3',null,TR('날씨')),h('p',{class:'small muted'},TR('미리보기는 정원이에요. 별똥별·오로라를 고르면 하늘이 밤으로 바뀌어요.')),h('div',{class:'shopgrid'},JAR_WX.map(r=>card('wx',r)))];
 }
 function evShop(p,bal){ // 상점 → 이벤트 칸
@@ -7708,7 +7729,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v163'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v164'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
