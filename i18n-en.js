@@ -6985,6 +6985,7 @@ window.I18N_EN={
   "로마 콜로세움": "Colosseum, Rome",
   "제주 성산일출봉": "Jeju Seongsan Ilchulbong",
   "창가 아이 방": "Kid's room by the window",
+  "바닷속 동네": "Undersea neighborhood",
   "과자 나라": "Candy kingdom",
   "구름 위 성": "Castle in the clouds",
   "버섯 요정 마을": "Mushroom fairy village",
