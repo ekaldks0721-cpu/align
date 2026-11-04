@@ -6967,4 +6967,11 @@ window.I18N_EN={
   "루돌프 잠옷":"Rudolph pajamas",
   "산타 드레스":"Santa dress",
   "눈사람 옷":"Snowman suit",
+  "파리 에펠탑": "Paris · Eiffel Tower",
+  "런던 빅벤": "London · Big Ben",
+  "뉴욕 자유의 여신상": "New York · Statue of Liberty",
+  "이집트 피라미드": "Pyramids of Giza",
+  "일본 후지산": "Mount Fuji",
+  "시드니 오페라 하우스": "Sydney Opera House",
+  "중국 만리장성": "Great Wall of China",
 };
