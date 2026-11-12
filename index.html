@@ -3718,17 +3718,19 @@ kappn:{ol:'#1E3A1E',lid:'#58A848',eye:[6,7,3,2],mouth:null, // 갑돌: 초록 �
     SE(7.2,8+dy,2.4,2,W); SR(6,8+dy,3,1,K); // 졸린 흰 눈
     E(11.5,12.4+dy,7.6,3.4,Y); R(5,15+dy,14,1,y); S(9,10+dy,y);
     for(const [x,yy] of [[5,14],[6,13],[7,12],[8,12],[9,13],[10,13],[11,13]]) S(x,yy+dy,'#6A5038')}}, // 물결 모양 입
-brewster:{ol:'#1E3A34',lid:'#BEE4F0',eye:[8,8,1,1],mouth:null, // 마스터: 청록 비둘기, 굵은 검은 눈썹, 작고 동그란 파란 안경, 노란 부리와 수염 같은 검은 무늬, 검은 조끼와 나비넥타이, 흰 앞치마, 분홍 발
-  b:{shirt:'#2A2A30',shade:'#1A1A20',sleeve:'#5AAA94',fur:'#5AAA94',legs:'#F07888',feet:'#E85A70',skirt:'#F4F0E8',skirtD:'#DCD6C8',deco:(D,dy)=>{D.R(11,15+dy,2,3,'#FFFFFF'); D.R(9,15+dy,6,1,'#141418'); D.P(11,15+dy,'#3A3A44'); D.P(12,15+dy,'#3A3A44'); D.P(11,16+dy,'#141418')}},
-  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#5AAA94', f='#78C0AC', K='#141418', L='#BEE4F0', Y='#F4C830', y='#D8A018';
-    E(11.5,9+dy,8.4,6.4,F); E(11.5,5.4+dy,5,2,f);
-    SR(5,4+dy,4,1,K); P(9,5+dy,K); P(14,5+dy,K); // 굵은 눈썹
-    SR(7,7+dy,3,3,L); SR(7,6+dy,3,1,K); SR(7,10+dy,3,1,K); SR(6,7+dy,1,3,K); SR(10,7+dy,1,3,K); R(11,8+dy,2,1,K); P(8,8+dy,K); P(15,8+dy,K); // 동그란 안경
-    R(10,11+dy,4,1,Y); R(10,12+dy,4,1,Y); R(11,13+dy,2,1,y); P(10,11+dy,'#FFE070');
-    for(const [x,yy] of [[9,12],[8,13],[8,14],[9,15]]) S(x,yy+dy,K)}}}); // 수염 같은 검은 무늬
+brewster:{ol:'#1E3A34',lid:'#BEE4F0',eye:[7,8,3,3],mouth:null, // 마스터: 높고 둥근 청록 머리, 비스듬한 굵은 검은 눈썹, 작고 동그란 파란 안경, 아래로 뾰족한 노란 부리, 부리 양옆으로 길게 휘어 내려간 검은 콧수염, 검은 조끼·흰 셔츠·큰 나비넥타이, 흰 앞치마, 짙은 날개 끝, 분홍 발
+  b:{shirt:'#3E3A40',shade:'#2E2A30',sleeve:'#5AAA94',fur:'#2E7A66',legs:'#F07888',feet:'#E85A70',skirt:'#F4F0E8',skirtD:'#DCD6C8',deco:(D,dy)=>{D.R(10,15+dy,4,3,'#FFFFFF'); D.P(10,17+dy,'#3E3A40'); D.P(13,17+dy,'#3E3A40');
+    D.R(9,15+dy,2,2,'#0E0E12'); D.R(13,15+dy,2,2,'#0E0E12'); D.R(11,15+dy,2,1,'#2A2A32')}}, // 흰 셔츠 위 커다란 나비넥타이
+  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#5AAA94', f='#78C0AC', d='#4A9682', K='#141418', L='#BEE4F0', l='#E4F6FA', Y='#F4C830', y='#D8A018';
+    E(11.5,8.6+dy,8.4,7,F); E(11.5,4.4+dy,5.4,2.6,f); SE(4.6,11.6+dy,1.6,2.6,d); // 높고 둥근 머리, 밝은 정수리, 볼 그늘
+    for(const [x,yy] of [[5,3],[6,3],[5,4],[6,4],[7,4],[8,4],[7,5],[8,5],[9,5]]) S(x,yy+dy,K); // 안쪽으로 비스듬히 내려오는 굵은 눈썹
+    SR(7,7+dy,3,1,K); SR(6,8+dy,1,3,K); SR(10,8+dy,1,3,K); SR(7,11+dy,3,1,K); SR(7,8+dy,3,3,L); SR(7,8+dy,1,1,l); R(11,8+dy,2,1,K); // 작고 동그란 안경
+    P(8,9+dy,K); P(15,9+dy,K); // 안경 속 작은 눈
+    R(10,11+dy,4,2,Y); R(11,13+dy,2,1,y); P(10,11+dy,'#FFE070'); P(13,12+dy,y); // 아래로 뾰족한 부리
+    for(const [x,yy] of [[9,13],[8,13],[8,14],[7,14],[6,14],[7,15],[6,15]]) S(x,yy+dy,K)}}}); // 부리 양옆으로 길게 휘어 내려간 콧수염
 AC2_KEYS.forEach(k=>SP[k].acDraw=1);
 /* 동물의 숲 친구들 옷: 24칸 큰 그림에 맞춰 다시 그려요. 모자는 WEAR 그림을 1.5배로, 나머지는 얼굴·목 자리에 맞춰 직접 */
-const AC_M={nook:{t:3,mu:12},timmy:{t:5,mu:13},tommy:{t:5,mu:13},isabelle:{t:3,mu:12},blathers:{t:2,mu:13},kk:{t:1,mu:12},apollo:{t:1,mu:14},celeste:{t:2,mu:13},marshal:{t:3,mu:13},raymond:{t:3,mu:12},mabel:{t:1,mu:13},sable:{t:1,mu:13},redd:{t:3,mu:13},digby:{t:2,mu:12},leif:{t:3,mu:12},johnny:{t:2,mu:13},daisymae:{t:3,mu:13},cj:{t:2,mu:13},kappn:{t:2,mu:13},brewster:{t:3,mu:13}}; // t: 머리 꼭대기 줄, mu: 콧수염 줄
+const AC_M={nook:{t:3,mu:12},timmy:{t:5,mu:13},tommy:{t:5,mu:13},isabelle:{t:3,mu:12},blathers:{t:2,mu:13},kk:{t:1,mu:12},apollo:{t:1,mu:14},celeste:{t:2,mu:13},marshal:{t:3,mu:13},raymond:{t:3,mu:12},mabel:{t:1,mu:13},sable:{t:1,mu:13},redd:{t:3,mu:13},digby:{t:2,mu:12},leif:{t:3,mu:12},johnny:{t:2,mu:13},daisymae:{t:3,mu:13},cj:{t:2,mu:13},kappn:{t:2,mu:13},brewster:{t:2,mu:13}}; // t: 머리 꼭대기 줄, mu: 콧수염 줄
 const acUp=rs0=>{const W=Math.max(...rs0.map(r=>r.length)), at=(x,y)=>(rs0[y]||'')[x]||'.', rs=rs0.map((r,y)=>[...r.padEnd(W,'.')].map((c,x)=>c==='o'&&[[1,0],[-1,0],[0,1],[0,-1]].some(([a,b])=>at(x+a,y+b)==='.')?'.':c).join('')), oh=Math.round(rs.length*1.5), ow=Math.round(W*1.5); return Array.from({length:oh},(_,y)=>Array.from({length:ow},(_,x)=>(rs[Math.floor(y/1.5)]||'')[Math.floor(x/1.5)]||'.').join(''))};
 function acWear(D,key,w,stage,dy,f){
   const C=ACD.ACC[key], M=AC_M[key]||{t:3,mu:12}, {P,R,E,S,SR,g,rows}=D, t=M.t+dy, [ex,ey,ew,eh]=C.eye, EY=ey+dy, n=15+dy, ol=C.ol;
