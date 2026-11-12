@@ -3598,11 +3598,11 @@ Object.assign(SP,{
   raymond:AC2(TR('잭슨'),'#9A968C',['write','coffee','read','lecture'],'fish','RAYMOND',[TR('양쪽 눈 색이 다른 회색 고양이 주민이에요'),TR('정장을 즐겨 입는 회사원 스타일이에요'),TR('정리 정돈과 계획 세우기가 특기예요')]),
   mabel:AC2(TR('고순이'),'#3A50A8',['sweep','cheer','write','wag'],'apple','MABEL',[TR('옷 가게 에이블 시스터즈의 막내 고슴도치예요'),TR('언제나 밝게 손님을 맞아요'),TR('언니 고옥이를 정말 좋아해요')]),
   sable:AC2(TR('고옥이'),'#6A4450',['write','write','read','coffee'],'apple','SABLE',[TR('에이블 시스터즈의 맏언니 재봉사예요'),TR('말수는 적지만 바느질 솜씨는 최고예요'),TR('친해지면 조금씩 마음을 열어 줘요')]),
-  redd:AC2(TR('여욱'),'#5A3A78',['money','lecture','grump','cheer'],'grape','REDD',[TR('미술품을 파는 수상한 여우 상인이에요'),TR('진품인지 가품인지는 잘 보고 사야 해요'),TR('말솜씨가 아주 능청스러워요')]),
-  digby:AC2(TR('켄트'),'#6A9A58',['announce','write','coffee','cheer'],'apple','DIGBY',[TR('여울의 쌍둥이 오빠예요'),TR('성실하게 섬 일을 도와줘요'),TR('여울처럼 노란 털이지만 리본은 없어요')]),
-  leif:AC2(TR('늘봉'),'#5AA04A',['sweep','snack','sleep','read'],'leaf','LEIF',[TR('화분과 묘목을 파는 나무늘보예요'),TR('식물 이야기라면 하루 종일도 할 수 있어요'),TR('느긋하게, 천천히가 좌우명이에요')]),
-  johnny:AC2(TR('죠니'),'#2E4A8A',['sleep','sleep','lecture','cheer'],'fish','JOHNNY',[TR('바닷가에 자주 떠밀려 오는 뱃사람 갈매기예요'),TR('어디로 가던 중이었는지 자꾸 깜빡해요'),TR('세계 곳곳의 이야기를 들려줘요')]),
-  daisymae:AC2(TR('무파니'),'#E87888',['money','cheer','snack','wag'],'carrot','DAISYMAE',[TR('일요일 아침마다 무를 팔러 오는 멧돼지예요'),TR('머리에 무 바구니를 이고 다녀요'),TR('할머니에게 장사를 배웠어요')]),
+  redd:AC2(TR('여욱'),'#3A48B0',['money','lecture','grump','cheer'],'grape','REDD',[TR('미술품을 파는 수상한 여우 상인이에요'),TR('진품인지 가품인지는 잘 보고 사야 해요'),TR('말솜씨가 아주 능청스러워요')]),
+  digby:AC2(TR('켄트'),'#C82830',['announce','write','coffee','cheer'],'apple','DIGBY',[TR('여울의 쌍둥이 오빠예요'),TR('성실하게 섬 일을 도와줘요'),TR('여울처럼 노란 털이지만 리본은 없어요')]),
+  leif:AC2(TR('늘봉'),'#F0A830',['sweep','snack','sleep','read'],'leaf','LEIF',[TR('화분과 묘목을 파는 나무늘보예요'),TR('식물 이야기라면 하루 종일도 할 수 있어요'),TR('느긋하게, 천천히가 좌우명이에요')]),
+  johnny:AC2(TR('죠니'),'#2A5AC8',['sleep','sleep','lecture','cheer'],'fish','JOHNNY',[TR('바닷가에 자주 떠밀려 오는 뱃사람 갈매기예요'),TR('어디로 가던 중이었는지 자꾸 깜빡해요'),TR('세계 곳곳의 이야기를 들려줘요')]),
+  daisymae:AC2(TR('무파니'),'#3A4AA0',['money','cheer','snack','wag'],'carrot','DAISYMAE',[TR('일요일 아침마다 무를 팔러 오는 멧돼지예요'),TR('머리에 무 바구니를 이고 다녀요'),TR('할머니에게 장사를 배웠어요')]),
   cj:AC2(TR('저스틴'),'#F4F4F4',['cheer','lecture','dance','snack'],'fish','CJ',[TR('낚시 대회를 여는 비버예요'),TR('큰 물고기를 보면 눈이 반짝반짝해요'),TR('낚시 영상 찍는 것도 좋아해요')]),
   kappn:AC2(TR('갑돌'),'#D84838',['sing','sing','lecture','sleep'],'fish','KAPPN',[TR('배를 몰고 섬을 오가는 갓파 선장이에요'),TR('배를 몰면서 늘 뱃노래를 불러요'),TR('머리 위 접시가 마르지 않게 조심해요')])});
 const AC2_KEYS=['celeste','marshal','raymond','mabel','sable','redd','digby','leif','johnny','daisymae','cj','kappn'];
@@ -3654,41 +3654,49 @@ sable:{ol:'#2A1820',lid:'#D88A5A',eye:[7,9,2,2],mouth:null, // 고옥이: 자줏
     SR(6,8+dy,4,3,'#FFFFFF'); SR(6,8+dy,4,1,Ld); SR(5,8+dy,1,2,Ld); R(7,9+dy,2,2,K); R(15,9+dy,2,2,K); // 졸린 눈
     S(8,12+dy,Pk); S(10,13+dy,Pk); S(7,13+dy,Pk);
     R(11,13+dy,2,2,K); S(10,14+dy,K)}},
-redd:{ol:'#163A3A',lid:'#4AA8A0',eye:[7,9,2,2],mouth:[11,13],
-  b:{shirt:'#5A3A78',shade:'#46285E',sleeve:'#5A3A78',fur:'#4AA8A0',legs:'#4AA8A0',feet:'#2A7A78',deco:(D,dy)=>{for(let j=0;j<4;j++){D.P(9+j,15+j+dy,'#F4E8C8'); D.P(14-j,15+j+dy,'#F4E8C8')} D.P(15,18+dy,'#F8D048')}},
-  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#4AA8A0', K='#2A7A78', C='#F4E8C8';
-    rows(2,-1+dy,['F.....','FF....','FFF...','FKFF..','FKKFF.'],{F,K}); rows(16,-1+dy,['.....F','....FF','...FFF','..FFKF','.FFKKF'],{F,K});
-    E(11.5,9+dy,9,6,F); S(3,12+dy,C); S(2,13+dy,C); S(4,13+dy,C); E(11.5,12+dy,4.6,2.6,C);
-    SR(6,8+dy,4,1,K); R(7,9+dy,2,2,'#1A2A2A'); R(15,9+dy,2,2,'#1A2A2A'); P(8,9+dy,'#FFFFFF'); P(16,9+dy,'#FFFFFF'); SR(7,9+dy,2,1,K); // 능청스러운 반쯤 감은 눈
-    R(11,10+dy,2,1,'#1A1A1A'); R(9,12+dy,6,1,'#163A3A'); P(9,11+dy,'#163A3A'); P(14,11+dy,'#163A3A'); P(13,13+dy,'#FFFFFF')}}, // 씩 웃는 입과 덧니
-digby:{ol:'#5A3E1E',lid:'#F6CF6A',eye:[7,9,2,2],mouth:[11,13],
-  b:{shirt:'#6A9A58',shade:'#527E44',sleeve:'#FFFFFF',fur:'#F6CF6A',legs:'#3A4A6A',feet:'#6A4A30',deco:(D,dy)=>{D.R(10,15+dy,4,1,'#FFFFFF'); D.R(11,16+dy,2,1,'#3858C8'); D.P(11,17+dy,'#3858C8'); D.P(12,17+dy,'#203890')}},
-  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#F6CF6A', d='#E2A848', M='#FFF6E2';
-    R(10,1+dy,1,2,F); R(12,0+dy,1,3,F); P(11,2+dy,F); P(13,1+dy,F); // 삐죽 솟은 앞머리
-    SE(4.4,11.4+dy,1.9,3.8,d); E(11.5,9+dy,8,6,F); SE(4.8,9+dy,1,2,'#EDBB58');
-    E(11.5,12+dy,4.4,2.6,M); E(11.5,6.4+dy,3.6,2,'#FBDD88');
-    R(7,9+dy,2,2,'#2A1A10'); P(7,9+dy,'#FFFFFF'); R(15,9+dy,2,2,'#2A1A10'); P(15,9+dy,'#FFFFFF');
-    SR(6,7+dy,3,1,d); R(11,11+dy,2,1,'#3A2414'); S(10,12+dy,'#C08060')}},
-leif:{ol:'#3A2A18',lid:'#6A5038',eye:[7,9,2,2],mouth:[11,13],
-  b:{shirt:'#5AA04A',shade:'#468A3A',sleeve:'#F0ECE0',fur:'#B89870',legs:'#8A7050',feet:'#6A5038',deco:(D,dy)=>{D.R(10,17+dy,4,2,'#468A3A'); D.P(11,17+dy,'#E8C060'); D.S(9,15+dy,'#F0ECE0')}},
-  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#B89870', K='#6A5038', L='#E8D8B8';
-    rows(10,-3+dy,['..gg','.gGg','gg..','.s..','.s..'],{g:'#58B048',G:'#8AD068',s:'#4A8A3A'}); // 머리 위 새싹
-    E(11.5,9+dy,8.6,6.2,F); E(11.5,10+dy,6,4.4,L); SE(6.8,9.6+dy,3.2,1.6,K); SE(4,10+dy,1.4,1,K); // 눈가를 지나는 짙은 줄무늬
-    R(7,9+dy,2,2,'#1A100A'); R(15,9+dy,2,2,'#1A100A'); P(7,9+dy,'#FFFFFF'); P(15,9+dy,'#FFFFFF');
-    R(11,11+dy,2,1,'#3A2A18'); S(10,13+dy,'#9A7A58'); S(11,13+dy,'#9A7A58'); S(5,12+dy,'#E8A890')}},
-johnny:{ol:'#3A4050',lid:'#F8F8F8',eye:[7,8,2,2],mouth:null,
-  b:{shirt:'#2E4A8A',shade:'#22386C',sleeve:'#2E4A8A',fur:'#F8F8F8',legs:'#F8B030',feet:'#E89020',deco:(D,dy)=>{for(let j=0;j<3;j++){D.P(9+j,15+j+dy,'#FFFFFF'); D.P(14-j,15+j+dy,'#FFFFFF')} D.R(11,18+dy,2,1,'#E84848')}}, // 세일러 깃과 빨간 스카프
-  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#F8F8F8', G='#B8C0CC';
-    R(11,1+dy,2,2,F); P(13,0+dy,F); P(10,1+dy,F); E(11.5,8.6+dy,8.4,6.2,F); SE(5,12+dy,1.2,.8,G); E(11.5,4+dy,4,1.2,'#FFFFFF');
-    R(7,8+dy,2,2,'#1A1A28'); R(15,8+dy,2,2,'#1A1A28'); P(7,8+dy,'#FFFFFF'); P(15,8+dy,'#FFFFFF'); SR(6,7+dy,3,1,G);
-    R(9,10+dy,6,2,'#F8B030'); R(10,12+dy,4,1,'#F8B030'); R(11,13+dy,2,1,'#E89020'); R(9,11+dy,6,1,'#E88A20'); P(12,10+dy,'#FFE070')}}, // 커다란 노란 부리
-daisymae:{ol:'#4A2A1E',lid:'#C89070',eye:[7,9,2,2],mouth:[11,14],
-  b:{shirt:'#E87888',shade:'#C85A6C',sleeve:'#E87888',fur:'#C89070',legs:'#C89070',feet:'#6A4030',skirt:'#E87888',skirtD:'#C85A6C',deco:(D,dy)=>{D.R(9,16+dy,6,1,'#FFFFFF'); D.S(10,17+dy,'#FFFFFF')}},
-  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#C89070', f='#DCA888', N='#E8B098';
-    rows(6,-5+dy,['....gg.gg...','.....gGg....','..wWWwWWww..','.wwWWwWWwww.','oBBBBBBBBBBo','.oBbBbBbBbo.'],{g:'#58A040',G:'#8AD068',w:'#F4F0FA',W:'#D8C8F0',B:'#C89048',b:'#A87030',o:'#7A5020'}); // 머리에 인 무 바구니
-    SE(4.6,4+dy,1.6,1.8,F); E(11.5,9.4+dy,8.4,5.8,F); for(let x=4;x<=19;x++) P(x,4+dy,'#F8F8F8'); SR(4,5+dy,3,1,'#F8F8F8'); P(19,6+dy,'#F8F8F8'); P(20,7+dy,'#E8E8E8'); // 흰 머릿수건
-    R(7,9+dy,2,2,'#1A100A'); R(15,9+dy,2,2,'#1A100A'); P(7,9+dy,'#FFFFFF'); P(15,9+dy,'#FFFFFF');
-    E(11.5,12+dy,2.8,1.8,N); R(10,12+dy,1,1,'#7A4A3A'); R(13,12+dy,1,1,'#7A4A3A'); S(9,14+dy,'#F4F0E8'); S(5,12+dy,'#F09098')}},
+redd:{ol:'#5A2A10',lid:'#E88A30',eye:[8,8,1,2],mouth:null, // 여욱: 주황 여우, 보라색 귀 안쪽, 가늘게 그은 실눈, 앞으로 나온 주둥이와 갈색 코끝, 흰 가슴털, 파란 앞치마 치마
+  b:{shirt:'#E88A30',shade:'#C86A20',sleeve:'#E88A30',fur:'#F8F4EC',legs:'#E88A30',feet:'#C86A20',skirt:'#3A48B0',skirtD:'#2A3890',deco:(D,dy)=>{D.E(11.5,16+dy,2.4,1.2,'#F8F4EC'); D.R(9,18+dy,6,1,'#2A3890'); D.R(11,18+dy,2,1,'#5A68D0'); D.P(14,19+dy,'#8A98E0'); D.P(15,20+dy,'#8A98E0')}},
+  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, O='#E88A30', o='#C86A20', L='#F4A858', Pu='#B060B0', K='#1E1008';
+    rows(3,-3+dy,['O....','OO...','OPO..','OPPO.','OPPPO'],{O,P:Pu}); rows(16,-3+dy,['....O','...OO','..OPO','.OPPO','OPPPO'],{O,P:Pu});
+    E(11.5,9+dy,8.6,6.2,O); E(11.5,6.4+dy,5,2,L);
+    R(8,8+dy,1,2,K); R(15,8+dy,1,2,K); // 가는 실눈
+    E(11.5,12.6+dy,3.2,2,L); R(11,12+dy,2,1,'#4A2410'); S(10,14+dy,'#9A5428'); P(11,14+dy,'#9A5428')}},
+digby:{ol:'#3A2A22',lid:'#9A8070',eye:[7,9,2,2],mouth:[11,13], // 켄트: 회갈색 털, 길게 늘어진 짙은 귀, 앞머리와 삐친 머리, 크림색 주둥이, 분홍 주근깨, 빨간 재킷과 노란 넥타이
+  b:{shirt:'#C82830',shade:'#A01E26',sleeve:'#C82830',fur:'#9A8070',legs:'#2E4A58',feet:'#3A2A22',deco:(D,dy)=>{D.R(10,15+dy,4,1,'#FFFFFF'); D.R(11,15+dy,2,3,'#F0C838'); for(const y of [16,18]) D.P(14,y+dy,'#F0D060')}},
+  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#9A8070', K2='#6A5040', H='#7A6458', C='#F0E4D0', K='#141010';
+    SE(3.6,11.4+dy,2.2,5,'#5A4030'); // 길게 늘어진 귀
+    E(11.5,9+dy,8.2,6.2,F);
+    for(let x=4;x<=19;x++) P(x,5+dy,H); for(let x=5;x<=18;x++) P(x,4+dy,H); for(const x of [6,9,12,15,18]) P(x,6+dy,H); S(5,6+dy,H); // 앞머리
+    P(11,2+dy,H); P(12,1+dy,H); P(13,1+dy,H); P(11,3+dy,H); // 삐친 머리
+    SR(6,7+dy,3,1,K2); R(7,9+dy,2,2,K); R(15,9+dy,2,2,K); P(7,9+dy,'#FFFFFF'); P(15,9+dy,'#FFFFFF');
+    E(11.5,12.4+dy,3.6,2.4,C); R(11,11+dy,2,1,K); R(10,13+dy,4,1,'#5A4038');
+    P(5,11+dy,'#E890A0'); P(6,12+dy,'#E890A0'); P(4,12+dy,'#E890A0')}},
+leif:{ol:'#3A2A1E',lid:'#F4F0E8',eye:[8,9,2,2],mouth:null, // 늘봉: 회갈색 털, 하얀 가면 무늬와 짙은 눈가 줄, 크고 동그란 눈, 분홍 볼, 웃는 입, 노란 꽃 달린 초록 모자, 주황 앞치마
+  b:{shirt:'#8A7A68',shade:'#6E6050',sleeve:'#8A7A68',fur:'#8A7A68',legs:'#8A7A68',feet:'#5A4A3A',deco:(D,dy)=>{D.R(9,16+dy,6,4,'#F0A830'); D.R(10,15+dy,4,1,'#F0A830'); D.R(10,17+dy,4,1,'#E09020'); D.P(8,15+dy,'#C88820'); D.P(15,15+dy,'#C88820')}},
+  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#8A7A68', W='#F4F0E8', K='#4A3424', G='#4AA048', g='#3A8038', Y='#F8D048';
+    E(11.5,9.6+dy,8.6,6.2,F);
+    E(11.5,3.6+dy,6.6,2.6,G); R(5,5+dy,14,1,g); E(11.5,2.6+dy,1.4,1.2,Y); P(11,2+dy,'#FFF0A0'); // 모자와 노란 꽃
+    E(11.5,10.4+dy,7.6,3.4,W); SE(7.6,9.8+dy,3,1.6,K); // 하얀 가면과 짙은 눈가 줄
+    SR(7,9+dy,3,2,W); R(8,9+dy,2,2,'#2A4A48'); R(14,9+dy,2,2,'#2A4A48'); P(8,9+dy,'#FFFFFF'); P(14,9+dy,'#FFFFFF');
+    R(11,11+dy,2,1,K); R(10,13+dy,4,2,'#7A2828'); R(11,14+dy,2,1,'#E86878'); SE(5,12.6+dy,1.6,1.3,'#F08898')}},
+johnny:{ol:'#2A2E40',lid:'#F8F8F8',eye:[7,8,2,2],mouth:null, // 죠니: 하얀 갈매기, 갈색 굵은 눈썹, 별무늬 파란 눈, 끝이 까만 커다란 주황 부리, 하얀 세일러 모자, 파란 세일러 옷
+  b:{shirt:'#2A5AC8',shade:'#1E48A8',sleeve:'#2A5AC8',fur:'#F4F4F4',legs:'#E89030',feet:'#D87820',deco:(D,dy)=>{for(let j=0;j<3;j++){D.P(9+j,15+j+dy,'#FFFFFF'); D.P(14-j,15+j+dy,'#FFFFFF')} D.R(8,19+dy,8,1,'#FFFFFF')}},
+  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, W='#F8F8F8', B='#2A5AC8', Br='#9A5A30', K='#1A1A28';
+    E(11.5,9+dy,8.4,6.2,W);
+    E(11.5,1.8+dy,6,2.2,W); R(6,3+dy,12,1,B); P(17,2+dy,B); P(18,3+dy,B); // 세일러 모자
+    for(const [x,y] of [[5,6],[6,6],[7,6],[8,7]]) S(x,y+dy,Br); // 굵은 갈색 눈썹
+    SR(6,8+dy,1,2,K); SR(7,7+dy,2,1,K); SR(7,10+dy,2,1,K); R(7,8+dy,2,2,B); R(15,8+dy,2,2,B); P(8,9+dy,'#FFFFFF'); P(15,9+dy,'#FFFFFF');
+    E(11.5,12.4+dy,3.6,2.2,'#F0A030'); R(9,11+dy,6,1,'#F8C048'); R(10,14+dy,4,1,K); R(11,15+dy,2,1,K)}}, // 끝이 까만 커다란 부리
+daisymae:{ol:'#4A1E0A',lid:'#E88838',eye:[7,9,2,2],mouth:null, // 무파니: 주황 멧돼지, 이마의 갈색 줄무늬, 흰 머릿수건, 분홍빛 코와 콧물, 빨간 볼, 무 두 개 올린 넓은 바구니, 파란 기모노 옷
+  b:{shirt:'#3A4AA0',shade:'#2A3880',sleeve:'#3A4AA0',fur:'#E88838',legs:'#E88838',feet:'#5A3A20',skirt:'#3A4AA0',skirtD:'#2A3880',deco:(D,dy)=>{D.R(8,17+dy,8,1,'#C83838'); for(const [x,y] of [[9,15],[13,16],[10,19],[14,19]]) D.P(x,y+dy,'#A8B8F0')}},
+  head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, O='#E88838', St='#B85A20', W='#F8F8F4', N='#F0A868', K='#1A0E08';
+    E(11.5,9.8+dy,8.2,5.8,O); SE(4.4,10.8+dy,1,3.4,W); E(11.5,4.8+dy,6.4,1.2,W); // 흰 머릿수건
+    for(const x of [9,11,12,14]) {P(x,6+dy,St); P(x,7+dy,St)} // 이마 줄무늬
+    R(7,9+dy,2,2,K); R(15,9+dy,2,2,K); P(7,9+dy,'#FFFFFF'); P(15,9+dy,'#FFFFFF');
+    E(11.5,12.4+dy,2.8,1.8,N); S(10,12+dy,'#6A2A10'); P(10,14+dy,'#B8E0F8'); P(10,15+dy,'#B8E0F8'); SE(5.4,12.2+dy,1.4,1,'#E85040');
+    R(1,2+dy,22,2,'#C89048'); R(1,3+dy,22,1,'#A87030'); for(let x=2;x<22;x+=3) P(x,2+dy,'#E0B060'); S(3,4+dy,'#D84040'); S(3,5+dy,'#D84040'); // 넓은 바구니와 빨간 끈
+    E(8,-0.4+dy,2.8,2.2,'#ECE6F0'); E(15.5,-0.6+dy,2.8,2.2,'#ECE6F0'); R(6,1+dy,5,1,'#D0C4DC'); R(13,1+dy,5,1,'#D0C4DC'); P(7,-1+dy,'#FFFFFF'); P(14,-2+dy,'#FFFFFF'); // 커다란 무 두 개
+    rows(3,-6+dy,['.g...gg.gg..g...','gGg.gGGgGgg.gGg.','.ggggggggggggg..'],{g:'#4A9A40',G:'#7AC060'})}},
 cj:{ol:'#3A2414',lid:'#A06A40',eye:[7,9,2,2],mouth:[11,14],
   b:{shirt:'#F4F4F4',shade:'#D8D8E0',sleeve:'#F4F4F4',fur:'#A06A40',legs:'#A06A40',feet:'#5A3A20',deco:(D,dy)=>{D.R(9,16+dy,4,2,'#4A90D8'); D.P(13,16+dy,'#4A90D8'); D.P(13,17+dy,'#4A90D8'); D.P(10,16+dy,'#1A1A28')}}, // 물고기 그림 티셔츠
   head:(D,dy)=>{const {E,SE,S,R,SR,P,rows}=D, F='#A06A40', C='#E8C8A0';
