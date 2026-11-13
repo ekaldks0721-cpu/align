@@ -3529,7 +3529,7 @@ const ACD=(()=>{
     if(kind==='sad'||kind==='down') both((ex)=>R(ex,y,w,1,lid));
     if(kind==='happy'&&c.mouth){const [mx0,my0]=c.mouth; R(mx0,my0,2,1,'#7A2A2A'); P(mx0,my0+1,'#E86060'); P(mx0+1,my0+1,'#E86060')}}
   const HAPPY=['happy','cheer','wag','dance','eat','snack','money','bellbag','fossil','sweep','announce','sing'];
-  function draw(key,st,base,f,wear){if(ACC[key].full) return ACC[key].full(base,f); /* 틀 없이 통째로 그린 친구 (아폴로) */ const C=ACC[key], G=mk(), D=api(G), w=wear||{}; let pose=base;
+  function draw(key,st,base,f,wear){if(ACC[key].full) return ACC[key].full(base,f,wear); /* 틀 없이 통째로 그린 친구 (아폴로) */ const C=ACC[key], G=mk(), D=api(G), w=wear||{}; let pose=base;
     if(base==='stand'||base==='blink'||base==='squash'||!pose) pose='stand';
     if(base==='walk0'||base==='walk1') pose='walk';
     const sit=['sleep','read','write'].indexOf(pose)>=0;
@@ -3590,13 +3590,34 @@ ACD.ACC.apollo={ol:'#2A2420',lid:'#A8A4B4',eye:[11,7,4,2],mouth:null, // 아폴�
   head:(D,dy)=>D.rows(0,-2+dy,['......WWWWWW.HHHHHH.....','....WWWWWWWWHHHYYYYYY...','...WWWWWWWWWHYYYYYYOYY..','...WWWWWKKKKYYYYYYYYYYY.','.WWWWKKKKKKKYYYYYYYYYYY.','..WWWKEEPPPKYYYYYYYYYYy.','.WWWWWKEPPKWWOOOyyyyYYY.','..WWWWWKKKWWWWyyyyyyYYy.','.W.WWWWWWWWWWWWyyyy..YY.','..WWWWWWWWWWWW.......OO.','...wWWWWWWWWWW..........','..W.WWWWWWWWWW..........','...WwWWWWWWWw...........','...WwwWWWWWWw...........','..WWWWWWWWWWWWWWW.......','...WwWWwWWWwWWWwWWw.....','...W.WW.WWW.WWW.WW.WW...','......w...w..w...w..w...'],{W:'#F6F4F0',w:'#D2D0DC',K:'#2A2420',E:'#FFFFFF',P:'#1A1418',Y:'#F8C530',H:'#FFE27A',y:'#D89A18',O:'#A86010'}), // 사진처럼: 위가 넓고 목으로 좁아지는 머리, 머리 위 오른쪽에 머리보다 높이 솟은 큰 부리(끝이 아래로 굽음), 부리 바로 뒤의 눈(위가 평평하게 잘린 반달 모양, 부리 쪽으로 올라가는 굵은 윗선이 화난 것처럼, 뒤쪽 흰자와 부리 쪽 큰 눈동자), 뒤로 삐친 깃털, 오른쪽 어깨로 퍼지는 뾰족한 목깃
   fixed:1,after:(D,pose,f,s)=>{if(pose!=='sleep') return; D.R(6,3+s,5,1,'#F6F4F0'); D.R(7,4+s,3,1,'#F6F4F0')}}; // 잘 때만 눈을 감아요
 /* 아폴로: 사진을 보고 틀 없이 전신을 통째로 그렸어요 (30×38, 다른 친구보다 커요). 머리 왼쪽 위·부리 오른쪽 위, 오른날개 번쩍, 왼날개는 허리에, 넓은 항공 점퍼, 파란 반바지, 줄무늬 다리, 커다란 발 */
-const APOLLO_ROWS=["...........................g.g","...............HHHHH.....g.gg.","........WWWWWWHYYYYYYH..gggwg.","......WWWWWWWHYYYYYYOYY..wggg.","...W.WWWWWLLLHYYYYYYYYy.ggggw.","..W.WWWLLLLLLYYYYYYYYYygggGgG.","...WWWWMEEPPLOOyyyyyYYywgGgGg.","..WwWWWWMMMPWWOyyyyy.YyggGgGg.","...WwWWWWWWWWWWyyyy..YygGgGgg.","..W.WWWWWWWWWWW......OOgGgGgk.","...WwwWWWWWWWWW.......ggKKkk..","....WWwWWWWWWWWW......KKkkKKK.",".......WWWWWWWWWWWW.KKkkKKKKK.","......WWWWWWWWWWWWWWWWKKkKKKK.",".......WwWWwWWWwWWWWWWWWKKkKK.","......KKwKWwZWWwKWWwWWKWwKKK..","....KKKKKKKwZKKwKKwKKKwKKKK...","..KKKKKKKKKKZKKKKKKkKKKkK.....",".KKkKKKKKKKKZKKKKKKKKKKK......",".KkKKKKKKKKKZKZkkkZKKK........","KKKKKKkKKKKKZKKKZKKKKK........","KKKKkKKKKKKKZKKKKKKKkK........","KKKKKKKKKKKKZKKKKKKKK.........","KKkKKKKKKKKKZKKKKKKKK.........",".KKKKKKKKkKKZKKKKKKKK.........",".kkkkkgggKKKZKKKKKKKK.........",".kgwggggggkkkkkkkkkkk.........",".wgGGGGGGkkkkkkkkkkkk.........","..G.gGgBBDBBBbBBbbbbb.........","...gggBBBBBBbBBBBBBB..........","...ggggbbbbb..bbbbbb..........","..ggGgGggYYy...YYy............","..GGGGGggOOO...OOO............",".........YYy...YYy............",".........OOO...OOO............",".......HHHHHH..HHHHHH.........","......YYYYYYYYYYYYYYYY........","......CyyCyyyCCyyCyyyC........"];
+const APOLLO_ROWS=["...........................g.g","...............HHHHH.....g.gg.","........WWWWWWHYYYYYYH..gggwg.","......WWWWWWWHYYYYYYOYY..wggg.","...W.WLLLLLLLHYYYYYYYYy.ggggw.","..W.WWMEEEEPMYYYYYYYYYygggGgG.","...WWWWMEEPMWOOyyyyyYYywgGgGg.","..WwWWWWMMMWWWOyyyyy.YyggGgGg.","...WwWWWWWWWWWWyyyy..YygGgGgg.","..W.WWWWWWWWWWW......OOgGgGgk.","...WwwWWWWWWWWW.......ggKKkk..","....WWwWWWWWWWWW......KKkkKKK.",".......WWWWWWWWWWWW.KKkkKKKKK.","......WWWWWWWWWWWWWWWWKKkKKKK.",".......WwWWwWWWwWWWWWWWWKKkKK.","......KKwKWwZWWwKWWwWWKWwKKK..","....KKKKKKKwZKKwKKwKKKwKKKK...","..KKKKKKKKKKZKKKKKKkKKKkK.....",".KKkKKKKKKKKZKKKKKKKKKKK......",".KkKKKKKKKKKZKZkkkZKKK........","KKKKKKkKKKKKZKKKZKKKKK........","KKKKkKKKKKKKZKKKKKKKkK........","KKKKKKKKKKKKZKKKKKKKK.........","KKkKKKKKKKKKZKKKKKKKK.........",".KKKKKKKKkKKZKKKKKKKK.........",".kkkkkgggKKKZKKKKKKKK.........",".kgwggggggkkkkkkkkkkk.........",".wgGGGGGGkkkkkkkkkkkk.........","..G.gGgBBDBBBbBBbbbbb.........","...gggBBBBBBbBBBBBBB..........","...ggggbbbbb..bbbbbb..........","..ggGgGggYYy...YYy............","..GGGGGggOOO...OOO............",".........YYy...YYy............",".........OOO...OOO............",".......HHHHHH..HHHHHH.........","......YYYYYYYYYYYYYYYY........","......CyyCyyyCCyyCyyyC........"];
 const APOLLO_PAL={W:'#F6F4F0',w:'#D2D0DC',g:'#B4BAD8',G:'#848CB0',Y:'#F8C530',H:'#FFE27A',y:'#D89A18',O:'#E07818',K:'#2A2A30',k:'#3E3E48',Z:'#5A5A66',B:'#4A5A80',b:'#3A4868',D:'#6878A0',L:'#1E1A1E',E:'#FFFFFF',P:'#141014',M:'#7A7684',C:'#FFFFFF'};
 SP.apollo.vb='-7 -13 32 37'; // 목록의 작은 그림에서는 큰 몸 전체가 틀 안에 들어오게
-ACD.ACC.apollo.full=(base,f)=>{const T=6, W=32, G=Array.from({length:T},()=>Array(W).fill('.')).concat(APOLLO_ROWS.map(r=>['.',...[...r].map(c=>c==='.'?'.':APOLLO_PAL[c]),'.']));
+ACD.ACC.apollo.full=(base,f,wear)=>{const w=wear||{};const T=6, W=32, G=Array.from({length:T},()=>Array(W).fill('.')).concat(APOLLO_ROWS.map(r=>['.',...[...r].map(c=>c==='.'?'.':APOLLO_PAL[c]),'.']));
   const P=(x,y,c)=>{x+=1; y+=T; if(y>=0&&y<G.length&&x>=0&&x<W) G[y][x]=c}, g=(x,y)=>(G[y+T]||[])[x+1]||'.', rows=(x0,y0,rs,m)=>rs.forEach((r,j)=>[...r].forEach((ch,i)=>{if(m[ch]) P(x0+i,y0+j,m[ch])}));
   const pose=base==='walk0'||base==='walk1'?'walk':base;
-  if(base==='blink'||pose==='sleep') for(let y=6;y<=7;y++) for(let x=7;x<=12;x++) if(g(x,y)!=='.') P(x,y,APOLLO_PAL.W); // 눈 감기: 굵은 윗선만 남아요
+  if(base==='blink'||pose==='sleep') for(let y=5;y<=7;y++) for(let x=6;x<=12;x++) if(g(x,y)!=='.') P(x,y,APOLLO_PAL.W); // 눈 감기: 반달 윗선만 남아요
+  const wearG=(ww,stage)=>{const TG=Array.from({length:30},()=>Array(24).fill('.')); acWear(ACD.api(TG),'apollo',ww,stage,0,f); let x0=99,y0=99,x1=-1,y1=-1; TG.forEach((r,y)=>r.forEach((c,x)=>{if(c!=='.'){x0=Math.min(x0,x); x1=Math.max(x1,x); y0=Math.min(y0,y); y1=Math.max(y1,y)}})); return x1<0?null:{TG,x0,y0,x1,y1}};
+  const put=(o,dx,dy,under)=>{if(!o) return; for(let y=o.y0;y<=o.y1;y++) for(let x=o.x0;x<=o.x1;x++){const c=o.TG[y][x], X=x+dx, Y=y+dy; if(c==='.'||Y<0||Y>=G.length||X<0||X>=W||(under&&G[Y][X]!=='.')) continue; G[Y][X]=c}};
+  const mid=o=>Math.round((o.x0+o.x1)/2);
+  if(w.back){const bk=w.back; // 망토·날개·가방은 큰 몸 뒤로
+    if(bk==='cape'||bk==='xcape'||bk==='ghostcape'){for(let y=12;y<=32;y++){const hw=Math.min(15,7+Math.floor((y-12)/2)); for(let x=12-hw;x<=12+hw;x++) if(g(x,y)==='.') P(x,y,bk==='ghostcape'?'#D8D4F0':(y>=31||(bk==='xcape'&&(x===12-hw||x===12+hw)))?(bk==='xcape'?'#FFFFFF':'#901828'):'#D83040')}}
+    else{const o=wearG({back:bk},'back'); if(o){const L={...o,x1:Math.min(o.x1,11)}, Rt={...o,x0:Math.max(o.x0,12)};
+      if(bk==='giftsack') put(o,4-o.x1,T+21-o.y1,1); else{put(L,1-L.x0,T+14-o.y0,1); put(Rt,29-Rt.x1,T+14-o.y0,1)}}}}
+  if(w.neck){const o=wearG({neck:w.neck},'head'); if(o) put(o,13-mid(o),T+13-o.y0)} // 목에 거는 것 (나비넥타이·목도리·방울 …)
+  if(w.head){const o=wearG({head:w.head},'head'); if(o){const d=WEAR[w.head];
+    if(d&&d.side) put(o,8-o.x1,T+3-o.y1); // 리본·꽃 같은 옆 장식은 머리 뒤쪽 위에
+    else if(w.head==='headphones'||w.head==='earmuffs') put(o,11-mid(o),T+1-o.y0);
+    else put(o,10-mid(o),T+3-o.y1)}} // 모자는 부리를 가리지 않게 머리 뒤쪽 위에 얹어요
+  {const fc=w.face, X=(x,y,c)=>P(x,y,c); // 얼굴 장식: 옆모습이라 눈 하나에 맞춰요 (눈: x6~12, y4~7)
+    const frame=c=>{for(let x=6;x<=12;x++){X(x,3,c); X(x,8,c)} for(let y=4;y<=7;y++){X(5,y,c); X(13,y,c)} for(let x=2;x<=4;x++) X(x,5,c)};
+    if(fc==='glasses') frame('#384068');
+    if(fc==='shades'){for(let y=3;y<=8;y++) for(let x=5;x<=13;x++) X(x,y,'#202028'); X(6,4,'#A8D8F8'); X(7,4,'#A8D8F8'); for(let x=2;x<=4;x++) X(x,5,'#202028')}
+    if(fc==='heartglass'){rows(5,2,['.HH.HHH..','HHHHHHHHH','HHHHHHHHH','.HHHHHHH.','..HHHHH..','....H....'],{H:'#F04870'}); X(6,3,'#FFB0C8'); for(let x=2;x<=4;x++) X(x,5,'#F04870')}
+    if(fc==='monocle'){frame('#B07810'); for(let x=2;x<=4;x++) X(x,5,'.'); for(let y=9;y<=12;y++) X(13,y,'#B07810')}
+    if(fc==='eyepatch'){for(let y=3;y<=8;y++) for(let x=6;x<=12;x++) X(x,y,'#202028'); for(let x=2;x<=13;x++) X(x,3,'#202028'); X(1,2,'#202028')}
+    if(fc==='blush'){X(9,9,'#F87898'); X(10,9,'#F87898'); X(11,9,'#F87898')}
+    if(fc==='mustache') rows(11,8,['oo..oo','.oooo.'],{o:'#4A2C18'})}
   if(pose==='walk'){const [x0,x1]=(base==='walk1')!==!!f?[4,13]:[14,23]; for(let y=30;y<=37;y++) for(let x=x0;x<=x1;x++){P(x,y-1,g(x,y)); P(x,y,'.')}} // 한 발씩 들어요
   if(pose==='sing') (f?[[1,-3],[1,-2],[2,-3],[3,-5],[3,-4]]:[[0,-2],[0,-1],[1,-2],[3,-4],[3,-3]]).forEach(([x,y])=>P(x,y,'#F07898')); // 음표
   if(pose==='grump') [[0,0],[2,0],[1,1],[0,2],[2,2]].forEach(([a,b])=>P(1+a,-3+b+(f?1:0),'#E03030')); // 부루퉁
@@ -8021,7 +8042,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v178'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v179'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
