@@ -3607,7 +3607,10 @@ ACD.ACC.apollo.full=(base,f,wear)=>{const w=wear||{};const T=6, W=32, G=Array.fr
   if(w.neck){const o=wearG({neck:w.neck},'head'); if(o) put(o,13-mid(o),T+13-o.y0)} // 목에 거는 것 (나비넥타이·목도리·방울 …)
   if(w.head){const o=wearG({head:w.head},'head'); if(o){const d=WEAR[w.head];
     if(d&&d.side) put(o,8-o.x1,T+3-o.y1); // 리본·꽃 같은 옆 장식은 머리 뒤쪽 위에
-    else if(w.head==='headphones'||w.head==='earmuffs') put(o,11-mid(o),T+1-o.y0);
+    else if(w.head==='headphones'||w.head==='earmuffs'){const hp=w.head==='headphones', band=hp?'#383848':'#C83858'; // 옆모습: 머리 위를 넘는 띠와 눈 뒤 귀 자리에 하나만 (반대쪽은 머리에 가려요)
+      for(const [x,y] of [[4,5],[4,4],[5,3],[6,2],[7,1],[8,1],[9,1],[10,1],[11,1],[12,1],[13,1]]) P(x,y,band);
+      if(hp) rows(2,6,['.KKK.','KRRRK','KRrRK','KRRRK','.KKK.'],{K:'#383848',R:'#E84848',r:'#F89898'});
+      else rows(1,5,['.wwww.','wWPPWw','wPPPPw','wWPPWw','.wwww.'],{W:'#FFFFFF',w:'#D8C4D8',P:'#F8C8D8'})}
     else put(o,10-mid(o),T+3-o.y1)}} // 모자는 부리를 가리지 않게 머리 뒤쪽 위에 얹어요
   {const fc=w.face, X=(x,y,c)=>P(x,y,c); // 얼굴 장식: 옆모습이라 눈 하나에 맞춰요 (눈: x6~12, y4~7)
     const frame=c=>{for(let x=6;x<=12;x++){X(x,3,c); X(x,8,c)} for(let y=4;y<=7;y++){X(5,y,c); X(13,y,c)} for(let x=2;x<=4;x++) X(x,5,c)};
@@ -8042,7 +8045,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v180'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v181'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
