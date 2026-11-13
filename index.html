@@ -3587,15 +3587,8 @@ ACD.ACC.apollo={ol:'#2A2420',lid:'#A8A4B4',eye:[11,7,4,2],mouth:null, // 아폴�
     D.R(12,16+dy,3,1,'#3A3A42'); D.R(12,17+dy,3,1,'#2E2E36'); D.P(14,16+dy,'#4A4A54'); // 가슴 주머니 덮개
     D.P(10,16+dy,'#4A4A54'); D.P(10,17+dy,'#4A4A54'); // 지퍼
     if(!dy){for(const x of [9,10,13,14]){D.P(x,21,'#E07818')} D.P(11,20,'.'); D.P(12,20,'.')}}}, // 다리 줄무늬, 반바지 가랑이
-  head:(D,dy)=>{const {E,R,P,rows}=D, F='#F6F4EE', sh='#DCD8CE', K='#2A2420', L='#A8A4B4', l='#8A8696', Y='#F7C42E', y='#D89A18', O='#B86A10', H='#FFE070'; // 옆모습 (오른쪽을 봐요)
-    E(9.6,8.4+dy,7.2,6,F); E(7,11.6+dy,4,2.4,sh); E(8.6,10.6+dy,5,3,F);
-    rows(0,-1+dy,['F..........','.F...F.....','.FF..F.....','..FFFFF....','F..FFFF....','.FFFFF.....','..FFF......','FFFFF......','.FFF.......','FFFF.......','..FF.......'],{F}); // 뒤로 삐친 머리 깃털
-    rows(4,13+dy,['.F.FFFFFFFFF.','FF.FF.FF.FF.F','F...F..F...F.'],{F}); P(6,14+dy,sh); P(9,14+dy,sh); // 들쭉날쭉한 흰 목깃
-    rows(10,5+dy,['.KKKKK','KK...K'],{K}); // 굵은 눈썹
-    rows(11,7+dy,['LLLL','wwwK','llll'],{L,l,w:'#FFFFFF',K}); // 무거운 눈꺼풀의 반쯤 감은 눈
-    rows(15,6+dy,['.HHHH...','HHYYYYY.','YYYYYYYY','YYYYYYYY','OyyyyyYY','.yyyy.OY','.......O'],{H,Y,y,O}); // 앞으로 튀어나와 끝이 굽은 부리
-    P(19,8+dy,O); P(15,10+dy,O)}, // 콧구멍, 입꼬리
-  fixed:1,after:(D,pose,f,s)=>{if(pose!=='sleep') return; D.R(11,7+s,4,2,'#A8A4B4'); D.R(11,9+s,4,1,'#2A2420')}}; // 잘 때만 눈을 감아요
+  head:(D,dy)=>D.rows(0,1+dy,['......WWWWW.............','...W.WWWWWWWW...........','....WWWWWWWWWW..........','..WWWWWWWWWWWWHHHH......','WWWWWWWKKKKKKHHYYYH.....','.WWWWWKLLLLLKHYYYYOYY...','WWWWWWKEEEPPKYYYYYYYYY..','.WWWWWWKKKKKWOOyyyyYYY..','WWWWWWWWWWWWWWyyyyYYYY..','.WWWWWWWWWWWWWwyy..YYO..','..wWWWWWWWWWWw......YO..','...wWWWWWWWWWWW.........','..W.WWWWWWWWWWWWW.......','....W.WW.WWW.WWWW.W.....','.......w...w....w..w....'],{W:'#F6F4F0',w:'#D2D0DC',K:'#2A2420',L:'#9A96A8',E:'#FFFFFF',P:'#1A1418',Y:'#F8C530',H:'#FFE27A',y:'#D89A18',O:'#A86010'}), // 옆으로 돌린 얼굴: 뒤로 삐친 깃털, 회색 눈꺼풀이 반쯤 덮은 눈, 이마에서 시작해 끝이 아래로 굽은 큰 부리, 어깨로 퍼지는 뾰족한 흰 목깃
+  fixed:1,after:(D,pose,f,s)=>{if(pose!=='sleep') return; D.R(7,7+s,5,1,'#9A96A8')}}; // 잘 때만 눈을 감아요
 ['nook','isabelle','timmy','tommy','blathers','kk','apollo'].forEach(k=>SP[k].acDraw=1);
 /* 동물의 숲 친구들 2: 부옥·쭈니·잭슨·고순이·고옥이·여욱·켄트·늘봉·죠니·무파니·저스틴·갑돌 */
 const AC2=(n,shirt,acts,food,lines,traits)=>({n,pal:['#3A2A2A',shirt,'#FFFFFF','#6A4A30','#F0A8A0'],body:{shirt,sleeve:shirt,short:1,pants:'b',shoes:'a'},food,acts,lines,traits});
@@ -8012,7 +8005,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v173'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v174'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
