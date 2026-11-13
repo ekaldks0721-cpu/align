@@ -3582,13 +3582,21 @@ ACD.ACC.kk={ol:'#4A4A4A',lid:'#F7F5EE',eye:[7,9,3,1],mouth:[11,13],fixed:1,
     SE(3.6,9.6+dy,2.4,4.2,'#E4E0D4'); E(11.5,8.6+dy,8.2,6.2,F); E(11.5,12+dy,4.2,2.4,'#FFFFFF');
     R(6,6+dy,4,2,'#1E1E22'); R(14,6+dy,4,2,'#1E1E22'); R(7,9+dy,3,1,'#2A2A2A'); R(14,9+dy,3,1,'#2A2A2A');
     R(10,10+dy,4,2,'#1E1E22'); P(10,10+dy,F); P(13,10+dy,F); P(11,10+dy,'#4A4A52'); S(10,13+dy,'#B8B4A8')}};
-ACD.ACC.apollo={ol:'#2A2420',lid:'#F6F4EE',eye:[7,8,2,2],mouth:null,
-  b:{shirt:'#2A2A30',shade:'#1C1C22',sleeve:'#2A2A30',fur:'#4A4650',legs:'#4A4650',feet:'#F8C830',deco:(D,dy)=>{D.R(9,15+dy,2,1,'#8A6A48'); D.R(13,15+dy,2,1,'#8A6A48'); D.P(11,16+dy,'#C8C8D0'); D.P(11,17+dy,'#C8C8D0'); D.P(11,18+dy,'#C8C8D0')}},
-  head:(D,dy)=>{const {E,SE,S,R,P}=D, F='#F6F4EE', sh='#DCD8CE';
-    E(11.5,8.6+dy,8.6,6.2,F); S(3,9+dy,F); S(2,10+dy,F); S(3,11+dy,sh); E(11.5,13.4+dy,6,1.4,sh);
-    S(5,6+dy,'#2A2420'); S(6,7+dy,'#2A2420'); S(7,7+dy,'#2A2420'); S(8,8+dy,'#2A2420'); // 성난 눈썹
-    R(7,8+dy,2,2,'#2A1A10'); R(15,8+dy,2,2,'#2A1A10'); P(7,8+dy,'#FFFFFF'); P(15,8+dy,'#FFFFFF');
-    E(11.5,11.4+dy,3.6,1.9,'#F7C42E'); R(10,10+dy,4,1,'#FFE070'); R(9,12+dy,6,1,'#D89A18'); R(11,13+dy,2,1,'#C08010'); P(10,13+dy,'#D89A18'); P(13,13+dy,'#D89A18')}};
+ACD.ACC.apollo={ol:'#2A2420',lid:'#A8A4B4',eye:[5,8,4,2],mouth:null, // 아폴로: 하얀 머리와 삐죽한 깃털, 무거운 눈꺼풀의 반쯤 감은 눈과 굵은 눈썹, 크고 끝이 굽은 노란 부리, 들쭉날쭉한 흰 목깃, 주머니 달린 검은 항공 점퍼, 회청색 날개 끝, 파란 반바지, 주황 줄무늬 노란 다리
+  b:{shirt:'#26262C',shade:'#18181C',sleeve:'#26262C',fur:'#B4B8D4',legs:'#F4C030',feet:'#F4C030',skirt:'#4A5A80',skirtD:'#3A4868',deco:(D,dy)=>{
+    D.R(12,16+dy,3,1,'#3A3A42'); D.R(12,17+dy,3,1,'#2E2E36'); D.P(14,16+dy,'#4A4A54'); // 가슴 주머니 덮개
+    D.P(10,16+dy,'#4A4A54'); D.P(10,17+dy,'#4A4A54'); // 지퍼
+    if(!dy){for(const x of [9,10,13,14]){D.P(x,21,'#E07818')} D.P(11,20,'.'); D.P(12,20,'.')}}}, // 다리 줄무늬, 반바지 가랑이
+  head:(D,dy)=>{const {E,SE,S,R,P,SR}=D, F='#F6F4EE', sh='#DCD8CE', K='#2A2420', Y='#F7C42E', y='#D89A18', O='#B86A10';
+    E(11.5,8.2+dy,8.6,6,F);
+    for(const [x,yy] of [[3,3],[2,4],[3,4],[1,7],[2,7],[1,8]]) S(x,yy+dy,F); // 뒤로 삐친 머리 깃털
+    S(3,11+dy,sh); S(4,12+dy,sh); S(5,13+dy,sh);
+    for(const [x,yy] of [[6,14],[8,15],[9,14],[10,15]]) S(x,yy+dy,F); S(7,14+dy,sh); // 들쭉날쭉한 흰 목깃
+    SR(4,6+dy,5,1,K); S(9,7+dy,K); // 굵은 눈썹
+    SR(5,7+dy,4,1,'#A8A4B4'); SR(5,8+dy,4,1,'#C8C4D0'); SR(5,9+dy,4,1,'#FFFFFF'); S(8,9+dy,K); S(7,9+dy,'#5A5460'); SR(5,10+dy,4,1,'#8A8696'); // 무거운 눈꺼풀의 반쯤 감은 눈
+    R(10,8+dy,4,1,'#FFE070'); R(9,9+dy,6,1,Y); P(10,9+dy,'#FFE070'); R(9,10+dy,6,2,Y); R(10,12+dy,4,1,Y); R(10,13+dy,4,1,y); R(11,14+dy,2,1,y); R(11,15+dy,2,1,O); // 크고 아래로 굽은 부리
+    P(10,10+dy,O); P(13,10+dy,O); S(9,12+dy,O); P(14,11+dy,y); P(14,12+dy,y)}, // 콧구멍, 입선
+  fixed:1,after:(D,pose,f,s)=>{if(pose!=='sleep') return; D.SR(5,7+s,4,3,'#A8A4B4'); D.SR(5,10+s,4,1,'#2A2420')}}; // 잘 때만 눈을 감아요
 ['nook','isabelle','timmy','tommy','blathers','kk','apollo'].forEach(k=>SP[k].acDraw=1);
 /* 동물의 숲 친구들 2: 부옥·쭈니·잭슨·고순이·고옥이·여욱·켄트·늘봉·죠니·무파니·저스틴·갑돌 */
 const AC2=(n,shirt,acts,food,lines,traits)=>({n,pal:['#3A2A2A',shirt,'#FFFFFF','#6A4A30','#F0A8A0'],body:{shirt,sleeve:shirt,short:1,pants:'b',shoes:'a'},food,acts,lines,traits});
@@ -8005,7 +8013,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v171'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v172'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
