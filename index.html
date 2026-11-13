@@ -3788,6 +3788,25 @@ ACD.ACC.johnny.full=fullFig({key:'johnny',rows:JOHNNY_ROWS,pal:JOHNNY_PAL,ol:'#2
     if(fc==='eyepatch'){for(let y=7;y<=15;y++) for(let x=14;x<=20;x++) X(x,y,'#202028'); for(let x=14;x<=25;x++) X(x,7,'#202028')}
     if(fc==='blush'){X(21,14,'#F87898'); X(22,14,'#F87898'); X(22,13,'#F87898')}
     if(fc==='mustache') rows(8,17,['oo..oo','.oooo.'],{o:'#4A2C18'})}});
+/* 여욱: 사진을 보고 틀 없이 전신을 통째로 그렸어요 (24×43). 크고 둥근 네모 머리, 머리 위로 높이 솟은 뾰족한 귀(바깥쪽 안이 보라), 왼쪽 아래로 나온 주둥이와 까만 코·갈색 털, 엇갈린 가는 실눈, 흰 가슴, 번쩍 든 팔과 허리에 얹은 팔, 리본 달린 파란 앞치마, 끝이 흰 큰 꼬리, 짙은 갈색 다리 */
+const REDD_ROWS=["......O............O....","......O...........OO....","......hO..........OO....",".....OPh.........OhP....",".....OPPO.......OhPP....",".....OPPO.......OPPPO...",".....pPPPO.....OPPPPp...","....OpPPPO....OOPPPPp...","....OpPPPPO...OPPPPPp...","....OpPOOOOOOOOOOOPPp...","....OOOOhhhhhhhhhOOOO...","....OOOhhhhhhhhhOOOOO...","...OOOOOOhhhhhOOOOOOOO..","...OOOEOOOOOOOOOOOOOOo..","...OOOEOOOOOOOEOOOOOOo..","...OOOEOOOOOOOEOOOOOoo..","...OOOOEOOOOOEOOOOOOoo..","...OOOOEOOOOOEOOOOOOoo..","...OOOOOOOOOEOOOOOOOoo..","...OOOOOOOOOEOOOOOOOoo..","..OOOOOOOOOOOOOOOOOOoo..","OONOOOOOOOOOOOOOOOOOo...","KKONOOOOOOOOOOOOOOOOo...","KKNNNOOOOOOOOOOOOOOOo...","ONNoNoooOoooooooooO.....","WwooooooOoooooooO.......","OOOOOOOOOOOOOOO.........","..OOOOOWWOOOOOOO........","...OOOwWWWOOOOOOO.......","...OOWWWWWWOOOOOO.......","...OOWWWWWWOOOOOOO......","...OOWWWWWWOOOOoOoOOO...","...OOOLLWLLOOOOoWWOWWW..","...bbbbLbLbbbbbbOWOWWWWW","...BBBLLBLLBBBbOOOOWWWW.","...BBBBBBBBBBBbOOOOWWWW.","...BBLBBBBBBBBbOOOOWWwW.","...BLBLBBBBBBBbOoOOwW...","...BBLBBBBBBBBb..o......","...BLBBBBBBBBBb.........","...bbbbbbbbbbbbb........",".....NN...NN............","....NNNN.NNNN..........."];
+const REDD_PAL={O:'#E88A30',o:'#C86A20',h:'#F4A858',P:'#B060B0',p:'#8A3A8A',K:'#2A1408',N:'#7A4A22',W:'#F8F2EA',w:'#E0D4C8',B:'#3A48B0',b:'#2A3890',L:'#8A98E0',E:'#2A1408'};
+SP.redd.vb='-3 -19 26 44'; // 목록의 작은 그림에서는 큰 몸 전체가 틀 안에 들어오게
+ACD.ACC.redd.full=fullFig({key:'redd',rows:REDD_ROWS,pal:REDD_PAL,ol:'#4A2410',px:3,legs:[[3,7],[8,13]],legY:[40,42],
+  at:{cape:[9,25,41,6,12],sides:[0,23,26],sack:[3,38],neck:[9,25],side:[7,'R',11],hat:[12,10],note:[21,3],grump:[1,4],snack:[17,31],zzz:[21,-3]},
+  close:({P,g})=>{for(const [x,y] of [[6,13],[6,14],[6,15],[7,16],[7,17],[14,14],[14,15],[13,16],[13,17],[12,18],[12,19]]) P(x,y,REDD_PAL.O); for(const [x,y] of [[5,16],[6,16],[7,16],[12,17],[13,17],[14,17]]) P(x,y,REDD_PAL.E)}, // 실눈을 가로로 감아요
+  ear:({P,rows},hp)=>{const band=hp?'#383848':'#C83858'; for(let x=5;x<=19;x++) P(x,9,band); for(let y=10;y<=12;y++){P(3,y,band); P(21,y,band)} P(4,9,band); P(20,9,band); // 띠는 귀 사이로
+    if(hp){rows(1,13,['.KK','KRR','KRr','KRR','.KK'],{K:'#383848',R:'#E84848',r:'#F89898'}); rows(21,13,['KK.','RRK','rRK','RRK','KK.'],{K:'#383848',R:'#E84848',r:'#F89898'})}
+    else{rows(0,12,['.ww.','wWPw','wPPw','wWPw','.ww.'],{W:'#FFFFFF',w:'#D8C4D8',P:'#F8C8D8'}); rows(20,12,['.ww.','wPWw','wPPw','wPWw','.ww.'],{W:'#FFFFFF',w:'#D8C4D8',P:'#F8C8D8'})}},
+  face:({P,rows},fc)=>{const X=P, box=(x0,x1,y0,y1,c,fill)=>{for(let y=y0;y<=y1;y++) for(let x=x0;x<=x1;x++) if(fill||y===y0||y===y1||x===x0||x===x1) X(x,y,c)}; // 눈: 왼쪽 x5~8 y12~18, 오른쪽 x11~15 y13~20
+    if(fc==='glasses'){box(4,9,12,18,'#384068'); box(11,16,13,20,'#384068'); X(10,15,'#384068')}
+    if(fc==='shades'){box(4,9,12,18,'#202028',1); box(11,16,13,20,'#202028',1); X(10,15,'#202028'); X(5,13,'#A8D8F8'); X(12,14,'#A8D8F8')}
+    if(fc==='heartglass'){const H=['HH.HH','HHHHH','HHHHH','.HHH.','..H..'],m={H:'#F04870'}; rows(4,13,H,m); rows(11,14,H,m); X(9,15,'#F04870'); X(10,15,'#F04870'); X(5,13,'#FFB0C8'); X(12,14,'#FFB0C8')}
+    if(fc==='monocle'){box(11,16,13,20,'#B07810'); for(let y=21;y<=24;y++) X(16,y,'#B07810')}
+    if(fc==='eyepatch'){box(4,9,12,18,'#202028',1); for(let x=3;x<=21;x++) X(x,11,'#202028')}
+    if(fc==='blush'){X(5,20,'#F87898'); X(6,20,'#F87898'); X(16,21,'#F87898'); X(17,21,'#F87898')}
+    if(fc==='mustache') rows(3,22,['oo..oo','.oooo.'],{o:'#4A2C18'})},
+  props:({rows},pose)=>{if(pose==='money') rows(17,30,['.yy.','yYYy','yYyy','.yy.'],{y:'#F0C030',Y:'#FFF0A0'})}}); // 동전은 허리에 얹은 손에
 AC2_KEYS.forEach(k=>SP[k].acDraw=1);
 /* 동물의 숲 친구들 옷: 24칸 큰 그림에 맞춰 다시 그려요. 모자는 WEAR 그림을 1.5배로, 나머지는 얼굴·목 자리에 맞춰 직접 */
 const AC_M={nook:{t:3,mu:12},timmy:{t:5,mu:13},tommy:{t:5,mu:13},isabelle:{t:3,mu:12},blathers:{t:2,mu:13},kk:{t:1,mu:12},apollo:{t:0,mu:14},celeste:{t:2,mu:13},marshal:{t:3,mu:13},raymond:{t:3,mu:12},mabel:{t:1,mu:13},sable:{t:1,mu:13},redd:{t:3,mu:13},digby:{t:2,mu:12},leif:{t:3,mu:12},johnny:{t:2,mu:13},daisymae:{t:3,mu:13},cj:{t:2,mu:13},kappn:{t:2,mu:13},brewster:{t:2,mu:13}}; // t: 머리 꼭대기 줄, mu: 콧수염 줄
@@ -8066,7 +8085,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v183'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v184'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
