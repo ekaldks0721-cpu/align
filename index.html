@@ -705,7 +705,7 @@ body.kb #buddy{display:none!important}
 .rmpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(3.4rem,1fr));gap:.3rem;margin-top:.3rem} .rmpick .tslot{min-height:3.2rem;justify-content:center} .rmpick .tslot.c .art.px{width:100%;height:auto} .rmpick .tslot.s .art.px{width:2.2rem;height:2.2rem}
 .stkgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:.4rem} .stkh{text-align:center;opacity:.7} .stkc{position:relative;aspect-ratio:1;background:var(--px-soft,#F4E8D0);border:1px solid rgba(40,48,72,.12);display:flex;align-items:center;justify-content:center;min-width:0}
 .stkcard .stkgrid{max-width:620px;margin-left:auto;margin-right:auto} .stkc.empty{background:none;border:0} .stkc.today{outline:2px solid var(--accent)} .stkd{position:absolute;left:3px;top:1px;font-size:10px;opacity:.65} .stkgold{position:absolute;right:1px;top:-2px;font-size:.85rem}
-.stk{display:inline-flex;width:70%;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 1px 1px rgba(0,0,0,.25))} .stk.lg{width:92%} .stk .pix svg{width:100%;height:auto} .stkstar{font-size:1.4rem}
+.stk{display:inline-flex;width:70%;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 1px 1px rgba(0,0,0,.25))} .stk.lg{width:92%} .stk .pix svg{width:100%;height:auto} .stkstar{font-size:1.4rem} .stkt{position:absolute;left:1px;right:1px;bottom:1px;font-size:9.5px;line-height:1.05;text-align:center;word-break:keep-all;color:var(--ink,#283048);font-weight:600;text-shadow:0 0 2px #fff,0 0 2px #fff} .stkc.on .stk{position:relative;top:-9%} @media (max-width:599px){.stkc.on .stk{width:50%;top:-20%} .stkc.on .stk.lg{width:60%}} @media (min-width:600px){.stkt{font-size:11px}}
 .anyrow{margin-top:.9rem} .anyrow>.row{margin-bottom:.3rem} .anyg{margin-top:.4rem} .anyslots small{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
 @media (max-width:520px){.anyslots{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .art{display:inline-flex;align-items:center;justify-content:center;line-height:1} .art.px svg{display:block;width:100%;height:100%;image-rendering:pixelated}
@@ -7316,6 +7316,7 @@ let stkMonth=null;
 function stickerDays(ym){ // 날짜 → {sec, pet}
   const by={}; allOf('log-').forEach(s=>{if(s.kind==='manual'||!s.segs||!s.segs.length) return; const k=dayKey(s.segs[0][0]*1e3); if(k.slice(0,7)!==ym) return; const d=by[k]||(by[k]={sec:0,per:{}}); const t=sessDur(s); d.sec+=t; if(s.pet) d.per[s.pet]=(d.per[s.pet]||0)+t});
   Object.values(by).forEach(d=>{const best=Object.entries(d.per).sort((a,b)=>b[1]-a[1])[0]; d.pet=best?pets().find(p=>p.id===best[0]):null}); return by}
+const stkDur=sec=>{const m=Math.floor(sec/60), hr=Math.floor(m/60), mm=m%60; return EN?(hr?hr+'h'+(mm?' '+mm+'m':''):mm+'m'):(hr?hr+'시간'+(mm?' '+mm+'분':''):mm+'분')}; // 그날 공부한 시간 (n시간 n분)
 const stkTilt=k=>{let x=0; for(const ch of k) x=(x*31+ch.charCodeAt(0))>>>0; return (x%13)-6};
 function renderStickers(){
   const ym=stkMonth||today().slice(0,7), [y,m]=ym.split('-').map(Number), first=ym+'-01', nDays=new Date(y,m,0).getDate(), lead=wdOf(first), by=stickerDays(ym), t0=today();
@@ -7324,7 +7325,7 @@ function renderStickers(){
   for(let d=1;d<=nDays;d++){const k=ym+'-'+pad(d), D=by[k], on=D&&D.sec>=600, big=on&&D.sec>=3*3600;
     cells.push(h('div',{class:'stkc'+(k===t0?' today':'')+(on?' on':''),title:on?fmtDur(D.sec):''},h('span',{class:'stkd num'},d),
       on?h('span',{class:'stk'+(D.sec>=3600?' lg':''),style:'transform:rotate('+stkTilt(k)+'deg)'},D.pet&&stageOf(petXP(D.pet))?petSVG(D.pet.sp,Math.max(1,stageOf(petXP(D.pet))),D.pet.wear||{},'happy',48,petXP(D.pet)):h('span',{class:'stkstar'},'⭐')):null,
-      big?h('span',{class:'stkgold'},'🏅'):null))}
+      big?h('span',{class:'stkgold'},'🏅'):null,D&&D.sec>=60?h('span',{class:'stkt num'},stkDur(D.sec)):null))}
   const mv=n=>{const d=new Date(y,m-1+n,1); stkMonth=d.getFullYear()+'-'+pad(d.getMonth()+1); render()};
   return h('section',{class:'card stkcard'},h('div',{class:'row'},h('h2',null,'📅 '+TR('스티커 달력')),h('span',{class:'sp'}),
       h('span',{style:'white-space:nowrap;display:inline-flex;align-items:center'},h('button',{class:'quiet',onclick:()=>mv(-1),'aria-label':TR('이전 달')},'◀'),h('b',{class:'num',style:'margin:0 .3rem'},EN?new Date(y,m-1,1).toLocaleDateString('en',{year:'numeric',month:'short'}):y+'년 '+m+'월'),h('button',{class:'quiet',onclick:()=>mv(1),'aria-label':TR('다음 달')},'▶'))),
@@ -7343,7 +7344,7 @@ async function stickerSave(ym){ // 한 달 달력을 한 장의 그림으로
     if(D&&D.sec>=600){const big=D.sec>=3600; ctx.save(); ctx.translate(cx+C/2,cy+C/2+8); ctx.rotate(stkTilt(k)*Math.PI/180);
       if(D.pet&&stageOf(petXP(D.pet))){const st=Math.max(1,stageOf(petXP(D.pet))), hh=spriteH(D.pet.sp,st), G=poseG(D.pet.sp,st,D.pet.wear||{},'happy',petXP(D.pet)).G, ext=Math.max(G[0].length,hh), s=Math.max(1,Math.floor((big?74:56)/ext)); ctx.fillStyle='#FFFFFF'; ctx.beginPath(); ctx.arc(0,0,ext*s/2+5,0,Math.PI*2); ctx.fill(); cvPet(ctx,D.pet.sp,D.pet,-8*s,hh*s/2,s)}
       else{ctx.font=(10*s)+'px sans-serif'; ctx.textAlign='center'; ctx.fillText('⭐',0,4*s); ctx.textAlign='left'}
-      ctx.restore(); if(D.sec>=3*3600){ctx.font='26px sans-serif'; ctx.fillText('🏅',cx+C-38,cy+34)}}}
+      ctx.restore(); if(D.sec>=3*3600){ctx.font='26px sans-serif'; ctx.fillText('🏅',cx+C-38,cy+34)}} if(D&&D.sec>=60){ctx.font='bold 15px '+F; ctx.fillStyle='#5A4A30'; ctx.textAlign='center'; ctx.fillText(stkDur(D.sec),cx+C/2,cy+C-10); ctx.textAlign='left'}}
   ctx.font='16px '+F; ctx.fillStyle='#8A7A60'; ctx.fillText('Align · '+TR('스티커 달력'),30,H-26);
   const b=await new Promise(res=>cv.toBlob(res,'image/png')), name='align-stickers-'+ym+'.png', file=new File([b],name,{type:'image/png'});
   try{if(/iPad|iPhone|iPod/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]}); return}}catch(e){if(e&&e.name==='AbortError') return}
@@ -8171,7 +8172,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v207'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v208'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
