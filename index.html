@@ -666,9 +666,9 @@ dialog h3{margin:.9rem 0 .4rem}
 #buddy[hidden]{display:none!important}
 #buddy .bpet{pointer-events:auto;background:none;border:0;padding:0;margin:0;min-height:0;min-width:0;box-shadow:none;cursor:pointer;display:block;line-height:0}
 #buddy .bpet:active{transform:none} #buddy svg{image-rendering:pixelated;display:block}
-#buddy .bbub{position:absolute;bottom:100%;margin-bottom:6px;white-space:nowrap;max-width:min(80vw,22rem);overflow:hidden;text-overflow:ellipsis;line-height:1.4;font-size:14px;
+#buddy .bbub{position:absolute;bottom:100%;margin-bottom:calc(6px + var(--bov,0px));white-space:nowrap;max-width:min(80vw,22rem);overflow:hidden;text-overflow:ellipsis;line-height:1.4;font-size:14px;
   background:var(--px-bg);color:var(--px-ink);border:2px solid var(--px-line);box-shadow:3px 3px 0 var(--px-line);padding:.25rem .6rem}
-#buddy .bheart{position:absolute;left:50%;bottom:100%;margin-left:-8px;line-height:0}
+#buddy .bheart{position:absolute;left:50%;bottom:100%;margin-bottom:var(--bov,0px);margin-left:-8px;line-height:0}
 @media (prefers-reduced-motion:no-preference){#buddy .bheart{animation:bheart 1s steps(4) forwards}}
 @keyframes bheart{to{transform:translateY(-28px);opacity:0}}
 body.kb #buddy{display:none!important}
@@ -6248,6 +6248,7 @@ function renderPet(){
 /* ---------- 함께 다니는 동물: 앱 화면 아래쪽을 돌아다니며 같이 공부해요 ---------- */
 const BUDDY={x:24,dir:1,act:'stand',t:6,fi:0,cur:'',sayT:0,nextTalk:0};
 let buddyEl=null;
+const SOV={}, spriteOver=(spk,st,wear,xp)=>{const k=spk+'|'+st+'|'+JSON.stringify(wear||{}); if(k in SOV) return SOV[k]; let ov=0; try{const G=poseG(spk,st,wear||{},'stand',xp||0).G, py=G.py||0; let top=G.findIndex(r=>r.some(c=>c!=='.')); if(top>=0) ov=Math.max(0,py-top)}catch(e){} return SOV[k]=ov}; // 그림이 틀(16칸) 위로 얼마나 솟는지 (말풍선을 그만큼 올려요)
 const buddyOn=()=>S.settings.v.buddy!==false, talkOn=()=>S.settings.v.buddyTalk!==false;
 function setBuddy(k,v){S.settings.v[k]=v; S.settings.m=Date.now(); S.dirty.settings=1; saveLocal(); schedulePush(); render()}
 const LINES={
@@ -6646,6 +6647,7 @@ function stepBuddy(){
   const flip=b.dir<0&&!/read|write/.test(fr), key=p.id+fr+(flip?'f':'')+JSON.stringify(p.wear||{})+st;
   if(b.cur!==key){b.cur=key; b.svg.innerHTML=spriteSVG(p.sp,st,p.wear,fr,xp,flip)}
   const hh=spriteH(p.sp,st); b.svg.setAttribute('viewBox','0 0 16 '+hh); b.svg.setAttribute('width',w); b.svg.setAttribute('height',hh*sc);
+  {const ov=spriteOver(p.sp,st,p.wear,xp)*sc; buddyEl.style.setProperty('--bov',ov+'px')} // 틀보다 위로 큰 친구는 말풍선·하트를 머리 위로 올려요
   buddyEl.style.bottom=bottom+'px'; buddyEl.style.transition=st?glide(p.sp):''; buddyEl.style.transform='translate('+b.x+'px,'+(b.air||0)*sc+'px)';
   if(b.sayT&&now>b.sayT){b.sayT=0; buddyEl.querySelector('.bbub').hidden=true} else placeBubble();
 }
@@ -8130,7 +8132,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v191'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v192'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
