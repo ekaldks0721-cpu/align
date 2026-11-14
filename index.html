@@ -7707,9 +7707,9 @@ function palStudyPose(p,now){const sp=SP[p.sp]||{}, fa=focusAct(sp), slot=Math.f
   if(fa&&slot===3) return fa; return slot%2?'write':'read'}
 const PAL_PROP={blathers:'magnify',kk:'notes',apollo:'glare'};
 /* 책상 장면 (96×44): 벽·창문(지금 시간), 책상, 동물, 과목 소품, 쌓이는 책과 컵, 둘이 채우는 병 */
-function palSprite(sp,st,wear,frame,xp,cx){ // 책상 뒤에 앉은 그림: 칠해진 키가 20칸쯤 되게 키우고(1~2배), 통째로 그린 큰 친구는 0.75배로 줄이고 다리는 책상 뒤에 숨겨 앉은 것처럼, 나머지는 아래쪽만 책상에 살짝 가려요
+function palSprite(sp,st,wear,frame,xp,cx){ // 책상 뒤에 앉은 그림: 칠해진 키가 20칸쯤 되게 키우고(1~2배), 통째로 그린 큰 친구는 0.75배로 줄이고 나(me)는 1.25배로 키워서, 둘 다 다리는 책상 뒤에 숨겨 앉은 것처럼, 나머지는 아래쪽만 책상에 살짝 가려요
   const g=document.createElementNS('http://www.w3.org/2000/svg','g'), {G}=poseG(sp,st,wear,frame,xp); let y0=-1, y1=0, x0=99, x1=0; G.forEach((r,y)=>r.forEach((c,x)=>{if(c!=='.'){if(y0<0) y0=y; y1=y+1; if(x<x0) x0=x; if(x+1>x1) x1=x+1}}));
-  const py=G.py||0, px=G.px||0, top=y0-py, bot=y1-py, hh=bot-top, big=hh>28, k=big?.75:Math.min(2,Math.max(1,20/hh)), sh=hh*k, c=(x0-px+x1-px)/2, ty=big?Math.round(5-top*k):Math.round(Math.max(1-top*k,27+Math.round(sh*.15)-bot*k));
+  const py=G.py||0, px=G.px||0, top=y0-py, bot=y1-py, hh=bot-top, me=sp==='me', big=hh>28, k=me?1.25:big?.75:Math.min(2,Math.max(1,20/hh)), sh=hh*k, c=(x0-px+x1-px)/2, ty=me?Math.round(33-bot*k):big?Math.round(5-top*k):Math.round(Math.max(1-top*k,27+Math.round(sh*.15)-bot*k));
   g.setAttribute('transform','translate('+Math.round(cx-c*k)+','+ty+') scale('+k+')'); g.innerHTML=spriteSVG(sp,st,wear,frame,xp,false); return g}
 function palScene(p,st,frame,o){
   const W=96, H=40, PCX=o.me?58:46, MX=PCX-38, BX=82, X=pxBuf(W,H), {P,R}=X, tod=timeOfDay();
@@ -8171,7 +8171,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v206'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v207'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
