@@ -3807,6 +3807,37 @@ ACD.ACC.redd.full=fullFig({key:'redd',rows:REDD_ROWS,pal:REDD_PAL,ol:'#4A2410',p
     if(fc==='blush'){X(5,17,'#F87898'); X(6,17,'#F87898'); X(16,18,'#F87898'); X(17,18,'#F87898')}
     if(fc==='mustache') rows(3,19,['oo..oo','.oooo.'],{o:'#4A2C18'})},
   props:({rows},pose)=>{if(pose==='money') rows(17,27,['.yy.','yYYy','yYyy','.yy.'],{y:'#F0C030',Y:'#FFF0A0'})}}); // 동전은 허리에 얹은 손에
+/* 너굴·콩돌이·밤돌이: 사진을 보고 틀 없이 전신을 통째로 그렸어요. 동그란 귀(안쪽 분홍), 눈가를 두른 짙은 갈색 가면, 밝은 주둥이와 까만 코, 짙은 고리 꼬리 */
+const TANUKI_PAL={O:'#B0703A',o:'#8A5228',h:'#C88A50',D:'#5A2A1E',d:'#46201A',C:'#E8C890',c:'#F4DEB0',P:'#E88A8A',E:'#EEF0F8',U:'#2E3C70',L:'#A06840',l:'#3A2018',K:'#2A1A14',k:'#6A5048',G:'#C4E8DE',g:'#F4FAF8',w:'#A0CEC2',T:'#6AC0AC',t:'#3A9A88',N:'#8A5A30',Y:'#E8A030',y:'#B87818',S:'#E4DCC0',s:'#C8BE9C',B:'#4A58C8',b:'#3A44A8',M:'#4A1E14',I:'#8A98E8',F:'#F0D8A8'};
+const NOOK_ROWS=["................OOOO......","..OOOO.........OOPPOO.....",".OOOPOO.hhhhhhhOPPPPO.....",".OPPPPhhhhhhhhhhOPPPO.....",".OPPOOOOOOOOOOOOOOOOO.....",".OOOLLLLDDDDDDDLLLLO......","..OLLLLLLDDDDDLLLLLLOo....","..OLLLLllDDDDDllLLLLOo....",".ODLLllUEDDDDDEUllLLOo....",".DDllUUUEDDDDDEUUUllDo....",".DdEEUUUEDDDDDEUUUEEdo....",".DDDEEEEDDDDDDDEEEEDDo....",".ODDDDDDDhhhhDDDDDDdoo....",".OOdDDDhhkKKhhhDDDDOoo....","..OODOOhKKKKKhhhOOOOoo....","..OOOOhhhKKKFFFhOOOOoo....","...OOOhhhFFFFFFFOOOO.o..DD","....OOOhhFFFFFFhOOO.....DD",".....OOOhhoFFFOOOO......O.",".......OOooooOOO......OOO.",".......ggwwgOOOwwgggggOOO.",".....gggggwggOgwggggggOO..","...gggggggggggggggggggo...","...gggTTggTTgggggggTTgg...","...ggTGTgTGTNgggYYTGT.....","...ggTTggTTgggggYyTTG.....","...ggggggggggggTTgggG.....","....OgggggggNgTGTgggTT....","...OogggTTggggTTgggTGT....","...OOggTGTgggggggggTT.OOh.","...OOggTTgggNggggTTgGOOOOO","...DDTTgggggggggTGTgGDDDDD","...DTGTgggggTTggTTggGDDDDD","....TTGGGGGTGTGGGGGGGOOOOO","......sssssTTssssssssOOOOo","......SSSSSSSSSSSSSs..OOO.","......SSSSSSSSSSSSSs......","......SSSSSSSsSSSSSs......","......SSSSSSs.SSSSSs......","........OOO....OOO........","........ooo....ooo........",".......DDDD...DDDD........"]; // 너굴 (26×42): 바깥쪽으로 쳐진 털색 눈꺼풀의 졸린 눈과 큰 파란 홍채, 잎 무늬 알로하 셔츠·단추·잎 배지, 베이지 반바지, 한 손은 흔들고 한 손은 내림
+const TWIN_ROWS=["....OO.............OOOOO..","..OOOOO...........OOPPOO..",".OOPPPOO.hhhhhhhh.OPPPPOO.",".OOPPPPhhhhhhhhhhhhPPPPOO.",".OOPPOOOOOOOOOOOOOOOOPPOO.","..OPOODDDDDDDDDDDDDOOOOO..","...OODDDDDDDDDDDDDDDOOO...","...ODDDDDDDDDDDDDDDDDOOo..","..ODDDEEEDDDDDDDDEEEDDOo..","..DDDEUUUEDDDDDDEUUUEDDo..","..DDDEUEUEDDDDDDEUEUEDdo..","..dDDEUUUEDDDDDDEUUUEDDo..","..DDDEUUUEDDDDDDEUUUEDDo..","..DDDEUUUEDDDDDDEUUUEDdD..","..DDDDEEEDDDhhhDDEEEDDDo..","..OdDDDDDDhhkMMhhDDDDDOo..","...DDDDDhhhMMMMMhhhDDDOo..","....DDOhhhhMMMMMhhhOOO.o..",".....OOhhhFFMMMFFhhOO.....","......OOhhFFFFFFFhhO......",".......OOhhFFFFFhOO...DD..","..........OOOOOO....OOD...","...................OOO....","...........OOOO...OOOO....",".........OOccccOOOOO......",".......OOOccccccOOOO......",".....OOOOccccccccOO.......","....OOOOOccIIcIIcOO.......","..DDOO.bbbbbIbIbbbb.......",".OODOO.bBBBIIBIIBBb.......",".OOOOO.bBBBBBBBBBBb.......",".DDDDD.BbBBBIIBBBBb.......",".DDDDDBBBBBIIIIBBBb.......",".OOOOOBBBBBIIIBBBBb.......","..OOO.BBBBBBIBIBBBb.......","......BBBBBBBBBBBBb.......","......bbbbbbbbbbbbbb......",".........OOO..OOO.........",".........ooo..ooo.........","........oooo.oooo........."]; // 콩돌·밤돌 (26×40): 크고 동그란 눈, 벌린 입, 크림색 배, 리본과 나뭇잎 표시의 파란 앞치마, 팔을 벌린 모습 (쌍둥이라 같은 그림)
+const tanukiFace=(L,Rt,br)=>({P,rows},fc)=>{const X=P, box=(x0,x1,y0,y1,c,fill)=>{for(let y=y0;y<=y1;y++) for(let x=x0;x<=x1;x++) if(fill||y===y0||y===y1||x===x0||x===x1) X(x,y,c)}, H=['HH.HH','HHHHH','HHHHH','.HHH.','..H..']; // 두 눈에 맞춰요 (L·Rt: [x0,x1,y0,y1])
+  if(fc==='glasses'){box(...L,'#384068'); box(...Rt,'#384068'); for(let x=L[1]+1;x<Rt[0];x++) X(x,br,'#384068')}
+  if(fc==='shades'){box(...L,'#202028',1); box(...Rt,'#202028',1); for(let x=L[1]+1;x<Rt[0];x++) X(x,br,'#202028'); X(L[0]+1,L[2]+1,'#A8D8F8'); X(Rt[0]+1,Rt[2]+1,'#A8D8F8')}
+  if(fc==='heartglass'){rows(L[0]+1,L[2]+1,H,{H:'#F04870'}); rows(Rt[0]+1,Rt[2]+1,H,{H:'#F04870'}); for(let x=L[0]+6;x<Rt[0]+1;x++) X(x,br,'#F04870')}
+  if(fc==='monocle'){box(...Rt,'#B07810'); for(let y=Rt[3]+1;y<=Rt[3]+4;y++) X(Rt[1],y,'#B07810')}
+  if(fc==='eyepatch'){box(...L,'#202028',1); for(let x=L[0]-1;x<=Rt[1]+1;x++) X(x,L[2]-1,'#202028')}
+  if(fc==='blush'){X(L[0],L[3]+1,'#F87898'); X(L[0]+1,L[3]+1,'#F87898'); X(Rt[1]-1,Rt[3]+1,'#F87898'); X(Rt[1],Rt[3]+1,'#F87898')}
+  if(fc==='mustache') rows(Math.round((L[1]+Rt[0])/2)-3,L[3]+3,['oo..oo','.oooo.'],{o:'#4A2C18'})};
+const tanukiEar=(band,cupY,xl,xr,bandY)=>({P,rows},hp)=>{const c=hp?'#383848':'#C83858'; for(let x=xl+3;x<=xr-3;x++) P(x,bandY,c); for(let y=bandY+1;y<cupY;y++){P(xl+1,y,c); P(xr-1,y,c)} // 띠는 귀 사이로, 귀덮개는 머리 양옆에
+  if(hp){rows(xl,cupY,['.KK','KRR','KRr','KRR','.KK'],{K:'#383848',R:'#E84848',r:'#F89898'}); rows(xr-2,cupY,['KK.','RRK','rRK','RRK','KK.'],{K:'#383848',R:'#E84848',r:'#F89898'})}
+  else{rows(xl-1,cupY-1,['.ww.','wWPw','wPPw','wWPw','.ww.'],{W:'#FFFFFF',w:'#D8C4D8',P:'#F8C8D8'}); rows(xr-2,cupY-1,['.ww.','wPWw','wPPw','wPWw','.ww.'],{W:'#FFFFFF',w:'#D8C4D8',P:'#F8C8D8'})}};
+const eyeTo=(cols,to)=>({P,g})=>{const from=cols.map(c=>TANUKI_PAL[c]); return (x0,x1,y0,y1)=>{for(let y=y0;y<=y1;y++) for(let x=x0;x<=x1;x++) if(from.includes(g(x,y))) P(x,y,to)}};
+SP.nook.vb='-5 -18 28 42'; // 목록의 작은 그림에서는 큰 몸 전체가 틀 안에 들어오게
+ACD.ACC.nook.full=fullFig({key:'nook',rows:NOOK_ROWS,pal:TANUKI_PAL,ol:'#3A1E14',px:5,legs:[[6,11],[13,19]],legY:[39,41],
+  at:{cape:[12,20,40,7,13],sides:[0,25,21],sack:[3,34],neck:[12,20],side:[6,'R',3],hat:[11,4],note:[23,9],grump:[23,4],snack:[22,12],zzz:[22,-4]},
+  close:D=>{const f=eyeTo(['E','U'],TANUKI_PAL.L)(D); f(3,8,5,11); f(14,19,5,11); for(const x of [4,5,6,7,15,16,17,18]) D.P(x,10,TANUKI_PAL.l)}, // 쳐진 눈꺼풀이 끝까지 내려와 감겨요
+  ear:tanukiEar(0,8,0,22,3),face:tanukiFace([2,9,4,12],[13,20,4,12],8),
+  props:({P,rows,f},pose)=>{
+    if(pose==='bellbag') rows(0,27-(f?1:0),['..oo..','.oKKo.','oKKKKo','oKYYKo','oKYKKo','oKKKKo','.oooo.'],{o:'#6A5030',K:'#EAD9A8',Y:'#E8A818'}); // 벨 주머니 영차
+    if(pose==='money') rows(21,12,['.yy.','yYYy','yYyy','.yy.'],{y:'#F0C030',Y:'#FFF0A0'});
+    if(pose==='read') rows(7,24,['BBBBBBBBBB','BwwwwBwwwB','BwwwwBwwwB','BBBBBBBBBB'],{B:'#4A78C8',w:'#FFFFFF'})}});
+SP.timmy.vb=SP.tommy.vb='-5 -16 28 40';
+ACD.ACC.timmy.full=ACD.ACC.tommy.full=fullFig({key:'timmy',rows:TWIN_ROWS,pal:TANUKI_PAL,ol:'#3A1E14',px:5,legs:[[7,11],[13,17]],legY:[37,39],
+  at:{cape:[12,24,38,6,12],sides:[0,25,25],sack:[4,33],neck:[12,23],side:[6,'R',3],hat:[12,4],note:[23,8],grump:[23,3],snack:[21,17],zzz:[22,-4]},
+  close:D=>{const f=eyeTo(['E','U'],TANUKI_PAL.D)(D); f(5,9,8,14); f(16,20,8,14); for(const x0 of [5,16]) for(const [x,y] of [[0,12],[1,11],[2,11],[3,11],[4,12]]) D.P(x0+x,y,TANUKI_PAL.E)}, // 감은 눈은 둥근 선
+  ear:tanukiEar(0,9,0,25,3),face:tanukiFace([4,10,7,15],[15,21,7,15],10),
+  props:({P,rows,f},pose)=>{if(pose==='sweep'){for(let i=0;i<=15;i++) P(23-Math.round(i*0.35),19+i,'#A87840'); rows(16+(f?1:0),35,['.yyyy.','yYYYYy','yYyYyY'],{y:'#D0A040',Y:'#E8C060'})}}}); // 빗자루로 쓱쓱
 AC2_KEYS.forEach(k=>SP[k].acDraw=1);
 /* 동물의 숲 친구들 옷: 24칸 큰 그림에 맞춰 다시 그려요. 모자는 WEAR 그림을 1.5배로, 나머지는 얼굴·목 자리에 맞춰 직접 */
 const AC_M={nook:{t:3,mu:12},timmy:{t:5,mu:13},tommy:{t:5,mu:13},isabelle:{t:3,mu:12},blathers:{t:2,mu:13},kk:{t:1,mu:12},apollo:{t:0,mu:14},celeste:{t:2,mu:13},marshal:{t:3,mu:13},raymond:{t:3,mu:12},mabel:{t:1,mu:13},sable:{t:1,mu:13},redd:{t:3,mu:13},digby:{t:2,mu:12},leif:{t:3,mu:12},johnny:{t:2,mu:13},daisymae:{t:3,mu:13},cj:{t:2,mu:13},kappn:{t:2,mu:13},brewster:{t:2,mu:13}}; // t: 머리 꼭대기 줄, mu: 콧수염 줄
@@ -8085,7 +8116,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v185'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v186'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
