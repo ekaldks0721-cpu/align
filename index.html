@@ -705,7 +705,7 @@ body.kb #buddy{display:none!important}
 .rmpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(3.4rem,1fr));gap:.3rem;margin-top:.3rem} .rmpick .tslot{min-height:3.2rem;justify-content:center} .rmpick .tslot.c .art.px{width:100%;height:auto} .rmpick .tslot.s .art.px{width:2.2rem;height:2.2rem}
 .stkgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:.4rem} .stkh{text-align:center;opacity:.7} .stkc{position:relative;aspect-ratio:1;background:var(--px-soft,#F4E8D0);border:1px solid rgba(40,48,72,.12);display:flex;align-items:center;justify-content:center;min-width:0}
 .stkcard .stkgrid{max-width:620px;margin-left:auto;margin-right:auto} .stkc.empty{background:none;border:0} .stkc.today{outline:2px solid var(--accent)} .stkd{position:absolute;left:3px;top:1px;font-size:10px;opacity:.65} .stkgold{position:absolute;right:1px;top:-2px;font-size:.85rem}
-.stk{display:inline-flex;width:70%;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 1px 1px rgba(0,0,0,.25))} .stk.lg{width:92%} .stk .pix svg{width:100%;height:auto} .stkstar{font-size:1.4rem} .stkt{position:absolute;left:1px;right:1px;bottom:1px;font-size:9.5px;line-height:1.05;text-align:center;word-break:keep-all;color:var(--ink,#283048);font-weight:600;text-shadow:0 0 2px #fff,0 0 2px #fff} .stkc.on .stk{position:relative;top:-9%} @media (max-width:599px){.stkc.on .stk{width:50%;top:-20%} .stkc.on .stk.lg{width:60%}} @media (min-width:600px){.stkt{font-size:11px}}
+.stk{display:inline-flex;width:70%;filter:drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff) drop-shadow(0 1px 1px rgba(0,0,0,.25))} .stk.lg{width:92%} .stk .pix svg{width:100%;height:auto} .stkstar{font-size:1.4rem} .stkleg{display:flex;align-items:center;justify-content:flex-end;gap:3px;max-width:620px;margin:.4rem auto 0;opacity:.8} .stkleg i{display:inline-block;width:14px;height:14px;border:1px solid rgba(40,48,72,.15)} .stkt{position:absolute;left:1px;right:1px;bottom:1px;font-size:9.5px;line-height:1.05;text-align:center;word-break:keep-all;color:var(--ink,#283048);font-weight:600;text-shadow:0 0 2px #fff,0 0 2px #fff} .stkc.on .stk{position:relative;top:-9%} @media (max-width:599px){.stkc.on .stk{width:50%;top:-20%} .stkc.on .stk.lg{width:60%}} @media (min-width:600px){.stkt{font-size:11px}}
 .anyrow{margin-top:.9rem} .anyrow>.row{margin-bottom:.3rem} .anyg{margin-top:.4rem} .anyslots small{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%} .anyset{display:flex;align-items:center;gap:.4rem;margin-top:.3rem} .anyset .lab{width:3.2rem;flex:none} .anyslots{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.25rem} .anyslots .tslot{padding:.2rem 0} .anyslots .temo{font-size:1.2rem}
 @media (max-width:520px){.anyslots{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .art{display:inline-flex;align-items:center;justify-content:center;line-height:1} .art.px svg{display:block;width:100%;height:100%;image-rendering:pixelated}
@@ -1541,7 +1541,7 @@ function finishFocus(endTs){
   if(T.running) T.segs.push([Math.round(T.segStart/1e3),Math.round(endTs/1e3)]);
   const segs=T.segs.filter(g=>g[1]>g[0]), total=segs.reduce((a,g)=>a+g[1]-g[0],0), quick=!!T.quick; T.quick=false;
   T.running=false; T.elapsed=0; T.segs=[]; T.segStart=null;
-  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap) it.pet=ap.id; if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){} try{evReward(it)}catch(e){} setTimeout(()=>{try{guestCheck()}catch(e){}},3000); try{palSessionDone(it)}catch(e){} setTimeout(()=>{try{xwCheck()}catch(e){}},3500);
+  if(total>=60){const it={id:uid(),sub:T.sub,task:T.task||null,kind:T.mode,segs,memo:'',focus:0}; const ap=activePet(); if(ap){it.pet=ap.id; if(ap.wear&&Object.keys(ap.wear).length) it.pw=Object.assign({},ap.wear)} if(quick) it.quick=1; put('log-'+monthOf(segs[0][0]*1e3),it); lastId=it.id; rewardSession(it,quick); try{frSessionDone(it)}catch(e){} try{tripReturn(it)}catch(e){} try{evReward(it)}catch(e){} setTimeout(()=>{try{guestCheck()}catch(e){}},3000); try{palSessionDone(it)}catch(e){} setTimeout(()=>{try{xwCheck()}catch(e){}},3500);
     if(T.mode==='pomo'&&!quick){T.count++; T.phase=T.count%Math.max(1,cfg('every'))===0?'long':'short';
       if(cfg('autoBreak')&&Date.now()-endTs<60e3){T.running=true; T.segStart=Date.now()}}
   } else toast(TR('1분이 안 되는 시간은 기록하지 않았어요'));
@@ -7239,8 +7239,8 @@ function tripPaint(){ // 타이머 아래: 지금 어디까지 가고 있는지
 function artCells(id){const raw=window.TRIP_ART&&TRIP_ART[id]; if(!raw) return null; const [wh,pal,data]=raw.split('|'), [W,H]=wh.split(',').map(Number), P=pal.split(','), out=[]; let m; const re=/([^0-9])(\d*)/g;
   while((m=re.exec(data))) for(let k=+(m[2]||1);k>0;k--) out.push(m[1]==='.'?null:'#'+P[ART_AL.indexOf(m[1])]); return {W,H,c:out}}
 function cvPix(ctx,cells,W,H,x0,y0,s){for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=cells[y*W+x]; if(c){ctx.fillStyle=c; ctx.fillRect(x0+x*s,y0+y*s,s,s)}}}
-function cvPet(ctx,sp,p,x0,yBottom,s,wear){ // 동물 그림 (발이 yBottom에 오게)
-  const xp=p?petXP(p):1200, st=p?Math.max(1,stageOf(xp)):3, {G,pal}=poseG(sp,st,wear||(p?p.wear||{}:{}),'happy',xp), C=gridColors(G,pal), px=G.px||0, base=spriteH(sp,st), py=G.py||0;
+function cvPet(ctx,sp,p,x0,yBottom,s,wear,xpAt){ // 동물 그림 (발이 yBottom에 오게, xpAt: 그날 모습)
+  const xp=xpAt!=null?xpAt:p?petXP(p):1200, st=xpAt!=null?stageOf(xp):p?Math.max(1,stageOf(xp)):3, {G,pal}=poseG(sp,st,st?wear||(p?p.wear||{}:{}):{},st?'happy':'egg',xp), C=gridColors(G,pal), px=G.px||0, base=spriteH(sp,st), py=G.py||0;
   C.forEach((r,y)=>r.forEach((c,x)=>{if(c){ctx.fillStyle=c; ctx.fillRect(x0+(x-px)*s,yBottom-(base-(y-py))*s,s,s)}}))}
 function cvWrap(ctx,text,maxW){const out=[]; let line=''; for(const w of String(text).split(/(\s+)/)){const t=line+w; if(ctx.measureText(t).width<=maxW||!line){line=t} else{out.push(line.trim()); line=w.trimStart()}
   while(ctx.measureText(line).width>maxW){let i=line.length; while(i>1&&ctx.measureText(line.slice(0,i)).width>maxW) i--; out.push(line.slice(0,i)); line=line.slice(i)}} if(line.trim()) out.push(line.trim()); return out}
@@ -7313,24 +7313,28 @@ function roomDlg(){ // 진열 바꾸기: 기념품 10개, 엽서 6장까지
 }
 /* ---------- 월간 스티커 달력: 타이머로 집중한 날마다 그날 함께한 동물 스티커가 붙어요 ---------- */
 let stkMonth=null;
-function stickerDays(ym){ // 날짜 → {sec, pet}
-  const by={}; allOf('log-').forEach(s=>{if(s.kind==='manual'||!s.segs||!s.segs.length) return; const k=dayKey(s.segs[0][0]*1e3); if(k.slice(0,7)!==ym) return; const d=by[k]||(by[k]={sec:0,per:{}}); const t=sessDur(s); d.sec+=t; if(s.pet) d.per[s.pet]=(d.per[s.pet]||0)+t});
-  Object.values(by).forEach(d=>{const best=Object.entries(d.per).sort((a,b)=>b[1]-a[1])[0]; d.pet=best?pets().find(p=>p.id===best[0]):null}); return by}
+function stickerDays(ym){ // 날짜 → {sec, pet, xp(그날 끝까지 함께한 분), wear(그날 입은 옷)}
+  const by={}; allOf('log-').forEach(s=>{if(s.kind==='manual'||!s.segs||!s.segs.length) return; const k=dayKey(s.segs[0][0]*1e3); if(k.slice(0,7)!==ym) return; const d=by[k]||(by[k]={sec:0,per:{},pw:{},pt:{}}); const t=sessDur(s); d.sec+=t; if(s.pet){d.per[s.pet]=(d.per[s.pet]||0)+t; if(s.pw&&s.segs[0][0]>=(d.pt[s.pet]||0)){d.pw[s.pet]=s.pw; d.pt[s.pet]=s.segs[0][0]}}});
+  Object.entries(by).forEach(([k,d])=>{const best=Object.entries(d.per).sort((a,b)=>b[1]-a[1])[0]; d.pet=best?pets().find(p=>p.id===best[0]):null; if(!d.pet) return;
+    d.xp=Math.round(allOf('log-').reduce((a,s)=>a+(s.pet===d.pet.id&&countsLog(s)&&dayKey(s.segs[0][0]*1e3)<=k?sessDur(s):0),0)/60)+(d.pet.bonus||0); // 그날까지 함께한 분
+    d.wear=d.pw[d.pet.id]||d.pet.wear||{}}); return by}
 const stkDur=sec=>{const m=Math.floor(sec/60), hr=Math.floor(m/60), mm=m%60; return EN?(hr?hr+'h'+(mm?' '+mm+'m':''):mm+'m'):(hr?hr+'시간'+(mm?' '+mm+'분':''):mm+'분')}; // 그날 공부한 시간 (n시간 n분)
+const STK_HEAT=['','#F7E4BC','#F2CD86','#EAAF5C','#DD8F42','#C46C2C'], stkLv=sec=>sec<60?0:sec<1800?1:sec<3600?2:sec<7200?3:sec<10800?4:5; // 히트맵: 30분·1시간·2시간·3시간 기준으로 진해져요
 const stkTilt=k=>{let x=0; for(const ch of k) x=(x*31+ch.charCodeAt(0))>>>0; return (x%13)-6};
 function renderStickers(){
   const ym=stkMonth||today().slice(0,7), [y,m]=ym.split('-').map(Number), first=ym+'-01', nDays=new Date(y,m,0).getDate(), lead=wdOf(first), by=stickerDays(ym), t0=today();
   const days=Object.keys(by).filter(k=>by[k].sec>=600), tot=days.reduce((a,k)=>a+by[k].sec,0);
   const cells=[]; for(let i=0;i<lead;i++) cells.push(h('div',{class:'stkc empty'}));
   for(let d=1;d<=nDays;d++){const k=ym+'-'+pad(d), D=by[k], on=D&&D.sec>=600, big=on&&D.sec>=3*3600;
-    cells.push(h('div',{class:'stkc'+(k===t0?' today':'')+(on?' on':''),title:on?fmtDur(D.sec):''},h('span',{class:'stkd num'},d),
-      on?h('span',{class:'stk'+(D.sec>=3600?' lg':''),style:'transform:rotate('+stkTilt(k)+'deg)'},D.pet&&stageOf(petXP(D.pet))?petSVG(D.pet.sp,Math.max(1,stageOf(petXP(D.pet))),D.pet.wear||{},'happy',48,petXP(D.pet)):h('span',{class:'stkstar'},'⭐')):null,
+    const lv=stkLv(D?D.sec:0); cells.push(h('div',{class:'stkc'+(k===t0?' today':'')+(on?' on':''),title:D&&D.sec>=60?fmtDur(D.sec):'',style:lv?'background:'+STK_HEAT[lv]:''},h('span',{class:'stkd num'},d),
+      on?h('span',{class:'stk'+(D.sec>=3600?' lg':''),style:'transform:rotate('+stkTilt(k)+'deg)'},D.pet?petSVG(D.pet.sp,stageOf(D.xp),D.wear,'happy',48,D.xp):h('span',{class:'stkstar'},'⭐')):null,
       big?h('span',{class:'stkgold'},'🏅'):null,D&&D.sec>=60?h('span',{class:'stkt num'},stkDur(D.sec)):null))}
   const mv=n=>{const d=new Date(y,m-1+n,1); stkMonth=d.getFullYear()+'-'+pad(d.getMonth()+1); render()};
   return h('section',{class:'card stkcard'},h('div',{class:'row'},h('h2',null,'📅 '+TR('스티커 달력')),h('span',{class:'sp'}),
       h('span',{style:'white-space:nowrap;display:inline-flex;align-items:center'},h('button',{class:'quiet',onclick:()=>mv(-1),'aria-label':TR('이전 달')},'◀'),h('b',{class:'num',style:'margin:0 .3rem'},EN?new Date(y,m-1,1).toLocaleDateString('en',{year:'numeric',month:'short'}):y+'년 '+m+'월'),h('button',{class:'quiet',onclick:()=>mv(1),'aria-label':TR('다음 달')},'▶'))),
     h('p',{class:'small'},TR('타이머로 10분 넘게 집중한 날마다 그날 함께한 동물 스티커가 붙어요. 1시간이면 큰 스티커, 3시간이면 메달까지!')),
     h('div',{class:'stkgrid'},WD.map(w=>h('div',{class:'stkh small'},w)),...cells),
+    h('div',{class:'stkleg small'},TR('적음'),...STK_HEAT.slice(1).map((c,i)=>h('i',{style:'background:'+c,title:['~30'+TR('분'),'~1'+TR('시간'),'~2'+TR('시간'),'~3'+TR('시간'),'3'+TR('시간')+'+'][i]})),TR('많음')),
     h('div',{class:'pxrow wrap',style:'margin-top:.6rem'},h('span',{class:'small'},TR('스티커 {n}개').replace('{n}',days.length)+' · '+TR('합계 ')+fmtDur(tot)),h('span',{class:'sp'}),h('button',{onclick:()=>stickerSave(ym)},'🖼 '+TR('이미지로 저장'))))}
 async function stickerSave(ym){ // 한 달 달력을 한 장의 그림으로
   try{await Promise.all([document.fonts.load('24px Galmuri11'),document.fonts.load('bold 24px Galmuri11')])}catch(e){}
@@ -7340,9 +7344,9 @@ async function stickerSave(ym){ // 한 달 달력을 한 장의 그림으로
   const days=Object.keys(by).filter(k=>by[k].sec>=600); ctx.font='22px '+F; ctx.fillStyle='#6A7088'; ctx.fillText(TR('스티커 {n}개').replace('{n}',days.length)+' · '+TR('합계 ')+fmtDur(days.reduce((a,k)=>a+by[k].sec,0)),30,108);
   ctx.textAlign='center'; WD.forEach((w,i)=>ctx.fillText(w,30+i*C+C/2,150)); ctx.textAlign='left';
   for(let d=1;d<=nDays;d++){const i=lead+d-1, cx=30+(i%7)*C, cy=165+Math.floor(i/7)*C, k=ym+'-'+pad(d), D=by[k];
-    ctx.fillStyle='#F4E8D0'; ctx.fillRect(cx+3,cy+3,C-6,C-6); ctx.fillStyle='#8A7A60'; ctx.font='18px '+F; ctx.fillText(String(d),cx+10,cy+26);
+    ctx.fillStyle=STK_HEAT[stkLv(D?D.sec:0)]||'#F4E8D0'; ctx.fillRect(cx+3,cy+3,C-6,C-6); ctx.fillStyle='#8A7A60'; ctx.font='18px '+F; ctx.fillText(String(d),cx+10,cy+26);
     if(D&&D.sec>=600){const big=D.sec>=3600; ctx.save(); ctx.translate(cx+C/2,cy+C/2+8); ctx.rotate(stkTilt(k)*Math.PI/180);
-      if(D.pet&&stageOf(petXP(D.pet))){const st=Math.max(1,stageOf(petXP(D.pet))), hh=spriteH(D.pet.sp,st), G=poseG(D.pet.sp,st,D.pet.wear||{},'happy',petXP(D.pet)).G, ext=Math.max(G[0].length,hh), s=Math.max(1,Math.floor((big?74:56)/ext)); ctx.fillStyle='#FFFFFF'; ctx.beginPath(); ctx.arc(0,0,ext*s/2+5,0,Math.PI*2); ctx.fill(); cvPet(ctx,D.pet.sp,D.pet,-8*s,hh*s/2,s)}
+      if(D.pet){const st=stageOf(D.xp), hh=spriteH(D.pet.sp,st), G=poseG(D.pet.sp,st,st?D.wear:{},st?'happy':'egg',D.xp).G, ext=Math.max(G[0].length,hh), s=Math.max(1,Math.floor((big?74:56)/ext)); ctx.fillStyle='#FFFFFF'; ctx.beginPath(); ctx.arc(0,0,ext*s/2+5,0,Math.PI*2); ctx.fill(); cvPet(ctx,D.pet.sp,D.pet,-8*s,hh*s/2,s,D.wear,D.xp)}
       else{ctx.font=(10*s)+'px sans-serif'; ctx.textAlign='center'; ctx.fillText('⭐',0,4*s); ctx.textAlign='left'}
       ctx.restore(); if(D.sec>=3*3600){ctx.font='26px sans-serif'; ctx.fillText('🏅',cx+C-38,cy+34)}} if(D&&D.sec>=60){ctx.font='bold 15px '+F; ctx.fillStyle='#5A4A30'; ctx.textAlign='center'; ctx.fillText(stkDur(D.sec),cx+C/2,cy+C-10); ctx.textAlign='left'}}
   ctx.font='16px '+F; ctx.fillStyle='#8A7A60'; ctx.fillText('Align · '+TR('스티커 달력'),30,H-26);
@@ -8172,7 +8176,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v208'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v209'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;

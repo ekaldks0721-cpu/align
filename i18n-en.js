@@ -7589,4 +7589,6 @@ window.I18N_EN={
   "풀 뽑기 일 하러 가자!": "Let's go do the weeding job!",
   "일 끝나면 맛있는 거 먹자!": "Let's eat something yummy after work!",
   "내일도 어떻게든 될 거야. 잘 자!": "Tomorrow will work out somehow too. Good night!",
+  "적음": "Less",
+  "많음": "More",
 };
