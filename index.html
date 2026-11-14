@@ -5430,9 +5430,10 @@ function stepActor(a){
 function showFrame(a,fr){
   const flip=a.dir<0&&fr.indexOf('read')<0&&fr.indexOf('write')<0, key=fr+(flip?'f':'');
   if(a.cur!==key){a.cur=key; a.g.innerHTML=spriteSVG(a.pet.sp,a.st,a.pet.wear,fr,a.xp,flip)}
-  const ty=a.y-(a.noLift?0:spriteH(a.pet.sp,a.st)-16)+(a.air||0), gl=a.st&&!a.fixed?glide(a.pet.sp):'';
-  if(gl){a.g.removeAttribute('transform'); a.g.style.transform='translate('+a.x+'px,'+ty+'px)'; if(a.g.style.transition!==gl) requestAnimationFrame(()=>{a.g.style.transition=gl})} // 처음 자리 잡을 땐 미끄러지지 않게 한 박자 뒤에
-  else a.g.setAttribute('transform','translate('+a.x+','+ty+')');
+  const hh=spriteH(a.pet.sp,a.st), k=a.desk!=null&&a.st&&ACD.ACC[a.pet.sp]&&ACD.ACC[a.pet.sp].full?.5:1; // 유리병 속 통째로 그린 큰 친구는 반으로 (발은 같은 땅, 가운데 맞춤)
+  const ty=a.y-(a.noLift?0:hh-16)+(a.air||0)+hh*(1-k), tx=a.x+8*(1-k), sc=k<1?' scale('+k+')':'', gl=a.st&&!a.fixed?glide(a.pet.sp):'';
+  if(gl){a.g.removeAttribute('transform'); a.g.style.transform='translate('+tx+'px,'+ty+'px)'+sc; if(a.g.style.transition!==gl) requestAnimationFrame(()=>{a.g.style.transition=gl})} // 처음 자리 잡을 땐 미끄러지지 않게 한 박자 뒤에
+  else a.g.setAttribute('transform','translate('+tx+','+ty+')'+sc);
 }
 function engine(){
   actN++; for(let i=ACTORS.length-1;i>=0;i--){const a=ACTORS[i]; if(!a.svg.isConnected){ACTORS.splice(i,1); continue} if(document.visibilityState==='visible'&&a.svg.getBoundingClientRect().width) stepActor(a)}
@@ -8169,7 +8170,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v203'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v204'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
