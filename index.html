@@ -3176,7 +3176,7 @@ const SP={ // pal: 테두리, 몸, 배·얼굴, 무늬, 볼
   sandy:{n:TR("다람이"),pal:["#3A2A18", "#B07848", "#FFFFFF", "#3A2A18", "#D89870"],body:{"shirt": "#F4F4F8", "sleeve": "#F4F4F8", "pants": "#F4F4F8", "shoes": "#A8B0B8", "tail": 1, "deco": [[7, 1, "#A060C8"], [8, 1, "#E878C8"]]},food:'acorn',acts:["karate", "karate", "snack", "read", "science"],lines:'SANDY',traits:[TR("텍사스에서 온 과학자 다람쥐예요"),TR("공기 헬멧을 쓰고 바닷속에서 살아요"),TR("스폰지밥과 가라테 대결을 즐겨요")]},
   gary:{n:TR("핑핑이"),pal:["#2A3A48", "#7EB8E0", "#FFFFFF", "#5A90B8", "#F8A0B0"],eyeX:[9,13],nomouth:1,acts:["sleep", "snack", "stare", "sleep"],lines:'GARY',traits:[TR("스폰지밥이 키우는 바다 달팽이예요"),TR("바다 달팽이는 고양이처럼 '야옹' 하고 울어요"),TR("눈을 딸깍딸깍 부딪쳐 해파리를 진정시킨 적이 있어요")]},
   krabs:{n:TR("집게사장"),pal:["#3A1010", "#E04030", "#FFFFFF", "#3A1010", "#F09080"],body:{"blob": 1, "legs": 3, "legX": [5, 10], "legC": ["b"], "pointy": 1, "armX": [2, 13], "sleeve": "b", "claw": 1},acts:["money", "money", "wag", "patty"],lines:'KRABS',traits:[TR("집게리아 사장님이고 돈을 세상에서 제일 좋아해요"),TR("게살버거 비밀 레시피를 목숨처럼 지켜요")]},
-  chiikawa:{n:TR("치이카와"),pal:["#3A3238", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#F8A8B8"],ear:'round',mark:'cheeks',acts:["weed", "weed", "cry", "snack", "stick"],food:'cupcake',lines:'CHIIKAWA'},
+  chiikawa:{n:TR("치이카와"),pal:["#3A3238", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#F8A8B8"],ear:'round',mark:'cheeks',acts:["weed", "weed", "cry", "snack", "stick"],food:'cupcake',lines:'CHIIKAWA',babble:'chiikawa'},
   hachiware:{n:TR("하치와레"),pal:["#2A3440", "#FFFFFF", "#FFFFFF", "#7FA8C8", "#F8A8B8"],ear:'tri',earC:'a',mark:'cheeks hachicap',acts:["guitar", "sing", "weed", "cheer"],food:'cupcake',lines:'HACHIWARE'},
   usagi:{n:TR("우사기"),pal:["#4A3A28", "#FFF0C0", "#FFF8E0", "#F8B8C0", "#F8A8B8"],ear:'long',mark:'cheeks',acts:["yaha", "yaha", "snack", "weed"],food:'icecream',lines:'USAGI',babble:'usagi'},
   momonga:{n:TR("모몽가"),pal:["#3A3030", "#FFFFFF", "#FFFFFF", "#D8B890", "#F8A8B8"],ear:'round',earC:'a',mark:'cheeks momocap',acts:["float", "cheer", "snack"],food:'cupcake',lines:'MOMONGA'},
@@ -6404,7 +6404,7 @@ const SB_LINES={SPONGE:{tap:[TR("체크무늬만 보면… 꼬꼬댁!"),TR("내 
   SANDY:{tap:[TR("텍사스 이름을 함부로 부르지 마!"),TR("스폰지밥, 가라테 대결이다!"),TR("새 발명품 실험해 볼까?"),TR("하이-야!"),TR("텍사스가 그리워"),TR("과학 실험 중이야!"),TR("공기 헬멧은 필수지"),TR("가라테 한 판 할래?")],focus:[TR("과학자의 집중력을 보여 줄게")],rest:[TR("도토리 간식 시간!")],done:[TR("이햐! 해냈어!"),TR("완벽한 실험 결과야")],morning:[TR("좋은 아침, 친구!")],day:[TR("나무 집 정리하러 갈래")],night:[TR("겨울잠 준비해야 하나?")]},
   GARY:{tap:[TR("야옹"),TR("야옹~"),TR("미야옹?"),TR("(눈을 딸깍딸깍)"),TR("(골골골…)"),TR("야옹! (밥 줘)")],focus:[TR("야옹 (조용히 지켜봄)")],rest:[TR("(껍데기 속으로 쏙)")],done:[TR("야옹!!")],morning:[TR("야옹~ (밥그릇 툭툭)")],day:[TR("(TV 앞에서 뒹굴)")],night:[TR("(쿨쿨… 야옹)")]},
   KRABS:{tap:[TR("행복을 다섯 글자로? 돈! 돈! 돈!"),TR("게살버거 비밀 레시피는 절대 못 줘!"),TR("1원이라도 아껴야지"),TR("돈! 돈! 돈!"),TR("게살버거 비법은 비밀이야"),TR("1원도 소중해"),TR("플랑크톤이 또 왔나?"),TR("아우아우아우")],focus:[TR("시간은 돈이야! 집중!")],rest:[TR("금고 확인하고 올게")],done:[TR("이익이다! 하하!"),TR("코인이 쌓인다!")],morning:[TR("가게 문 열 시간이다")],day:[TR("손님이 많으면 좋겠군")],night:[TR("오늘 매출 계산해야지")]}};
-const CHII_LINES={CHIIKAWA:{tap:[TR("와아…"),TR("흐에…"),TR("(울먹울먹)"),TR("풀뽑기 검정 꼭 붙고 싶어…"),TR("하치와레~"),TR("디저트 먹고 싶어…")],focus:[TR("(꾹 참고 집중…)"),TR("열심히… 할게…")],rest:[TR("(쿨쿨…)")],done:[TR("해냈다…! (감격)"),TR("와아…!")],day:[TR("풀뽑기 하러 가야지…")],night:[TR("무서워… 같이 자도 돼?")]},
+const CHII_LINES={CHIIKAWA:{tap:[TR("와아…"),TR("앗!"),TR("후훗"),TR("엣?"),TR("에에~?"),TR("으음…"),TR("저기…"),TR("응!"),TR("와아~이"),TR("싫어!"),TR("후에엥"),TR("연어"),TR("가쓰오부시")],focus:[TR("영차"),TR("훗!"),TR("야압!!!")],rest:[TR("후훗"),TR("와아…"),TR("응!")],done:[TR("와아~이"),TR("훗!"),TR("후훗"),TR("와아…")],morning:[TR("응!"),TR("와아…")],day:[TR("영차"),TR("앗!"),TR("와아…")],evening:[TR("으음…"),TR("저기…")],night:[TR("으아앗… 앗… 아"),TR("우에엥"),TR("후에엥")]},
   HACHIWARE:{tap:[TR("어떻게든 되라!"),TR("치이카와! 같이 가자"),TR("노래방 갈래?"),TR("기타 연습 중이야"),TR("괜찮아, 괜찮아!")],focus:[TR("같이 하면 할 수 있어!")],done:[TR("해냈어! 최고야!"),TR("봐, 어떻게든 됐잖아!")],day:[TR("오늘은 뭐 하고 놀까?")],night:[TR("내일도 힘내자!")]},
   USAGI:{tap:[TR("우아"),TR("하긋!"),TR("쥬르리"),TR("우~라~"),TR("우루우루우루"),TR("유후후후후후후후!"),TR("하!"),TR("하?"),TR("후웅?"),TR("우~이~"),TR("우나!"),TR("후와~앙…"),TR("미야아아"),TR("푸루"),TR("우라라라라!!"),TR("호아?!!"),TR("우깃!!"),TR("이~"),TR("푸루야"),TR("구우구우~"),TR("하아? 하아?"),TR("푸루루루"),TR("야푸"),TR("우라우라"),TR("야하야하야하야하"),TR("야하!")],focus:[TR("푸루야"),TR("우나!"),TR("우라우라"),TR("야하야하야하야하")],rest:[TR("구우구우~"),TR("후웅?"),TR("우~이~")],done:[TR("야하!"),TR("우라라라라!!"),TR("푸루루루"),TR("야하야하야하야하")],morning:[TR("미야아아"),TR("우나!")],day:[TR("쥬르리"),TR("이~"),TR("우아")],evening:[TR("하!"),TR("푸루")],night:[TR("구우구우~")]},
   MOMONGA:{tap:[TR("칭찬해 줘!"),TR("나 귀엽지?"),TR("이거 내 거야!"),TR("안아 줘!")],done:[TR("더 칭찬해 줘!")],day:[TR("관심 받고 싶어")],night:[TR("혼자 자기 싫어")]},
@@ -6513,9 +6513,14 @@ const PK_BAB=['옹?','씌?','옹씌?','옹!','씌!','옹씌!','옹!씌옹!씌','
 const USAGI_VOC=[['우아','이거 맛있다'],['하긋!','냠! 와구!'],['쥬르리','츄릅… 배고파…'],['우~라~','엄청 크다! / 대박!'],['우루우루우루','매워!!!!'],['유후후후후후후후!','생일 축하해!'],['하!','잘 가!'],['하?','뭐라는 거야!?'],['후웅?','그래? / 그런가?'],['우~이~','모르겠어..'],['우나!','가자!'],['후와~앙…','망했다… / 큰일났다…'],['미야아아','어서와! 환영해!'],['푸루','알겠어!'],['우라라라라!!','기분 좋아!!'],['호아?!!','으악?!!'],['우깃!!','으악?!!'],['이~','이거 봐봐!'],['푸루야','같이 하자! / 힘내!'],['구우구우~','드르렁 쿨쿨'],['하아? 하아?','왜??'],['푸루루루','신나 / 행복해'],['야푸','물 속에 들어갈 때'],['우라우라','가보자고!'],['야하야하야하야하','기세등등 할 때'],['야하!','찾았다! / 그렇지!']]; // 우사기가 하는 말 (낱말, 뜻)
 const USAGI_KEY=[[/배고|밥|간식|먹고 싶|출출/,'쥬르리'],[/맛있|냠|맛나/,'우아'],[/생일/,'유후후후후후후후!'],[/잘 자|쿨쿨|졸려|잠/,'구우구우~'],[/잘 가|안녕히|다녀올|다녀오/,'하!'],[/어서|환영|반가|안녕/,'미야아아'],[/힘내|화이팅|파이팅|같이 하|응원/,'푸루야'],[/가자|출발|가 보자|가볼까/,'우나!'],
   [/큰일|망했|어떡|큰일났/,'후와~앙…'],[/모르/,'우~이~'],[/신나|행복|기뻐|즐거/,'푸루루루'],[/찾았|해냈|완료|끝냈|대단|최고|잘했/,'야하!'],[/대박|크다|엄청/,'우~라~'],[/매워|매운/,'우루우루우루'],[/깜짝|으악|놀라|무서/,'호아?!!'],[/봐 봐|봐봐|이거 봐|여기 봐/,'이~'],[/물|수영|바다/,'야푸'],[/왜\?|왜…/,'하아? 하아?'],[/그래\?|그런가/,'후웅?'],[/뭐라/,'하?'],[/알겠|좋아|그래/,'푸루'],[/기분 좋|좋다|신난다/,'우라라라라!!']];
-const usagiMean=w=>{const v=USAGI_VOC.find(x=>TR(x[0])===w||x[0]===w); return v?TR(v[1]):''};
+const CHII_VOC=[['싫어!','무서울 때·싫을 때'],['응!','좋다고 끄덕일 때'],['연어','주먹밥 속은 연어'],['가쓰오부시','주먹밥 속은 가쓰오부시'],['터져라','엄청 화났을 때'],['야압!!!','토벌할 때 기합'],['영차','힘쓸 때'],['훗!','기합 넣거나 뿌듯할 때'],['와아~이','신나서 만세'],['와아…','반짝이는 걸 봤을 때'],['앗!','앗, 맛있겠다!'],['후훗','기분 좋아서 작게 웃을 때'],['엣?','놀랐을 때'],['에에~?','당황했을 때'],['으음…','고민할 때'],['저기…','머뭇거릴 때'],['으아앗… 앗… 아','너무 무서울 때'],['우에엥','서러워서 엉엉'],['후에엥','아파서 훌쩍']]; // 치이카와가 하는 말 (짧은 낱말·의성어·울음, 뜻)
+const CHII_KEY=[[/무서|괴물|싫|안 돼/,'싫어!'],[/주먹밥|오니기리/,'연어'],[/화나|짜증|열받/,'터져라'],[/토벌|싸우|덤벼/,'야압!!!'],[/힘내|화이팅|파이팅|집중|열심|공부|힘/,'영차'],[/해냈|완료|끝냈|대단|최고|잘했|뿌듯/,'훗!'],
+  [/생일|선물|신나|기뻐|만세|축하/,'와아~이'],[/배고|맛있|먹|간식|디저트|반짝|예쁘/,'와아…'],[/기분 좋|행복|좋다/,'후훗'],[/큰일|망했|어떡|살려/,'으아앗… 앗… 아'],[/슬퍼|서러|울|눈물/,'우에엥'],[/아파|아프|힘들|졸려/,'후에엥'],
+  [/깜짝|놀라/,'엣?'],[/왜|뭐야|진짜\?/,'에에~?'],[/고민|뭘|어떤|모르|글쎄/,'으음…'],[/저기|있잖아|그게/,'저기…'],[/응|알겠|그래|좋아/,'응!']];
+const BAB={usagi:{voc:USAGI_VOC,key:USAGI_KEY},chiikawa:{voc:CHII_VOC,key:CHII_KEY,skip:['연어','가쓰오부시','터져라']}}; // 알아들을 수 있는 말 대신 자기 말만 하는 친구들
+const babMean=(w,set)=>{const v=(BAB[set]||BAB.usagi).voc.find(x=>TR(x[0])===w||x[0]===w); return v?TR(v[1]):''};
 const babble=(t,s)=>{t=String(t||''); const o=typeof s==='string'?SP[s]:s;
-  if(o&&o.babble==='usagi'){if(USAGI_VOC.some(v=>v[0]===t||TR(v[0])===t)) return t; const k=USAGI_KEY.find(([re])=>re.test(t)); if(k) return TR(k[1]); let h=0; for(const ch of t) h=(h*31+ch.charCodeAt(0))>>>0; return TR(USAGI_VOC[h%USAGI_VOC.length][0])} // 우사기는 알아들을 수 있는 말 대신 자기 말로
+  const B=o&&BAB[o.babble]; if(B){if(B.voc.some(v=>v[0]===t||TR(v[0])===t)) return t; const k=B.key.find(([re])=>re.test(t)); if(k) return TR(k[1]); const pool=B.voc.filter(v=>!(B.skip||[]).includes(v[0])); let h=0; for(const ch of t) h=(h*31+ch.charCodeAt(0))>>>0; return TR(pool[h%pool.length][0])} // 우사기·치이카와는 알아들을 수 있는 말 대신 자기 말로
   if(/^[옹씌?!~…♪.\s]*$/.test(t)) return t; let h=0; for(const ch of t) h=(h*31+ch.charCodeAt(0))>>>0; return PK_BAB[h%PK_BAB.length]}; // 사람 말은 옹씌로 바꿔요
 LINESETS.PIKMIN=PK_LINES;
 // 동물의 숲 친구들의 말 (너굴은 '~구리', 쌍둥이는 서로 말끝 따라 하기, 아폴로는 '다꿇어')
@@ -7799,7 +7804,7 @@ function palAsk(p){
   if(r(3)<35&&!d.hab){const l=palHabits(); if(l.length) return {t:l[seed%l.length],chips:[[TR('오, 그러네!'),()=>palSetDay({hab:1})]]}}
   if(r(11)<14&&!d.memo){const ms=items('mem').filter(m=>m.date<=addDays(k,-3)); if(ms.length){const m=ms[seed%ms.length]; return {t:TR('이날 기억나? {d} · {t}').replace('{d}',mdOf(m.date)).replace('{t}',m.text),chips:[[TR('기억나!'),()=>palSetDay({memo:1})],[TR('앨범 보기'),()=>{palSetDay({memo:1}); palAlbum()}]]}}}
   return null}
-const palText=(p,t)=>{if(!(SP[p.sp]&&SP[p.sp].babble)) return [t]; const w=babble(t,p.sp), m=SP[p.sp].babble==='usagi'?usagiMean(w):t; return [w,h('span',{class:'paltr'},' ('+m+')')]}; // 피크민 말은 옹씌로, 뜻은 옆에 작게
+const palText=(p,t)=>{if(!(SP[p.sp]&&SP[p.sp].babble)) return [t]; const w=babble(t,p.sp), m=BAB[SP[p.sp].babble]?babMean(w,SP[p.sp].babble):t; return [w,h('span',{class:'paltr'},' ('+m+')')]}; // 피크민 말은 옹씌로, 뜻은 옆에 작게
 function palReqDone(p){const k=today(); award('palreq:'+k,10,TR('짝꿍 부탁 들어주기')); petReact('cheer',2600); PAL.say=TR('고마워!! 최고야')+' 💛'; PAL.ev={k:'heart',until:Date.now()+4000}}
 /* 하루 운 정하기 · 진행 확인 (짝꿍 그릴 때마다) */
 function palDaily(p){const k=today(), d=palDay(k), seed=palSeed(k), r=n=>(seed>>>n)%100;
@@ -8164,7 +8169,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v201'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v202'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
