@@ -6709,13 +6709,14 @@ function stepBuddy(){
 /* ---------- 위젯용 동물 그림: 유리병 배경(낮·저녁·밤)과 동작별 모습을 글자로 줄여 동기화해요 ---------- */
 const PX_ALPHA='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&*+-/:;<=>?@^_~';
 function gridColors(G,pal){return G.map(r=>r.map(ch=>ch==='.'?null:ch[0]==='#'?ch:ch==='w'?'#FFF8E0':pal[PALI[ch]]))}
-// 통째로 그린 큰 친구는 위젯에서도 반으로 줄여요 (2×2 칸마다 가장 많은 색, 발은 바닥에 맞추고 몸 가운데를 16칸 틀 가운데에)
-function halfGrid(C,px){const H=C.length, W=C[0].length, out=[];
-  for(let y=H-2;y>-2;y-=2){const r=[]; for(let x=0;x<W;x+=2){const n={}; let m=0, best=null, e=0;
-      for(const [a,b] of [[0,0],[1,0],[0,1],[1,1]]){const c=(C[y+b]||[])[x+a]; if(!c){e++; continue} n[c]=(n[c]||0)+1; if(n[c]>m){m=n[c]; best=c}}
-      r.push(e>=3?null:best)} out.unshift(r)}
+// 통째로 그린 큰 친구는 위젯에서 2/3로 줄여요 (작은 칸마다 가장 많은 색, 발은 바닥에 맞추고 몸 가운데를 16칸 틀 가운데에)
+function shrinkGrid(C,px,k){const H=C.length, W=C[0].length, oh=Math.round(H*k), ow=Math.round(W*k), out=[];
+  for(let oy=0;oy<oh;oy++){const r=[], y0=H-Math.round((oh-oy)/k), y1=Math.max(y0+1,H-Math.round((oh-oy-1)/k));
+    for(let ox=0;ox<ow;ox++){const x0=Math.round(ox/k), x1=Math.max(x0+1,Math.round((ox+1)/k)), n={}; let m=0, best=null, e=0, t=0;
+      for(let y=y0;y<y1;y++) for(let x=x0;x<x1;x++){t++; const c=(C[y]||[])[x]; if(!c){e++; continue} n[c]=(n[c]||0)+1; if(n[c]>m){m=n[c]; best=c}}
+      r.push(e*2>t?null:best)} out.push(r)}
   while(out.length&&out[0].every(c=>!c)) out.shift();
-  const sh=8-Math.round((px+8)/2); return out.map(r=>sh>=0?Array(sh).fill(null).concat(r):r.slice(-sh))}
+  const sh=8-Math.round((px+8)*k); return out.map(r=>sh>=0?Array(sh).fill(null).concat(r):r.slice(-sh))}
 let snapSig='', snapT=null;
 function queuePetSnap(){clearTimeout(snapT); snapT=setTimeout(petSnap,1200)}
 function petSnap(){
@@ -6726,7 +6727,7 @@ function petSnap(){
   const pal=[], idx={}, enc=rows=>rows.map(r=>r.map(c2=>{if(!c2) return '.'; if(idx[c2]==null){idx[c2]=pal.length; pal.push(c2)} return PX_ALPHA[idx[c2]]||'.'}).join(''));
   const bg={}; ['day','dusk','night'].forEach(t=>bg[t]=enc(terraBG(c.theme,t,wx,t==='night')));
   const ME=['stand','blink','happy','wag0','read0','write0','sleep0','sad0','cheer0'], OTH=['stand','sleep0','wag0'];
-  const list=ps.map(p=>{const xp=petXP(p), st=stageOf(xp), fr={}; (st?(p.id===ap.id?ME:OTH):['egg']).forEach(k=>{const {G,pal:pp}=poseG(p.sp,st,p.wear,k,xp), C=gridColors(G,pp); fr[k]=enc(st&&ACD.ACC[p.sp]&&ACD.ACC[p.sp].full?halfGrid(C,G.px||0):C)});
+  const list=ps.map(p=>{const xp=petXP(p), st=stageOf(xp), fr={}; (st?(p.id===ap.id?ME:OTH):['egg']).forEach(k=>{const {G,pal:pp}=poseG(p.sp,st,p.wear,k,xp), C=gridColors(G,pp); fr[k]=enc(st&&ACD.ACC[p.sp]&&ACD.ACC[p.sp].full?shrinkGrid(C,G.px||0,2/3):C)});
     return {me:p.id===ap.id?1:0,name:p.name,sp:SP[p.sp]?SP[p.sp].n:'',st,stage:STAGES[st][1],lv:petLv(xp),frames:fr}});
   const xp=petXP(ap), li=lvInfo(xp);
   put('petview',{id:'snap',t:Date.now(),lang:LANG,theme:c.theme,wx,pal,bg,pets:list,fed:ap.fed,water:ap.water,exp:Math.round(li.v*100)/100,
@@ -8210,7 +8211,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v221'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v222'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
