@@ -7173,7 +7173,7 @@ window.I18N_EN={
   "확인":"OK",
   "나중에":"Later",
   "{p}와(과) 함께 공부한 시간":"Time studied with {p}",
-  "오늘 목표":"Today's goal",
+  "오늘 목표 바꾸기":"Change today's goal","오늘 목표":"Today's goal",
   "목표 정하기":"Set a goal",
   "{p}도 같은 날 {e}!":"{p} has a {e} that day too!",
   "추억":"Memories",
