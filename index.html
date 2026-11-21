@@ -7012,15 +7012,21 @@ function renderFriends(){
         h('span',{class:'small frst'},frStatus(p)||TR('아직 소식이 없어요')),
         h('div',{class:'row',style:'justify-content:center'},h('button',{class:'primary',onclick:()=>frVisit(u)},TR('놀러 가기')),h('button',{onclick:()=>frCheerDlg(u),'aria-label':TR('응원 보내기'),title:TR('응원 보내기')},'📣')))})):
       h('p',{class:'empty'},TR('아직 친구가 없어요. 친구에게 내 코드를 보내 보세요.')));
-  const chs=Object.values(FR.ch).filter(c=>c.st==='wait'||c.st==='on'||Date.now()-(c.at||c.t||0)<3*864e5).sort((a,b)=>(b.t||0)-(a.t||0));
+  const chHid=new Set(S.settings.v.chHide||[]), chAll=Object.values(FR.ch).sort((a,b)=>(b.t||0)-(a.t||0)), live=c=>{const s=chState(c); return s==='wait'||s==='on'};
+  const chs=chAll.filter(live), chOld=chAll.filter(c=>!live(c)&&!chHid.has(c.id)); // 끝난 챌린지는 아래 '지난 챌린지'에 접어 둬요
+  const chHide=ids=>{setCfg('chHide',[...new Set([...(S.settings.v.chHide||[]),...ids])].slice(-500)); toast(TR('내 목록에서만 지웠어요'))}; // 친구 쪽 기록은 그대로
   const marks=(c,u)=>h('span',{class:'chm'},chMarks(c,u).map(x=>h('i',{class:x>0?'ok':x<0?'no':''})));
-  const chCard=card(h('div',{class:'row'},h('h2',null,TR('같이 하기 챌린지')),h('span',{class:'sp'}),oks.length?h('button',{class:'tiny',onclick:()=>{if(oks.length===1) chDlg(oks[0]); else openDlg(TR('누구와 할까요?'),h('div',{class:'chips'},oks.map(u=>h('button',{class:'chip',onclick:()=>chDlg(u)},frName(u)))),[h('button',{onclick:closeDlg},TR('닫기'))])}},TR('＋ 새 챌린지')):null),
-    chs.length?h('ul',{class:'list chlist'},chs.map(c=>{const o=c.uids.find(x=>x!==FR.uid), st=chState(c), mine=c.by===FR.uid;
+  const chRow=c=>{const o=c.uids.find(x=>x!==FR.uid), st=chState(c), mine=c.by===FR.uid;
       return h('li',null,h('div',{style:'flex:1;min-width:0'},h('b',null,chText(c)+' · '+TR('{n}일').replace('{n}',c.days)),h('div',{class:'small'},TR('{n}와(과) 함께').replace('{n}',frName(o))+' · '+(st==='wait'?(mine?TR('친구가 받기를 기다리는 중'):TR('챌린지가 왔어요!')):st==='won'?'🎉 '+TR('성공! 둘 다 +')+(CH_BONUS[c.days]||50)+' '+COIN:st==='lost'?TR('아쉽게 끝났어요. 다시 도전해 봐요'):st==='no'?TR('거절됨'):st==='quit'?TR('그만둠'):TR('성공하면 +')+(CH_BONUS[c.days]||50)+' '+COIN)),
         st==='on'||st==='won'||st==='lost'?h('div',{class:'chrows'},h('div',null,h('span',{class:'small'},TR('나')),marks(c,FR.uid)),h('div',null,h('span',{class:'small'},frName(o)),marks(c,o))):null),
         st==='wait'&&!mine?h('span',{class:'row'},h('button',{onclick:()=>chSet(c,{st:'no'})},TR('거절')),h('button',{class:'primary',onclick:()=>chSet(c,{st:'on',start:today()})},TR('받기'))):
         st==='wait'||st==='on'?h('button',{class:'quiet',onclick:async()=>{if(st==='on'&&!await ask(TR('챌린지를 그만둘까요?'),TR('친구 화면에서도 그만둔 것으로 보여요.'),TR('그만두기'))) return; chSet(c,{st:mine&&st==='wait'?'no':'quit'})}},st==='wait'?TR('취소'):TR('그만두기')):
-        st==='lost'&&FR.list[o]&&FR.list[o].s==='ok'?h('button',{onclick:()=>chDlg(o)},TR('다시 하기')):null)})):
+        st==='lost'&&FR.list[o]&&FR.list[o].s==='ok'?h('button',{onclick:()=>chDlg(o)},TR('다시 하기')):null,
+        live(c)?null:h('button',{class:'quiet tiny','aria-label':TR('기록 지우기'),title:TR('기록 지우기'),onclick:()=>chHide([c.id])},'✕'))};
+  const chCard=card(h('div',{class:'row'},h('h2',null,TR('같이 하기 챌린지')),h('span',{class:'sp'}),oks.length?h('button',{class:'tiny',onclick:()=>{if(oks.length===1) chDlg(oks[0]); else openDlg(TR('누구와 할까요?'),h('div',{class:'chips'},oks.map(u=>h('button',{class:'chip',onclick:()=>chDlg(u)},frName(u)))),[h('button',{onclick:closeDlg},TR('닫기'))])}},TR('＋ 새 챌린지')):null),
+    chs.length||chOld.length?h('div',null,chs.length?h('ul',{class:'list chlist'},chs.map(chRow)):h('p',{class:'small muted'},TR('진행 중인 챌린지가 없어요.')),
+      chOld.length?h('details',{class:'arch'},h('summary',null,TR('지난 챌린지 ')+chOld.length+TR('개')),h('ul',{class:'list chlist'},chOld.slice(0,30).map(chRow)),
+        h('div',{class:'row',style:'margin-top:.4rem'},h('span',{class:'sp'}),h('button',{class:'tiny',onclick:async()=>{if(await ask(TR('지난 챌린지를 모두 지울까요?'),TR('내 목록에서만 사라지고 친구 쪽 기록은 그대로예요.'),TR('모두 지우기'))) chHide(chOld.map(c=>c.id))}},TR('모두 지우기')))):null):
       h('p',{class:'empty'},oks.length?TR('둘이 같은 목표를 정하고 함께 해내 봐요.'):TR('친구가 생기면 같이 챌린지를 할 수 있어요.')));
   const logs=items('frlog').sort((a,b)=>b.ts-a.ts).slice(0,20);
   const inbox=logs.length?card(h('h2',null,TR('받은 응원·간식')),h('ul',{class:'list'},logs.map(e=>h('li',{class:e.unread?'frnew':''},h('span',{class:'when num'},mdOf(dayKey(e.ts))+' '+hm(new Date(e.ts).getHours()*60+new Date(e.ts).getMinutes())),
@@ -8215,7 +8221,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v225'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v226'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
