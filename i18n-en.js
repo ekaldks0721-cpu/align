@@ -7173,7 +7173,7 @@ window.I18N_EN={
   "확인":"OK",
   "나중에":"Later",
   "{p}와(과) 함께 공부한 시간":"Time studied with {p}",
-  "오늘 목표 바꾸기":"Change today's goal","오늘 목표":"Today's goal",
+  "직접 입력 (예: 2시간 30분)":"Type it (e.g. 2h 30m)","몇 시간인지 알려 줘! 예: 2시간 30분, 90분, 2.5":"Tell me how long! e.g. 2h 30m, 90m, 2.5","좋아, {t}! 병에 같이 채워 보자":"Okay, {t}! Let's fill the jar together","오늘 목표 바꾸기":"Change today's goal","오늘 목표":"Today's goal",
   "목표 정하기":"Set a goal",
   "{p}도 같은 날 {e}!":"{p} has a {e} that day too!",
   "추억":"Memories",

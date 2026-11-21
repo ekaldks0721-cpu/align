@@ -7725,6 +7725,10 @@ const palDoc=id=>{const d=S.docs.pal&&S.docs.pal[id]; return d&&!d.x?d:null};
 const palMe=()=>palDoc('me')||{};
 const palDay=k=>palDoc('d-'+(k||today()))||{};
 const palSetMe=o=>put('pal',Object.assign({},palMe(),o,{id:'me'}));
+// 직접 쓴 목표 시간을 분으로: '2시간 30분'·'2h 30m'·'90분'·'2:30'·'2.5' (10분~24시간)
+const goalMins=v=>{v=String(v).trim(); let h=0, m=0; const c=v.match(/^(\d+):(\d{1,2})$/), H=v.match(/(\d+(?:\.\d+)?)\s*(시간|h)/i), M=v.match(/(\d+)\s*(분|m)/i);
+  if(c){h=+c[1]; m=+c[2]} else if(H||M){h=H?+H[1]:0; m=M?+M[1]:0} else if(/^\d+(\.\d+)?$/.test(v)) h=+v; else return 0;
+  const t=Math.round(h*60+m); return t>=10&&t<=1440?t:0};
 const palSetDay=o=>{const k=today(); put('pal',Object.assign({},palDay(k),o,{id:'d-'+k}))};
 const palSeed=k=>hashStr(guestSeed()+(k||today())+':pal');
 const palOff=()=>{try{return localStorage.getItem('align.palHide')==='1'}catch(e){return false}};
@@ -7832,7 +7836,7 @@ function palAsk(p){
   if(F.focus) return null;
   if(me.name==null) return {t:TR('나 너를 뭐라고 부를까?'),input:{ph:TR('이름이나 별명'),ok:v=>{palSetMe({name:v.slice(0,12)}); PAL.say=palJo(TR('좋아, {n}! 앞으로 그렇게 부를게').replace('{n}',v.slice(0,12)))}},skip:()=>palSetMe({name:''})};
   if(!meAv()&&!me.avAsk&&me.name!=null) return {t:TR('너는 어떻게 생겼어? 나도 옆에 앉혀 줘!'),chips:[[TR('나 꾸미기'),()=>{palSetMe({avAsk:1}); setTimeout(meDlg,50)}]],skip:()=>palSetMe({avAsk:1})};
-  if(d.goal==null){const g=(goalOf(rewardCats()?rewardCats()[0]:'')||goalOf('')||{}).d; return {t:TR('오늘 목표 몇 시간으로 할까? 같이 채우자!'),chips:[1,2,3,4,5,6].map(n=>[n+TR('시간'),()=>{palSetDay({goal:n*60,full:d.full&&d.prev&&n*60<=d.prev?1:0,prev:null}); PAL.say=TR('좋아, {n}시간! 병에 같이 채워 보자').replace('{n}',n)},g&&Math.round(g/60)===n]),skip:()=>palSetDay({goal:0})}}
+  if(d.goal==null){const g=(goalOf(rewardCats()?rewardCats()[0]:'')||goalOf('')||{}).d; const set=mins=>palSetDay({goal:mins,full:d.full&&d.prev&&mins<=d.prev?1:0,prev:null}); return {t:TR('오늘 목표 몇 시간으로 할까? 같이 채우자!'),chips:[1,2,3,4,5,6].map(n=>[n+TR('시간'),()=>{set(n*60); PAL.say=TR('좋아, {n}시간! 병에 같이 채워 보자').replace('{n}',n)},g&&Math.round(g/60)===n]),input:{ph:TR('직접 입력 (예: 2시간 30분)'),ok:v=>{const mins=goalMins(v); if(!mins){toast(TR('몇 시간인지 알려 줘! 예: 2시간 30분, 90분, 2.5')); return} set(mins); PAL.say=TR('좋아, {t}! 병에 같이 채워 보자').replace('{t}',fmtDur(mins*60))}},skip:()=>palSetDay({goal:0})}}
   if(me.wnew) return {t:TR('우리 이제 「{w}」야! 우리끼리만 아는 이름이야').replace('{w}',palWord(me.wnew)),chips:[[TR('좋아!'),()=>{palSetMe({wnew:null}); palMem('word',p,palWord(me.wnew),0)}]]};
   {const dd=palDday(); if(dd&&dd.date<=k&&!palDoc('ex-'+dd.id)){const ex=palExam(p), done=(ans,say)=>{put('pal',{id:'ex-'+dd.id,ans}); palMem('exam',p,dd.title+' · '+ans,0); PAL.say=say};
     return {t:palJo(TR('{d} 날이었지! 나는 {e} 합격했어 🎉 너는 어땠어?').replace('{d}',dd.title).replace('{e}',ex)),chips:[[TR('잘 봤어!'),()=>done(TR('잘 봤어'),TR('역시! 우리 둘 다 해냈다!!'))],[TR('그럭저럭'),()=>done(TR('그럭저럭'),TR('끝까지 한 게 제일 대단한 거야'))],[TR('망했어 ㅠ'),()=>done(TR('아쉬웠어'),TR('괜찮아. 나는 네가 얼마나 열심히 했는지 다 봤어'))]]}}}
@@ -8211,7 +8215,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v224'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v225'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
