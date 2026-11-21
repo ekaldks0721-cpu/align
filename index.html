@@ -7581,7 +7581,7 @@ const ME_HAIR={ // 머리 모양: 'a' 머리카락, 'o' 테두리, '.'은 얼굴
   short:{n:TR('짧은 머리'),r:['','....oooooooo....','...oaaaaaaaao...','..oaaaaaaaaaao..','..oaaaaaaaaaao..','..oaa......aao..','..oa........ao..']},
   crew:{n:TR('까까머리'),r:['','','....oooooooo....','...oaaaaaaaao...','..oaaaaaaaaaao..','..oa........ao..']},
   bob:{n:TR('단발'),r:['','....oooooooo....','...oaaaaaaaao...','..oaaaaaaaaaao..','..oaaaaaaaaaao..','.oaaaaaaaaaaaao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaao......oaao.','..oo........oo..']},
-  mid:{n:TR('중단발'),long:1,r:['','....oooooooo....','...oaaaaaaaao...','..oaaaaaaaaaao..','..oaaaaaaaaaao..','.oaaaaaaaaa.aao.','.oaaa.......aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.']}, // 어깨에 닿는 머리, 옆으로 넘긴 앞머리
+  mid:{n:TR('중단발'),long:1,r:['','....oooooooo....','...oaaaaaaaaoo..','..oaaaaaaaaaaao.','.oaaaaaaaaaaaao.','.oaaaaa..aaaaao.','.oaaa......aaao.','.oaa........aao.','oaaa........aaao','.oaa........aao.','.oaao......oaao.','oaao........oaao']}, // 울프·허쉬컷: 정수리 볼륨, 가운데 가르마 앞머리, 층층이 바깥으로 뻗친 결, 목 뒤로 가늘게 내려오는 끝
   long:{n:TR('긴 생머리'),long:2,r:['','....oooooooo....','...oaaaaaaaao...','..oaaaaaaaaaao..','.oaaaaaaaaaaaao.','.oaaa......aaao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.','.oaa........aao.']},
   pony:{n:TR('묶은 머리'),r:['','....oooooooo....','...oaaaaaaaaoo..','..oaaaaaaaaaaao.','..oaaaaaaaaaaaao','..oaa......aaaao','..oa........aaao','.............oao','.............oao','.............oao','..............o.']},
   pig:{n:TR('양갈래'),r:['','....oooooooo....','...oaaaaaaaao...','..oaaaaaaaaaao..','..oaaaaaaaaaao..','.ooaa......aaoo.','oaao........oaao','oaao........oaao','oaao........oaao','.oo..........oo.']},
@@ -8222,7 +8222,7 @@ const XMAS_SP={apollo:[TR('선물? …받아 두지, 다꿇어'),TR('크리스�
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v227'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v228'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
