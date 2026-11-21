@@ -7173,7 +7173,7 @@ window.I18N_EN={
   "확인":"OK",
   "나중에":"Later",
   "{p}와(과) 함께 공부한 시간":"Time studied with {p}",
-  "직접 입력 (예: 2시간 30분)":"Type it (e.g. 2h 30m)","몇 시간인지 알려 줘! 예: 2시간 30분, 90분, 2.5":"Tell me how long! e.g. 2h 30m, 90m, 2.5","좋아, {t}! 병에 같이 채워 보자":"Okay, {t}! Let's fill the jar together","내 목록에서만 지웠어요":"Removed from your list only","기록 지우기":"Remove record","진행 중인 챌린지가 없어요.":"No challenges in progress.","지난 챌린지 ":"Past challenges: ","지난 챌린지를 모두 지울까요?":"Remove all past challenges?","내 목록에서만 사라지고 친구 쪽 기록은 그대로예요.":"They disappear from your list only. Your friend still keeps theirs.","오늘 목표 바꾸기":"Change today's goal","오늘 목표":"Today's goal",
+  "직접 입력 (예: 2시간 30분)":"Type it (e.g. 2h 30m)","몇 시간인지 알려 줘! 예: 2시간 30분, 90분, 2.5":"Tell me how long! e.g. 2h 30m, 90m, 2.5","좋아, {t}! 병에 같이 채워 보자":"Okay, {t}! Let's fill the jar together","내 목록에서만 지웠어요":"Removed from your list only","기록 지우기":"Remove record","진행 중인 챌린지가 없어요.":"No challenges in progress.","지난 챌린지 ":"Past challenges: ","지난 챌린지를 모두 지울까요?":"Remove all past challenges?","내 목록에서만 사라지고 친구 쪽 기록은 그대로예요.":"They disappear from your list only. Your friend still keeps theirs.","중단발":"Shoulder-length","오늘 목표 바꾸기":"Change today's goal","오늘 목표":"Today's goal",
   "목표 정하기":"Set a goal",
   "{p}도 같은 날 {e}!":"{p} has a {e} that day too!",
   "추억":"Memories",
