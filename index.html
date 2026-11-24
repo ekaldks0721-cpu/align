@@ -6624,7 +6624,7 @@ const petLines=k=>{let b=petLines0(k); if(!['tap','day','morning','evening','nig
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 function buddySay(text,ms){
   if(!buddyEl||buddyEl.hidden||!talkOn()||!text) return; const b=buddyEl.querySelector('.bbub'); {const ap=activePet(); if(ap&&SP[ap.sp]&&SP[ap.sp].babble) text=babble(text,ap.sp)} // 피크민은 무슨 말이든 '옹', '씌'로
-  b.textContent=bubbleText(text); b.hidden=false; BUDDY.sayT=Date.now()+(ms||3500); placeBubble();
+  {const ap=activePet(); text=palPol(ap,text)} b.textContent=bubbleText(text); b.hidden=false; BUDDY.sayT=Date.now()+(ms||3500); placeBubble();
 }
 function bubbleText(t){if(t.length<=20) return t; const ss=t.match(/.+?(?:[?!.…]+[)"'’”]*(?=\s|$)|$)/g)||[t], out=[]; // 길면 문장 끝(?!.… 다음 칸)에서 줄을 바꾸고, 짧은 문장끼리는 한 줄에 모아요 (3.5 같은 숫자는 안 끊어요)
   for(const x of ss.map(v=>v.trim()).filter(Boolean)){const last=out[out.length-1]; if(last!=null&&(last+' '+x).length<=20) out[out.length-1]=last+' '+x; else out.push(x)}
@@ -7742,7 +7742,7 @@ const palOff=()=>{try{return localStorage.getItem('align.palHide')==='1'}catch(e
 const palJo=t=>jo(t);
 // 동물마다 따로 정한 이름이 있으면 그대로, 없으면 기본 이름에 그 동물 말투를 붙여요
 function palCall(p,base){const me=palMe(), own=!base&&me.names&&me.names[p.id]; if(own) return own; const n=me.name; if(!n) return ''; const b=(c=>c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28>0)(n.charCodeAt(n.length-1));
-  if(EN) return n; return {nook:n+' 씨',timmy:n+' 씨',tommy:n+' 씨',isabelle:n+' 님',blathers:n+' 군',baymax:n+' 님',apollo:n,kk:n}[p.sp]||n+(b?'아':'야')}
+  if(EN) return n; return {brewster:n+' 씨',nook:n+' 씨',timmy:n+' 씨',tommy:n+' 씨',isabelle:n+' 님',blathers:n+' 군',baymax:n+' 님',apollo:n,kk:n}[p.sp]||n+(b?'아':'야')}
 /* 같이 공부한 시간 (그 동물과 함께 기록한 집중) */
 function palMins(p){const now=Date.now(), sig=Object.keys(S.docs).filter(d=>d.indexOf('log-')===0).map(d=>Object.keys(S.docs[d]).length).join(); if(!PAL.minsC||PAL.minsC.sig!==sig||now-PAL.minsC.t>6e4){const m={}; allOf('log-').forEach(s=>{if(s.pet&&s.kind!=='manual'&&s.segs) m[s.pet]=(m[s.pet]||0)+sessDur(s)}); PAL.minsC={t:now,m,sig}} return Math.floor((PAL.minsC.m[p.id]||0)/60)}
 /* 과목: 고른 항목 이름으로 책상 위 소품을 골라요 */
@@ -7804,15 +7804,15 @@ function palScene(p,st,frame,o){
     [gm,g,bl].filter(Boolean).forEach(x=>{if(cut>=0) svg.insertBefore(x,rs[cut]); else svg.appendChild(x)});
   return svg}
 /* 하루 운: 기운 없는 날 · 고민 · 부탁 · 습관 이야기 · 추억 꺼내기 (그날은 늘 같아요) */
-const PAL_DOWN={apollo:TR('오늘 노래 고음이 안 올라가…'),kk:TR('오늘은 기타 줄이 자꾸 끊겨…'),nook:TR('오늘 가게 장사가 영 안 되구리…'),isabelle:TR('오늘 안내 방송에서 말을 더듬었어요…'),blathers:TR('호오… 오늘은 눈꺼풀이 너무 무겁소'),timmy:TR('오늘 손님이 하나도 없었어…')};
+const PAL_DOWN={brewster:TR('……오늘은 원두를 너무 오래 볶고 말았습니다…'),apollo:TR('오늘 노래 고음이 안 올라가…'),kk:TR('오늘은 기타 줄이 자꾸 끊겨…'),nook:TR('오늘 가게 장사가 영 안 되구리…'),isabelle:TR('오늘 안내 방송에서 말을 더듬었어요…'),blathers:TR('호오… 오늘은 눈꺼풀이 너무 무겁소'),timmy:TR('오늘 손님이 하나도 없었어…')};
 const PAL_DOWN_ANY=[TR('오늘은 왠지 기운이 없어…'),TR('오늘 아침에 넘어졌어…'),TR('간식을 떨어뜨렸어… 흑'),TR('오늘은 아무것도 하기 싫어…')];
-const PAL_WORRY={apollo:TR('요즘 노래 연습을 해도 늘지 않아. …아니, 고민 같은 거 아니다'),kk:TR('새 곡이 하나도 안 써져'),nook:TR('대출 상환을 아무도 안 해 주구리…'),isabelle:TR('제가 일을 잘하고 있는 걸까요?'),blathers:TR('박물관에 또 벌레 기증이 들어왔소…'),timmy:TR('형이랑 똑같은 옷이 싫어질 때가 있어')};
+const PAL_WORRY={brewster:TR('……요즘 손님이 줄어든 것 같아 걱정입니다…'),apollo:TR('요즘 노래 연습을 해도 늘지 않아. …아니, 고민 같은 거 아니다'),kk:TR('새 곡이 하나도 안 써져'),nook:TR('대출 상환을 아무도 안 해 주구리…'),isabelle:TR('제가 일을 잘하고 있는 걸까요?'),blathers:TR('박물관에 또 벌레 기증이 들어왔소…'),timmy:TR('형이랑 똑같은 옷이 싫어질 때가 있어')};
 const PAL_WORRY_ANY=[TR('나 요즘 털이 푸석한 것 같아'),TR('산책을 못 가서 좀 우울해'),TR('꿈에서 시험을 망쳤어…'),TR('나 쓸모없는 것 같을 때가 있어'),TR('다들 나보다 잘하는 것 같아')];
 const PAL_COMFORT=[TR('괜찮아, 잘하고 있어'),TR('같이 해 보자!'),TR('오늘은 쉬어도 돼')];
 const PAL_REQ=[['more15',TR('오늘 15분만 같이 더 하자!'),TR('좋아!')],['water',TR('물 한 잔 마셔 줘. 나도 마실게'),TR('마셨어!')],['stretch',TR('같이 기지개 켜자, 으쌰!'),TR('쭉~ 켰어!')],['task1',TR('오늘 할 일 하나만 끝내 줘!'),TR('좋아!')],['early',TR('오늘은 일찍 자자. 약속!'),TR('약속!')]];
 const PAL_Q=[['snack',TR('제일 좋아하는 간식이 뭐야?'),[TR('초콜릿'),TR('과자'),TR('과일'),TR('커피'),TR('떡볶이'),TR('아이스크림')]],['fav',TR('제일 좋아하는 과목은 뭐야?'),null],['hate',TR('제일 하기 싫은 과목은?'),null],
   ['time',TR('언제 공부가 제일 잘 돼?'),[TR('아침'),TR('낮'),TR('저녁'),TR('밤')]],['dream',TR('꿈이 뭐야? 나한테만 알려 줘'),[]]];
-const PAL_EXAM={apollo:TR('노래 오디션'),kk:TR('콘서트'),blathers:TR('화석 감정사 시험'),nook:TR('부동산 자격 시험'),isabelle:TR('안내 방송 대회'),timmy:TR('계산 대회'),tommy:TR('계산 대회'),sponge:TR('보트 운전면허 시험'),baymax:TR('간호 실습 평가'),snowman:TR('얼음 조각 대회'),rudolph:TR('썰매 운전 시험')};
+const PAL_EXAM={brewster:TR('바리스타 대회'),apollo:TR('노래 오디션'),kk:TR('콘서트'),blathers:TR('화석 감정사 시험'),nook:TR('부동산 자격 시험'),isabelle:TR('안내 방송 대회'),timmy:TR('계산 대회'),tommy:TR('계산 대회'),sponge:TR('보트 운전면허 시험'),baymax:TR('간호 실습 평가'),snowman:TR('얼음 조각 대회'),rudolph:TR('썰매 운전 시험')};
 const palExam=p=>PAL_EXAM[p.sp]||(SP[p.sp]&&SP[p.sp].lines==='PIKMIN'?TR('운반 대회'):SP[p.sp]&&SP[p.sp].food==='bone'?TR('공 물어 오기 대회'):SP[p.sp]&&SP[p.sp].food==='fish'?TR('수영 대회'):TR('달리기 대회'));
 function palDday(){const t0=today(); const d=items('ddays').filter(x=>!x.arch&&x.date>=addDays(t0,-3)).sort((a,b)=>a.date<b.date?-1:1); return d.find(x=>x.date>=t0)||d.find(x=>x.date<t0&&!palDoc('ex-'+x.id))||null}
 const ddDiff=k=>Math.round((new Date(...(p=>[p[0],p[1]-1,p[2]])(parts(k)))-new Date(...(p=>[p[0],p[1]-1,p[2]])(parts(today()))))/864e5);
@@ -7857,7 +7857,15 @@ function palAsk(p){
   if(r(3)<35&&!d.hab){const l=palHabits(); if(l.length) return {t:l[seed%l.length],chips:[[TR('오, 그러네!'),()=>palSetDay({hab:1})]]}}
   if(r(11)<14&&!d.memo){const ms=items('mem').filter(m=>m.date<=addDays(k,-3)); if(ms.length){const m=ms[seed%ms.length]; return {t:TR('이날 기억나? {d} · {t}').replace('{d}',mdOf(m.date)).replace('{t}',m.text),chips:[[TR('기억나!'),()=>palSetDay({memo:1})],[TR('앨범 보기'),()=>{palSetDay({memo:1}); palAlbum()}]]}}}
   return null}
-const palText=(p,t)=>{if(!(SP[p.sp]&&SP[p.sp].babble)) return [t]; const w=babble(t,p.sp), m=BAB[SP[p.sp].babble]?babMean(w,SP[p.sp].babble):t; return [w,h('span',{class:'paltr'},' ('+m+')')]}; // 피크민 말은 옹씌로, 뜻은 옆에 작게
+const PAL_POL={brewster:[["나 너를 뭐라고 부를까?", "……손님을 어떻게 불러 드리면 되겠습니까?"], ["좋아, {n}! 앞으로 그렇게 부를게", "……알겠습니다. 앞으로 {n} 씨라고 부르겠습니다."], ["너는 어떻게 생겼어? 나도 옆에 앉혀 줘!", "……손님은 어떤 모습이십니까? 제 옆자리에 앉아 주십시오."], ["오늘 목표 몇 시간으로 할까? 같이 채우자!", "……오늘 목표는 몇 시간으로 하시겠습니까? 함께 채워 보시지요."], ["좋아, {n}시간! 병에 같이 채워 보자", "……{n}시간이군요. 병을 함께 채워 보시지요."], ["좋아, {t}! 병에 같이 채워 보자", "……{t}이군요. 병을 함께 채워 보시지요."], ["우리 이제 「{w}」야! 우리끼리만 아는 이름이야", "……이제 저희는 「{w}」입니다. 저희끼리만 아는 이름이지요."], ["{d} 날이었지! 나는 {e} 합격했어 🎉 너는 어땠어?", "……{d} 날이었지요. 저는 {e} 합격했습니다 🎉 손님은 어떠셨습니까?"], ["역시! 우리 둘 다 해냈다!!", "……역시 그렇군요. 저희 둘 다 해냈습니다."], ["끝까지 한 게 제일 대단한 거야", "……끝까지 해내신 것이 가장 대단한 일입니다."], ["괜찮아. 나는 네가 얼마나 열심히 했는지 다 봤어", "……괜찮습니다. 손님이 얼마나 열심히 하셨는지 제가 다 보았습니다."], ["어제 네가 \"{a}\"라고 해 줘서 괜찮아졌어. 고마워!", "……어제 \"{a}\"라고 해 주셔서 괜찮아졌습니다. 감사합니다."], ["…응. 네가 하면 나도 해 볼게", "……네. 손님이 하신다면 저도 해 보겠습니다."], ["…고마워. 조금 나아졌어", "……감사합니다. 조금 나아졌습니다."], ["기억해 둘게!", "……기억해 두겠습니다."], ["이날 기억나? {d} · {t}", "……이날을 기억하십니까? {d} · {t}"], ["고마워!! 최고야", "……감사합니다. 최고입니다."], ["네 덕분에 했어! 기운 났어!", "……손님 덕분에 해냈습니다. 기운이 납니다."], ["하이파이브! 짝! 우리가 해냈어", "……하이파이브입니다. 저희가 해냈습니다."], ["{s} 싫다며, 그래도 했네! 멋있어", "……싫다고 하신 {s}인데도 해내셨군요. 훌륭합니다."], ["역시 좋아하는 {s}은(는) 신나지?", "……역시 좋아하시는 {s}은(는) 즐거우시지요?"], ["{t}에 잘 된다더니 진짜네!", "……{t}에 잘 되신다더니, 정말이군요."], ["수고했어! {s} 먹으면서 쉬자", "……수고하셨습니다. {s} 드시면서 쉬어 가십시오."], ["{d}에 한 걸음 더 가까워졌어!", "……{d}에 한 걸음 더 가까워지셨습니다."], ["{s} 반 나눠 먹자! 반은 네 거야", "……{s}, 반씩 나눠 드시지요. 반은 손님 몫입니다."], ["오늘도 「올빼미 클럽」 출동?", "……오늘도 「올빼미 클럽」 출동이십니까?"], ["「아침 참새단」 회의 시작!", "……「아침 참새단」 회의를 시작하겠습니다."], ["「주말 전사」 출근했다!", "……「주말 전사」, 출근하셨군요."], ["우리 「엉덩이 무거운 팀」이잖아", "……저희는 「엉덩이 무거운 팀」이지 않습니까."], ["너 {d}에 제일 많이 하더라", "……손님은 {d}에 가장 많이 하시더군요."], ["너 보통 아침에 공부하네. 부지런해!", "……손님은 보통 아침에 공부하시는군요. 부지런하십니다."], ["너 보통 낮에 공부하네", "……손님은 보통 낮에 공부하시는군요."], ["너 보통 저녁에 공부하더라", "……손님은 보통 저녁에 공부하시더군요."], ["너 보통 밤에 공부하네. 올빼미야?", "……손님은 보통 밤에 공부하시는군요. 올빼미 같으십니다."], ["요즘 제일 많이 한 건 {s}이야", "……요즘 가장 많이 하신 것은 {s}입니다."], ["한 번에 제일 오래 한 건 {t}였어! 대단해", "……한 번에 가장 오래 하신 것은 {t}였습니다. 대단하십니다."], ["오늘 15분만 같이 더 하자!", "……오늘 15분만 더 함께 하시겠습니까?"], ["물 한 잔 마셔 줘. 나도 마실게", "……물 한 잔 드십시오. 저도 마시겠습니다."], ["같이 기지개 켜자, 으쌰!", "……함께 기지개를 켜시지요."], ["오늘 할 일 하나만 끝내 줘!", "……오늘 할 일을 하나만 끝내 주십시오."], ["오늘은 일찍 자자. 약속!", "……오늘은 일찍 주무십시오. 약속입니다."], ["제일 좋아하는 간식이 뭐야?", "……가장 좋아하시는 간식은 무엇입니까?"], ["제일 좋아하는 과목은 뭐야?", "……가장 좋아하시는 과목은 무엇입니까?"], ["제일 하기 싫은 과목은?", "……가장 하기 싫으신 과목은 무엇입니까?"], ["언제 공부가 제일 잘 돼?", "……언제 공부가 가장 잘 되십니까?"], ["꿈이 뭐야? 나한테만 알려 줘", "……손님의 꿈은 무엇입니까? 저에게만 알려 주십시오."], ["나 {o}와(과) 싸웠어…", "……{o}와(과) 다투고 말았습니다…"]]}; // 존댓말만 쓰는 친구: 짝꿍 대사를 그 친구 말투로 바꿔 보여 줘요 (한국어일 때만)
+let PAL_POLRE=null;
+function palPol(p,t){const L=p&&!EN&&PAL_POL[p.sp]; if(!L||!t) return t;
+  if(!PAL_POLRE) PAL_POLRE={}; const C=PAL_POLRE[p.sp]||(PAL_POLRE[p.sp]=L.map(([k,v])=>{const names=[]; const re=k.replace(/[.*+?^$()|[\]\\]/g,'\\$&').replace(/\\\{(\w)\\\}|\{(\w)\}/g,(_,a,b)=>{names.push(a||b); return '(.+?)'}).replace(/([가-힣])\\\(([가-힣])\\\)/g,'(?:$1|$2)').replace(/\(\.\+\?\)이야$/,'(.+?)(?:이)?야');
+    return [new RegExp('^'+re+'$'),names,v]}));
+  const one=x=>{for(const [re,names,v] of C){const m=x.match(re); if(m){let r=v; names.forEach((n,i)=>{r=r.split('{'+n+'}').join(m[i+1])}); return palJo(r)}} return null};
+  const two=x=>{const r=one(x); if(r) return r; const e=x.match(/^(.*?)(\s+[^\s가-힣A-Za-z0-9]+)$/); if(e){const r1=one(e[1]); if(r1) return r1+e[2]} return null}; // 끝에 붙은 💛·💪 같은 이모지는 그대로
+  const r=two(t); if(r) return r; const i=t.indexOf(', '); if(i>0&&i<20){const r2=two(t.slice(i+2)); if(r2) return t.slice(0,i)+', '+r2.replace(/^……/,'').replace(/^손님은 /,'')} return t}
+const palText=(p,t)=>{t=palPol(p,t); if(!(SP[p.sp]&&SP[p.sp].babble)) return [t]; const w=babble(t,p.sp), m=BAB[SP[p.sp].babble]?babMean(w,SP[p.sp].babble):t; return [w,h('span',{class:'paltr'},' ('+m+')')]}; // 피크민 말은 옹씌로, 뜻은 옆에 작게
 function palReqDone(p){const k=today(); award('palreq:'+k,10,TR('짝꿍 부탁 들어주기')); petReact('cheer',2600); PAL.say=TR('고마워!! 최고야')+' 💛'; PAL.ev={k:'heart',until:Date.now()+4000}}
 /* 하루 운 정하기 · 진행 확인 (짝꿍 그릴 때마다) */
 function palDaily(p){const k=today(), d=palDay(k), seed=palSeed(k), r=n=>(seed>>>n)%100;
@@ -8222,7 +8230,7 @@ const XMAS_SP={brewster:[TR('……메리 크리스마스. 오늘은 특별한 �
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v229'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v230'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
