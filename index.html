@@ -8203,8 +8203,11 @@ function xmWorkPanel(e){
 /* 산타의 답장 (11/25부터) */
 const XREPLY=[TR("{p}에게. 편지 잘 받았단다. 「{w}」 말이지? 착한 아이 명단에 꼭 적어 두마. 그동안 공부하는 친구 곁을 잘 지켜 주렴. — 산타"),TR("{p}에게. 호호호! 루돌프가 네 편지를 제일 먼저 물어 왔단다. 「{w}」, 썰매에 잘 실어 두마. — 산타"),TR("사랑하는 {p}에게. 네 편지가 북극까지 무사히 도착했단다. 「{w}」, 참 멋진 소원이구나. 크리스마스 아침까지 조금만 기다려 주렴. — 산타"),TR("{p}에게. 요정들이 네 편지를 읽고 박수를 쳤단다. 「{w}」, 벌써 공방에서 만들기 시작했어. 공부하는 친구에게도 응원을 전해 주렴. — 산타"),TR("{p}에게. 올해도 친구 옆에서 열심히 지켜 준 걸 다 알고 있단다. 「{w}」, 잊지 않으마. 메리 크리스마스! — 산타"),TR("{p}에게. 안경을 고쳐 쓰고 네 편지를 두 번이나 읽었단다. 「{w}」… 음, 착한 아이 명단 맨 위에 적어 두었지. 호호호! — 산타"),TR("{p}에게. 네가 친구와 함께 공부한 시간을 별로 세어 보니 하늘이 반짝반짝하더구나. 「{w}」, 그 별빛을 따라 배달하마. — 산타"),TR("{p}에게. 북극은 오늘도 눈이 펑펑 온단다. 따뜻한 코코아를 마시며 네 편지를 읽었어. 「{w}」, 썰매 맨 앞자리에 실어 두마. — 산타"),TR("{p}에게. 루돌프가 네 편지를 읽더니 코가 더 빨개졌단다. 「{w}」, 꼭 전해 주마. 그때까지 감기 조심하렴. — 산타"),TR("꼬마 {p}에게. 편지 고맙구나. 「{w}」, 받을 자격이 충분하단다. 친구가 지칠 때마다 곁에서 힘이 되어 주렴. — 산타"),TR("{p}에게. 편지 끝에 그린 그림이 아주 마음에 들었단다. 냉장고에 붙여 두었지. 「{w}」, 크리스마스 이브에 살짝 두고 가마. — 산타"),TR("{p}에게. 올해 받은 편지 중에 글씨가 제일 반듯하더구나. 「{w}」, 요정 대장에게 특별히 부탁해 두마. 늦게까지 공부하는 친구가 있다면 일찍 재우렴. — 산타")];
 function xmReplyHB(p){const t=xmReplyText(p), m=t.match(EN?/^(.*?),\s+/:/^(.*?에게)\.\s+/); return [h('b',null,m?m[1]:p.name+TR('에게')),h('p',null,m?t.slice(m[0].length):t)]} // 받는 이(○○에게)는 제목으로, 편지 몸글엔 다시 안 써요
-function xmReplyText(p){const w=xmWish(p), i=Math.max(0,pets().findIndex(q=>q.id===p.id)), seed=(+xmY()*5+i)%XREPLY.length; // 동물마다, 해마다 다른 답장 (같이 받은 친구들끼리는 겹치지 않게)
-  return palJo(XREPLY[seed].replace('{p}',p.name).replace('{w}',w[1]))}
+function xmReplyIdx(p){const Y=xmY(), id='let-'+Y+'-'+p.id, d=xmDoc(id); if(!d) return 0; if(d.r!=null&&XREPLY[d.r]) return d.r; // 한 번 정한 답장은 저장해 두고 계속 같은 걸 보여 줘요
+  const used=XREPLY.map(()=>0); Object.values(S.docs.xmas||{}).forEach(x=>{if(!x.x&&x.id!==id&&x.id.indexOf('let-'+Y+'-')===0&&x.r!=null&&used[x.r]!=null) used[x.r]++});
+  const min=Math.min(...used), free=used.map((n,i)=>n===min?i:-1).filter(i=>i>=0), r=free[[...p.id].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,+Y)%free.length]; // 다른 친구가 아직 안 받은 답장 중에서 골라요
+  put('xmas',Object.assign({},d,{r})); return r}
+function xmReplyText(p){const w=xmWish(p); return palJo(XREPLY[xmReplyIdx(p)].replace('{p}',p.name).replace('{w}',w[1]))}
 function xmReply(tries){const e=XM(); if(!e||md(today())<'11-25'||xmDoc('reply-'+xmY())||(fbCfg&&!gateOK)) return; const Y=xmY(), ps=pets().filter(p=>xmDoc('let-'+Y+'-'+p.id)); if(!ps.length) return;
   if((dlg.open||celebOn)&&(tries||0)<20){setTimeout(()=>xmReply((tries||0)+1),6000); return} put('xmas',{id:'reply-'+Y,ts:Date.now()});
   openDlg('🎅 '+TR('산타에게서 답장이 왔어요!'),h('div',null,h('div',{class:'xletters'},ps.slice(0,4).map(p=>h('div',{class:'xletter reply'},h('span',{class:'xlpet'},'🎅'),h('div',null,...xmReplyHB(p))))),
@@ -8233,7 +8236,7 @@ const XMAS_SP={brewster:[TR('……메리 크리스마스. 오늘은 특별한 �
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v232'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v233'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
