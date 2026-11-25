@@ -8076,7 +8076,7 @@ function xmLetterPanel(){
     !ps.length?h('p',{class:'empty'},TR('알에서 나온 친구가 있어야 편지를 쓸 수 있어요.')):null,
     h('div',{class:'xletters'},ps.map(p=>xmDoc('let-'+Y+'-'+p.id)?xmLetterEl(p):h('div',{class:'xletter blank'},h('span',{class:'xlpet'},petSVG(p.sp,Math.max(1,stageOf(petXP(p))),p.wear||{},'stand',56,petXP(p))),
       h('div',null,h('b',null,p.name),h('p',{class:'small'},TR('아직 편지를 안 썼어요')),h('button',{class:'primary',onclick:()=>write(p)},'✉️ '+TR('편지 쓰게 하기')))))),
-    md(today())>='11-25'&&done.length?h('div',null,h('h3',{style:'margin:1rem 0 .3rem'},'🎅 '+TR('산타의 답장')),h('div',{class:'xletters'},done.map(p=>h('div',{class:'xletter reply'},h('span',{class:'xlpet'},'🎅'),h('div',null,h('b',null,p.name+TR('에게')),h('p',null,xmReplyText(p))))))):null,
+    md(today())>='11-25'&&done.length?h('div',null,h('h3',{style:'margin:1rem 0 .3rem'},'🎅 '+TR('산타의 답장')),h('div',{class:'xletters'},done.map(p=>h('div',{class:'xletter reply'},h('span',{class:'xlpet'},'🎅'),h('div',null,...xmReplyHB(p)))))):null,
     md(today())==='12-25'&&ps.length?h('button',{class:'primary',style:'margin-top:.6rem',onclick:()=>xmChristmas(true)},'🎅 '+TR('비밀 산타 공개!')):h('p',{class:'small muted'},TR('편지 {n} / {m} · 비밀 산타는 12월 25일에 공개돼요').replace('{n}',done.length).replace('{m}',ps.length))]}
 function xmPairs(){ // 비밀 산타: 해마다 같은 짝 (자기 자신은 안 걸려요). 친구가 하나면 진짜 산타가 와요
   const ps=pets().filter(p=>stageOf(petXP(p))).sort((a,b)=>a.id<b.id?-1:1), r=rng(+xmY()*7+3), o=ps.slice(); for(let i=o.length-1;i>0;i--){const j=Math.floor(r()*(i+1)); [o[i],o[j]]=[o[j],o[i]]}
@@ -8202,11 +8202,12 @@ function xmWorkPanel(e){
     card(0,treeBody),card(1,sockBody),card(2,giftBody),card(3,carolBody)]}
 /* 산타의 답장 (11/25부터) */
 const XREPLY=[TR("{p}에게. 편지 잘 받았단다. 「{w}」 말이지? 착한 아이 명단에 꼭 적어 두마. 그동안 공부하는 친구 곁을 잘 지켜 주렴. — 산타"),TR("{p}에게. 호호호! 루돌프가 네 편지를 제일 먼저 물어 왔단다. 「{w}」, 썰매에 잘 실어 두마. — 산타"),TR("사랑하는 {p}에게. 네 편지가 북극까지 무사히 도착했단다. 「{w}」, 참 멋진 소원이구나. 크리스마스 아침까지 조금만 기다려 주렴. — 산타"),TR("{p}에게. 요정들이 네 편지를 읽고 박수를 쳤단다. 「{w}」, 벌써 공방에서 만들기 시작했어. 공부하는 친구에게도 응원을 전해 주렴. — 산타"),TR("{p}에게. 올해도 친구 옆에서 열심히 지켜 준 걸 다 알고 있단다. 「{w}」, 잊지 않으마. 메리 크리스마스! — 산타"),TR("{p}에게. 안경을 고쳐 쓰고 네 편지를 두 번이나 읽었단다. 「{w}」… 음, 착한 아이 명단 맨 위에 적어 두었지. 호호호! — 산타"),TR("{p}에게. 네가 친구와 함께 공부한 시간을 별로 세어 보니 하늘이 반짝반짝하더구나. 「{w}」, 그 별빛을 따라 배달하마. — 산타"),TR("{p}에게. 북극은 오늘도 눈이 펑펑 온단다. 따뜻한 코코아를 마시며 네 편지를 읽었어. 「{w}」, 썰매 맨 앞자리에 실어 두마. — 산타"),TR("{p}에게. 루돌프가 네 편지를 읽더니 코가 더 빨개졌단다. 「{w}」, 꼭 전해 주마. 그때까지 감기 조심하렴. — 산타"),TR("꼬마 {p}에게. 편지 고맙구나. 「{w}」, 받을 자격이 충분하단다. 친구가 지칠 때마다 곁에서 힘이 되어 주렴. — 산타"),TR("{p}에게. 편지 끝에 그린 그림이 아주 마음에 들었단다. 냉장고에 붙여 두었지. 「{w}」, 크리스마스 이브에 살짝 두고 가마. — 산타"),TR("{p}에게. 올해 받은 편지 중에 글씨가 제일 반듯하더구나. 「{w}」, 요정 대장에게 특별히 부탁해 두마. 늦게까지 공부하는 친구가 있다면 일찍 재우렴. — 산타")];
+function xmReplyHB(p){const t=xmReplyText(p), m=t.match(EN?/^(.*?),\s+/:/^(.*?에게)\.\s+/); return [h('b',null,m?m[1]:p.name+TR('에게')),h('p',null,m?t.slice(m[0].length):t)]} // 받는 이(○○에게)는 제목으로, 편지 몸글엔 다시 안 써요
 function xmReplyText(p){const w=xmWish(p), i=Math.max(0,pets().findIndex(q=>q.id===p.id)), seed=(+xmY()*5+i)%XREPLY.length; // 동물마다, 해마다 다른 답장 (같이 받은 친구들끼리는 겹치지 않게)
   return palJo(XREPLY[seed].replace('{p}',p.name).replace('{w}',w[1]))}
 function xmReply(tries){const e=XM(); if(!e||md(today())<'11-25'||xmDoc('reply-'+xmY())||(fbCfg&&!gateOK)) return; const Y=xmY(), ps=pets().filter(p=>xmDoc('let-'+Y+'-'+p.id)); if(!ps.length) return;
   if((dlg.open||celebOn)&&(tries||0)<20){setTimeout(()=>xmReply((tries||0)+1),6000); return} put('xmas',{id:'reply-'+Y,ts:Date.now()});
-  openDlg('🎅 '+TR('산타에게서 답장이 왔어요!'),h('div',null,h('div',{class:'xletters'},ps.slice(0,4).map(p=>h('div',{class:'xletter reply'},h('span',{class:'xlpet'},'🎅'),h('div',null,h('b',null,TR('산타의 답장')),h('p',null,xmReplyText(p)))))),
+  openDlg('🎅 '+TR('산타에게서 답장이 왔어요!'),h('div',null,h('div',{class:'xletters'},ps.slice(0,4).map(p=>h('div',{class:'xletter reply'},h('span',{class:'xlpet'},'🎅'),h('div',null,...xmReplyHB(p))))),
     h('p',{class:'small muted',style:'text-align:center'},TR('상점 → 크리스마스 → 산타 편지에서 다시 볼 수 있어요'))),[h('button',{class:'primary',onclick:closeDlg},TR('좋아요!'))],'wide')}
 /* 12월 24일 밤: 캐럴 공연 (연습한 만큼 잘 불러요) */
 const XEVE_SP={kk:TR('♪ 징글벨~ 내 스타일로 편곡했지'),apollo:TR('(마지못해) …징글벨, 다꿇어'),nook:TR('♪ 선물 특가 종이 울리구리~'),isabelle:TR('♪ 메리 크리스마스, 여러분~!'),blathers:TR('호오… ♪ 징글벨이오'),snowman:TR('♪ 녹지 않는 겨울을 위하여~'),rudolph:TR('♪ 빨간 코의 루돌프~ 그게 나야!'),sponge:TR('♪ 징글벨! 준비됐어! 준비됐어!')};
@@ -8232,7 +8233,7 @@ const XMAS_SP={brewster:[TR('……메리 크리스마스. 오늘은 특별한 �
 Object.assign(LINESETS,{SNOWMAN:{tap:[TR('녹지 않게 조심해 줘'),TR('당근 코가 간지러워'),TR('눈 오는 날이 제일 좋아'),TR('안아 주면… 조금 녹아'),TR('나뭇가지 팔로 하이파이브!')],focus:[TR('차갑게, 침착하게')],done:[TR('눈처럼 깨끗하게 끝냈다!')],day:[TR('해가 좀 덜 뜨거웠으면')],night:[TR('밤엔 꽁꽁 얼어서 좋아')]},
   RUDOLPH:{tap:[TR('내 코 반짝이는 거 봤어?'),TR('썰매 끌 준비 완료!'),TR('안개 낀 밤엔 내가 앞장서'),TR('이제 아무도 내 코를 놀리지 않아'),TR('딸랑딸랑~')],focus:[TR('빨간 코로 길을 밝혀 줄게')],done:[TR('선물 배달 완료!')],day:[TR('썰매 연습하러 가야 해')],night:[TR('밤하늘은 내 코가 밝혀 줄게')]}});
 setCloud('local'); render(); decorate(); paintAmb(); setTimeout(evIntro,5000); setTimeout(xmPepero,9000); setTimeout(()=>xmReply(0),10000); setTimeout(()=>xmEve(false),10500); setTimeout(()=>{try{xwCheck()}catch(e){}},11000); setTimeout(()=>xmChristmas(false),9500); setTimeout(()=>{try{guestCheck()}catch(e){}},14000); setTimeout(checkProgress,2500); setTimeout(giftMilestone,4000); if(location.hash==='#pet') showView('pet'); enter('today'); setInterval(tick,250); initCloud(); initFirebase();
-const APP_V='align-v231'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
+const APP_V='align-v232'; let verAt=0; // sw.js의 CACHE와 같은 이름: 다르면 새 버전이 나온 것
 async function checkVersion(){
   if(window.claude||Date.now()-verAt<5*60e3||$('#newver')) return; verAt=Date.now();
   try{const t=await (await fetch('sw.js',{cache:'no-store'})).text(), m=t.match(/CACHE = '([^']+)'/); if(!m||m[1]===APP_V) return;
